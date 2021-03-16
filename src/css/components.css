@@ -1,10 +1,6 @@
-@import '~bootstrap/dist/css/bootstrap.css';
 
-:root {
-  --dark-blue: rgb(30, 61, 107);
-  --off-white: rgb(246, 248, 248);
-}
 
+/* Navbar CSS */
 nav {
     height: 3.5rem;
     background-color: var(--dark-blue) !important;
@@ -20,4 +16,39 @@ nav {
 
 .toggler {
     border: none;
+}
+
+/* Buttons and Input CSS */
+
+.input, .round-button {
+    font-size: 16px;
+    padding: 7px 10px;
+    margin: 7px auto;
+    border: 2px solid var(--dark-blue);
+    border-radius: 2rem;
+    width: 100%;
+}
+.round-button {
+    background-color: var(--dark-blue);
+    color: white;
+}
+.round-button:hover {
+    background: rgba(30, 61, 107, 0.95);
+    border: 2px solid rgba(30, 61, 107, 0.95);
+}
+.square-button {
+    font-size: 16px;
+    padding: 7px 10px;
+    margin: 7px auto;
+    border: 2px solid var(--dark-blue);
+    border-radius: 0.5rem;
+    width: 100%;
+    background-color: white;
+    color: var(--dark-blue);
+}
+.input {
+    background: rgba(255, 255, 255, 0.3);
+}
+.input:focus {
+    outline: none;
 }

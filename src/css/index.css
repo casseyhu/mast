@@ -1,17 +1,39 @@
 @import '~bootstrap/dist/css/bootstrap.css';
 
 :root {
-  --dark-blue: rgb(30, 61, 107);
-  --off-white: rgb(246, 248, 248);
+	--dark-blue: rgb(30, 61, 107);
+	--off-white: rgb(246, 248, 248);
+	--grey: rgb(215, 221, 226);
 }
 
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  font-family: "Montserrat", sans-serif;
+	box-sizing: border-box;
+	margin: 0;
+	font-family: "Montserrat", sans-serif;
 }
 
-.container-fluid {
-  background-color: red !important;
+h1 {
+	margin-top: 1.5rem;
+}
+h4 {
+	/* margin-top: 1rem; */
+	border-bottom: 2px solid var(--grey);
+	width: 100%;
+}
+
+.flex-horizontal {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.flex-vertical {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	/* align-items: center; */
+	justify-content: flex-start;
 }
