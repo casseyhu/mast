@@ -1,7 +1,12 @@
 import React from 'react';
-import Button from '../components/Button';
+import Button from './Button';
+import Dropdown from './Dropdown';
 
 const ImportItem = (props) => {
+
+
+
+    
     return (
         <div style={{margin:"1.5rem 0"}}>
             <h4>{props.header}</h4>
@@ -10,6 +15,13 @@ const ImportItem = (props) => {
                 <span style={{width:"150px"}}>{props.first}</span>
                 <div style={{width:"20"}}>
                     <Button variant="square" text="Browse My Computer"/>
+                </div>
+            </div>}
+            {props.dropdown &&
+            <div className="flex-horizontal">
+                <span style={{width:"150px"}}>{props.dropdown}</span>
+                <div style={{width:"20"}}>
+                    <Dropdown title={props.dropdown} items={props.items}/>
                 </div>
             </div>}
             <div className="flex-horizontal">

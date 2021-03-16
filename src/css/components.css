@@ -31,6 +31,8 @@ nav {
 .round-button {
     background-color: var(--dark-blue);
     color: white;
+    align-items: center;
+    justify-content: center;
 }
 .round-button:hover {
     background: rgba(30, 61, 107, 0.95);
@@ -51,4 +53,42 @@ nav {
 }
 .input:focus {
     outline: none;
+}
+
+/* Dropdown CSS */
+.dd-wrapper {
+    width: 200px;
+}
+.dd-list {
+    background-color: white;
+    border-radius: 1rem;
+    position: absolute;
+    overflow: hidden;
+    padding: 0;
+    transform: translateY(-7px);
+    transition: max-height .3s ease-out;
+    max-height: 0;
+}
+.dd-list-active {
+    background-color: white;
+    border-radius: 1rem;
+    position: absolute;
+    overflow: hidden;
+    padding: 0;
+    transform: translateY(-7px);
+    max-height: 1000px;
+    transition: max-height .3s ease-in;
+}
+.dd-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    transition: background 0.5s;
+    padding: 0.5rem;
+    color: var(--dark-blue);
+    width: 200px;
+}
+.dd-item:hover {
+    background-color: rgba(30, 61, 107, 0.1);
 }
