@@ -1,13 +1,17 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import '~bootstrap/dist/css/bootstrap.css';
+
+:root {
+  --dark-blue: rgb(30, 61, 107);
+  --off-white: rgb(246, 248, 248);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+.container-fluid {
+  background-color: red !important;
 }

@@ -1,0 +1,23 @@
+@import '~bootstrap/dist/css/bootstrap.css';
+
+:root {
+  --dark-blue: rgb(30, 61, 107);
+  --off-white: rgb(246, 248, 248);
+}
+
+nav {
+    height: 3.5rem;
+    background-color: var(--dark-blue) !important;
+}
+
+.nav-link, .navbar-brand {
+    color: white !important;
+    margin: 0 0.7rem;
+}
+.navbar-brand {
+    margin-left: 5vw;
+}
+
+.toggler {
+    border: none;
+}
