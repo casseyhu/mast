@@ -97,7 +97,7 @@
             "atLeastCredits": 18,
             "minGrade": 3.0
         },
-        "creditRequirement": 31,
+        "creditRequirement": 30,
         "gpaRequirements": {
             "cumulGpa": 3.0,
             "deptGpa": null,
