@@ -88,8 +88,8 @@ nav {
     border-radius: 1rem;
     position: absolute;
     overflow-y: scroll;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none; 
     padding: 0;
     transform: translateY(-7px);
     transition: max-height .3s ease-out;
@@ -100,12 +100,11 @@ nav {
     border-radius: 1rem;
     position: absolute;
     overflow-y: scroll;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; 
+    scrollbar-width: none;
     padding: 0;
     transform: translateY(-7px);
     max-height: 200px;
-    /* overflow: hidden; */
     transition: max-height .3s ease-in;
 }
 .dd-list::-webkit-scrollbar {
