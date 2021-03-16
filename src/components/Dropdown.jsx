@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import InputField from './InputField';
 
 const Dropdown = (props) => {
     const [open, setOpen] = useState(false);
@@ -18,10 +18,15 @@ const Dropdown = (props) => {
 
     return (
         <div className="dd-wrapper">
-            <button className="round-button" onClick={toggle}>
+            <InputField type="text" 
+            onClick={toggle} 
+            placeholder={selected} 
+            value={selected} 
+            icon={open ? "icon fa fa-caret-up" : "icon fa fa-caret-down"}/>
+            {/* <button className="round-button" onClick={toggle}>
                 {selected}
                 <i className={open ? "icon fa fa-caret-up" : "icon fa fa-caret-down"} aria-hidden="true" style={{float:'right'}}/>
-            </button>
+            </button> */}
             <ul className={"dd-list" + (open ? "-active" : "")}>
                 {props.items.map((item, i) => (
                     <li className="dd-list-item" key={i}>

@@ -87,7 +87,7 @@ nav {
     background-color: white;
     border-radius: 1rem;
     position: absolute;
-    overflow: hidden;
+    overflow-y: scroll;
     padding: 0;
     transform: translateY(-7px);
     transition: max-height .3s ease-out;
@@ -97,11 +97,15 @@ nav {
     background-color: white;
     border-radius: 1rem;
     position: absolute;
-    overflow: hidden;
+    overflow-y: scroll;
     padding: 0;
     transform: translateY(-7px);
-    max-height: 1000px;
+    max-height: 200px;
+    /* overflow: hidden; */
     transition: max-height .3s ease-in;
+}
+.dd-list::-webkit-scrollbar {
+    display: none;
 }
 .dd-item {
     display: flex;
