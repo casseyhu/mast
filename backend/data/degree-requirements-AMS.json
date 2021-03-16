@@ -56,7 +56,7 @@
             ["1:(1,1):(,)", "CSE549"],
             ["1:(1,1):(3,3)", "AMS", "rAMS507", "rAMS510", "rAMS531", "rAMS532", "rAMS533", "rAMS537", "rAMS539"],
             ["1:(1,1):(3,3)", "AMS", "rAMS507", "rAMS510", "rAMS531", "rAMS532", "rAMS533", "rAMS537", "rAMS539"],
-            ["1:(1,1):(3,3)", "AMS", "rAMS507", "rAMS510", "rAMS531", "rAMS532", "rAMS533", "rAMS537", "rAMS539"],
+            ["1:(1,1):(3,3)", "AMS", "rAMS507", "rAMS510", "rAMS531", "rAMS532", "rAMS533", "rAMS537", "rAMS539"]
         ]   
     },
     "degree3": { 
