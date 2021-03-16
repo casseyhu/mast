@@ -26,7 +26,7 @@ pdfExtract.extract(filePath, options, (err, data) => {
     var pages = data.pages
     for (let i = 0; i < pages.length; i++) {
         var page = pages[i].content
-        for (let j = 0; j < page.length; j++) {
+        for (let j = 2; j < page.length; j++) {
             //all content on the page
             var s = page[j]
             //console.log(s)
@@ -45,7 +45,8 @@ pdfExtract.extract(filePath, options, (err, data) => {
                 if (s.str.substring(0, 3) == target && s.fontName == "Helvetica") {
                     // found course + course name (CSE 500)
                     desc = ""
-                    courseName += s.str;
+                    startText = true
+                    courseName = s.str;
                     checkCourseName = true;
                 }
                 else if (checkCourseName && s.fontName == "Helvetica") {
@@ -57,11 +58,13 @@ pdfExtract.extract(filePath, options, (err, data) => {
                     if (checkCourseName) {
                         if (courses.includes(courseName) == false && courseName != "") {
                             //courseName.replace("  ", " ")
+                            startText = true
                             courses.push(courseName)
                             console.log(courseName) //full course ([Dept] [CourseNum] + [CourseName])
                         }
                         //else {
-                        else if (desc == "") {
+                        if (desc == "") {
+                            //console.log(s.str)
                             desc += s.str
                         }
                         else {
@@ -71,15 +74,19 @@ pdfExtract.extract(filePath, options, (err, data) => {
                     }
                 }
 
-                // else if (s.fontName == "g_d0_f1") {
-                //   //console.log(desc)
-                //   desc = ""
-                // }
+                else if (startText && s.fontName == "g_d0_f1") {
+                    startText = false
+                    /*description for each course before resetting */
+                    if(desc != ""){
+                        console.log(desc)
+                    }
+                    desc = ""
+                }
                 else {
                     // if(courseName != ""){
                     //   text += s.str
                     // }
-                    courseName = ""
+                    //courseName = ""
                 }
             }
         }
