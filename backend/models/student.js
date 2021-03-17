@@ -3,6 +3,7 @@ module.exports = (sequelize, type) => {
         sbuId: {
             type: type.INTEGER,
             primaryKey: true,
+            allowNull: false
         },
         firstName: type.STRING,
         lastName: type.STRING,
@@ -15,7 +16,6 @@ module.exports = (sequelize, type) => {
         gradSem: type.STRING,
         gradYear: type.INTEGER,
         degreeId: type.INTEGER,
-        coursePlanState: type.STRING,
         graduated: type.BOOLEAN,
         comments: type.STRING
     }, {

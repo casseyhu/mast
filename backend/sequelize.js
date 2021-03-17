@@ -2,6 +2,9 @@ const Sequelize = require('sequelize')
 const GPDModel = require('./models/gpd')
 const StudentModel = require('./models/student')
 const CourseModel = require('./models/course')
+const CoursePlanModel = require('./models/courseplan')
+const CoursePlanItemModel = require('./models/courseplanitem')
+const CourseOfferingModel = require('./models/student')
 require('dotenv').config();
 
 // Creating new Object of Sequelize 
@@ -18,7 +21,9 @@ const sequelize = new Sequelize(
 const GPD = GPDModel(sequelize, Sequelize)
 const Student = StudentModel(sequelize, Sequelize)
 const Course = CourseModel(sequelize, Sequelize)
-
+const CoursePlan = CoursePlanModel(sequelize, Sequelize)
+const CoursePlanItem = CoursePlanItemModel(sequelize, Sequelize)
+const CourseOffering = CourseOfferingModel(sequelize, Sequelize)
 
 try {
 	sequelize.authenticate();
@@ -35,5 +40,8 @@ sequelize.sync({ force: false })
 module.exports = {
     GPD, 
     Student,
-    Course
+    Course,
+    CoursePlan,
+    CoursePlanItem,
+    CourseOffering
 }

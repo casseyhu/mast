@@ -4,24 +4,15 @@ module.exports = (sequelize, type) => {
             type: type.STRING,
             primaryKey: true,
             autoIncrement: true,
+            allowNull: false
         },
         identifier: type.STRING,
         semester: type.STRING,
         year: type.INTEGER,
         section: type.INTEGER,
         days: type.STRING,
-        startTime: {
-            type: DataTypes.TIME,
-            set (timeStart) { 
-                this.setDataValue('startTime', timeStart)
-            }
-        },
-        endTime: {
-            type: DataTypes.TIME,
-            set (timeEnd) { 
-                this.setDataValue('endTime', timeEnd)
-            }
-        },
+        startTime: type.TIME,
+        endTime: type.TIME,
     }, {
         timestamps: false
     })
