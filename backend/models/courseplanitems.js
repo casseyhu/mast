@@ -8,12 +8,22 @@ module.exports = (sequelize, type) => {
             type: type.INTEGER,
             primaryKey: true,
         },
+        semester:{
+            type:type.STRING,
+            primaryKey: true,
+        },
         year:{
             type: type.INTEGER,
             primaryKey: true,
         },
-        section: type.INTEGER,
-        grade: type.STRING,
+        section:{
+            type: type.STRING,
+            allowNull:true,
+        }
+        grade:{
+            type: type.STRING,
+            allowNull: true,
+        }
     }, {
         timestamps: false
     })
