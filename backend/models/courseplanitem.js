@@ -1,29 +1,27 @@
 module.exports = (sequelize, type) => {
     return sequelize.define('courseplanitems', {
-        studentId: {
-            type: type.INTEGER,
-            primaryKey: true,
-        },
         coursePlanId: {
             type: type.INTEGER,
             primaryKey: true,
+            allowNull: false
         },
-        semester:{
+        courseId: {
+            type: type.STRING,
+            primaryKey: true,
+            allowNull: false
+        },
+        semester: {
             type:type.STRING,
             primaryKey: true,
+            allowNull: false
         },
-        year:{
+        year: {
             type: type.INTEGER,
             primaryKey: true,
+            allowNull: false
         },
-        section:{
-            type: type.STRING,
-            allowNull:true,
-        },
-        grade:{
-            type: type.STRING,
-            allowNull: true,
-        }
+        section: type.STRING,
+        grade: type.STRING,
     }, {
         timestamps: false
     })
