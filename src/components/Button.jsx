@@ -1,4 +1,5 @@
 import React from 'react';
+//import {PDFExtract, PDFExtractOptions} from 'pdf.js-extract';
 
 const Button = (props) => {
     const hiddenFileInput = React.useRef(null);
@@ -6,6 +7,9 @@ const Button = (props) => {
     const handleClick = event => {
         if (props.variant === "square")
             hiddenFileInput.current.click();
+        else if(props.variant === "round"){
+            console.log(props.file)
+        }
         // props.onClick();
     };
 

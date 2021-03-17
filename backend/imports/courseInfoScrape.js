@@ -1,6 +1,6 @@
 var path = require('path')
 const fs = require('fs')
-var filePath = path.join(__dirname, 'gradcourses-spring2021-edited.pdf')
+var filePath = "./backend/data/gradcourses-spring2021-edited.pdf"
 console.log(filePath)
 const PDFExtract = require('pdf.js-extract').PDFExtract;
 const pdfExtract = new PDFExtract();
@@ -9,7 +9,10 @@ const options = {}; /* see below */
 var dept = ["AMS", "BMI", "CSE", "ESE"]
 /*the chosen department found when scraping */
 var target = "";
-
+/* info to store in database */
+var chosenDept = "";
+var courseNum = 0;
+var name = "";
 //var foundOption = false;
 
 /*[Dept] [CourseNum]: [Course Name] */
@@ -21,20 +24,23 @@ var startText = false;
 var desc = ""
 /* add all courses to array that are in the dept variables */
 var courses = []
+/* other requirements i.e prerequisites, credits */
+var checkOthers = false
+var others = "";
 pdfExtract.extract(filePath, options, (err, data) => {
     if (err) return console.log(err);
     var pages = data.pages
     for (let i = 0; i < pages.length; i++) {
         var page = pages[i].content
-        for (let j = 2; j < page.length; j++) {
+        for (let j = 2; j < page.length - 2; j++) {
             //all content on the page
             var s = page[j]
             //console.log(s)
-
             if (s.fontName == "Times" && s.str.length == 3) {
                 if (dept.includes(s.str)) {
                     //foundOption = true;
                     target = s.str;
+                    checkOthers = false
                 }
                 else {
                     //foundOption = false;
@@ -44,8 +50,16 @@ pdfExtract.extract(filePath, options, (err, data) => {
             else if (target != "") {
                 if (s.str.substring(0, 3) == target && s.fontName == "Helvetica") {
                     // found course + course name (CSE 500)
+                    if(others != ""){
+                        console.log(chosenDept + courseNum) //full course ([Dept] [CourseNum] + [CourseName])
+                        console.log(name)
+                        console.log(desc)
+                        console.log(others)
+                    }
                     desc = ""
+                    others = ""
                     startText = true
+                    checkOthers = false
                     courseName = s.str;
                     checkCourseName = true;
                 }
@@ -58,9 +72,12 @@ pdfExtract.extract(filePath, options, (err, data) => {
                     if (checkCourseName) {
                         if (courses.includes(courseName) == false && courseName != "") {
                             //courseName.replace("  ", " ")
-                            startText = true
                             courses.push(courseName)
-                            console.log(courseName) //full course ([Dept] [CourseNum] + [CourseName])
+                            chosenDept = courseName.substring(0, 3)
+                            courseNum = courseName.substring(5, 8)
+                            name = courseName.substring(10, courseName.length)
+                            // console.log(chosenDept + courseNum) //full course ([Dept] [CourseNum] + [CourseName])
+                            // console.log(name)
                         }
                         //else {
                         if (desc == "") {
@@ -74,14 +91,36 @@ pdfExtract.extract(filePath, options, (err, data) => {
                     }
                 }
 
-                else if (startText && s.fontName == "g_d0_f1") {
-                    startText = false
-                    /*description for each course before resetting */
-                    if(desc != ""){
-                        console.log(desc)
+                else if (s.fontName == "g_d0_f1") {
+                    if(startText){
+                        startText = false
+                        /*description for each course before resetting */
+                        // if(desc != ""){
+                        // }
+                        // desc = ""
+                        checkOthers = true
                     }
-                    desc = ""
+                    if (others == "" && checkOthers) {
+                        others = s.str
+                    }
+                    else if(checkOthers) {
+                        if(s.str.substring(0, 1) != "," || others.substring(others.length - 1))
+                            others += ", " + s.str;
+                        else{
+                            others += + s.str;
+                        }
+                    }
                 }
+                // else if(checkOthers && s.fontName == "g_d0_f1"){
+                // }
+                // else if(checkOthers && s.fontName == "g_d0_f1" && isNaN(parseInt(s.str)) ){
+                //     if (others == "") {
+                //         others += s.str + ","
+                //     }
+                //     else {
+                //         others += " " + s.str;
+                //     }
+                // }
                 else {
                     // if(courseName != ""){
                     //   text += s.str
