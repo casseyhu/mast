@@ -2,8 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { GPD, Student, Course } = require('./sequelize')
-const upload = require('./upload')
+const { GPD, Student, Course, CoursePlan, CoursePlanItem, CourseOffering } = require('./sequelize')
 require('dotenv').config();
 
 // const session = require('express-session');
@@ -37,7 +36,7 @@ app.get('/gpd', (req, res) => {
 
 
 
-
+app.use('/upload', [ require('./routes/upload') ]);
 
 
 

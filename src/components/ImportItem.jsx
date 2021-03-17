@@ -1,11 +1,34 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from './Button';
 import Dropdown from './Dropdown';
+import axios from 'axios';
+
 
 const ImportItem = (props) => {
 
     const [file, setfile] =  useState("");
     const [firstfile, setfirstfile] =  useState("");
+
+    const uploadFile = (e) => {
+        console.log("uploading")
+        if (props.header === "Course Information") {
+            var formData = new FormData();
+            formData.append("file", file);
+            console.log("form data", formData)
+            axios.post('http://localhost:3001/upload/course', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(function () {
+                console.log('SUCCESS!!');
+            })
+            .catch(function () {
+                console.log('FAILURE!!');
+            });
+        }
+    }
+    
+
 
     return (
         <div style={{margin:"1.5rem 0"}}>
@@ -16,7 +39,7 @@ const ImportItem = (props) => {
                 <div style={{width:"20"}}>
                     <Button variant="square" text="Browse My Computer" setFile={e => setfirstfile(e)}/>
                 </div>
-                <small style={{marginLeft:"1.5rem"}}>{firstfile.name}</small>
+                {firstfile && <small style={{marginLeft:"1.5rem"}}>{firstfile.name}</small>}
             </div>}
             {props.dropdown &&
             <div className="flex-horizontal">
@@ -31,10 +54,10 @@ const ImportItem = (props) => {
                     <Button variant="square" text="Browse My Computer" setFile={e => setfile(e)}/>
                 </div>
                 <div style={{width:"100px", marginLeft:"1.4rem"}}>
-                    <Button variant="round" text="Upload" />
+                    <Button variant="round" text="Upload" onClick={uploadFile}/>
                 </div>
             </div>
-            <small style={{marginLeft:"150px"}}>{file.name}</small>
+            {file && <small style={{marginLeft:"150px"}}>{file.name}</small>}
         </div>
     )
 }

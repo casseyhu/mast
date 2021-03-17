@@ -1,6 +1,5 @@
 {
     "degree1": { 
-        "degreeId": 1,
         "dept": "AMS",
         "track": "Computational Applied Mathematics",
         "requirementVersion": 202102, 
@@ -29,7 +28,6 @@
         ]   
     },
     "degree2": { 
-        "degreeId": 2,
         "dept": "AMS",
         "track": "Computational Biology",
         "requirementVersion": 202102, 
@@ -60,7 +58,6 @@
         ]   
     },
     "degree3": { 
-        "degreeId": 3,
         "dept": "AMS",
         "track": "Operations Research",
         "requirementVersion": 202102, 
@@ -89,7 +86,6 @@
         ]   
     },
     "degree4": { 
-        "degreeId": 4,
         "dept": "AMS",
         "track": "Statistics",
         "requirementVersion": 202102, 
@@ -117,7 +113,6 @@
         ]   
     },
     "degree5": { 
-        "degreeId": 5,
         "dept": "AMS",
         "track": "Quantitative Finance",
         "requirementVersion": 202102, 

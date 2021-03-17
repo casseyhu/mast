@@ -4,20 +4,18 @@ import React from 'react';
 const Button = (props) => {
     const hiddenFileInput = React.useRef(null);
 
-    const handleClick = event => {
+    const handleClick = (e) => {
         if (props.variant === "square")
             hiddenFileInput.current.click();
         else if(props.variant === "round"){
             console.log(props.file)
         }
-        // props.onClick();
+        {props.onClick && props.onClick();}
     };
 
     const handleChange = event => {
         const file = event.target.files[0];
         props.setFile(file);
-        // props.handleFile(file);
-        console.log(file);
     };
 
     return (
