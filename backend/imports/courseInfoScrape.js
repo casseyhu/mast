@@ -7,6 +7,7 @@ const pdfExtract = new PDFExtract();
 const options = {}; /* see below */
 /*the departments we want to look at */
 var dept = ["AMS", "BMI", "CSE", "ESE"]
+var sem = ["Fall", "Winter", "Spring", "Summer"]
 /*the chosen department found when scraping */
 var target = "";
 /* info to store in database */
@@ -54,7 +55,67 @@ pdfExtract.extract(filePath, options, (err, data) => {
                         console.log(chosenDept + courseNum) //full course ([Dept] [CourseNum] + [CourseName])
                         console.log(name)
                         console.log(desc)
-                        console.log(others)
+                        others = others.replace(", Letter graded (A, A-, B+, etc.)", "")
+                        others = others.replace(" or permission of the, instructor", "")
+                        others = others.replace(" or permission of, instructor,", "")
+                        var foundSem = []
+                        var tot = 0;
+                        var creds = "";
+                        for(let k = 0; k < sem.length; k++){
+                            if(others.includes(sem[k])){
+                                foundSem.push(sem[k]);
+                                tot += 1;
+                            }
+                        }
+                        if(tot == 0){
+                            foundSem = sem;
+                        }
+                        if(others.includes(" credits")){
+                            let index = others.indexOf(" credits") - 1;
+                            while(index >= 0 && isNaN(parseInt(others.substring(index, index+1))) == false){
+                                creds = others.substring(index, index+1) + creds;
+                                index--;
+                            }
+                            console.log(creds)
+                        }
+                        let prereqs = []
+                        if(others.includes("Prerequisite: ")){
+                            let index = others.indexOf("Prerequisite: ") + 14;
+                            let course = others.substring(index, index + 7);
+                            if(isNaN(parseInt(course.substring(4, 7))) == false){
+                                if(parseInt(course.substring(4, 7)) >= 500){
+                                    course.replace(" ", "")
+                                    prereqs.push(course)
+                                }
+                            }
+                        }
+                        if(others.includes("Prerequisites: ")){
+                            let index = others.indexOf("Prerequisite: ") + 14;
+                            let course = others.substring(index, index + 7);
+                            if(isNaN(parseInt(course.substring(4, 7))) == false){
+                                if(parseInt(course.substring(4, 7)) >= 500){
+                                    course.replace(" ", "")
+                                    prereqs.push(course)
+                                }
+                            }
+                        }
+                        if(desc.includes("Prerequisite: ")){
+                            let index = desc.indexOf("Prerequisite: ") + 14;
+                            let course = desc.substring(index, index + 7);
+                            if(isNaN(parseInt(desc.substring(4, 7))) == false){
+                                if(parseInt(desc.substring(4, 7)) >= 500 && prereqs.includes(course) == false){
+                                    course.replace(" ", "")
+                                    prereqs.push(course)
+                                }
+                            }
+                        }
+                        //more than 1 prerequisites
+                        
+                        others = others.replace(" or permission of the instructor")
+                        
+                        console.log(foundSem)
+                        console.log(prereqs)
+                        //console.log(others)
                     }
                     desc = ""
                     others = ""
@@ -100,32 +161,30 @@ pdfExtract.extract(filePath, options, (err, data) => {
                         // desc = ""
                         checkOthers = true
                     }
-                    if (others == "" && checkOthers) {
-                        others = s.str
-                    }
-                    else if(checkOthers) {
-                        if(s.str.substring(0, 1) != "," || others.substring(others.length - 1))
-                            others += ", " + s.str;
-                        else{
-                            others += + s.str;
+                    if(s.str.search("Prerequisite for") == -1){
+                        if (others == "" && checkOthers) {
+                            others = s.str
+                        }
+                        else if(checkOthers) {
+                            if(s.str.substring(0, 1) != "," || others.substring(others.length - 1) != ","){
+                                var c = s.str.substring(0, s.str.indexOf(" "))
+                                if(isNaN(parseInt(c)) == false){
+                                    others += s.str;
+                                }
+                                else{
+                                    if(s.str.substring(0, 1) != "," && others.substring(others.length - 1) != ","){
+                                        others += ", " + s.str;
+                                    }
+                                    else{
+                                        others += " " + s.str;
+                                    }
+                                }
+                            }
+                            else{
+                                others += + s.str;
+                            }
                         }
                     }
-                }
-                // else if(checkOthers && s.fontName == "g_d0_f1"){
-                // }
-                // else if(checkOthers && s.fontName == "g_d0_f1" && isNaN(parseInt(s.str)) ){
-                //     if (others == "") {
-                //         others += s.str + ","
-                //     }
-                //     else {
-                //         others += " " + s.str;
-                //     }
-                // }
-                else {
-                    // if(courseName != ""){
-                    //   text += s.str
-                    // }
-                    //courseName = ""
                 }
             }
         }
