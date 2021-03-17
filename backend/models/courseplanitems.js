@@ -19,7 +19,7 @@ module.exports = (sequelize, type) => {
         section:{
             type: type.STRING,
             allowNull:true,
-        }
+        },
         grade:{
             type: type.STRING,
             allowNull: true,
