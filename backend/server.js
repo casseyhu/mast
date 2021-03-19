@@ -25,9 +25,11 @@ database.sequelize.sync({force: false}).then(() => {
 })
 
 require('./routes/gpd.route.js')(app);
+require('./routes/student.route.js')(app);
 require('./routes/course.route.js')(app);
 require('./routes/courseoffering.route.js')(app);
-
+require('./routes/courseplan.route.js')(app);
+require('./routes/degree.route.js')(app);
 
 app.listen(process.env.PORT || 8080, () => {
     console.log(`Listening on port ${process.env.PORT || 8080}`);

@@ -8,7 +8,7 @@ const CourseRequirement = database.CourseRequirement;
 
 
 // Upload degree
-exports.createPlan = (req, res) => {
+exports.upload = (req, res) => {
     // Degree.create({
     //     ...Degree
     // })
