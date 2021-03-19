@@ -13,3 +13,7 @@
 //  - timeslot. 
 // the system also maintains information about course prerequisites that are graduate courses. o
 // ther kinds of prerequisites, such as an undergraduate course or equivalent experience, are ignored.
+
+var path = require('path')
+const fs = require('fs')
+var filePath = "./backend/data/gradcourses-spring2021-edited.pdf"

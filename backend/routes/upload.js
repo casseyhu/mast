@@ -1,9 +1,7 @@
 const express = require('express');
 const { Course } = require('../sequelize')
 const app = express();
-
 const IncomingForm = require('formidable').IncomingForm
-
 const PDFExtract = require('pdf.js-extract').PDFExtract;
 const pdfExtract = new PDFExtract();
 
@@ -123,9 +121,27 @@ app.post('/courseinfo', (req, res) => {
     form.parse(req)
 });
 
-
 app.post('/courseoffering', (req, res) => {
-    console.log("test")
+    console.log("In /courseoffering post")
+    const Papa = require('papaparse')
+    const fs = require('fs')
+    var form = new IncomingForm()
+    form.on('file', (field, file) => {
+        var filePath = file.path;
+        console.log(filePath)
+        console.log(file.name)
+        const f_in = fs.readFileSync(filePath)
+        var results = Papa.parse(f_in)
+        console.log(results)
+    })
+    form.on('end', () => {
+        res.sendStatus(200);
+    })
+    form.parse(req, function(err, fields, files) {
+        // console.log(err)
+        // console.log(fields)
+        // console.log(files.file.name)
+    })
 });
 
 
