@@ -10,52 +10,26 @@ exports.upload = (req, res) => {
     console.log("In /courseoffering post")
     var form = new IncomingForm()
     form.on('file', (field, file) => {
-        try{
-            const f_in = fs.readFileSync(file.path, 'utf-8')
-            var results = Papa.parse(f_in, {
-                header: true,
-                dynamicTyping: true,
-                complete: function(results){
-                    // console.log(typeof(results.data[0].year))
-                    // console.log(typeof(results.data[0].semester))
-                    console.log("Finished reading CourseOffering file")
-                    var del_semesters = new Promise((resolve, reject) => {
-                        if(deleteSemestersFromDB(results)){
-                            resolve(results)
-                        }
-
-                    })
-                    del_semesters.then(res => {
-                        var upload_courses = new Promise((resolve, reject) => {
-                            if(uploadNewOfferings(results)){
-                                resolve(results)
-                            }
-                        })
-                        upload_courses.then(res => {
-                            console.log("Done importing all courses from csv")
-                        })
-                    })
-                    // The "done importing" runs before the insert/deletes even happen
-                    // becasue of the async. Maybe change it to sync? 
-                    // console.log("Done importing all courses from csv")
-
-                }
+        const f_in = fs.readFileSync(file.path, 'utf-8')
+        Papa.parsePromise = function(filePath) {
+            return new Promise(function(complete, error) {
+                Papa.parse(filePath, {
+                    header: true,
+                    dynamicTyping: true,
+                    complete: function(results){
+                        console.log("Finished reading CourseOffering file")
+                        deleteSemestersFromDB(results)
+                        uploadNewOfferings(results)
+                    }
+                })
             })
-        } catch (err) {
-            // Gracefully deal with error here. 
-            // Cases: 
-            //  Couldn't read file.path, or Papa.parse() couldnt parse 
-            //  file. 
-            console.log(err)
         }
-    })
-    form.on('end', () => {
-        res.sendStatus(200);
+        Papa.parsePromise(f_in).then(res => {
+            console.log("Done importing all courses from csv")
+        })
     })
     form.parse(req, function(err, fields, files) {
         // console.log(err)
-        // console.log(fields)
-        // console.log(files.file.name)
     })
 };
 
@@ -67,7 +41,6 @@ exports.upload = (req, res) => {
 // server to recreate the table through sequelize. 
 
 function uploadNewOfferings(csv_file){
-    console.log('runnig upload')
     for(let i = 0; i < csv_file.data.length; i++){
         course = csv_file.data[i]
         csv_timeslot = (course.timeslot ? course.timeslot.split(' ') : null)
