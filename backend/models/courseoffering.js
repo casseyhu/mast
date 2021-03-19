@@ -9,7 +9,7 @@ module.exports = (sequelize, Sequelize) => {
         identifier: Sequelize.STRING,
         semester: Sequelize.STRING,
         year: Sequelize.INTEGER,
-        section: Sequelize.INTEGER,
+        section: Sequelize.STRING,
         days: Sequelize.STRING,
         startTime: Sequelize.TIME,
         endTime: Sequelize.TIME,

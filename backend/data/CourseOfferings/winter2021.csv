@@ -1,3 +1,4 @@
+department,course_num,section,semester,year,timeslot
 CSE,524,01,Winter,2021,
 CSE,593,01,Winter,2021,
 CSE,596,01,Winter,2021,
@@ -7,4 +8,4 @@ CSE,699,02,Winter,2021,
 ESE,599,23,Winter,2021,
 AMS,676,01,Winter,2021,
 AMS,699,01,Winter,2021,
-BMI,598,01,Winter,2021
+BMI,598,01,Winter,2021,
