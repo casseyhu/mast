@@ -7,7 +7,7 @@ const IncomingForm = require('formidable').IncomingForm
 const PDFExtract = require('pdf.js-extract').PDFExtract;
 const pdfExtract = new PDFExtract();
 
-app.post('/course', (req, res) => {
+app.post('/courseinfo', (req, res) => {
     let form = new IncomingForm();
     form.on('file', (field, file) => {
         var filePath = file.path;
@@ -121,9 +121,14 @@ app.post('/course', (req, res) => {
         res.sendStatus(200);
     })
     form.parse(req)
-}
+});
 
-)
+
+app.post('/courseoffering', (req, res) => {
+    console.log("test")
+});
+
+
 // module.exports = function upload(req, res) {
 //     var form = new IncomingForm()
 
@@ -142,4 +147,5 @@ app.post('/course', (req, res) => {
 
 
 // https://malcoded.com/posts/react-file-upload/
+// https://www.geeksforgeeks.org/file-uploading-in-react-js/
 module.exports = app;

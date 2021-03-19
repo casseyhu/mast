@@ -11,21 +11,40 @@ const ImportItem = (props) => {
 
     const uploadFile = (e) => {
         console.log("uploading")
+        var formData = new FormData();
+        formData.append("file", file);
+        console.log("form data", formData)
+        let upload_path = ''
         if (props.header === "Course Information") {
-            var formData = new FormData();
-            formData.append("file", file);
-            console.log("form data", formData)
-            axios.post('http://localhost:3001/upload/course', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).then(function () {
-                console.log('SUCCESS!!');
-            })
-            .catch(function () {
-                console.log('FAILURE!!');
-            });
+            upload_path = 'http://localhost:3001/upload/courseinfo'
         }
+        else if (props.header === "Degree Requirements"){
+            console.log("Uploading Degree Requirements")
+            upload_path = 'http://localhost:3001/upload/degreerequirements'
+        }
+        else if (props.header === "Course Offerings") { 
+            console.log("Uploading Course Offerings")
+            upload_path = 'http://localhost:3001/upload/courseoffering'
+        }
+        else if (props.header === "Student Data") {
+            console.log("Uploading student data")
+            upload_path = 'http://localhost:3001/upload/studentdata'
+        }
+        else { // Uploading grades. 
+            console.log("Uploading grades")
+            upload_path = 'http://localhost:3001/upload/grades'
+        }
+        console.log(upload_path)
+        axios.post(upload_path, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(function () {
+            console.log('SUCCESS!!');
+        })
+        .catch(function () {
+            console.log('FAILURE!!');
+        });
     }
     
 
