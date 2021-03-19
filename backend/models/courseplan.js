@@ -1,16 +1,16 @@
-module.exports = (sequelize, type) => {
+module.exports = (sequelize, Sequelize) => {
     return sequelize.define('courseplan', {
         coursePlanId: {
-            type: type.INTEGER,
+            type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false
         },
         studentId: {
-            type: type.INTEGER,
+            type: Sequelize.INTEGER,
             allowNull: false
         },
-        coursePlanState: type.BOOLEAN,
+        coursePlanState: Sequelize.BOOLEAN,
     }, {
         timestamps: false
     })

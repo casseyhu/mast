@@ -1,0 +1,52 @@
+{
+    "degree1": { 
+        "dept": "ESE",
+        "track": "Non-Thesis",
+        "requirementVersion": 202102, 
+        "gradeRequirement": null,
+        "creditRequirement": 30,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": 3.0,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,):(,)",  "ESE536", "ESE545", "ESE566", "ESE587"],
+            ["1:(1,):(,)",  "ESE505", "ESE506", "ESE546", "ESE548"],
+            ["1:(1,):(,)",  "ESE507", "ESE530", "ESE549", "ESE555", "ESE556", "ESE575"],
+            ["1:(2,):(,)", "ESE501", "ESE533", "ESE534", "ESE543","ESE554", "ESE558", "ESE588", "ESE589", "CSE506", "CSE526", "CSE548"],
+            ["1:(,):(1,3)", "ESE597"],
+            ["1:(3,):(,)",  "ESE", "rESE597", "rESE599", "rESE697", "rESE698", "rESE699"],
+            ["0:(,):(,6)", "ESE597, ESE599", "ESE698"],
+            ["0:(,):(,3)", "ESE698"],
+            ["0:(,):(,3)", "ESE597"],
+            ["0:(,):(,)", "ESE", "rESE597", "rESE599", "rESE698", "rESE597"]
+        ]   
+    },
+    "degree2": { 
+        "dept": "ESE",
+        "track": "Thesis",
+        "requirementVersion": 202102, 
+        "gradeRequirement": null,
+        "creditRequirement": 30,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": 3.0,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["2:(,):(6,)", "ESE599"],
+            ["1:(1,):(,)",  "ESE536", "ESE545", "ESE566", "ESE587"],
+            ["1:(1,):(,)",  "ESE505", "ESE506", "ESE546", "ESE548"],
+            ["1:(1,):(,)",  "ESE507", "ESE530", "ESE549", "ESE555", "ESE556", "ESE575"],
+            ["1:(2,):(,)", "ESE501", "ESE533", "ESE534", "ESE543","ESE554", "ESE558", "ESE588", "ESE589", "CSE506", "CSE526", "CSE548"],
+            ["1:(,):(1,3)", "ESE597"],
+            ["2:(1,):(,)",  "ESE", "rESE597", "rESE599", "rESE697", "rESE698", "rESE699"],
+            ["0:(,):(,12)", "ESE597, ESE599", "ESE698"],
+            ["0:(,):(,3)", "ESE698"],
+            ["0:(,):(,3)", "ESE597"],
+            ["0:(,):(,)", "ESE", "rESE597", "rESE599", "rESE698", "rESE597"]
+        ]   
+    },
+
+}

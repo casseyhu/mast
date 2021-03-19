@@ -1,19 +1,21 @@
-module.exports = (sequelize, type) => {
-    return sequelize.define('courseoffering', {
+module.exports = (sequelize, Sequelize) => {
+    const CourseOffering =  sequelize.define('courseoffering', {
         courseOfferingId: {
-            type: type.STRING,
+            type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false
         },
-        identifier: type.STRING,
-        semester: type.STRING,
-        year: type.INTEGER,
-        section: type.INTEGER,
-        days: type.STRING,
-        startTime: type.TIME,
-        endTime: type.TIME,
+        identifier: Sequelize.STRING,
+        semester: Sequelize.STRING,
+        year: Sequelize.INTEGER,
+        section: Sequelize.INTEGER,
+        days: Sequelize.STRING,
+        startTime: Sequelize.TIME,
+        endTime: Sequelize.TIME,
     }, {
         timestamps: false
-    })
+    });
+
+    return CourseOffering;
 }

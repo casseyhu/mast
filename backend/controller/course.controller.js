@@ -1,11 +1,12 @@
-const express = require('express');
-const { Course } = require('../sequelize')
-const app = express();
+const database = require('../config/database.js');
 const IncomingForm = require('formidable').IncomingForm
 const PDFExtract = require('pdf.js-extract').PDFExtract;
 const pdfExtract = new PDFExtract();
 
-app.post('/courseinfo', (req, res) => {
+const Course = database.Course;
+
+// Upload a course info to the database 
+exports.upload = (req, res) => {
     let form = new IncomingForm();
     form.on('file', (field, file) => {
         var filePath = file.path;
@@ -119,6 +120,7 @@ app.post('/courseinfo', (req, res) => {
         res.sendStatus(200);
     })
     form.parse(req)
+<<<<<<< HEAD:backend/routes/upload.js
 });
 
 app.post('/courseoffering', (req, res) => {
@@ -165,3 +167,6 @@ app.post('/courseoffering', (req, res) => {
 // https://malcoded.com/posts/react-file-upload/
 // https://www.geeksforgeeks.org/file-uploading-in-react-js/
 module.exports = app;
+=======
+}
+>>>>>>> d308d5557642a234a2562db54a193a9af1bb6c2e:backend/controller/course.controller.js

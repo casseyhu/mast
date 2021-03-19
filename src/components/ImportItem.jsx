@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Button from './Button';
 import Dropdown from './Dropdown';
-import axios from 'axios';
+import axios from '../constants/axios';
 
 
 const ImportItem = (props) => {
@@ -16,23 +16,23 @@ const ImportItem = (props) => {
         console.log("form data", formData)
         let upload_path = ''
         if (props.header === "Course Information") {
-            upload_path = 'http://localhost:3001/upload/courseinfo'
+            upload_path = 'course/upload'
         }
         else if (props.header === "Degree Requirements"){
             console.log("Uploading Degree Requirements")
-            upload_path = 'http://localhost:3001/upload/degreerequirements'
+            upload_path = 'degree/upload'
         }
         else if (props.header === "Course Offerings") { 
             console.log("Uploading Course Offerings")
-            upload_path = 'http://localhost:3001/upload/courseoffering'
+            upload_path = 'courseoffering/upload'
         }
         else if (props.header === "Student Data") {
             console.log("Uploading student data")
-            upload_path = 'http://localhost:3001/upload/studentdata'
+            upload_path = 'student/upload'
         }
         else { // Uploading grades. 
             console.log("Uploading grades")
-            upload_path = 'http://localhost:3001/upload/grades'
+            upload_path = 'courseplanitem/upload'
         }
         console.log(upload_path)
         axios.post(upload_path, formData, {
