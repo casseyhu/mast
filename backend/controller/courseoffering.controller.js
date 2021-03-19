@@ -10,36 +10,26 @@ exports.upload = (req, res) => {
     console.log("In /courseoffering post")
     var form = new IncomingForm()
     form.on('file', (field, file) => {
-        try{
-            const f_in = fs.readFileSync(file.path, 'utf-8')
-            var results = Papa.parse(f_in, {
-                header: true,
-                dynamicTyping: true,
-                complete: function(results){
-                    // console.log(typeof(results.data[0].year))
-                    // console.log(typeof(results.data[0].semester))
-                    console.log("Finished reading CourseOffering file")
-                    deleteSemestersFromDB(results)
-                    uploadNewOfferings(results)
-                    console.log("Done importing all courses from csv")
-
-                }
+        const f_in = fs.readFileSync(file.path, 'utf-8')
+        Papa.parsePromise = function(filePath) {
+            return new Promise(function(complete, error) {
+                Papa.parse(filePath, {
+                    header: true,
+                    dynamicTyping: true,
+                    complete: function(results){
+                        console.log("Finished reading CourseOffering file")
+                        deleteSemestersFromDB(results)
+                        uploadNewOfferings(results)
+                    }
+                })
             })
-        } catch (err) {
-            // Gracefully deal with error here. 
-            // Cases: 
-            //  Couldn't read file.path, or Papa.parse() couldnt parse 
-            //  file. 
-            console.log(err)
         }
-    })
-    form.on('end', () => {
-        res.sendStatus(200);
+        Papa.parsePromise(f_in).then(res => {
+            console.log("Done importing all courses from csv")
+        })
     })
     form.parse(req, function(err, fields, files) {
         // console.log(err)
-        // console.log(fields)
-        // console.log(files.file.name)
     })
 };
 
@@ -50,7 +40,7 @@ exports.upload = (req, res) => {
 // Everyone will have to DORP TABLE courseofferings, then rerun the 
 // server to recreate the table through sequelize. 
 
-async function uploadNewOfferings(csv_file){
+function uploadNewOfferings(csv_file){
     for(let i = 0; i < csv_file.data.length; i++){
         course = csv_file.data[i]
         csv_timeslot = (course.timeslot ? course.timeslot.split(' ') : null)
@@ -59,8 +49,7 @@ async function uploadNewOfferings(csv_file){
         start = (time_range ? moment(time_range[0], ['h:mmA']).format('HH:mm') : null)
         end = (time_range ? moment(time_range[1], ['h:mmA']).format('HH:mm') : null)
 
-        // console.log(day, start, end)
-        await CourseOffering.create({
+        CourseOffering.create({
             identifier: course.department+course.course_num,
             semester: course.semester,
             year: course.year,
@@ -80,7 +69,7 @@ async function uploadNewOfferings(csv_file){
 // where the semester+year(s) are covered by this new CSV.
 // Will return a promise after the await is done. Try to
 // catch it in the main loop and handle it in there. 
-async function deleteSemestersFromDB(csv_file){
+function deleteSemestersFromDB(csv_file){
     scraped_semesters = []
     for(let i = 0; i < csv_file.data.length; i++){
         course = csv_file.data[i]
@@ -93,7 +82,7 @@ async function deleteSemestersFromDB(csv_file){
         semyear = scraped_semesters[i].split(' ')
         // Might have to CASCADE the deletes to the 
         // CoursePlans that reference these courses (?)
-        await CourseOffering.destroy({
+        CourseOffering.destroy({
             where: { 
                 semester: semyear[0],
                 year: Number(semyear[1])
