@@ -1,13 +1,12 @@
-const express = require('express');
-const { Course } = require('../sequelize')
-const app = express();
-
+const database = require('../config/database.js');
 const IncomingForm = require('formidable').IncomingForm
-
 const PDFExtract = require('pdf.js-extract').PDFExtract;
 const pdfExtract = new PDFExtract();
 
-app.post('/courseinfo', (req, res) => {
+const Course = database.Course;
+
+// Upload a course info to the database 
+exports.upload = (req, res) => {
     let form = new IncomingForm();
     form.on('file', (field, file) => {
         var filePath = file.path;
@@ -121,31 +120,4 @@ app.post('/courseinfo', (req, res) => {
         res.sendStatus(200);
     })
     form.parse(req)
-});
-
-
-app.post('/courseoffering', (req, res) => {
-    console.log("test")
-});
-
-
-// module.exports = function upload(req, res) {
-//     var form = new IncomingForm()
-
-//     form.on('file', (field, file) => {
-//         // Do something with the file
-//         // e.g. save it to the database
-//         // you can access it using file.path
-//     })
-//     form.on('end', () => {
-//         res.json()
-//     })
-//     form.parse(req)
-// }
-
-
-
-
-// https://malcoded.com/posts/react-file-upload/
-// https://www.geeksforgeeks.org/file-uploading-in-react-js/
-module.exports = app;
+}

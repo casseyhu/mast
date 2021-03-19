@@ -1,14 +1,14 @@
 
-module.exports = (sequelize, type) => {
-    return sequelize.define('course', {
+module.exports = (sequelize, Sequelize) => {
+    const Course = sequelize.define('course', {
         courseId: {
-            type: type.STRING,
+            type: Sequelize.STRING,
             primaryKey: true,
         },
-        department: type.STRING,
-        courseNum: type.INTEGER,
+        department: Sequelize.STRING,
+        courseNum: Sequelize.INTEGER,
         semestersOffered: {
-            type: type.STRING,
+            type: Sequelize.STRING,
             get() {
                 return this.getDataValue('semestersOffered').split('`')
             },
@@ -16,11 +16,11 @@ module.exports = (sequelize, type) => {
                 this.setDataValue('semestersOffered',val.join('`'));
             },
         },
-        name: type.STRING,
-        description: type.STRING,
-        credits: type.INTEGER,
+        name: Sequelize.STRING,
+        description: Sequelize.STRING,
+        credits: Sequelize.INTEGER,
         prereqs: {
-            type: type.STRING,
+            type: Sequelize.STRING,
             get() {
                 return this.getDataValue('prereqs').split('`')
             },
@@ -28,8 +28,10 @@ module.exports = (sequelize, type) => {
                 this.setDataValue('prereqs',val.join('`'));
             },
         },
-        repeat: type.BOOLEAN,
+        repeat: Sequelize.BOOLEAN,
     }, {
         timestamps: false
-    })
+    });
+
+    return Course;
 }
