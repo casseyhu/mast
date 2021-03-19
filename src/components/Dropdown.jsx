@@ -11,7 +11,6 @@ const Dropdown = (props) => {
 
     const selectionHandler = (item) => {
         item.preventDefault();
-        console.log(item.target.innerHTML)
         setSelected(item.target.innerHTML);
         setOpen(false);
     }
@@ -22,6 +21,7 @@ const Dropdown = (props) => {
             onClick={toggle} 
             placeholder={selected} 
             value={selected} 
+            onChange={e => setSelected(e.target.value)}
             icon={open ? "icon fa fa-caret-up" : "icon fa fa-caret-down"}/>
             {/* <button className="round-button" onClick={toggle}>
                 {selected}

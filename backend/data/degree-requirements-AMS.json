@@ -27,7 +27,7 @@
             ["1:(1,1):(3,3)", "AMS", "rAMS501", "rAMS503", "rAMS510", "rAMS526", "rAMS527", "rAMS528", "rAMS595"]
         ]   
     },
-    "degree2": {
+    "degree2": { 
         "dept": "AMS",
         "track": "Computational Biology",
         "requirementVersion": 202102, 
@@ -57,7 +57,7 @@
             ["1:(1,1):(3,3)", "AMS", "rAMS507", "rAMS510", "rAMS531", "rAMS532", "rAMS533", "rAMS537", "rAMS539"]
         ]   
     },
-    "degree3": {
+    "degree3": { 
         "dept": "AMS",
         "track": "Operations Research",
         "requirementVersion": 202102, 
@@ -85,7 +85,7 @@
             ["1:(1,1):(3,3)", "AMS542", "AMS544", "AMS545", "AMS546", "AMS547", "AMS548", "AMS549", "AMS550", "AMS552", "AMS553", "AMS555", "AMS556", "AMS511", "AMS512", "AMS513", "AMS514", "AMS515", "AMS516", "AMS517", "AMS518", "AMS519", "AMS522", "AMS523"]
         ]   
     },
-    "degree4": {
+    "degree4": { 
         "dept": "AMS",
         "track": "Statistics",
         "requirementVersion": 202102, 
@@ -112,7 +112,7 @@
             ["1:(1,1):(3,3)", "AMS", "rAMS510", "rAMS507", "rAMS570", "rAMS572", "rAMS573", "rAMS578", "rAMS597"]
         ]   
     },
-    "degree5": {
+    "degree5": { 
         "dept": "AMS",
         "track": "Quantitative Finance",
         "requirementVersion": 202102, 

@@ -1,14 +1,17 @@
-module.exports = (sequelize, type) => {
-    return sequelize.define('gpd', {
+
+module.exports = (sequelize, Sequelize) => {
+    const GPD = sequelize.define('gpd', {
         facultyId: {
-            type: type.INTEGER,
+            type: Sequelize.INTEGER,
             primaryKey: true,
         },
-        firstName: type.STRING,
-        lastName: type.STRING,
-        email: type.STRING,
-        password: type.STRING,
+        firstName: Sequelize.STRING,
+        lastName: Sequelize.STRING,
+        email: Sequelize.STRING,
+        password: Sequelize.STRING,
     }, {
         timestamps: false
-    })
+    });
+
+    return GPD;
 }
