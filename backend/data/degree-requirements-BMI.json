@@ -1,0 +1,32 @@
+
+{
+    "degree1": {
+        "dept": "BMI",
+        "track": "Imaging Informatics with thesis",
+        "requirementVersion": 202102, 
+        "gradeRequirement": null,
+        "creditRequirement": 21,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,1):(,)", "BMI501"],
+            ["1:(1,1):(,)", "BMI502", "BMI503"],
+            ["1:(1,1):(,)", "BMI513"],
+            ["1:(1,1):(,)", "BMI540"],
+            ["1:(6,6):(,)", "BMI592"],
+            ["1:(,):(3,)", "BMI", "rBMI590", "rBMI591", "rBMI592", "rBMI595", "rBMI596", "rBMI690", "rBMI695", "rBMI696"],
+            ["1:(,):(3,)", "BMI", "rBMI590", "rBMI591", "rBMI592", "rBMI595", "rBMI596", "rBMI690", "rBMI695", "rBMI696"],
+            ["1:(,):(3,)", "BMI", "rBMI590", "rBMI591", "rBMI592", "rBMI595", "rBMI596", "rBMI690", "rBMI695", "rBMI696"],
+            ["1:(,):(3,)", "BMI", "rBMI590", "rBMI591", "rBMI592", "rBMI595", "rBMI596", "rBMI690", "rBMI695", "rBMI696"],
+            ["1:(,):(3,)", "BMI", "rBMI590", "rBMI591", "rBMI592", "rBMI595", "rBMI596", "rBMI690", "rBMI695", "rBMI696"],
+            ["1:(,):(3,)", "BMI"],
+            ["1:(,):(1,12)", "BMI599"],
+            ["0:(,):(,6)", "BMI596", "BMI696"],
+            ["-1:(,):(,0)", "BMI598"]
+        ]   
+    }
+
+}

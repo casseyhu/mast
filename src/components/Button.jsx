@@ -10,7 +10,8 @@ const Button = (props) => {
         else if(props.variant === "round"){
             console.log(props.file)
         }
-        {props.onClick && props.onClick();}
+        if (props.onClick)
+            props.onClick();
     };
 
     const handleChange = event => {
