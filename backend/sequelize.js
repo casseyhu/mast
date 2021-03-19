@@ -5,7 +5,6 @@ const CourseModel = require('./models/course')
 const CoursePlanModel = require('./models/courseplan')
 const CoursePlanItemModel = require('./models/courseplanitem')
 const CourseOfferingModel = require('./models/student')
-require('dotenv').config();
 
 // Creating new Object of Sequelize 
 const sequelize = new Sequelize( 
@@ -36,6 +35,7 @@ sequelize.sync({ force: false })
     .then(() => {
     console.log(`Database & tables created here!`)
 })
+
 
 module.exports = {
     GPD, 

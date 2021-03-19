@@ -1,5 +1,5 @@
 const express = require('express');
-const { Course } = require('./../sequelize')
+const { Course } = require('../sequelize')
 const app = express();
 
 const IncomingForm = require('formidable').IncomingForm
