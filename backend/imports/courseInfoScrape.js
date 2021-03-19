@@ -49,8 +49,9 @@ pdfExtract.extract(filePath, options, (err, data) => {
                 }
             }
             else if (target != "") {
-                if (s.str.substring(0, 3) == target && s.fontName == "Helvetica") {
+                if(s.str.substring(0, 3) == target && s.fontName == "Helvetica") {
                     // found course + course name (CSE 500)
+                    //console.log(chosenDept + courseNum)
                     if(others != ""){
                         console.log(chosenDept + courseNum) //full course ([Dept] [CourseNum] + [CourseName])
                         console.log(name)
@@ -79,56 +80,99 @@ pdfExtract.extract(filePath, options, (err, data) => {
                             console.log(creds)
                         }
                         let prereqs = []
-                        if(others.includes("Prerequisite: ")){
-                            let index = others.indexOf("Prerequisite: ") + 14;
-                            let course = others.substring(index, index + 7);
-                            if(isNaN(parseInt(course.substring(4, 7))) == false){
-                                if(parseInt(course.substring(4, 7)) >= 500){
-                                    course.replace(" ", "")
-                                    prereqs.push(course)
-                                }
-                            }
-                        }
-                        if(others.includes("Prerequisites: ")){
-                            let index = others.indexOf("Prerequisite: ") + 14;
-                            let course = others.substring(index, index + 7);
-                            if(isNaN(parseInt(course.substring(4, 7))) == false){
-                                if(parseInt(course.substring(4, 7)) >= 500){
-                                    course.replace(" ", "")
-                                    prereqs.push(course)
-                                }
-                            }
-                        }
+                        //first check for description and see prerequisites
                         if(desc.includes("Prerequisite: ")){
                             let index = desc.indexOf("Prerequisite: ") + 14;
                             let course = desc.substring(index, index + 7);
-                            if(isNaN(parseInt(desc.substring(4, 7))) == false){
-                                if(parseInt(desc.substring(4, 7)) >= 500 && prereqs.includes(course) == false){
-                                    course.replace(" ", "")
-                                    prereqs.push(course)
+                            if(isNaN(parseInt(course.substring(4, 7))) == false){
+                                if(parseInt(course.substring(4, 7)) >= 500){
+                                    course = course.replace(" ", "");
+                                    if(!prereqs.includes(course))
+                                        prereqs.push(course);
                                 }
                             }
                         }
+                        others = others.replace("Prerequisite: ", "");
+                        others = others.replace("Prerequisites: ", "");
+                        if(others.includes("Prerequisite for")){
+                            let cIndex = others.indexOf(":");
+                            others = others.substring(cIndex + 2); //ignore the extra space
+                        }
+                        let course = others.substring(0, 7);
+                        if(isNaN(parseInt(course.substring(4, 7))) == false){
+                            if(parseInt(course.substring(4, 7)) >= 500){
+                                others = others.replace(course, "");
+                                course = course.replace(" ", "");
+                                if(!prereqs.includes(course))
+                                    prereqs.push(course);
+                            }
+                            else{
+                                others = others.replace(course, "");
+                                course = course.replace(" ", "");
+                                if(others.includes("or ")){
+                                    others = others.replace("or", "");
+                                    while(others.substring(0, 1) === " "){
+                                        others = others.substring(1);
+                                    }
+                                    course = others.substring(0, 7);
+                                    if(isNaN(parseInt(course.substring(4, 7))) == false){
+                                        if(parseInt(course.substring(4, 7)) >= 500){
+                                            others = others.replace(course, "");
+                                            course = course.replace(" ", "");
+                                            if(!prereqs.includes(course))
+                                                prereqs.push(course);
+                                        }
+                                    }
+                                //check if there is an or in the prerequisites
+                                }
+                            }
+                        }
+                        //console.log(others);
+                        // if(others.includes("Prerequisites: ")){
+                        //     let index = others.indexOf("Prerequisites: ") + 15;
+                        //     let course = others.substring(index, index + 7);
+                        //     console.log(course)
+                        //     if(isNaN(parseInt(course.substring(4, 7))) == false){
+                        //         if(parseInt(course.substring(4, 7)) >= 500){
+                        //             course.replace(" ", "")
+                        //             prereqs.push(course)
+                        //         }
+                        //     }
+                        // }
+                        // if(desc.includes("Prerequisite: ")){
+                        //     let index = desc.indexOf("Prerequisite: ") + 14;
+                        //     let course = desc.substring(index, index + 7);
+                        //     if(isNaN(parseInt(desc.substring(4, 7))) == false){
+                        //         if(parseInt(desc.substring(4, 7)) >= 500 && prereqs.includes(course) == false){
+                        //             course.replace(" ", "")
+                        //             prereqs.push(course)
+                        //         }
+                        //     }
+                        // }
                         //more than 1 prerequisites
-                        
+                        //console.log(others)
                         others = others.replace(" or permission of the instructor")
-                        
+                        if(others.includes("May be repeated for credit.")){
+
+                        }
                         console.log(foundSem)
                         console.log(prereqs)
-                        //console.log(others)
                     }
-                    desc = ""
-                    others = ""
-                    startText = true
-                    checkOthers = false
+                    //console.log(courseName)
+                    desc = "";
+                    others = "";
+                    startText = true;
+                    checkOthers = false;
                     courseName = s.str;
                     checkCourseName = true;
+                    //console.log(courseName)
                 }
                 else if (checkCourseName && s.fontName == "Helvetica") {
                     //continues if course + course name exceeds more than one line
                     courseName += " " + s.str;
+                    //console.log(courseName)
                 }
-                else if (s.fontName == "Times") {
+                else if (s.fontName == "Times" && !s.str.includes("credits") && s.str.substring(0,14) !== "Prerequisites:" && s.str.substring(0,13) !== "Prerequisite:") {
                     //reaches description
                     if (checkCourseName) {
                         if (courses.includes(courseName) == false && courseName != "") {
@@ -152,7 +196,14 @@ pdfExtract.extract(filePath, options, (err, data) => {
                     }
                 }
 
-                else if (s.fontName == "g_d0_f1") {
+                else if (s.fontName === "g_d0_f1" || s.str.includes("credits") || s.str.includes("Prerequisites:") || s.str.includes('Prerequisite:')) {
+                    if(desc === ""){
+                        chosenDept = courseName.substring(0, 3)
+                        courseNum = courseName.substring(5, 8)
+                        name = courseName.substring(10, courseName.length)
+                    }
+                    checkCourseName = false;
+                    startText = true;
                     if(startText){
                         startText = false
                         /*description for each course before resetting */
@@ -161,7 +212,7 @@ pdfExtract.extract(filePath, options, (err, data) => {
                         // desc = ""
                         checkOthers = true
                     }
-                    if(s.str.search("Prerequisite for") == -1){
+                    // if(s.str.search("Prerequisite for") == -1){
                         if (others == "" && checkOthers) {
                             others = s.str
                         }
@@ -172,7 +223,7 @@ pdfExtract.extract(filePath, options, (err, data) => {
                                     others += s.str;
                                 }
                                 else{
-                                    if(s.str.substring(0, 1) != "," && others.substring(others.length - 1) != ","){
+                                    if(s.str.substring(0, 1) != "," && others.substring(others.length - 1) != "," && isNaN(parseInt(s.str))){
                                         others += ", " + s.str;
                                     }
                                     else{
@@ -184,7 +235,7 @@ pdfExtract.extract(filePath, options, (err, data) => {
                                 others += + s.str;
                             }
                         }
-                    }
+                    //}
                 }
             }
         }
