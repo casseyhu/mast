@@ -2,8 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { GPD, Student, Course, CoursePlan, CoursePlanItem, CourseOffering } = require('./sequelize')
 require('dotenv').config();
+const { GPD, Student, Course, CoursePlan, CoursePlanItem, CourseOffering } = require('./sequelize')
 
 // const session = require('express-session');
 
