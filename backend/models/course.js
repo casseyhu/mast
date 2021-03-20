@@ -17,7 +17,7 @@ module.exports = (sequelize, Sequelize) => {
             },
         },
         name: Sequelize.STRING,
-        description: Sequelize.STRING,
+        description: Sequelize.TEXT('long'),
         credits: Sequelize.INTEGER,
         prereqs: {
             type: Sequelize.STRING,
