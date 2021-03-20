@@ -1,8 +1,6 @@
-Each courseRequirement object follows this form:
-[
-    “type:(min # of courses,max # of courses):(min # of credits,max # of credits)”, 
-    "course1", "course2", ... "
-]
+CourseRequirements objects contain arrays of this form:
+    [ “type:(min # of courses,max # of courses):(min # of credits,max # of credits)”, 
+    "course1", "course2", ...]
 
 type
     type = 1 
