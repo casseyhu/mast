@@ -15,8 +15,7 @@
             ["1:(1,1):(,)",  "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
             ["1:(1,1):(,)",  "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
             ["0:(,2):(,4)", "CSE587"],
-            ["2:(1,1):(,)", "CSE523", "CSE524"],
-            ["2:(1,1):(,)", "CSE523", "CSE524"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
             ["0:(,):(,)",   "CSE", "rCSE523", "rCSE524", "rCSE587", "rCSE599", "rCSE512", "rCSE526", "rCSE540", "rCSE541", "rCSE547", "rCSE548", "rCSE549", "rCSE502", "rCSE504", "rCSE506", "rCSE508", "rCSE509", "rCSE532", "rCSE534", "rCSE535", "rCSE505", "rCSE519", "rCSE527", "rCSE528", "rCSE537", "rCSE538", "rCSE564"]
         ]   
     },
@@ -36,7 +35,7 @@
             ["1:(1,1):(,)",  "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
             ["1:(1,1):(,)",  "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
             ["0:(,2):(,4)", "CSE587"], 
-            ["2:(1,):(,)", "CSE522"],
+            ["2:(1,1):(,)", "CSE522"],
             ["2:(1,):(3,)", "CSE", "rCSE522", "rCSE523", "rCSE524", "rCSE599", "rCSE600"],
             ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595", "CSE600","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638","CSE639","CSE641","CSE642","CSE643","CSE644","CSE645","CSE646","CSE647","CSE648","CSE649","CSE650","CSE651","CSE652","CSE653","CSE654","CSE655","CSE656","CSE657","CSE658","CSE659","CSE660","CSE661","CSE662","CSE665","CSE669","CSE670","CSE671","CSE672","CSE674","CSE677","CSE681","CSE684","CSE686","CSE687","CSE690","CSE691","CSE692","CSE693","CSE696","CSE697","CSE698", "CSE699"],
             ["0:(,):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE566","CSE570","CSE577","CSE581","CSE582","CSE596","CSE597"]
@@ -61,5 +60,5 @@
             ["2:(1,):(1,9)", "CSE599"],
             ["0:(,):(,)", "CSE", "rCSE587", "rCSE599", "rCSE512", "rCSE526", "rCSE540", "rCSE541", "rCSE547", "rCSE548", "rCSE549", "rCSE502", "rCSE504", "rCSE506", "rCSE508", "rCSE509", "rCSE532", "rCSE534", "rCSE535", "rCSE505", "rCSE519", "rCSE527", "rCSE528", "rCSE537", "rCSE538", "rCSE564"]
         ]
-    },
+    }
 }
