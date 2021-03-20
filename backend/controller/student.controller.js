@@ -14,6 +14,15 @@ exports.create = (req, res) => {
     })
 }
 
+// Verify a student for login
+exports.login = (req, res) => {
+    Student.findOne({where: {email: req.query.email, password: req.query.password}}).then(student => {
+        res.send(student);
+    }).catch(err => {
+        res.status(500).send("Error: " + err);
+    })
+}
+
 // Find a Student 
 exports.findById = (req, res) => {
     Student.findById(req.params.sbuId).then(student => {

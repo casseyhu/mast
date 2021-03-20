@@ -1,31 +1,51 @@
 import React, { Component } from 'react';
 import InputField from './InputField';
 import Button from './Button';
+import {sha256} from 'js-sha256';
+import axios from '../constants/axios';
 
-class LoginContainer extends Component{
+class LoginContainer extends Component {
     state = {
-        user: "GPD",
+        user: "gpd",
         email:'',
         password:'',
-        error:0
+        error: 0
     }
 
-    setUser = (e) => {
+    setEmail = (e) => {
         this.setState({
-            user: e.target.id
+            email: e.target.value
         })
     }
 
+    setPassword = (e) => {
+        this.setState({
+            password: sha256(e.target.value)
+        }, () => {console.log(this.state.password)})
+    }
+
     switchUser = (e) => {
-        if (this.state.user === "GPD") {
+        if (this.state.user === "gpd") {
             this.setState({
-                user: "Student"
+                user: "student"
             })
         } else {
             this.setState({
-                user: "GPD"
+                user: "gpd"
             })
         }
+    }
+
+    login = (e) => {
+        axios.get(`/${this.state.user}/login`, {params: {
+            email: this.state.email,
+            password: this.state.password
+        }}).then(response => {
+            localStorage.setItem('userid', response.data.sbuId)
+            console.log(response.data.sbuId);
+        })
+
+
     }
 
     render(){
@@ -33,34 +53,22 @@ class LoginContainer extends Component{
             <div className='login-box'>
                 <h1 className="login-item" style={{textAlign:'center', fontWeight:"800"}}>Login</h1>
                 <div className="flex-horizontal user-slider login-item" onClick={this.switchUser}>
-                    <div id="GPD" 
-                    className={`gpd${this.state.user==="GPD" ? '-selected' : ''}`}
-                    onClick={this.setUser}>
+                    <div className={`gpd${this.state.user==="gpd" ? '-selected' : ''}`}>
                     </div>
-                    <div id="Student" 
-                    className={`student${this.state.user==="Student" ? '-selected' : ''}`}
-                    onClick={this.setUser}>
+                    <div className={`student${this.state.user==="student" ? '-selected' : ''}`}>
                     </div>
                     <div className="users">
-                        <span id="GPD" 
-                        className="gpd"
-                        onClick={this.setUser}>
-                            GPD
-                        </span>
-                        <span id="Student"
-                        className="student"
-                        onClick={this.setUser}>
-                            Student
-                        </span>
+                        <span className="gpd"> GPD </span>
+                        <span className="student"> Student </span>
                     </div>
                 </div>
                 <div className="login-item" >
-                    <InputField type="email" placeholder="email"/>
+                    <InputField type="email" placeholder="email" onChange={this.setEmail}/>
                 </div>
                 <div className="login-item" >
-                    <InputField type="password" placeholder="password"/>
+                    <InputField type="password" placeholder="password" onChange={this.setPassword}/>
                 </div>
-                <Button variant="round" text="login"/>
+                <Button variant="round" text="login" onClick={this.login}/>
             </div>
         )
     }
