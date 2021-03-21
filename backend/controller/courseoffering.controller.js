@@ -5,12 +5,14 @@ const moment = require('moment');
 const IncomingForm = require('formidable').IncomingForm;
 
 const CourseOffering = database.CourseOffering;
-
+ 
 // Upload course offerings
 exports.upload = (req, res) => {
+    console.log("Courseoffering.controller")
     var form = new IncomingForm()
     form.parse(req).on('file', (field, file) => {
-        if (file.type != 'text/csv') {
+        if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel') {
+            console.log('wrong file type')
             res.status(500).send('Invalid File Type')
         } else {
             const f_in = fs.readFileSync(file.path, 'utf-8')

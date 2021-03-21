@@ -42,8 +42,9 @@ const ImportItem = (props) => {
         }).then(function () {
             console.log('SUCCESS!!');
         })
-        .catch(function () {
+        .catch(function (err) {
             console.log('FAILURE!!');
+            console.log(err)
         });
     }
     
