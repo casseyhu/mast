@@ -1,39 +1,51 @@
-import React, { useState } from 'react';
-import InputField from './InputField';
+import React from 'react';
+import Select from 'react-select';
+
+const customStyles = {
+    option: (provided, state) => ({
+        ...provided,
+        color: state.isFocused ? 'white' : 'black',
+        backgroundColor: state.isFocused ? 'rgb(30, 61, 107)' : 'white',
+    }),
+    multiValue: (provided) => ({
+        ...provided,
+        borderRadius: '2rem',
+        color: 'white',
+        padding: '0 .2rem',
+        backgroundColor: 'rgba(30, 61, 107, 0.75)' 
+    }),
+    multiValueLabel: (provided) => ({
+        ...provided,
+        color: 'white',
+    }),
+    multiValueRemove: (provided, state) => ({
+        ...provided,
+        "&:hover": {
+            backgroundColor: "rgba(30, 61, 107, 0.75)",
+            borderRadius: '2rem',
+            color: "white"
+        }
+    }),
+    control: (provided) => ({
+        ...provided,
+        border: '2px solid rgb(30, 61, 107)',
+        padding: '.1rem',
+        borderRadius: '2rem',
+        "&:hover": {
+            border: '2px solid rgb(30, 61, 107)',
+        }
+    })
+}
 
 const Dropdown = (props) => {
-    const [open, setOpen] = useState(false);
-    const [selected, setSelected] = useState(props.title);
-
-    const toggle = () => {
-        setOpen(!open)
-    }
-
-    const selectionHandler = (item) => {
-        item.preventDefault();
-        setSelected(item.target.innerHTML);
-        setOpen(false);
-    }
-
     return (
         <div className="dd-wrapper">
-            <InputField type="text" 
-            onClick={toggle} 
-            placeholder={selected} 
-            value={selected} 
-            onChange={e => setSelected(e.target.value)}
-            icon={open ? "icon fa fa-caret-up" : "icon fa fa-caret-down"}/>
-            {/* <button className="round-button" onClick={toggle}>
-                {selected}
-                <i className={open ? "icon fa fa-caret-up" : "icon fa fa-caret-down"} aria-hidden="true" style={{float:'right'}}/>
-            </button> */}
-            <ul className={"dd-list" + (open ? "-active" : "")}>
-                {props.items.map((item, i) => (
-                    <li className="dd-list-item" key={i}>
-                        <a href="#" className="dd-item" onClick={selectionHandler}>{item}</a>
-                    </li>
-                ))}
-            </ul>
+            <Select 
+            isMulti={true}
+            isSearchable={true}
+            onChange={props.onChange}
+            options={props.items}
+            styles={customStyles}/>
         </div>
     )
 }

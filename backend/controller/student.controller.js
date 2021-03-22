@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const database = require('../config/database.js');
 
 const Student = database.Student;
@@ -16,10 +17,19 @@ exports.create = (req, res) => {
 
 // Verify a student for login
 exports.login = (req, res) => {
-    Student.findOne({where: {email: req.query.email, password: req.query.password}}).then(student => {
-        res.send(student);
+    Student.findOne({where: {email: req.query.email, password: req.query.password}})
+    .then(student => {
+        let userData = {
+            type: 'student',
+            id: student.sbuId
+        }
+        let token = jwt.sign(userData, process.env.JWT_KEY, {
+            algorithm: process.env.JWT_ALGO,
+            expiresIn: '1m'
+        });
+        res.send(token);
     }).catch(err => {
-        res.status(500).send("Error: " + err);
+        res.status(500).send("Invalid login credentials");
     })
 }
 

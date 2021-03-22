@@ -21,7 +21,7 @@ class LoginContainer extends Component {
     setPassword = (e) => {
         this.setState({
             password: sha256(e.target.value)
-        }, () => {console.log(this.state.password)})
+        })
     }
 
     switchUser = (e) => {
@@ -41,17 +41,27 @@ class LoginContainer extends Component {
             email: this.state.email,
             password: this.state.password
         }}).then(response => {
-            localStorage.setItem('userid', response.data.sbuId)
-            console.log(response.data.sbuId);
+            localStorage.setItem('jwt-token', response.data)
+            console.log(response.data);
+            this.props.setLoggedIn(true);
+            if (this.state.user === 'gpd') {
+                this.props.history.push('/browse')
+            } else {
+                this.props.history.push('/student')
+            }
+        }).catch(err => {
+            console.log(err)
         })
-
-
     }
 
     render(){
         return(
             <div className='login-box'>
-                <h1 className="login-item" style={{textAlign:'center', fontWeight:"800"}}>Login</h1>
+                <div className="login-box-top">
+                    <p className="welcome">WELCOME</p>
+                    <p className="landing-title">Stony Brook University <br/>Masters Student Tracking System</p>
+                </div>
+                <h2 className="login-item" style={{textAlign:'center', fontWeight:"800"}}>USER LOGIN</h2>
                 <div className="flex-horizontal user-slider login-item" onClick={this.switchUser}>
                     <div className={`gpd${this.state.user==="gpd" ? '-selected' : ''}`}>
                     </div>

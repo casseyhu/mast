@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import MainPage from './pages/index';
 import NavigationBar from './components/Navbar';
 import Browse from './pages/Browse';
@@ -14,11 +14,23 @@ import ViewPlan from './pages/ViewPlan';
 import ViewStudent from './pages/ViewStudent';
 
 class App extends Component {
+
+	state = {
+		loggedIn: false
+	}
+
+	setLoggedIn = (val) => {
+		this.setState({
+			loggedIn: val
+		})
+	}
+
 	render(){
 		return(
 			<BrowserRouter basename={process.env.PUBLIC_URL}>
-				<NavigationBar/>
-				<Route exact path = "/" component={MainPage}/>
+				<NavigationBar loggedIn={this.state.loggedIn}/>
+				<Switch>
+				<Route exact path = "/" component={(props) => <MainPage {...props} setLoggedIn={this.setLoggedIn}/>}/>
 				<Route exact path = "/browse" component={Browse}/>
 				<Route exact path = "/trends" component={Trends}/>
 				<Route exact path = "/import" component={Import}/>
@@ -28,6 +40,7 @@ class App extends Component {
 				<Route exact path = "/student/edit" component={AddEditStudent}/>
 				<Route exact path = "/tentative" component={TentativePlan}/>
 				<Route exact path = "/courseplan" component={ViewPlan}/>
+				</Switch>
 			</BrowserRouter>
 		)
 	}

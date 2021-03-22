@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Container from "react-bootstrap/Container";
 import ImportItem from '../components/ImportItem';
-import { SEMESTERS } from '../constants'
+import { DEPARTMENTS } from '../constants';
 
 class Import extends Component {
     render() { 
@@ -9,7 +9,7 @@ class Import extends Component {
             <Container fluid="lg" className="container">
                 <h1>Import Data</h1>
                 <div className="flex-vertical">
-                    <ImportItem header="Course Information" dropdown="Semester" items={SEMESTERS} type="PDF"/>
+                    <ImportItem header="Course Information" dropdown="Departments" items={DEPARTMENTS} type="PDF"/>
                     <ImportItem header="Degree Requirements" type="JSON"/>
                     <ImportItem header="Course Offerings" type="CSV"/>
                     <ImportItem header="Student Data" first="Profile CSV" type="Course Plan CSV"/>
@@ -20,4 +20,4 @@ class Import extends Component {
     }
 }
  
-export default Import;
+export default Import;   

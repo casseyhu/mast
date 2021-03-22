@@ -1,10 +1,13 @@
 @import '~bootstrap/dist/css/bootstrap.css';
 
 :root {
+	--slate-black: #2F323A;
+	--charcoal: #344055;
 	--dark-blue: rgb(30, 61, 107);
 	--light-blue: rgb(72, 123, 189);
 	--off-white: rgb(246, 248, 248);
 	--grey: rgb(215, 221, 226);
+	--dark-grey: #727A88;
 }
 
 
@@ -27,6 +30,16 @@ h4 {
 	/* margin-top: 1rem; */
 	border-bottom: 2px solid var(--grey);
 	width: 100%;
+}
+footer {
+	position: absolute;
+    bottom: 0;
+	left: 0;
+	right: 0;
+    height: 50px;
+    padding: 10px;
+    text-align: center;
+	color: white;
 }
 
 .flex-horizontal {
@@ -54,7 +67,38 @@ i.fa {
 	width: 70px;
 	text-align: left;
  }
- .inputContainer i {
-	 position: absolute;
-	 transform: translateX(-40px);
- }
+.inputContainer i {
+	position: absolute;
+	transform: translateX(-40px);
+}
+
+.landing-background {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	/* width: 50%; */
+	background-color: var(--charcoal);
+	z-index: -1;
+}
+
+.login-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+}
+
+.landing-left-svg {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	z-index: -1;
+}
+.landing-right-svg {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	z-index: -1;
+}

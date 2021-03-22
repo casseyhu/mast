@@ -8,11 +8,13 @@ const Course = database.Course;
 // Upload a course info to the database 
 exports.upload = (req, res) => {
     let form = new IncomingForm();
-    form.parse(req).on('file', (field, file) => {
+    let depts = [];
+    form.parse(req).on('field', (name, field) => {
+        depts = field;
+    }).on('file', (field, file) => {
         if (file.type != 'application/pdf')
             res.status(500).send('Invalid File Type')
         else {
-            const depts = req.query.depts
             console.log(depts)
             scrapeCourses(file.path, depts)
             res.status(200).send('Success')
