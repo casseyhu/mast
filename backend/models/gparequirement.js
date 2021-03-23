@@ -5,16 +5,10 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
             autoIncrement: true,
         },
-        strReqId: {
-            type: Sequelize.STRING,
-            set() {
-                this.setDataValue('strReqId', 'G'+requiremntId);
-            },
-        },
         cumulative: Sequelize.FLOAT,
         department: Sequelize.FLOAT,
         core: Sequelize.FLOAT,
-    }, {
+    }, { 
         timestamps: false
     });
 

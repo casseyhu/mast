@@ -30,5 +30,6 @@ database.GradeRequirement = require('../models/graderequirement.js')(sequelize, 
 database.GpaRequirement = require('../models/gparequirement.js')(sequelize, Sequelize);
 database.CreditRequirement = require('../models/creditrequirement.js')(sequelize, Sequelize);
 database.CourseRequirement = require('../models/courserequirement.js')(sequelize, Sequelize);
+database.RequirementState = require('../models/requirementstate.js')(sequelize, Sequelize);
 
 module.exports = database;

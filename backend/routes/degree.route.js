@@ -5,15 +5,15 @@ module.exports = function(app) {
     // Upload degree
     app.post('/api/degree/upload', Degree.upload);
 
-    // Create new grade requirement object
-    app.post('/api/degree/gradereq/create', Degree.createGrade);
+    // // Create new grade requirement object
+    // app.post('/api/degree/gradereq/create', Degree.createGrade);
 
-    // Create new gpa requirement object
-    app.post('/api/degree/gpareq/create', Degree.createGpa);
+    // // Create new gpa requirement object
+    // app.post('/api/degree/gpareq/create', Degree.createGpa);
 
-    // Create new credit requirement object
-    app.post('/api/degree/creditreq/create', Degree.createCredit);
+    // // Create new credit requirement object
+    // app.post('/api/degree/creditreq/create', Degree.createCredit);
 
-    // Create new course requirement object
-    app.post('/api/degree/coursereq/create', Degree.createCourse);
+    // // Create new course requirement object
+    // app.post('/api/degree/coursereq/create', Degree.createCourse);
 }
