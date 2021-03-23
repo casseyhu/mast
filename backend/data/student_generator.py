@@ -46,7 +46,11 @@ for j in range(NUM_STUDENTS):
     req_sem_year = entry_sem_years[random.randint(entry_sem_year_index, len(entry_sem_years))]
     req_year = req_sem_year // 100
     req_sem = SEMESTERS[req_sem_year % 100]
-    grad_sem_year = entry_sem_year + 200
+    grad_sem_year = 0
+    if entry_sem == "Spring":
+        grad_sem_year = entry_sem_year + 106
+    elif entry_sem == "Fall":
+        grad_sem_year = entry_sem_year + 194
     grad_sem = SEMESTERS[grad_sem_year % 100]
     grad_year = grad_sem_year // 100
     pw_hash = hashlib.sha256((first_name+last_name).lower().encode())
