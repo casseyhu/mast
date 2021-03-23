@@ -15,7 +15,6 @@ const NavigationBar = (props) => {
         var decoded = jwt_decode(token)
         setUserType(decoded.type)
         setUser(decoded.id)
-        console.log(decoded)
     }, [props.loggedIn])
 
     const logout = () => {
@@ -26,7 +25,7 @@ const NavigationBar = (props) => {
     if (userType === '')
         return <> </>
     return (
-        <Navbar expand="md" variant="dark">
+        <Navbar expand="lg" variant="dark">
             { (userType === 'student') &&
                 <Navbar.Brand href="/student">MAST.</Navbar.Brand>
             }

@@ -1,14 +1,28 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import Container from "react-bootstrap/Container";
 import LoginContainer from '../components/LoginContainer';
-import {LANDING_LEFT, LANDING_RIGHT} from '../constants/svgs';
+import jwt_decode from 'jwt-decode';
+import {LANDING_LEFT, LANDING_RIGHT, LANDING_WAVE_LINES} from '../constants/svgs';
 
 const MainPage = (props) => {
+
+    useEffect(() => {
+        let token = localStorage.getItem('jwt-token')
+        if (!token)
+            return
+        var decoded = jwt_decode(token)
+        console.log(decoded.type)
+        if (decoded.type === 'student')
+            props.history.push('/student')
+        else if (decoded.type === 'gpd')
+            props.history.push('/browse')
+    }, [])
+
     return (
         <Container fluid="lg" className="container" style={{height:"100vh"}}>
             <div className="landing-background"/> 
-            <div className="landing-left-svg">{LANDING_LEFT}</div>
-            <div className="landing-right-svg">{LANDING_RIGHT}</div>
+            {/* <div className="landing-left-svg">{LANDING_LEFT}</div> */}
+            <div className="landing-right-svg">{LANDING_WAVE_LINES}</div>
             <div className="login-container">
                 <LoginContainer history={props.history} setLoggedIn={props.setLoggedIn}/>
             </div>
