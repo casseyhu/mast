@@ -4,20 +4,20 @@ import ImportItem from '../components/ImportItem';
 import { DEPARTMENTS } from '../constants';
 
 class Import extends Component {
-    render() { 
-        return ( 
-            <Container fluid="lg" className="container">
-                <h1>Import Data</h1>
-                <div className="flex-vertical">
-                    <ImportItem header="Course Information" dropdown="Departments" items={DEPARTMENTS} type="PDF"/>
-                    <ImportItem header="Degree Requirements" type="JSON"/>
-                    <ImportItem header="Course Offerings" type="CSV"/>
-                    <ImportItem header="Student Data" first="Profile CSV" type="Course Plan CSV"/>
-                    <ImportItem header="Grades" type="CSV"/>
-                </div>
-            </Container>
-        );
-    }
+  render() {
+    return (
+      <Container fluid="lg" className="container">
+        <h1>Import Data</h1>
+        <div className="flex-vertical">
+          <ImportItem header="Course Information" dropdown="Departments" items={DEPARTMENTS} type="PDF" />
+          <ImportItem header="Degree Requirements" type="JSON" />
+          <ImportItem header="Course Offerings" type="CSV" />
+          <ImportItem header="Student Data" first="Profile CSV" type="Course Plan CSV" />
+          <ImportItem header="Grades" type="CSV" />
+        </div>
+      </Container>
+    );
+  }
 }
- 
-export default Import;   
+
+export default Import;

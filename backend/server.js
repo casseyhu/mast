@@ -20,17 +20,17 @@ app.use(cors())
 // app.use(bodyParser.urlencoded({extended:true}));
 
 
-database.sequelize.sync({force: false}).then(() => {
-	console.log("Synced database");
+database.sequelize.sync({ force: false }).then(() => {
+  console.log("Synced database");
 })
 
-require('./routes/gpd.route.js')(app);
-require('./routes/student.route.js')(app);
-require('./routes/course.route.js')(app);
-require('./routes/courseoffering.route.js')(app);
-require('./routes/courseplan.route.js')(app);
-require('./routes/degree.route.js')(app);
+require('./routes/gpdRoute.js')(app);
+require('./routes/studentRoute.js')(app);
+require('./routes/courseRoute.js')(app);
+require('./routes/courseOfferingRoute.js')(app);
+require('./routes/coursePlanRoute.js')(app);
+require('./routes/degreeRoute.js')(app);
 
 app.listen(process.env.PORT || 8080, () => {
-    console.log(`Listening on port ${process.env.PORT || 8080}`);
+  console.log(`Listening on port ${process.env.PORT || 8080}`);
 })

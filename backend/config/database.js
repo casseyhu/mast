@@ -1,15 +1,15 @@
-const Sequelize = require('sequelize') 
+const Sequelize = require('sequelize')
 
 // Creating new Object of Sequelize 
-const sequelize = new Sequelize( 
-    'mast', 
-    'root', 
-    process.env.DB_PASSWORD, { 
-        dialect: 'mysql',         
-        host: 'localhost',
-        logging: false
-    }
-); 
+const sequelize = new Sequelize(
+  'mast',
+  'root',
+  process.env.DB_PASSWORD, {
+  dialect: 'mysql',
+  host: 'localhost',
+  logging: false
+}
+);
 // const sequelize = new Sequelize( 
 //     'cashu', 
 //     'cashu', 
@@ -29,16 +29,24 @@ database.sequelize = sequelize;
 database.GPD = require('../models/gpd.js')(sequelize, Sequelize);
 database.Student = require('../models/student.js')(sequelize, Sequelize);
 database.Course = require('../models/course.js')(sequelize, Sequelize);
-database.CourseOffering = require('../models/courseoffering.js')(sequelize, Sequelize);
-database.CoursePlan = require('../models/courseplan.js')(sequelize, Sequelize);
-database.CoursePlanItem = require('../models/courseplanitem.js')(sequelize, Sequelize);
-database.CourseOffering = require('../models/courseoffering.js')(sequelize, Sequelize);
+database.CourseOffering 
+    = require('../models/courseOffering.js')(sequelize, Sequelize);
+database.CoursePlan = require('../models/coursePlan.js')(sequelize, Sequelize);
+database.CoursePlanItem 
+    = require('../models/coursePlanItem.js')(sequelize, Sequelize);
+database.CourseOffering 
+    = require('../models/courseOffering.js')(sequelize, Sequelize);
 
 database.Degree = require('../models/degree.js')(sequelize, Sequelize);
-database.GradeRequirement = require('../models/graderequirement.js')(sequelize, Sequelize);
-database.GpaRequirement = require('../models/gparequirement.js')(sequelize, Sequelize);
-database.CreditRequirement = require('../models/creditrequirement.js')(sequelize, Sequelize);
-database.CourseRequirement = require('../models/courserequirement.js')(sequelize, Sequelize);
-database.RequirementState = require('../models/requirementstate.js')(sequelize, Sequelize);
+database.GradeRequirement 
+    = require('../models/gradeRequirement.js')(sequelize, Sequelize);
+database.GpaRequirement 
+    = require('../models/gpaRequirement.js')(sequelize, Sequelize);
+database.CreditRequirement 
+    = require('../models/creditRequirement.js')(sequelize, Sequelize);
+database.CourseRequirement 
+    = require('../models/courseRequirement.js')(sequelize, Sequelize);
+database.RequirementState 
+    = require('../models/requirementState.js')(sequelize, Sequelize);
 
 module.exports = database;

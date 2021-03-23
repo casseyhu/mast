@@ -1,6 +1,7 @@
 /**
  * Creates the Courses table in the MySQL database, if it doesn't exist.
- * Every record contains information about a course scraped from the PDFs uploaded by the GPD.
+ * Every record contains information about a course scraped from the PDFs 
+ * uploaded by the GPD.
  * Columns, translated over in MySQL terms for convenience:
  *      courseId:           VARCHAR(255) NOT NULL
  *      department:         VARCHAR(255)
@@ -17,38 +18,38 @@
  * @returns A Promise<Model> indicating whether the object was created or not. 
  */
 module.exports = (sequelize, Sequelize) => {
-    const Course = sequelize.define('course', {
-        courseId: {
-            type: Sequelize.STRING,
-            primaryKey: true,
-        },
-        department: Sequelize.STRING,
-        courseNum: Sequelize.INTEGER,
-        semestersOffered: {
-            type: Sequelize.STRING,
-            get() {
-                return this.getDataValue('semestersOffered').split('`')
-            },
-            set(val) {
-                this.setDataValue('semestersOffered',val.join('`'));
-            },
-        },
-        name: Sequelize.STRING,
-        description: Sequelize.TEXT('long'),
-        credits: Sequelize.INTEGER,
-        prereqs: {
-            type: Sequelize.STRING,
-            get() {
-                return this.getDataValue('prereqs').split('`')
-            },
-            set(val) {
-                this.setDataValue('prereqs',val.join('`'));
-            },
-        },
-        repeat: Sequelize.BOOLEAN,
-    }, {
-        timestamps: false
-    });
+  const Course = sequelize.define('course', {
+    courseId: {
+      type: Sequelize.STRING,
+      primaryKey: true,
+    },
+    department: Sequelize.STRING,
+    courseNum: Sequelize.INTEGER,
+    semestersOffered: {
+      type: Sequelize.STRING,
+      get() {
+        return this.getDataValue('semestersOffered').split('`')
+      },
+      set(val) {
+        this.setDataValue('semestersOffered', val.join('`'));
+      },
+    },
+    name: Sequelize.STRING,
+    description: Sequelize.TEXT('long'),
+    credits: Sequelize.INTEGER,
+    prereqs: {
+      type: Sequelize.STRING,
+      get() {
+        return this.getDataValue('prereqs').split('`')
+      },
+      set(val) {
+        this.setDataValue('prereqs', val.join('`'));
+      },
+    },
+    repeat: Sequelize.BOOLEAN,
+  }, {
+    timestamps: false
+  });
 
-    return Course;
+  return Course;
 }

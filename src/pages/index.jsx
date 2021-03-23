@@ -24,7 +24,7 @@ const MainPage = (props) => {
             {/* <div className="landing-left-svg">{LANDING_LEFT}</div> */}
             <div className="landing-right-svg">{LANDING_WAVE_LINES}</div>
             <div className="login-container">
-                <LoginContainer history={props.history} setLoggedIn={props.setLoggedIn}/>
+                <LoginContainer history={props.history} setLoggedIn={props.setLoggedIn} />
             </div>
             <footer>
                 <small>Copyright © 2021 Cassey Hu, Sooyeon Kim, Eddie Xu, Andrew Kong</small>

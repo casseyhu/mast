@@ -11,19 +11,19 @@
  * @returns A Promise<Model> indicating whether the object was created or not. 
  */
 module.exports = (sequelize, Sequelize) => {
-    return sequelize.define('courseplan', {
-        coursePlanId: {
-            type: Sequelize.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-            allowNull: false
-        },
-        studentId: {
-            type: Sequelize.INTEGER,
-            allowNull: false
-        },
-        coursePlanState: Sequelize.BOOLEAN,
-    }, {
-        timestamps: false
-    })
+  return sequelize.define('courseplan', {
+    coursePlanId: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false
+    },
+    studentId: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    coursePlanState: Sequelize.BOOLEAN,
+  }, {
+    timestamps: false
+  })
 }

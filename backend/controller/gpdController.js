@@ -14,19 +14,19 @@ const GPD = database.GPD;
 
 // Verify a GPD for login
 exports.login = (req, res) => {
-    GPD.findOne({where: {email: req.query.email, password: req.query.password}})
+  GPD.findOne({where:{email: req.query.email, password: req.query.password}})
     .then(gpd => {
-        let userData = {
-            type: 'gpd',
-            id: gpd.facultyId
-        }
-        let token = jwt.sign(userData, process.env.JWT_KEY, {
-            algorithm: process.env.JWT_ALGO,
-            expiresIn: '1m'
-        });
-        res.send(token);
+      let userData = {
+        type: 'gpd',
+        id: gpd.facultyId
+      }
+      let token = jwt.sign(userData, process.env.JWT_KEY, {
+        algorithm: process.env.JWT_ALGO,
+        expiresIn: '1m'
+      });
+      res.send(token);
     }).catch(err => {
-        res.status(500).send("Invalid login credentials");
+      res.status(500).send("Invalid login credentials");
     })
 }
 
