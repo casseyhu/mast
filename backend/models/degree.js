@@ -9,11 +9,11 @@ module.exports = (sequelize, Sequelize) => {
         track: Sequelize.STRING,
         requirementVersion: Sequelize.INTEGER,
         // gradeRequirement is string of GradeRequirement.requirementId
-        gradeRequirement: Sequelize.STRING,
+        gradeRequirement: Sequelize.INTEGER,
         // gpaRequirement is string of GpaRequirement.requirementId
-        gpaRequirement: Sequelize.STRING,
+        gpaRequirement: Sequelize.INTEGER,
         // creditRequirement is string of CreditRequirement.requirementId
-        creditRequirement: Sequelize.STRING,
+        creditRequirement: Sequelize.INTEGER,
         courseRequirement: {
         // String of references to CourseRequirement.requirementId (s).
         // ex: "C001`C002`C003`C003`..."
@@ -22,8 +22,7 @@ module.exports = (sequelize, Sequelize) => {
                 return this.getDataValue('courseRequirement').split('`')
             },
             set(val) {
-
-                this.setDataValue('courseRequirement',val.join('`'));
+                this.setDataValue('courseRequirement', val.join('`'));
             },
         },
     }, {

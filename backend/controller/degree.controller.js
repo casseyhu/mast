@@ -13,35 +13,16 @@ const CourseRequirement = database.CourseRequirement;
 exports.upload = (req, res) => {
     var form = new IncomingForm()
     form.parse(req).on('file', (field, file) => {
-        console.log(file.type)
         if(file.type != 'application/json'){
             res.status(500).send('Invalid file type')
         } else {
             fs.readFile(file.path, 'utf-8', (err, results) => {
-                if(err) {
-                    res.status(500).send("File read failed")
-                }
-                try {
-                    const json_file = JSON.parse(results)
-                    for(let deg_and_track of Object.keys(json_file)) {
-                        if(degreeExists(json_file[deg_and_track])) {
-                            // Overwrite existing degrees.
-                            // UPDATE ...
-                        }
-                        // Degree + track doesnt exist, add it to the tables.
-                        uploadDegree(json_file[deg_and_track])
-                        // After uploading the degree, we now have access to 
-                        // the unique Degree.degreeId primary key. Use this value
-                        // to set the strings for grade/gpa/credit/course-requirement
-                        // columns. 
-                    }
-                } catch(err){
-                    res.status(500).send("JSON file parsing failed")
-                }
-            })
-        }
+                const json_file = JSON.parse(results)
+                createDegrees(json_file)
+                res.status(200).send("Successfully Uploaded Degree Requirements")
+            }) 
+        }   
     })
-    res.send(req);
 }
 function degreeExists(degree){
     let query = Degree.findAll({
@@ -54,73 +35,63 @@ function degreeExists(degree){
     return (query.length === 0)
 }
 
-function uploadDegree(degree) {
-    // try{ 
-    Degree.create({
-        dept: degree.dept,
-        track: degree.track,
-        requirementVersion: degree.requirementVersion,
-        gradeRequirement: null,
-        gpaRequirement: null,
-        creditRequirement: null,
-        courseRequirement: null
-    }).complete((err, result) => {
-        if(err){
-            res.status(500).send("uploadDegree() create failed.")
-        } else {
-            id_val = result.degreeId
 
-            // Not done yet, ignore
-            Degree.update(
-                {gradeRequirement: 'GR' + id_val},
-                {gpaRequiremtn: 'G'}
-            )
-            //
+async function createDegrees(json_file){
+    for(let deg_and_track of Object.keys(json_file)) {
+        let degree = json_file[deg_and_track]
+        if(degreeExists(degree)) {
+            // Overwrite existing degrees.
+            // UPDATE ...
+        } 
+        requirement_ids = {}
+        new_course_ids = []
+
+        const grade = await GradeRequirement.create({
+            atLeastCredits: degree.gradeRequirement === null ? null : degree.gradeRequirement.atLeastCredits,
+            minGrade: degree.gradeRequirement === null ? null : degree.gradeRequirement.minGrade,
+        })
+        requirement_ids['grade'] = grade.requirementId 
+
+        const credit = await CreditRequirement.create({
+            minCredit: degree.creditRequirement
+        })
+        requirement_ids['credit'] = credit.requirementId
+
+        const gpa = await GpaRequirement.create({
+            cumulative: degree.gpaRequirements.cumulGpa,
+            department: degree.gpaRequirements.deptGpa,
+            core: degree.gpaRequirements.coreGpa
+        })
+        requirement_ids['gpa'] = gpa.requirementId
+
+        for(let i = 0; i < degree.courseRequirements.length; i++){
+            course_req = degree.courseRequirements[i]
+            req_str = course_req[0].split(':')
+            courses_range = req_str[1].slice(1,req_str[1].length-1).split(',')
+            credits_range = req_str[2].slice(1,req_str[2].length-1).split(',')
+            console.log("Courses range: ", courses_range)
+            console.log("Credits range: ", credits_range)
+            console.log("Courses list: ", course_req.slice(1))
+            const course = await CourseRequirement.create({
+                type: Number(req_str[0]),
+                courseLower: courses_range[0] === "" ? null : Number(courses_range[0]),
+                courseUpper: courses_range[1] === "" ? null : Number(courses_range[1]),
+                creditLower: credits_range[0] === "" ? null : Number(credits_range[0]),
+                creditUpper: credits_range[1] === "" ? null : Number(credits_range[1]),
+                courses: course_req.slice(1)
+            })
+            new_course_ids.push(course.requirementId)
         }
-    })
-    return true
-    // } catch(err) {
-    //     // Promise from await was not fulfilled. 
-    //     // console.log(err)
-    //     res.status(500).send("uploadDegree() create failed.")
-    // }
-}
 
-
-
-
-
-
-
-
-// Create a grade requirement
-exports.createGrade = (req, res) => {
-    // GradeRequirement.create({
-    //     ...GradeRequirement
-    // })
-    res.send(req);
-}
-
-// Create a gpa requirement
-exports.createGpa = (req, res) => {
-    // GpaRequirement.create({
-    //     ...GpaRequirement
-    // })
-    res.send(req);
-}
-
-// Create a grade requirement
-exports.createCredit = (req, res) => {
-    // CreditRequirement.create({
-    //     ...CreditRequirement
-    // })
-    res.send(req);
-}
-
-// Create a course requirement
-exports.createCourse = (req, res) => {
-    // CourseRequirement.create({
-    //     ...CourseRequirement
-    // })
-    res.send(req);
+        // Now, make the actual degree degree with all the new entries you made. 
+        const cdegree = await Degree.create({
+            dept: degree.dept,
+            track: degree.track,
+            requirementVersion: degree.requirementVersion,
+            gradeRequirement: requirement_ids['grade'],
+            gpaRequirement: requirement_ids['gpa'],
+            creditRequirement: requirement_ids['credit'],
+            courseRequirement: new_course_ids
+        })
+    }
 }
