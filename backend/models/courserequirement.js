@@ -1,3 +1,20 @@
+/**
+ * Creates the CourseRequirements table in the MySQL database, if it doesn't exist.
+ * Every record represents the list of courses required to fulfill a course
+ * requirement in a Degree on a specific track. 
+ * Columns, translated over in MySQL terms for convenience:
+ *      requirementId:      INTEGER AUTOINCREMENT NOT NULL
+ *      type:               INTEGER
+ *      courseLower:        INTEGER
+ *      courseUpper:        INTEGER
+ *      creditLower:        INTEGER
+ *      creditUpper:        INTEGER
+ *      courses:            VARCHAR(255)
+ *      PRIMARY KEY (requirementId)
+ * @param {*} sequelize 
+ * @param {*} Sequelize 
+ * @returns A Promise<Model> indicating whether the object was created or not. 
+ */
 module.exports = (sequelize, Sequelize) => {
     const CourseRequirement = sequelize.define('courserequirement', {
         requirementId: {

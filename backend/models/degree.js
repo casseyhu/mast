@@ -1,3 +1,25 @@
+/**
+ * Creates the Degrees table in the MySQL database, if it doesn't exist.
+ * Every record represents a degree on a specific track (i.e.: CSE on Advanced Project).
+ * Columns, translated over in MySQL terms for convenience:
+ *      degreeId:           INTEGER AUTOINCREMENT NOT NULL
+ *      dept:               VARCHAR(255)
+ *      track:              VARCHAR(255)
+ *      requirementId:      INTEGER
+ *      gradeRequirement:   INTEGER
+ *      gpaRequirement:     INTEGER
+ *      creditRequirement:  INTEGER
+ *      courseRequirement:  LONGTEXT
+ *      PRIMARY KEY (degreeId) 
+ *      FOREIGN KEY (gradeRequirement)  REFERENCES  GradeRequirements(requirementId)
+ *      FOREIGN KEY (creditRequirement) REFERENCES  CreditRequirements(requirementId)
+ *      FOREIGN KEY (courseRequirement) REFERENCES  CourseRequirements(requirementId)
+ * @param {*} sequelize 
+ * @param {*} Sequelize 
+ * @returns A Promise<Model> indicating whether the object was created or not. 
+ */
+
+
 module.exports = (sequelize, Sequelize) => {
     const Degree = sequelize.define('degree', {
         degreeId: {

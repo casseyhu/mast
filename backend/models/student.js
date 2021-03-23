@@ -1,3 +1,26 @@
+/**
+ * Creates the Students table in the MySQL database, if it doesn't exist.
+ * Columns, translated over in MySQL terms for convenience:
+ *      sbuId:                  INTEGER NOT NULL 
+ *      firstName:              VARCHAR(255) 
+ *      lastName:               VARCHAR(255) 
+ *      email:                  VARCHAR(255) 
+ *      password:               VARCHAR(255) 
+ *      gpa:                    FLOAT 
+ *      entrySem:               VARCHAR(255) 
+ *      entryYear:              INTEGER 
+ *      entrySemYear:           INTEGER 
+ *      gradSem:                VARCHAR(255) 
+ *      gradYear:               INTEGER 
+ *      degreeId:               INTEGER 
+ *      graduated:              TINYINTEGER
+ *      comments:               VARCHAR(255)
+ *      PRIMARY KEY (sbuId)
+ * @param {*} sequelize 
+ * @param {*} Sequelize 
+ * @returns A Promise<Model> indicating whether the object was created or not. 
+ */
+
 module.exports = (sequelize, Sequelize) => {
     return sequelize.define('student', {
         sbuId: {
