@@ -17,7 +17,7 @@ module.exports = (sequelize, Sequelize) => {
         courseRequirement: {
         // String of references to CourseRequirement.requirementId (s).
         // ex: "C001`C002`C003`C003`..."
-            type: Sequelize.TEXT('long'),
+            type: Sequelize.STRING,
             get() {
                 return this.getDataValue('courseRequirement').split('`')
             },

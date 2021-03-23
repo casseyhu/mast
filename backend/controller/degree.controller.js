@@ -18,20 +18,11 @@ exports.upload = (req, res) => {
         } else {
             fs.readFile(file.path, 'utf-8', (err, results) => {
                 const json_file = JSON.parse(results)
-                // Done parsing the JSON. 
-                console.log(json_file.degree5)
-                console.log(json_file.degree5.courseRequirement)
-                for(let deg_and_track of Object.keys(json_file)) {
-                    if(degreeExists(json_file[deg_and_track])) {
-                        // Overwrite existing degrees.
-                        // UPDATE ...
-                    } 
-                    createDegree(json_file[deg_and_track])
-                }
+                createDegrees(json_file)
+                res.status(200).send("Successfully Uploaded Degree Requirements")
             }) 
         }   
     })
-    res.send(req);
 }
 function degreeExists(degree){
     let query = Degree.findAll({
@@ -44,59 +35,63 @@ function degreeExists(degree){
     return (query.length === 0)
 }
 
-async function createDegree(degree){
-    requirement_ids = {}
-    // requirement_ids['course'] = []
-    new_course_ids = []
 
-    const grade = await GradeRequirement.create({
-        atLeastCredits: degree.gradeRequirement.atLeastCredits,
-        minGrade: degree.gradeRequirement.minGrade,
-    })
-    requirement_ids['grade'] = grade.requirementId 
+async function createDegrees(json_file){
+    for(let deg_and_track of Object.keys(json_file)) {
+        let degree = json_file[deg_and_track]
+        if(degreeExists(degree)) {
+            // Overwrite existing degrees.
+            // UPDATE ...
+        } 
+        requirement_ids = {}
+        new_course_ids = []
 
-    const credit = await CreditRequirement.create({
-        minCredit: degree.creditRequirement
-    })
-    requirement_ids['credit'] = credit.requirementId
-
-    const gpa = await GpaRequirement.create({
-        cumulative: degree.gpaRequirements.cumulGpa,
-        department: degree.gpaRequirements.deptGpa,
-        core: degree.gpaRequirements.coreGpa
-    })
-    requirement_ids['gpa'] = gpa.requirementId
-
-    for(let i = 0; i < degree.courseRequirements.length; i++){
-        course_req = degree.courseRequirements[i]
-        req_str = course_req[0].split(':')
-        courses_range = req_str[1].slice(1,req_str[1].length-1).split(',')
-        credits_range = req_str[2].slice(1,req_str[2].length-1).split(',')
-        console.log("Courses range: ", courses_range)
-        console.log("Credits range: ", credits_range)
-        console.log("Courses list: ", course_req.slice(1))
-        const course = await CourseRequirement.create({
-            type: Number(req_str[0]),
-            courseLower: courses_range[0] === "" ? null : Number(courses_range[0]),
-            courseUpper: courses_range[1] === "" ? null : Number(courses_range[1]),
-            creditLower: credits_range[0] === "" ? null : Number(credits_range[0]),
-            creditUpper: credits_range[1] === "" ? null : Number(credits_range[1]),
-            courses: course_req.slice(1)
+        const grade = await GradeRequirement.create({
+            atLeastCredits: degree.gradeRequirement === null ? null : degree.gradeRequirement.atLeastCredits,
+            minGrade: degree.gradeRequirement === null ? null : degree.gradeRequirement.minGrade,
         })
-        new_course_ids.push(course.requirementId)
+        requirement_ids['grade'] = grade.requirementId 
+
+        const credit = await CreditRequirement.create({
+            minCredit: degree.creditRequirement
+        })
+        requirement_ids['credit'] = credit.requirementId
+
+        const gpa = await GpaRequirement.create({
+            cumulative: degree.gpaRequirements.cumulGpa,
+            department: degree.gpaRequirements.deptGpa,
+            core: degree.gpaRequirements.coreGpa
+        })
+        requirement_ids['gpa'] = gpa.requirementId
+
+        for(let i = 0; i < degree.courseRequirements.length; i++){
+            course_req = degree.courseRequirements[i]
+            req_str = course_req[0].split(':')
+            courses_range = req_str[1].slice(1,req_str[1].length-1).split(',')
+            credits_range = req_str[2].slice(1,req_str[2].length-1).split(',')
+            console.log("Courses range: ", courses_range)
+            console.log("Credits range: ", credits_range)
+            console.log("Courses list: ", course_req.slice(1))
+            const course = await CourseRequirement.create({
+                type: Number(req_str[0]),
+                courseLower: courses_range[0] === "" ? null : Number(courses_range[0]),
+                courseUpper: courses_range[1] === "" ? null : Number(courses_range[1]),
+                creditLower: credits_range[0] === "" ? null : Number(credits_range[0]),
+                creditUpper: credits_range[1] === "" ? null : Number(credits_range[1]),
+                courses: course_req.slice(1)
+            })
+            new_course_ids.push(course.requirementId)
+        }
+
+        // Now, make the actual degree degree with all the new entries you made. 
+        const cdegree = await Degree.create({
+            dept: degree.dept,
+            track: degree.track,
+            requirementVersion: degree.requirementVersion,
+            gradeRequirement: requirement_ids['grade'],
+            gpaRequirement: requirement_ids['gpa'],
+            creditRequirement: requirement_ids['credit'],
+            courseRequirement: new_course_ids
+        })
     }
-
-    console.log(requirement_ids)
-    
-    // Now, make the actual degree degree with all the new entries you made. 
-
-    Degree.create({
-        dept: degree.dept,
-        track: degree.track,
-        requirementVersion: degree.requirementVersion,
-        gradeRequirement: requirement_ids['grade'],
-        gpaRequirement: requirement_ids['gpa'],
-        creditRequirement: requirement_ids['credit'],
-        courseRequirement: new_course_ids
-    })
 }

@@ -11,7 +11,7 @@ module.exports = (sequelize, Sequelize) => {
         creditLower: Sequelize.INTEGER,
         creditUpper: Sequelize.INTEGER,
         courses: {
-            type: Sequelize.STRING,
+            type: Sequelize.TEXT('long'),
             get() {
                 return this.getDataValue('courses').split('`')
             },

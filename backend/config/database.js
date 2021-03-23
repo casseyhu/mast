@@ -10,6 +10,15 @@ const sequelize = new Sequelize(
         logging: false
     }
 ); 
+// const sequelize = new Sequelize( 
+//     'cashu', 
+//     'cashu', 
+//     process.env.SBU_DB_PASSWORD, { 
+//         dialect: 'mysql',         
+//         host: 'mysql3.cs.stonybrook.edu',
+//         logging: false
+//     }
+// ); 
 
 const database = {};
 
