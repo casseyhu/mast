@@ -63,7 +63,7 @@ class LoginContainer extends Component {
           <p className="welcome">WELCOME</p>
           <p className="landing-title">
             Stony Brook University <br />Masters Student Tracking System
-                    </p>
+          </p>
         </div>
         <h2 className="login-item" style={{ textAlign: 'center', fontWeight: "800" }}>USER LOGIN</h2>
         <div className="flex-horizontal user-slider login-item" onClick={this.switchUser}>

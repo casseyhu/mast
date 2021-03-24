@@ -14,9 +14,8 @@
  *      PRIMARY KEY (degreeId) 
  *      FOREIGN KEY (gradeRequirement)  REFERENCES  GradeRequirements(requirementId)
  *      FOREIGN KEY (creditRequirement) REFERENCES  CreditRequirements(requirementId)
- *      FOREIGN KEY (courseRequirement) REFERENCES  CourseRequirements(requirementId)
- * @param {*} sequelize 
- * @param {*} Sequelize 
+ * @param {Object} sequelize 
+ * @param Sequelize 
  * @returns A Promise<Model> indicating whether the object was created or not. 
  */
 
@@ -31,11 +30,8 @@ module.exports = (sequelize, Sequelize) => {
     dept: Sequelize.STRING,
     track: Sequelize.STRING,
     requirementVersion: Sequelize.INTEGER,
-    // gradeRequirement is string of GradeRequirement.requirementId
     gradeRequirement: Sequelize.INTEGER,
-    // gpaRequirement is string of GpaRequirement.requirementId
     gpaRequirement: Sequelize.INTEGER,
-    // creditRequirement is string of CreditRequirement.requirementId
     creditRequirement: Sequelize.INTEGER,
     courseRequirement: {
       // String of references to CourseRequirement.requirementId (s).

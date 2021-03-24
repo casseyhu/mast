@@ -11,8 +11,8 @@
  *      startTime:              TIME
  *      endTime:                TIME
  *      PRIMARY KEY (courseOfferingId)
- * @param {*} sequelize 
- * @param {*} Sequelize 
+ * @param {Object} sequelize 
+ * @param Sequelize 
  * @returns A Promise<Model> indicating whether the object was created or not. 
  */
 module.exports = (sequelize, Sequelize) => {

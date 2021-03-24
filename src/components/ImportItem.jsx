@@ -4,7 +4,6 @@ import Dropdown from './Dropdown';
 import axios from '../constants/axios';
 import { Checkmark } from 'react-checkmark'
 
-
 const ImportItem = (props) => {
 
   const [file, setfile] = useState("");
@@ -24,10 +23,8 @@ const ImportItem = (props) => {
   const uploadFile = (e) => {
     if (file === "")
       return;
-    setUploading(true)
     var formData = new FormData();
     formData.append("file", file);
-    console.log("form data", formData);
     let upload_path = '';
     if (props.header === "Course Information") {
       upload_path = 'course/upload';
@@ -56,6 +53,7 @@ const ImportItem = (props) => {
       }
     }).then(function () {
       console.log('Successfully uploaded file');
+      setUploading(true)
       setfile("")
     })
       .catch(function (err) {

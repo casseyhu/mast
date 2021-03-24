@@ -9,8 +9,8 @@
  *      core:                   FLOAT
  *      PRIMARY KEY (requirementId)
  *      FOREIGN KEY (requirementId) REFERENCES Degrees(gpaRequirement)
- * @param {*} sequelize 
- * @param {*} Sequelize 
+ * @param {Object} sequelize 
+ * @param Sequelize 
  * @returns A Promise<Model> indicating whether the object was created or not. 
  */
 

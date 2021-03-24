@@ -5,11 +5,11 @@
  * requirement that this state is associated to. 
  * Columns, translated over in MySQL terms for convenience:
  *      sbuID:                  INTEGER NOT NULL
- *      requirementId:          VARCHAR(255)
+ *      requirementId:          VARCHAR(255) NOT NULL
  *      state:                  VARCHAR(255)
  *      PRIMARY KEY(sbuID, requirementId)
- * @param {*} sequelize 
- * @param {*} Sequelize 
+ * @param {Object} sequelize 
+ * @param Sequelize 
  * @returns A Promise<Model> indicating whether the object was created or not. 
  */
 module.exports = (sequelize, Sequelize) => {

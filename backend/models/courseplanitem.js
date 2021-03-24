@@ -12,13 +12,13 @@
  *      grade:              VARCHAR(255)
  *      PRIMARY KEY (coursePlanId, courseId, semester, year)
  *      FOREIGN KEY (coursePlanId) references CoursePlan(coursePlanId)
- * @param {*} sequelize 
- * @param {*} Sequelize 
+ * @param {Object} sequelize 
+ * @param Sequelize 
  * @returns A Promise<Model> indicating whether the object was created or not. 
  */
 
 module.exports = (sequelize, Sequelize) => {
-  return sequelize.define('courseplanitems', {
+  const CoursePlanItem = sequelize.define('courseplanitems', {
     coursePlanId: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -44,4 +44,6 @@ module.exports = (sequelize, Sequelize) => {
   }, {
     timestamps: false
   })
+
+  return CoursePlanItem;
 }

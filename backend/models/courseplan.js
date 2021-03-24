@@ -6,12 +6,12 @@
  *      studentId:          INTEGER NOT NULL
  *      coursePlanState:    TINYINT
  *      PRIMARY KEY (coursePlanId)
- * @param {*} sequelize 
- * @param {*} Sequelize 
+ * @param {Object} sequelize 
+ * @param Sequelize 
  * @returns A Promise<Model> indicating whether the object was created or not. 
  */
 module.exports = (sequelize, Sequelize) => {
-  return sequelize.define('courseplan', {
+  const CoursePlan = sequelize.define('courseplan', {
     coursePlanId: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -26,4 +26,6 @@ module.exports = (sequelize, Sequelize) => {
   }, {
     timestamps: false
   })
+
+  return CoursePlan;
 }

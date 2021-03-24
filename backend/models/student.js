@@ -14,15 +14,15 @@
  *      gradYear:               INTEGER 
  *      degreeId:               INTEGER 
  *      graduated:              TINYINTEGER
- *      comments:               VARCHAR(255)
+ *      comments:               LONGTEXT
  *      PRIMARY KEY (sbuId)
- * @param {*} sequelize 
- * @param {*} Sequelize 
+ * @param {Object} sequelize 
+ * @param Sequelize 
  * @returns A Promise<Model> indicating whether the object was created or not. 
  */
 
 module.exports = (sequelize, Sequelize) => {
-  return sequelize.define('student', {
+  const Student = sequelize.define('student', {
     sbuId: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -40,8 +40,10 @@ module.exports = (sequelize, Sequelize) => {
     gradYear: Sequelize.INTEGER,
     degreeId: Sequelize.INTEGER,
     graduated: Sequelize.BOOLEAN,
-    comments: Sequelize.STRING
+    comments: Sequelize.TEXT('long')
   }, {
     timestamps: false
   })
+
+  return Student;
 }

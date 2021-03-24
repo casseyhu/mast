@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const database = require('../config/database.js');
 
-const GPD = database.GPD;
+const Gpd = database.Gpd;
 
 // Find a GPD 
 // exports.findById = (req, res) => {
@@ -14,7 +14,7 @@ const GPD = database.GPD;
 
 // Verify a GPD for login
 exports.login = (req, res) => {
-  GPD.findOne({where:{email: req.query.email, password: req.query.password}})
+  Gpd.findOne({where:{email: req.query.email, password: req.query.password}})
     .then(gpd => {
       let userData = {
         type: 'gpd',

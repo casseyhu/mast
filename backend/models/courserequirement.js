@@ -9,10 +9,10 @@
  *      courseUpper:        INTEGER
  *      creditLower:        INTEGER
  *      creditUpper:        INTEGER
- *      courses:            VARCHAR(255)
+ *      courses:            LONGTEXT
  *      PRIMARY KEY (requirementId)
- * @param {*} sequelize 
- * @param {*} Sequelize 
+ * @param {Object} sequelize 
+ * @param Sequelize 
  * @returns A Promise<Model> indicating whether the object was created or not. 
  */
 module.exports = (sequelize, Sequelize) => {

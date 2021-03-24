@@ -7,13 +7,13 @@
  *      email:                  VARCHAR(255)
  *      password:               VARCHAR(255)
  *      PRIMARY KEY (facultyId)
- * @param {*} sequelize 
- * @param {*} Sequelize 
+ * @param {Object} sequelize 
+ * @param Sequelize 
  * @returns A Promise<Model> indicating whether the object was created or not. 
  */
 
 module.exports = (sequelize, Sequelize) => {
-  const GPD = sequelize.define('gpd', {
+  const Gpd = sequelize.define('gpd', {
     facultyId: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -26,5 +26,5 @@ module.exports = (sequelize, Sequelize) => {
     timestamps: false
   });
 
-  return GPD;
+  return Gpd;
 }

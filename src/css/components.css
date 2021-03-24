@@ -72,7 +72,7 @@ nav {
 /* Login box */
 
 .login-box-top {
-  height: 20vh;
+  height: 20%;
   width: 500px;
   display: flex;
   flex-direction: column;
