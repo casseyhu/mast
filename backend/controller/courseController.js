@@ -4,7 +4,6 @@ const PDFExtract = require('pdf.js-extract').PDFExtract;
 const pdfExtract = new PDFExtract();
 
 const Course = database.Course;
-
 // Upload a course info to the database 
 exports.upload = (req, res) => {
   let form = new IncomingForm();
@@ -23,20 +22,20 @@ exports.upload = (req, res) => {
       res.status(500).send('Invalid File Type')
     else {
       console.log(depts, semester, year)
-      scrapeCourses(file.path, depts, semester, year)
-      res.status(200).send('Success')
+      scrapeCourses(file.path, depts, semester, year, res)
     }
   })
 }
 
 
 // dept : list of departments to scrape from
-scrapeCourses = (filePath, dept, semester, year) => {
+scrapeCourses = (filePath, dept, semester, year, res) => {
   const options = {};
   var sem = ["Fall", "Winter", "Spring", "Summer"]
   var target = "";
   /* info to store in database */
   var chosenDept = "";
+  var a = 0;
   var courseNum = 0;
   var name = "";
   var courseName = "";
@@ -49,13 +48,16 @@ scrapeCourses = (filePath, dept, semester, year) => {
   /* other requirements i.e prerequisites, credits */
   var checkOthers = false
   var others = "";
+  dept = dept.split(',')
   pdfExtract.extract(filePath, options, (err, data) => {
     if (err) return console.log(err);
     var pages = data.pages
     for (let i = 0; i < pages.length; i++) {
+      // if(dept.length == 0){
+      //   break;
+      // }
       var page = pages[i].content
       for (let j = 2; j < page.length - 2; j++) {
-        //all content on the page
         var s = page[j]
         if (s.fontName == "Times" && s.str.length == 3) {
           if (dept.includes(s.str)) {
@@ -63,6 +65,7 @@ scrapeCourses = (filePath, dept, semester, year) => {
             checkOthers = false
           }
           else {
+            target = ""
             checkCourseName = false;
           }
         }
@@ -144,7 +147,7 @@ scrapeCourses = (filePath, dept, semester, year) => {
                   }
                 }
               }
-
+              a+=1
               insertUpdate({
                 courseId: chosenDept + courseNum,
                 department: chosenDept,
@@ -158,9 +161,10 @@ scrapeCourses = (filePath, dept, semester, year) => {
                 prereqs: prereqs,
                 repeat: 0
               }, { courseId: chosenDept + courseNum })
-              // .then(res => {
-              //     console.log(res.created + ':' + res.course)
-              // })
+              .then(res => {
+                t = true
+                  // console.log(res.created + ':' + res.course)
+              })
 
             }
             desc = "";
@@ -243,13 +247,22 @@ scrapeCourses = (filePath, dept, semester, year) => {
         }
       }
     }
+    if(a === 0){
+      res.status(500).send('Invalid PDF Type')
+    }
+    else{
+      res.status(200).send('Success')
+    }
   });
 }
 
 
 insertUpdate = async (values, condition) => {
   const found = await Course.findOne({ where: condition })
+
+
   if (found) {
+    //console.log(condition)
     const course = await Course.update(values, { where: condition })
     return { course, created: false }
   }
