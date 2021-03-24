@@ -59,7 +59,7 @@ async function createDegrees(json_file) {
           requirementVersion: degree.requirementVersion
         }
       })
-      console.log(query)
+      // console.log(query)
       if (query.length !== 0) {
         // Overwrite existing degrees.
         // UPDATE ...

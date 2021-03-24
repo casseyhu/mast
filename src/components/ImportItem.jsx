@@ -26,7 +26,7 @@ const ImportItem = (props) => {
 
 
   const uploadFile = (e) => {
-    if (file === ""){
+    if (file === "") {
       console.log("Empty file")
       setError("Must choose a file to upload.")
       return;
@@ -81,7 +81,7 @@ const ImportItem = (props) => {
   }
 
   return (
-    <div style={{ margin: "1.5rem 0" }}>
+    <div style={{ margin: "1rem 0" }}>
       <h4>{props.header}</h4>
       {props.first
         && (<div className="flex-horizontal">
@@ -96,10 +96,10 @@ const ImportItem = (props) => {
         && (<div className="flex-horizontal" style={{ flexWrap: 'wrap' }}>
           <span style={{ width: "150px" }}>Semesters</span>
           <Dropdown variant="single" items={props.sems} onChange={(e) => setSem(e.value)} />
-          <div style={{marginRight: '3rem'}}>
+          <div style={{ marginRight: '3rem' }}>
             <Dropdown variant="single" items={props.years} onChange={(e) => setYear(e.value)} />
           </div>
-          <div className="flex-horizontal" style={{ width: '540px' }}> 
+          <div className="flex-horizontal" style={{ width: '540px' }}>
             <span style={{ width: '150px' }}>Departments</span>
             <div style={{ width: "20" }}>
               <Dropdown variant="multi" items={props.depts} onChange={selectionHandler} />
@@ -107,24 +107,25 @@ const ImportItem = (props) => {
           </div>
         </div>
         )}
-      <div className="flex-horizontal">
+      <div className="flex-horizontal parent">
         <span style={{ width: "150px" }}>{props.type}</span>
         <div style={{ width: "20" }}>
-          <Button 
-            variant="square" 
-            text="Browse My Computer" 
-            setFile={e => setFile(e)} 
-            onClick={()=>setError("")}
+          <Button
+            variant="square"
+            text="Browse My Computer"
+            setFile={e => setFile(e)}
+            onClick={() => setError("")}
           />
         </div>
-        <div style={{ width: "100px", marginLeft: "1.5rem" }}>
+        <div style={{ width: '100px', marginLeft: '1.5rem' }}>
           <Button variant="round" text="Upload" onClick={uploadFile} />
         </div>
       </div>
-      {} 
-      {!error && file && <small style={{ marginLeft: "150px" }}>{file.name}</small>}
-      {error && <small className="error" style={{ marginLeft: "150px"}}>{error}</small>}
-      {loading && <Ring size='120' color="rgb(30, 61, 107)" className="loading" style={{position:'absolute'}}/>}
+      {}
+      <small className={error ? "error" : ""} style={{ marginLeft: '150px' }}>
+        {(!error && file) ? file.name : error}
+      </small>
+      {loading && <Ring size={120} color="rgb(30, 61, 107)" className="loading" />}
       {uploading && <Checkmark size='xxLarge' color="rgb(30, 61, 107)" className="checkmark" />}
     </div>
   )

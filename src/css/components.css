@@ -178,15 +178,17 @@ nav {
 }
 
 /* Extras */
-
+.parent {
+  position: relative;
+}
 .checkmark {
-  position: absolute;
-  left: 47%;
-  top: 47%;
+  position: absolute !important;
+  top: calc(50% - 48px);
+  left: calc(50% - 48px);
+}
+.loading {
+  position: absolute !important;
+  top: calc(50% - 60px);
+  left: calc(50% - 60px);
 }
 
-.loading {
-  position: absolute;
-  left: 47%;
-  top: 47%;
-}
