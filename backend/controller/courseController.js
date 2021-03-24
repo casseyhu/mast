@@ -19,7 +19,7 @@ exports.upload = (req, res) => {
       year = field;
   }).on('file', (field, file) => {
     if (file.type != 'application/pdf')
-      res.status(500).send('Invalid File Type')
+      res.status(500).send('File must be *.pdf')
     else {
       console.log(depts, semester, year)
       scrapeCourses(file.path, depts, semester, year, res)
@@ -248,7 +248,7 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
       }
     }
     if(a === 0){
-      res.status(500).send('Invalid PDF Type')
+      res.status(500).send('No information was scraped. Please ensure the PDF follows the SBU graduatecourse descriptions PDF')
     }
     else{
       res.status(200).send('Success')
