@@ -3,6 +3,7 @@ import Button from './Button';
 import Dropdown from './Dropdown';
 import axios from '../constants/axios';
 import { Checkmark } from 'react-checkmark'
+import { Ring } from 'react-spinners-css';
 
 const ImportItem = (props) => {
 
@@ -11,6 +12,7 @@ const ImportItem = (props) => {
   const [depts, setDepts] = useState([]);
   const [semester, setSem] = useState("");
   const [year, setYear] = useState("");
+  const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
 
@@ -54,17 +56,20 @@ const ImportItem = (props) => {
       console.log("Uploading grades")
       upload_path = 'courseplanitem/upload';
     }
+    setLoading(true)
     axios.post(upload_path, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
     }).then(function () {
       console.log('Successfully uploaded file');
+      setLoading(false)
       setUploading(true)
       setFile("")
     })
       .catch(function (err) {
         console.log(err.response.data)
+        setLoading(false)
         setFile("")
         setError(err.response.data)
       });
@@ -116,8 +121,10 @@ const ImportItem = (props) => {
           <Button variant="round" text="Upload" onClick={uploadFile} />
         </div>
       </div>
+      {} 
       {!error && file && <small style={{ marginLeft: "150px" }}>{file.name}</small>}
       {error && <small className="error" style={{ marginLeft: "150px"}}>{error}</small>}
+      {loading && <Ring size='120' color="rgb(30, 61, 107)" className="loading" style={{position:'absolute'}}/>}
       {uploading && <Checkmark size='xxLarge' color="rgb(30, 61, 107)" className="checkmark" />}
     </div>
   )

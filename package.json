@@ -28,6 +28,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-select": "^4.3.0",
+    "react-spinners-css": "^1.2.2",
     "sequelize": "^6.5.1",
     "web-vitals": "^1.1.1"
   },
