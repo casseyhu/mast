@@ -12,6 +12,7 @@ const ImportItem = (props) => {
   const [semester, setsem] = useState("");
   const [year, setyear] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (uploading === true) {
@@ -25,6 +26,10 @@ const ImportItem = (props) => {
   const uploadFile = (e) => {
     if (file === "")
       return;
+    if (file.name.substring(file.name.length-3, file.name.length)!==props.type.toLowerCase()) {
+      setError("File must be ." + props.type);
+      return;
+    }
     var formData = new FormData();
     formData.append("file", file);
     let upload_path = '';
@@ -106,7 +111,8 @@ const ImportItem = (props) => {
           <Button variant="round" text="Upload" onClick={uploadFile} />
         </div>
       </div>
-      {file && <small style={{ marginLeft: "150px" }}>{file.name}</small>}
+      {!error && file && <small style={{ marginLeft: "150px" }}>{file.name}</small>}
+      {error && <small style={{ marginLeft: "150px", color: "red" }}>{error}</small>}
       {uploading && <Checkmark size='xxLarge' color="rgb(30, 61, 107)" className="checkmark" />}
     </div>
   )
