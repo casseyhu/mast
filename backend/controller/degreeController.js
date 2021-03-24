@@ -52,14 +52,14 @@ async function createDegrees(json_file) {
     for (let deg_and_track of Object.keys(json_file)) {
       let degree = json_file[deg_and_track]
 
-      let query = Degree.findAll({
+      let query = await Degree.findAll({
         where: {
           dept: degree.dept,
           track: degree.track,
           requirementVersion: degree.requirementVersion
         }
       })
-      console.log(query.length)
+      console.log(query)
       if (query.length !== 0) {
         // Overwrite existing degrees.
         // UPDATE ...

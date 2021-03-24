@@ -12,6 +12,8 @@ import AddEditStudent from './pages/AddEditStudent';
 import TentativePlan from './pages/TentativePlan';
 import ViewPlan from './pages/ViewPlan';
 import ViewStudent from './pages/ViewStudent';
+import jwt_decode from 'jwt-decode';
+
 
 class App extends Component {
 
@@ -23,6 +25,21 @@ class App extends Component {
     this.setState({
       loggedIn: val
     })
+    console.log(this.state.loggedIn)
+  }
+
+  componentDidMount = () => {
+    let token = localStorage.getItem('jwt-token')
+    if (!token)
+        return
+    var decoded = jwt_decode(token)
+    console.log(Date.now()/1000, decoded.exp)
+    if (Date.now()/1000 >= decoded.exp) {
+        // token = await refreshToken()
+        localStorage.clear()
+        // console.log('cleared', localStorage.getItem('jwt-token'))
+        this.setLoggedIn(false)
+    }
   }
 
   render() {

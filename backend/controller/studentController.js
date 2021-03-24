@@ -26,7 +26,7 @@ exports.login = (req, res) => {
     }
     let token = jwt.sign(userData, process.env.JWT_KEY, {
       algorithm: process.env.JWT_ALGO,
-      expiresIn: 600 // Expires in 10 minutes
+      expiresIn: 1200 // Expires in 20 minutes
     });
     res.send(token);
   }).catch(err => {

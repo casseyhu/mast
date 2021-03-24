@@ -11,7 +11,6 @@ const MainPage = (props) => {
         if (!token)
             return
         var decoded = jwt_decode(token)
-        console.log(decoded.type)
         if (decoded.type === 'student')
             props.history.push('/student')
         else if (decoded.type === 'gpd')
