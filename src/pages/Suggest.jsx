@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import jwt_decode from 'jwt-decode';
-import { NavLink, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 class Suggest extends Component {
   render() {

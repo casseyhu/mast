@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import jwt_decode from 'jwt-decode';
-import { NavLink, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 class Trends extends Component {
   render() {
     let token = localStorage.getItem('jwt-token')

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Container from "react-bootstrap/Container";
 import LoginContainer from '../components/LoginContainer';
 import jwt_decode from 'jwt-decode';
-import {LANDING_LEFT, LANDING_RIGHT, LANDING_WAVE_LINES} from '../constants/svgs';
+import {LANDING_WAVE_LINES} from '../constants/svgs';
 
 const MainPage = (props) => {
 

@@ -37,7 +37,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "nodemon backend/server.js",
-    "start": "run-p server client"
+    "start": "run-p server client",
+    "sbu": "NODE_ENV=production run-p server client"
   },
   "eslintConfig": {
     "extends": [
