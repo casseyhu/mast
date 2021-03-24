@@ -36,6 +36,12 @@ class LoginContainer extends Component {
     }
   }
 
+  handleKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      this.login();
+    }
+  }
+
   login = (e) => {
     axios.get(`/${this.state.user}/login`, {
       params: {
@@ -52,11 +58,17 @@ class LoginContainer extends Component {
         this.props.history.push('/student')
       }
     }).catch(err => {
-      console.log(err)
+      console.log(err);
+      this.setState({err: err + 1});
     })
   }
 
+
   render() {
+    document.onkeyup = this.handleKeyUp;
+    var errorText = "";
+    if (this.state.err)
+      errorText = "Failed to log in";
     return (
       <div className='login-box'>
         <div className="login-box-top">
@@ -74,12 +86,13 @@ class LoginContainer extends Component {
             <span className="student"> Student </span>
           </div>
         </div>
-        <div className="login-item" >
+        <div className="login-item">
           <InputField type="email" placeholder="email" onChange={this.setEmail} />
         </div>
-        <div className="login-item" >
+        <div className="login-item">
           <InputField type="password" placeholder="password" onChange={this.setPassword} />
         </div>
+        <span style={{color:"red"}}>{errorText}</span>
         <Button variant="round" text="login" onClick={this.login} />
       </div>
     )
