@@ -6,11 +6,11 @@ import { Checkmark } from 'react-checkmark'
 
 const ImportItem = (props) => {
 
-  const [file, setfile] = useState("");
-  const [firstfile, setfirstfile] = useState("");
-  const [depts, setdepts] = useState([]);
-  const [semester, setsem] = useState("");
-  const [year, setyear] = useState("");
+  const [file, setFile] = useState("");
+  const [firstfile, setFirstFile] = useState("");
+  const [depts, setDepts] = useState([]);
+  const [semester, setSem] = useState("");
+  const [year, setYear] = useState("");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
 
@@ -28,6 +28,7 @@ const ImportItem = (props) => {
       return;
     if (file.name.substring(file.name.length-3, file.name.length)!==props.type.toLowerCase()) {
       setError("File must be ." + props.type);
+      setFile("");
       return;
     }
     var formData = new FormData();
@@ -62,17 +63,17 @@ const ImportItem = (props) => {
     }).then(function () {
       console.log('Successfully uploaded file');
       setUploading(true)
-      setfile("")
+      setFile("")
     })
       .catch(function (err) {
         console.log('Failed to upload file: ' + err)
-        setfile("")
+        setFile("")
       });
   }
 
   const selectionHandler = (e) => {
     let value = Array.from(e, option => option.value);
-    setdepts(value);
+    setDepts(value);
   }
 
   return (
@@ -82,7 +83,7 @@ const ImportItem = (props) => {
         && (<div className="flex-horizontal">
           <span style={{ width: "150px" }}>{props.first}</span>
           <div style={{ width: "20" }}>
-            <Button variant="square" text="Browse My Computer" setFile={e => setfirstfile(e)} />
+            <Button variant="square" text="Browse My Computer" setFile={e => setFirstFile(e)} />
           </div>
           {firstfile && <small style={{ marginLeft: "1.5rem" }}>{firstfile.name}</small>}
         </div>
@@ -90,9 +91,9 @@ const ImportItem = (props) => {
       {props.depts && props.sems && props.years
         && (<div className="flex-horizontal" style={{ flexWrap: 'wrap' }}>
           <span style={{ width: "150px" }}>Semesters</span>
-          <Dropdown variant="single" items={props.sems} onChange={(e) => setsem(e.value)} />
+          <Dropdown variant="single" items={props.sems} onChange={(e) => setSem(e.value)} />
           <div style={{marginRight: '3rem'}}>
-            <Dropdown variant="single" items={props.years} onChange={(e) => setyear(e.value)} />
+            <Dropdown variant="single" items={props.years} onChange={(e) => setYear(e.value)} />
           </div>
           <div className="flex-horizontal" style={{ width: '540px' }}> 
             <span style={{ width: '150px' }}>Departments</span>
@@ -105,7 +106,12 @@ const ImportItem = (props) => {
       <div className="flex-horizontal">
         <span style={{ width: "150px" }}>{props.type}</span>
         <div style={{ width: "20" }}>
-          <Button variant="square" text="Browse My Computer" setFile={e => setfile(e)} />
+          <Button 
+            variant="square" 
+            text="Browse My Computer" 
+            setFile={e => setFile(e)} 
+            onClick={()=>setError("")}
+          />
         </div>
         <div style={{ width: "100px", marginLeft: "1.5rem" }}>
           <Button variant="round" text="Upload" onClick={uploadFile} />
