@@ -1,12 +1,27 @@
-export const SEMESTERS = ["Fall 2020", "Winter 2021", "Spring 2021", "Summer 2021", "Fall 2021", "Winter 2022", "Spring 2022", "Summer 2022"];
+export const SEMESTERS = [
+  { value: 'Fall', label: 'Fall' },
+  { value: 'Winter', label: 'Winter' },
+  { value: 'Spring', label: 'Spring' },
+  { value: 'Summer', label: 'Summer' }
+];
 
+export const YEARS = [
+  { value: '2018', label: '2018' },
+  { value: '2019', label: '2019' },
+  { value: '2020', label: '2020' },
+  { value: '2021', label: '2021' },
+  { value: '2022', label: '2022' },
+  { value: '2023', label: '2023' },
+  { value: '2024', label: '2024' },
+  { value: '2025', label: '2025' }
+];
 // export const DEPARTMENTS = ["AMS (Applied Mathematics)", "BMI (Biomedical Informatics)", "CSE (Computer Science)", "ESE (Computer Engineering)"];
 export const DEPARTMENTS = [
   { value: 'AMS', label: 'AMS' },
   { value: 'BMI', label: 'BMI' },
   { value: 'CSE', label: 'CSE' },
   { value: 'ESE', label: 'ESE' }
-]
+];
 
 
 export const TESTING = [

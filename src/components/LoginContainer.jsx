@@ -9,7 +9,7 @@ class LoginContainer extends Component {
     user: "gpd",
     email: '',
     password: '',
-    error: 0
+    error: ''
   }
 
   setEmail = (e) => {
@@ -59,16 +59,13 @@ class LoginContainer extends Component {
       }
     }).catch(err => {
       console.log(err);
-      this.setState({err: err + 1});
+      this.setState({ error: "Username and/or password are incorrect." });
     })
   }
 
 
   render() {
     document.onkeyup = this.handleKeyUp;
-    var errorText = "";
-    if (this.state.err)
-      errorText = "Failed to log in";
     return (
       <div className='login-box'>
         <div className="login-box-top">
@@ -77,10 +74,10 @@ class LoginContainer extends Component {
             Stony Brook University <br />Masters Student Tracking System
           </p>
         </div>
-        <h2 className="login-item" style={{ textAlign: 'center', fontWeight: "800" }}>USER LOGIN</h2>
+        <h2 className="login-item">USER LOGIN</h2>
         <div className="flex-horizontal user-slider login-item" onClick={this.switchUser}>
-          <div className={`gpd${this.state.user === "gpd" ? '-selected' : ''}`}></div>
-          <div className={`student${this.state.user === "student" ? '-selected' : ''}`}></div>
+          <div className={`gpd${this.state.user === "gpd" ? '-selected' : ''}`} />
+          <div className={`student${this.state.user === "student" ? '-selected' : ''}`} />
           <div className="users">
             <span className="gpd"> GPD </span>
             <span className="student"> Student </span>
@@ -92,8 +89,8 @@ class LoginContainer extends Component {
         <div className="login-item">
           <InputField type="password" placeholder="password" onChange={this.setPassword} />
         </div>
-        <span style={{color:"red"}}>{errorText}</span>
         <Button variant="round" text="login" onClick={this.login} />
+        <span className="error">{this.state.error}</span>
       </div>
     )
   }

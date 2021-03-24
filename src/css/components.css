@@ -62,11 +62,18 @@ nav {
 
 /* Dropdown CSS */
 
-.dd-wrapper {
+.dd-wrapper-multi {
   min-width: 200px;
   width: fit-content;
-  max-width: 350px;
+  max-width: 400px;
   margin-bottom: 0.4rem;
+}
+.dd-wrapper-single {
+  min-width: 120px;
+  width: fit-content;
+  max-width: 140px;
+  margin-bottom: 0.4rem;
+  margin-right: 1rem;
 }
 
 /* Login box */
@@ -124,7 +131,9 @@ nav {
 
 .login-item {
   margin-top: 0;
-  margin-bottom: 0.6rem !important;
+  margin-bottom: 0.4rem !important;
+  text-align: center;
+  font-weight: 800;
 }
 
 .users {

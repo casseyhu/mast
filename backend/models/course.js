@@ -25,6 +25,8 @@ module.exports = (sequelize, Sequelize) => {
     },
     department: Sequelize.STRING,
     courseNum: Sequelize.INTEGER,
+    semester: Sequelize.STRING,
+    year: Sequelize.STRING,
     semestersOffered: {
       type: Sequelize.STRING,
       get() {

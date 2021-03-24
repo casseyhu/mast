@@ -9,14 +9,21 @@ const Course = database.Course;
 exports.upload = (req, res) => {
   let form = new IncomingForm();
   let depts = [];
+  let semester = "";
+  let year = "";
   form.parse(req).on('field', (name, field) => {
-    depts = field;
+    if (name === 'depts')
+      depts = field;
+    if (name === 'semester')
+      semester = field;
+    if (name === 'year')
+      year = field;
   }).on('file', (field, file) => {
     if (file.type != 'application/pdf')
       res.status(500).send('Invalid File Type')
     else {
-      console.log(depts)
-      scrapeCourses(file.path, depts)
+      console.log(depts, semester, year)
+      scrapeCourses(file.path, depts, semester, year)
       res.status(200).send('Success')
     }
   })
@@ -24,7 +31,7 @@ exports.upload = (req, res) => {
 
 
 // dept : list of departments to scrape from
-scrapeCourses = (filePath, dept) => {
+scrapeCourses = (filePath, dept, semester, year) => {
   const options = {};
   var sem = ["Fall", "Winter", "Spring", "Summer"]
   var target = "";
@@ -52,24 +59,17 @@ scrapeCourses = (filePath, dept) => {
         var s = page[j]
         if (s.fontName == "Times" && s.str.length == 3) {
           if (dept.includes(s.str)) {
-            //foundOption = true;
             target = s.str;
             checkOthers = false
           }
           else {
-            //foundOption = false;
             checkCourseName = false;
           }
         }
         else if (target != "") {
           if (s.str.substring(0, 3) == target && s.fontName == "Helvetica") {
-            // found course + course name (CSE 500)
-            //console.log(chosenDept + courseNum)
             if (others != "") {
-              // console.log(chosenDept + courseNum) 
               // full course ([Dept] [CourseNum] + [CourseName])
-              // console.log(name)
-              // console.log(desc)
               others = others.replace(", Letter graded (A, A-, B+, etc.)", "")
               others = others.replace(" or permission of the, instructor", "")
               others = others.replace(" or permission of, instructor,", "")
@@ -144,44 +144,13 @@ scrapeCourses = (filePath, dept) => {
                   }
                 }
               }
-              //console.log(others);
-              // if(others.includes("Prerequisites: ")){
-              //     let index = others.indexOf("Prerequisites: ") + 15;
-              //     let course = others.substring(index, index + 7);
-              //     console.log(course)
-              //     if(isNaN(parseInt(course.substring(4, 7))) == false){
-              //         if(parseInt(course.substring(4, 7)) >= 500){
-              //             course.replace(" ", "")
-              //             prereqs.push(course)
-              //         }
-              //     }
-              // }
-              // if(desc.includes("Prerequisite: ")){
-              //     let index = desc.indexOf("Prerequisite: ") + 14;
-              //     let course = desc.substring(index, index + 7);
-              //     if(isNaN(parseInt(desc.substring(4, 7))) == false){
-              //         if(parseInt(desc.substring(4, 7)) >= 500 && prereqs.includes(course) == false){
-              //             course.replace(" ", "")
-              //             prereqs.push(course)
-              //         }
-              //     }
-              // }
-              //more than 1 prerequisites
-              //console.log(others)
-              others = others.replace(" or permission of the instructor")
-              if (others.includes("May be repeated for credit.")) {
 
-              }
-              // console.log(chosenDept + courseNum) //full course ([Dept] [CourseNum] + [CourseName])
-              // console.log(name)
-              // console.log(desc)
-              // console.log(creds)
-              // console.log(foundSem)
-              // console.log(prereqs)
               insertUpdate({
                 courseId: chosenDept + courseNum,
                 department: chosenDept,
                 courseNum: Number(courseNum),
+                semester: semester,
+                year: year,
                 semestersOffered: foundSem,
                 name: name,
                 description: desc,
@@ -243,12 +212,8 @@ scrapeCourses = (filePath, dept) => {
             if (startText) {
               startText = false
               /*description for each course before resetting */
-              // if(desc != ""){
-              // }
-              // desc = ""
               checkOthers = true
             }
-            // if(s.str.search("Prerequisite for") == -1){
             if (others == "" && checkOthers) {
               others = s.str
             }
@@ -274,7 +239,6 @@ scrapeCourses = (filePath, dept) => {
                 others += + s.str;
               }
             }
-            //}
           }
         }
       }

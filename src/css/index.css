@@ -60,6 +60,12 @@ footer {
   justify-content: flex-start;
 }
 
+.error {
+  display:table;
+  margin:0 auto;
+  color: #a8201a;
+}
+
 i.fa {
   line-height: inherit;
 }

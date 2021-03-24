@@ -9,7 +9,7 @@ const customStyles = {
   }),
   multiValue: (provided) => ({
     ...provided,
-    borderRadius: '2rem',
+    borderRadius: '0.5rem',
     color: 'white',
     padding: '0 .2rem',
     backgroundColor: 'rgba(30, 61, 107, 0.75)'
@@ -18,11 +18,11 @@ const customStyles = {
     ...provided,
     color: 'white',
   }),
-  multiValueRemove: (provided, state) => ({
+  multiValueRemove: (provided) => ({
     ...provided,
     "&:hover": {
       backgroundColor: "rgba(30, 61, 107, 0.75)",
-      borderRadius: '2rem',
+      borderRadius: '0.5rem',
       color: "white"
     }
   }),
@@ -30,7 +30,7 @@ const customStyles = {
     ...provided,
     border: '2px solid rgb(30, 61, 107)',
     padding: '.1rem',
-    borderRadius: '2rem',
+    borderRadius: '0.5rem',
     "&:hover": {
       border: '2px solid rgb(30, 61, 107)',
     }
@@ -39,10 +39,10 @@ const customStyles = {
 
 const Dropdown = (props) => {
   return (
-    <div className="dd-wrapper">
+    <div className={`dd-wrapper-${props.variant}`}>
       <Select
-        isMulti={true}
-        isSearchable={true}
+        isMulti={props.variant === 'multi'}
+        isSearchable
         onChange={props.onChange}
         options={props.items}
         styles={customStyles}
