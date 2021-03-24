@@ -21,6 +21,9 @@ exports.upload = (req, res) => {
     if (file.type != 'application/pdf')
       res.status(500).send('File must be *.pdf')
     else {
+      if(semester === "" || year === "" || depts === ""){
+        res.status(500).send("Must specify semester and departments to scrape for.");
+      }
       console.log(depts, semester, year)
       scrapeCourses(file.path, depts, semester, year, res)
     }
@@ -35,7 +38,7 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
   var target = "";
   /* info to store in database */
   var chosenDept = "";
-  var a = 0;
+  var totCourses = 0;
   var courseNum = 0;
   var name = "";
   var courseName = "";
@@ -53,9 +56,6 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
     if (err) return console.log(err);
     var pages = data.pages
     for (let i = 0; i < pages.length; i++) {
-      // if(dept.length == 0){
-      //   break;
-      // }
       var page = pages[i].content
       for (let j = 2; j < page.length - 2; j++) {
         var s = page[j]
@@ -63,10 +63,6 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
           if (dept.includes(s.str)) {
             target = s.str;
             checkOthers = false
-          }
-          else {
-            target = ""
-            checkCourseName = false;
           }
         }
         else if (target != "") {
@@ -87,17 +83,6 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
               }
               if (tot == 0) {
                 foundSem = ["Fall", "Spring"];
-              }
-              if (others.includes(" credits")) {
-                let index = others.indexOf(" credits") - 1;
-                while (index >= 0 
-                    && isNaN(parseInt(others.substring(index, index + 1))) 
-                        == false
-                    ) {
-                  creds = others.substring(index, index + 1) + creds;
-                  index--;
-                }
-                // console.log(creds)
               }
               let prereqs = []
               //first check for description and see prerequisites
@@ -143,11 +128,26 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
                           prereqs.push(course);
                       }
                     }
-                    //check if there is an or in the prerequisites
                   }
                 }
               }
-              a+=1
+              if (others.includes(" credits") || others.includes(" credit")) {
+                let index = -1;
+                if(others.includes(" credits")){
+                  index = others.indexOf(" credits") - 1;
+                }
+                else if(others.includes(" credit")){
+                  index = others.indexOf(" credit") - 1;
+                }
+                while (index >= 0 
+                    && isNaN(parseInt(others.substring(index, index + 1))) 
+                        == false
+                    ) {
+                  creds = others.substring(index, index + 1) + creds;
+                  index--;
+                }
+              }
+              totCourses+=1
               insertUpdate({
                 courseId: chosenDept + courseNum,
                 department: chosenDept,
@@ -161,10 +161,9 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
                 prereqs: prereqs,
                 repeat: 0
               }, { courseId: chosenDept + courseNum })
-              .then(res => {
-                t = true
-                  // console.log(res.created + ':' + res.course)
-              })
+              // .then(res => {
+              //     // console.log(res.created + ':' + res.course)
+              // })
 
             }
             desc = "";
@@ -180,8 +179,12 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
           }
           else if (s.fontName == "Times" && !s.str.includes("credits") 
               && s.str.substring(0, 14) !== "Prerequisites:" 
-              && s.str.substring(0, 13) !== "Prerequisite:") {
+              && s.str.substring(0, 13) !== "Prerequisite:"
+              && !s.str.includes("S/U grading")) {
             //reaches description
+            // if(desc === ""){
+            //   console.log(chosenDept + courseNum)
+            // }
             if (checkCourseName) {
               if (courses.includes(courseName) == false && courseName != "") {
                 //courseName.replace("  ", " ")
@@ -202,10 +205,15 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
             }
           }
 
-          else if (s.fontName === "g_d0_f1" 
+          else if (s.fontName === "g_d0_f1"
               || s.str.includes("credits") 
               || s.str.includes("Prerequisites:") 
-              || s.str.includes('Prerequisite:')) {
+              || s.str.includes('Prerequisite:')
+              || s.str.includes("S/U grading")) {
+            if(others == ""){
+              //console.log(chosenDept + courseNum)
+            }
+            
             if (desc === "") {
               chosenDept = courseName.substring(0, 3)
               courseNum = courseName.substring(5, 8)
@@ -247,8 +255,8 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
         }
       }
     }
-    if(a === 0){
-      res.status(500).send('No information was scraped. Please ensure the PDF follows the SBU graduatecourse descriptions PDF')
+    if(totCourses === 0){
+      res.status(500).send('No information was scraped. Please ensure the PDF follows the SBU graduate course descriptions PDF')
     }
     else{
       res.status(200).send('Success')
