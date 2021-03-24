@@ -24,8 +24,11 @@ const ImportItem = (props) => {
 
 
   const uploadFile = (e) => {
-    if (file === "")
+    if (file === ""){
+      console.log("Empty file")
+      setError("Must choose a file to upload.")
       return;
+    }
     var formData = new FormData();
     formData.append("file", file);
     let upload_path = '';

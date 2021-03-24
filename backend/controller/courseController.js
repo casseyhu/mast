@@ -239,7 +239,7 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
     }
     console.log('total: ', totCourses)
     if (totCourses === 0)
-      res.status(500).send('No information was scraped. Please ensure the PDF follows the SBU graduate course descriptions PDF')
+      res.status(500).send('No information was scraped. Please ensure the PDF follows the SBU graduate course descriptions PDF.')
     else
       res.status(200).send('Success')
   });
