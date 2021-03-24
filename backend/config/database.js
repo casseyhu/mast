@@ -1,24 +1,29 @@
 const Sequelize = require('sequelize')
 
+let sequelize;
 // Creating new Object of Sequelize 
-const sequelize = new Sequelize(
-  'mast',
-  'root',
-  process.env.DB_PASSWORD, {
-  dialect: 'mysql',
-  host: 'localhost',
-  logging: false
+if (process.env.NODE_ENV === 'production') {
+  sequelize = new Sequelize( 
+    'cashu', 
+    'cashu', 
+    process.env.SBU_DB_PASSWORD, { 
+      dialect: 'mysql',         
+      host: 'mysql3.cs.stonybrook.edu',
+      logging: false
+    }
+  ); 
+} else {
+  sequelize = new Sequelize(
+    'mast',
+    'root',
+    process.env.DB_PASSWORD, {
+    dialect: 'mysql',
+    host: 'localhost',
+    logging: false
+  }
+  );
 }
-);
-// const sequelize = new Sequelize( 
-//     'cashu', 
-//     'cashu', 
-//     process.env.SBU_DB_PASSWORD, { 
-//         dialect: 'mysql',         
-//         host: 'mysql3.cs.stonybrook.edu',
-//         logging: false
-//     }
-// ); 
+
 
 const db = {};
 
@@ -42,8 +47,8 @@ db.CourseRequirement = require('../models/courseRequirement.js')(sequelize, Sequ
 db.RequirementState = require('../models/requirementState.js')(sequelize, Sequelize);
 
 
-db.CoursePlan.hasMany(db.CoursePlanItem, {foreignKey: 'coursePlanId'})
-db.CoursePlanItem.belongsTo(db.CoursePlan, {foreignKey: 'coursePlanId'})
+db.CoursePlan.hasMany(db.CoursePlanItem, { foreignKey: 'coursePlanId' })
+db.CoursePlanItem.belongsTo(db.CoursePlan, { foreignKey: 'coursePlanId' })
 
 // db.Degree.hasOne(db.GradeRequirement, {foreignKey: 'gradeRequirement'})
 // db.GradeRequirement.belongsTo(db.Degree, {foreignKey: 'requirementId'})

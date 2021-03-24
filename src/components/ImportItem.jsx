@@ -26,11 +26,6 @@ const ImportItem = (props) => {
   const uploadFile = (e) => {
     if (file === "")
       return;
-    if (file.name.substring(file.name.length-3, file.name.length)!==props.type.toLowerCase()) {
-      setError("File must be ." + props.type);
-      setFile("");
-      return;
-    }
     var formData = new FormData();
     formData.append("file", file);
     let upload_path = '';
@@ -66,8 +61,9 @@ const ImportItem = (props) => {
       setFile("")
     })
       .catch(function (err) {
-        console.log('Failed to upload file: ' + err)
+        console.log(err.response.data)
         setFile("")
+        setError(err.response.data)
       });
   }
 
@@ -118,7 +114,7 @@ const ImportItem = (props) => {
         </div>
       </div>
       {!error && file && <small style={{ marginLeft: "150px" }}>{file.name}</small>}
-      {error && <small style={{ marginLeft: "150px", color: "red" }}>{error}</small>}
+      {error && <small className="error" style={{ marginLeft: "150px"}}>{error}</small>}
       {uploading && <Checkmark size='xxLarge' color="rgb(30, 61, 107)" className="checkmark" />}
     </div>
   )

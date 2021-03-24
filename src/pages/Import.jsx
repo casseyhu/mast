@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Container from "react-bootstrap/Container";
 import ImportItem from '../components/ImportItem';
 import jwt_decode from 'jwt-decode';
-import { NavLink, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { SEMESTERS, YEARS, DEPARTMENTS } from '../constants';
 
 class Import extends Component {
