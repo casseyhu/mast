@@ -6,6 +6,8 @@ const IncomingForm = require('formidable').IncomingForm;
 
 const CourseOffering = database.CourseOffering;
 
+let isValid = true;
+
 // Upload course offerings
 exports.upload = (req, res) => {
   console.log("CourseOfferingController")
@@ -13,7 +15,7 @@ exports.upload = (req, res) => {
   form.parse(req).on('file', (field, file) => {
     if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel') {
       console.log('wrong file type')
-      res.status(500).send('Invalid File Type')
+      res.status(500).send('File must be *.csv')
     } else {
       const f_in = fs.readFileSync(file.path, 'utf-8')
       Papa.parse(f_in, {
@@ -24,7 +26,12 @@ exports.upload = (req, res) => {
           uploadNewOfferings(results)
         }
       })
-      res.status(200).send("Success")
+      if (isValid)
+        res.status(200).send("Success")
+      else {
+        res.status(500).send("Cannot parse CSV file - headers do not match specifications");
+        isValid = true;
+      }
     }
   })
 };
@@ -37,6 +44,16 @@ exports.upload = (req, res) => {
 // server to recreate the table through sequelize. 
 
 function uploadNewOfferings(csv_file) {
+  var header = csv_file.meta['fields'];
+  if (header[0] !== 'department' 
+      && header[1] !== 'course_num'
+      && header[2] !== 'section'
+      && header[3] !== 'semester'
+      && header[4] !== 'year'
+      && header[5] !== 'timeslot') {
+    isValid = false;
+    return false;
+  }
   for (let i = 0; i < csv_file.data.length; i++) {
     course = csv_file.data[i]
     csv_timeslot = (course.timeslot ? course.timeslot.split(' ') : null)
@@ -68,8 +85,10 @@ function uploadNewOfferings(csv_file) {
 function deleteSemestersFromDB(csv_file) {
   scraped_semesters = 
       new Set(csv_file.data.map(course => course.semester + ' ' + course.year))
-  for (let i = 0; i < scraped_semesters.length; i++) {
-    semyear = scraped_semesters[i].split(' ')
+  sem_array = Array.from(scraped_semesters)
+  for (let i = 0; i < sem_array.length; i++) {
+    console.log(sem_array[0]);
+    semyear = sem_array[i].split(' ')
     // Might have to CASCADE the deletes to the 
     // CoursePlans that reference these courses (?)
     CourseOffering.destroy({
