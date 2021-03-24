@@ -6,11 +6,9 @@ const Button = (props) => {
   const handleClick = (e) => {
     if (props.variant === "square")
       hiddenFileInput.current.click();
-    else if (props.variant === "round") {
-      console.log(props.file)
-    }
     if (props.onClick)
       props.onClick();
+    e.target.value = null;
   };
 
   const handleChange = event => {

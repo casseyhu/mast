@@ -25,6 +25,7 @@ const ImportItem = (props) => {
   const uploadFile = (e) => {
     if (file === "")
       return;
+    console.log(file)
     var formData = new FormData();
     formData.append("file", file);
     let upload_path = '';
