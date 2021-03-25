@@ -95,14 +95,14 @@ const ImportItem = (props) => {
       {props.depts && props.sems && props.years
         && (<div className="flex-horizontal" style={{ flexWrap: 'wrap' }}>
           <span style={{ width: "150px" }}>Semesters</span>
-          <Dropdown variant="single" items={props.sems} onChange={(e) => setSem(e.value)} />
+          <Dropdown variant="single" items={props.sems} disabled={false} onChange={(e) => setSem(e.value)} />
           <div style={{ marginRight: '3rem' }}>
-            <Dropdown variant="single" items={props.years} onChange={(e) => setYear(e.value)} />
+            <Dropdown variant="single" items={props.years} disabled={false} onChange={(e) => setYear(e.value)} />
           </div>
           <div className="flex-horizontal" style={{ width: '540px' }}>
             <span style={{ width: '150px' }}>Departments</span>
             <div style={{ width: "20" }}>
-              <Dropdown variant="multi" items={props.depts} onChange={selectionHandler} />
+              <Dropdown variant="multi" items={props.depts} onChange={selectionHandler} disabled={false}/>
             </div>
           </div>
         </div>

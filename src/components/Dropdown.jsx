@@ -46,6 +46,7 @@ const Dropdown = (props) => {
         onChange={props.onChange}
         options={props.items}
         styles={customStyles}
+        isDisabled={props.disabled}
       />
     </div>
   )
