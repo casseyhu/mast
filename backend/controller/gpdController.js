@@ -31,7 +31,7 @@ exports.login = (req, res) => {
       });
       res.send(token);
     }).catch(err => {
-      res.status(500).send((err instanceof TypeError) ? "Invalid login credentials" : err);
+      res.status(500).send("Invalid login credentials");
     })
 }
 
