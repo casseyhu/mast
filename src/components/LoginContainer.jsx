@@ -88,7 +88,7 @@ class LoginContainer extends Component {
           <InputField type="password" placeholder="password" onChange={this.setPassword} />
         </div>
         <Button variant="round" text="login" onClick={this.login} />
-        <span className="error">{this.state.error}</span>
+        <span className="error" style={{ display: 'table', margin: '0 auto' }}>{this.state.error}</span>
       </div>
     )
   }
