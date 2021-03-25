@@ -22,7 +22,6 @@ SEMESTERS = {
     8: "Fall"
 }
 
-
 student_list = [["sbu_id", "first_name", "last_name", "email", "department", "track", "entry_semester",
                     "entry_year", "requirement_version_semester", "requirement_version_year", "graduation_semester",
                     "graduation_year", "password"]]

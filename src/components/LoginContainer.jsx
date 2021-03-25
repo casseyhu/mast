@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import InputField from './InputField';
 import Button from './Button';
-import { sha256 } from 'js-sha256';
 import axios from '../constants/axios';
 
 class LoginContainer extends Component {
@@ -20,7 +19,7 @@ class LoginContainer extends Component {
 
   setPassword = (e) => {
     this.setState({
-      password: sha256(e.target.value)
+      password: e.target.value
     })
   }
 
@@ -58,8 +57,7 @@ class LoginContainer extends Component {
         this.props.history.push('/student')
       }
     }).catch(err => {
-      console.log(err);
-      this.setState({ error: "Username and/or password are incorrect." });
+      this.setState({ error: err.response.data });
     })
   }
 
