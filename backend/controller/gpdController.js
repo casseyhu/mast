@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
 const database = require('../config/database.js');
 
 const Gpd = database.Gpd;
@@ -14,8 +16,11 @@ const Gpd = database.Gpd;
 
 // Verify a GPD for login
 exports.login = (req, res) => {
-  Gpd.findOne({where:{email: req.query.email, password: req.query.password}})
+  Gpd.findOne({ where: { email: req.query.email } })
     .then(gpd => {
+      const isValidPass = bcrypt.compareSync(req.query.password, gpd.password);
+      if (!isValidPass)
+        throw "Invalid password"
       let userData = {
         type: 'gpd',
         id: gpd.facultyId
