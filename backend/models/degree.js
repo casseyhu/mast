@@ -25,14 +25,36 @@ module.exports = (sequelize, Sequelize) => {
     degreeId: {
       type: Sequelize.INTEGER,
       primaryKey: true,
-      autoIncrement: true
+      autoIncrement: true,
+      onDelete:'CASCADE'
     },
     dept: Sequelize.STRING,
     track: Sequelize.STRING,
     requirementVersion: Sequelize.INTEGER,
-    gradeRequirement: Sequelize.INTEGER,
-    gpaRequirement: Sequelize.INTEGER,
-    creditRequirement: Sequelize.INTEGER,
+    gradeRequirement: {
+      type: Sequelize.INTEGER,
+      set(value) {
+        console.log("Setting the degree gradeRequirement with value: ", value)
+        this.setDataValue('gradeRequirement', value)
+      }, 
+      unique: true
+    },
+    gpaRequirement: {
+      type: Sequelize.INTEGER,
+      set(value) {
+        console.log("Setting the degree gpaRequirement with value: ", value)
+        this.setDataValue('gpaRequirement', value)
+      }, 
+      unique: true
+    },
+    creditRequirement: {
+      type: Sequelize.INTEGER,
+      set(value) {
+        console.log("Setting the degree creditRequirement with value: ", value)
+        this.setDataValue('creditRequirement', value)
+      }, 
+      unique: true
+    },
     courseRequirement: {
       // String of references to CourseRequirement.requirementId (s).
       // ex: "C001`C002`C003`C003`..."
@@ -45,8 +67,43 @@ module.exports = (sequelize, Sequelize) => {
       },
     },
   }, {
-    timestamps: false
+    timestamps: false,
   });
+
+
+  
+  // Degree.associate = models => {
+  //   Degree.hasOne(models.GradeRequirement, {
+  //     sourceKey: 'gradeRequirement',
+  //     foreignKey: 'requirementId'
+  //   })
+  //   Degree.hasOne(models.GpaRequirement, {
+  //     sourceKey: 'gpaRequirement',
+  //     foreignKey: 'requirementId'
+  //   })
+  //   Degree.hasOne(models.CreditRequirement, {
+  //     sourceKey: 'creditRequirement',
+  //     foreignKey: 'requirementId'
+  //   })
+    
+  // }
+
+
 
   return Degree;
 }
+
+// .then(() => {
+//   sequelize.addConstraint('degree', [''])
+// })
+// {
+//   type: Sequelize.INTEGER,
+//   references: {
+//     model: {
+//       tableName: 'GradeRequirement',
+//       schema: 'mast'
+//     },
+//     key: 'requirementId'
+//   },
+//   allowNull:false
+// },

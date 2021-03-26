@@ -8,7 +8,7 @@
  *      minGrade:               FLOAT
  *      PRIMARY KEY (requirementId)
  *      FOREIGN KEY (requirementId) REFERENCES Degrees(gradeRequirement)
- * @param {Object} sequelize 
+ * @param {Object} sequelize  
  * @param Sequelize 
  * @returns A Promise<Model> indicating whether the object was created or not. 
  */
@@ -17,13 +17,26 @@ module.exports = (sequelize, Sequelize) => {
     requirementId: {
       type: Sequelize.INTEGER,
       primaryKey: true,
-      autoIncrement: true,
+      // autoIncrement: true,
+      references: {
+        model: 'degrees',
+        key: 'gradeRequirement'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     },
     atLeastCredits: Sequelize.INTEGER,
     minGrade: Sequelize.FLOAT,
   }, {
     timestamps: false
   });
+
+  // GradeRequirement.associate = models => {
+  //   GradeRequirement.belongsTo(models.Degree, {
+  //     targetKey: 'gradeRequirement',
+  //     foreignKey: 'requirementId'
+  //   })
+  // }
 
   return GradeRequirement;
 }

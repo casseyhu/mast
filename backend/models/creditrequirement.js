@@ -17,12 +17,26 @@ module.exports = (sequelize, Sequelize) => {
     requirementId: {
       type: Sequelize.INTEGER,
       primaryKey: true,
-      autoIncrement: true,
+      // autoIncrement: true,
+      references: {
+        model: 'degrees',
+        key: 'creditRequirement'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     },
     minCredit: Sequelize.INTEGER,
   }, {
     timestamps: false
   });
+
+
+  // CreditRequirement.associate = models => {
+  //   CreditRequirement.belongsTo(models.Degree, {
+  //     targetKey: 'creditRequirement',
+  //     foreignKey: 'requirementId'
+  //   })
+  // }
 
   return CreditRequirement;
 }

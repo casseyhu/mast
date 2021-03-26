@@ -19,7 +19,13 @@ module.exports = (sequelize, Sequelize) => {
     requirementId: {
       type: Sequelize.INTEGER,
       primaryKey: true,
-      autoIncrement: true,
+      // autoIncrement: true,
+      references: {
+        model: 'degrees',
+        key: 'gpaRequirement'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     },
     cumulative: Sequelize.FLOAT,
     department: Sequelize.FLOAT,
@@ -27,6 +33,14 @@ module.exports = (sequelize, Sequelize) => {
   }, {
     timestamps: false
   });
+
+
+  // GpaRequirement.associate = models => {
+  //   GpaRequirement.belongsTo(models.Degree, {
+  //     targetKey: 'gpaRequirement',
+  //     foreignKey: 'requirementId'
+  //   })
+  // }
 
   return GpaRequirement;
 }

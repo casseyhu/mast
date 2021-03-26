@@ -32,18 +32,20 @@ exports.upload = (req, res) => {
 
 
 function degreeExists(degree) {
-  try {
-    let query = Degree.findAll({
-      where: {
-        dept: degree.dept,
-        track: degree.track,
-        requirementVersion: degree.requirementVersion
-      }
-    })
-    return (query.length === 0)
-  } catch (e) {
-    return 0
-  }
+  // try {
+  let query = Degree.findAll({
+    where: {
+      dept: degree.dept,
+      track: degree.track,
+      requirementVersion: degree.requirementVersion
+    }
+  })
+  // If query.length == 0, no degree was found. Return False
+  // If query.length != 0, a degree was found. Return true.
+  return (query.length !== 0) 
+  // } catch (e) {
+  //   return 0
+  // }
 }
 
 
@@ -52,17 +54,18 @@ async function createDegrees(json_file) {
     for (let deg_and_track of Object.keys(json_file)) {
       let degree = json_file[deg_and_track]
 
-      let query = await Degree.findAll({
-        where: {
-          dept: degree.dept,
-          track: degree.track,
-          requirementVersion: degree.requirementVersion
-        }
-      })
+      // let query = await Degree.findAll({
+      //   where: {
+      //     dept: degree.dept,
+      //     track: degree.track,
+      //     requirementVersion: degree.requirementVersion
+      //   }
+      // }) 
       // console.log(query)
-      if (query.length !== 0) {
-        // Overwrite existing degrees.
-        // UPDATE ...
+      if (degreeExists(degree)) {
+        // "existing requirements for the degree versions mentioned in the file are overwritten."
+        // Update degree
+
       }
       // if (!degreeExists(degree)) {
       //   return 0
@@ -70,25 +73,15 @@ async function createDegrees(json_file) {
       requirement_ids = {}
       new_course_ids = []
 
-      const grade = await GradeRequirement.create({
-        atLeastCredits: degree.gradeRequirement === null
-          ? null : degree.gradeRequirement.atLeastCredits,
-        minGrade: degree.gradeRequirement === null
-          ? null : degree.gradeRequirement.minGrade,
+      // Make the degree record first, since we have to satisfy the foreign key constraints.
+      // of the grade/gpa/credit-requirements. Note, we do not set any values for the 
+      // grade/gpa/credit requirements yet. They will be null. 
+      const new_degree = await Degree.create({
+        dept: degree.dept,
+        track: degree.track,
+        requirementVersion: degree.requirementVersion,
       })
-      requirement_ids['grade'] = grade.requirementId
 
-      const credit = await CreditRequirement.create({
-        minCredit: degree.creditRequirement
-      })
-      requirement_ids['credit'] = credit.requirementId
-
-      const gpa = await GpaRequirement.create({
-        cumulative: degree.gpaRequirements.cumulGpa,
-        department: degree.gpaRequirements.deptGpa,
-        core: degree.gpaRequirements.coreGpa
-      })
-      requirement_ids['gpa'] = gpa.requirementId
 
       for (let i = 0; i < degree.courseRequirements.length; i++) {
         course_req = degree.courseRequirements[i]
@@ -109,20 +102,55 @@ async function createDegrees(json_file) {
         new_course_ids.push(course.requirementId)
       }
 
-      // Now, make the actual degree degree with all the new entries you made. 
-      const cdegree = await Degree.create({
-        dept: degree.dept,
-        track: degree.track,
-        requirementVersion: degree.requirementVersion,
-        gradeRequirement: requirement_ids['grade'],
-        gpaRequirement: requirement_ids['gpa'],
-        creditRequirement: requirement_ids['credit'],
+      // console.log("New degree ID is: ", new_degree.degreeId)
+      // We now update this newly-created Degree entry and set the grade/gpa/credit
+      // requirement values to be == new_degree.degreeId. Every Degree+track we make 
+      // will have their own grade/gpa/credit requirement anyways-- we won't share
+      // them with other degrees. So, the DegreeId and grade/gpa/creditReq
+      // fields are 1:1. That is, every one degree you make, you also make
+      // one grade/gpa/credit req entry, so the IDs should end up being the same.
+      const update_reqIds = await new_degree.update({
+        gradeRequirement: new_degree.degreeId,
+        gpaRequirement: new_degree.degreeId,
+        creditRequirement: new_degree.degreeId,
         courseRequirement: new_course_ids
       })
+
+      // Create this degree's respective grade/credit/gpa requirements. -----------
+      // Note: We set the requirementId of each entry to be the new_degree.degreeId.
+
+      const grade = await GradeRequirement.create({
+        requirementId: new_degree.degreeId,
+        atLeastCredits: degree.gradeRequirement === null
+          ? null : degree.gradeRequirement.atLeastCredits,
+        minGrade: degree.gradeRequirement === null
+          ? null : degree.gradeRequirement.minGrade,
+      })
+
+      const credit = await CreditRequirement.create({
+        requirementId: new_degree.degreeId,
+        minCredit: degree.creditRequirement
+      })
+
+      const gpa = await GpaRequirement.create({
+        requirementId: new_degree.degreeId,
+        cumulative: degree.gpaRequirements.cumulGpa,
+        department: degree.gpaRequirements.deptGpa,
+        core: degree.gpaRequirements.coreGpa
+      })
+
+      // const final = await new_degree.update({
+      //   courseRequirement: new_course_ids
+      // })
     }
   }
   catch (e) {
+    console.log(e)
     return 0;
   }
   return 1;
 }
+
+
+
+// https://stackoverflow.com/questions/2615417/what-happens-when-auto-increment-on-integer-column-reaches-the-max-value-in-data

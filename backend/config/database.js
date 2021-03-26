@@ -53,8 +53,44 @@ db.CoursePlanItem.belongsTo(db.CoursePlan, { foreignKey: 'coursePlanId' })
 // db.Degree.hasOne(db.GradeRequirement, {foreignKey: 'gradeRequirement'})
 // db.GradeRequirement.belongsTo(db.Degree, {foreignKey: 'requirementId'})
 
-// db.Degree.hasOne(db.GradeRequirement, {foreignKey: 'requirementId'})
-// db.GradeRequirement.belongsTo(db.Degree, {foreignKey: 'gradeRequirement'})
+
+
+db.Degree.hasOne(db.GradeRequirement, {
+  sourceKey: 'gradeRequirement', 
+  foreignKey: 'requirementId',
+})
+db.Degree.hasOne(db.GpaRequirement, {
+  sourceKey: 'gpaRequirement', 
+  foreignKey: 'requirementId',
+})
+db.Degree.hasOne(db.CreditRequirement, {
+  sourceKey: 'creditRequirement', 
+  foreignKey: 'requirementId',
+})
+db.GradeRequirement.belongsTo(db.Degree, {
+  targetKey: 'gradeRequirement',
+   foreignKey: 'requirementId',
+  })
+db.GpaRequirement.belongsTo(db.Degree, {
+  targetKey: 'gpaRequirement', 
+  foreignKey: 'requirementId',
+})
+db.CreditRequirement.belongsTo(db.Degree, {
+  targetKey: 'creditRequirement', 
+  foreignKey: 'requirementId',
+})
+
+
+
+// db.Degree.hasOne(db.GradeRequirement, {sourceKey: 'gradeRequirement', foreignKey: 'requirementId'})
+// db.Degree.hasOne(db.GpaRequirement, {sourceKey: 'gpaRequirement', foreignKey: 'requirementId'})
+// db.Degree.hasOne(db.CreditRequirement, {sourceKey: 'creditRequirement', foreignKey: 'requirementId'})
+
+
+// db.Degree.hasOne(db.GpaRequirement, {foreignKey: 'gpaRequirement'})
+// db.Degree.hasOne(db.CreditRequirement, {foreignKey: 'creditRequirement'})
+
+// db.GradeRequirement.belongsTo(db.Degree)
 
 
 module.exports = db;
