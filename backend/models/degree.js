@@ -34,7 +34,7 @@ module.exports = (sequelize, Sequelize) => {
     gradeRequirement: {
       type: Sequelize.INTEGER,
       set(value) {
-        console.log("Setting the degree gradeRequirement with value: ", value)
+        // console.log("Setting the degree gradeRequirement with value: ", value)
         this.setDataValue('gradeRequirement', value)
       }, 
       unique: true
@@ -42,7 +42,7 @@ module.exports = (sequelize, Sequelize) => {
     gpaRequirement: {
       type: Sequelize.INTEGER,
       set(value) {
-        console.log("Setting the degree gpaRequirement with value: ", value)
+        // console.log("Setting the degree gpaRequirement with value: ", value)
         this.setDataValue('gpaRequirement', value)
       }, 
       unique: true
@@ -50,7 +50,7 @@ module.exports = (sequelize, Sequelize) => {
     creditRequirement: {
       type: Sequelize.INTEGER,
       set(value) {
-        console.log("Setting the degree creditRequirement with value: ", value)
+        // console.log("Setting the degree creditRequirement with value: ", value)
         this.setDataValue('creditRequirement', value)
       }, 
       unique: true
