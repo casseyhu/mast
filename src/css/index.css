@@ -112,3 +112,14 @@ i.fa {
   bottom: 0;
   z-index: -1;
 }
+
+.information_box{
+  position: relative;
+  left: 0%;
+  width: 96%;
+  border: 1.2px solid;
+  height: 75vh;
+  background-color: white;
+  display: inline-block;
+  overflow: auto;
+}

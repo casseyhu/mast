@@ -30,7 +30,17 @@ exports.upload = (req, res) => {
     }
   })
 }
-
+//find all courses based on the dept
+exports.findAll = (req, res) => {
+  const condition = req.query.dept;
+  Course.findAll({where: { department: condition }})
+  .then(foundCourses => {
+    res.status(200).send(foundCourses)
+  })
+  .catch(err => { 
+    console.log(err)
+  })
+}
 
 // dept : list of departments to scrape from
 scrapeCourses = (filePath, dept, semester, year, res) => {
