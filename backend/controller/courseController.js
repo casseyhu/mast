@@ -44,32 +44,31 @@ exports.findAll = (req, res) => {
 
 // dept : list of departments to scrape from
 scrapeCourses = (filePath, dept, semester, year, res) => {
-  const options = {};
-  var sem = ["Fall", "Winter", "Spring", "Summer"]
-  var target = "";
+  const options = {}
+  let sem = ["Fall", "Winter", "Spring", "Summer"]
+  let target = ""
   /* info to store in database */
-  var chosenDept = "";
-  var totCourses = 0;
-  var courseNum = 0;
-  var name = "";
-  var courseName = "";
-  var checkCourseName = false;
-  var startText = false;
+  let chosenDept = ""
+  let totCourses = 0
+  let courseNum = 0
+  let name = ""
+  let courseName = ""
+  let checkCourseName = false;
   /*temporary way to store description of course */
-  var desc = ""
+  let desc = ""
   /* add all courses to array that are in the dept variables */
-  var courses = []
+  let courses = []
   /* other requirements i.e prerequisites, credits */
-  var checkOthers = false
-  var others = "";
+  let checkOthers = false
+  let others = ""
   dept = dept.split(',')
   pdfExtract.extract(filePath, options, (err, data) => {
     if (err) return console.log(err);
-    var pages = data.pages
+    let pages = data.pages
     for (let i = 0; i < pages.length; i++) {
-      var page = pages[i].content
+      let page = pages[i].content
       for (let j = 2; j < page.length - 2; j++) {
-        var s = page[j]
+        let s = page[j]
         if (s.fontName == "Times" && s.str.length == 3) {
           if (dept.includes(s.str)) {
             target = s.str;
@@ -86,12 +85,14 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
               var foundSem = []
               var tot = 0;
               var creds = "";
+              //the semesters mentioned in the pdf for each course
               for (let k = 0; k < sem.length; k++) {
-                if (others.includes(sem[k])) {
+                if (others.includes(sem[k]) || desc.includes(sem[k])) {
                   foundSem.push(sem[k]);
                   tot += 1;
                 }
               }
+
               if (tot == 0)
                 foundSem = ["Fall", "Spring"];
               let prereqs = []
@@ -105,6 +106,25 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
                     if (!prereqs.includes(course))
                       prereqs.push(course);
                   }
+                }
+              }
+              else if(desc.includes("Prerequisites: ")){
+                let full_prereqs = desc.substring(desc.indexOf("Prerequisites: "))
+                if(full_prereqs.includes('and')){
+                  if(full_prereqs.includes(' or')){
+                    full_prereqs = full_prereqs.substring(0, full_prereqs.indexOf(' or'))
+                  }
+                  full_prereqs = full_prereqs.replace("Prerequisites: ", "")
+                  full_prereqs = full_prereqs.replace(" ", "")
+                  full_prereqs = full_prereqs.replace(" and", ",")
+                  prereqs = full_prereqs.split(', ')
+                }
+                else{
+                  full_prereqs = full_prereqs.replace("Prerequisites: ", "")
+                  full_prereqs = full_prereqs.replace(" ", "")
+                  full_prereqs = full_prereqs.replace(".", "")
+                  if(isNaN(parseInt(full_prereqs.substring(3, 6))) === false)
+                    prereqs.push(full_prereqs)
                 }
               }
               others = others.replace("Prerequisite: ", "");
@@ -174,7 +194,6 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
             }
             desc = "";
             others = "";
-            startText = true;
             checkOthers = false;
             courseName = s.str;
             checkCourseName = true;
@@ -184,8 +203,8 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
             courseName += " " + s.str;
           }
           else if (s.fontName == "Times" && !s.str.includes("credits")
-            && s.str.substring(0, 14) !== "Prerequisites:"
-            && s.str.substring(0, 13) !== "Prerequisite:"
+            && s.str.substring(0, 13) !== "Prerequisites"
+            && s.str.substring(0, 12) !== "Prerequisite"
             && !s.str.includes("S/U grading")) {
             //reaches description
             if (checkCourseName) {
@@ -215,12 +234,8 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
               name = courseName.substring(10, courseName.length)
             }
             checkCourseName = false;
-            startText = true;
-            if (startText) {
-              startText = false
-              /*description for each course before resetting */
-              checkOthers = true
-            }
+            checkOthers = true
+
             if (others == "" && checkOthers) {
               others = s.str
             }

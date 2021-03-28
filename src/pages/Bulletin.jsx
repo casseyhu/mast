@@ -48,10 +48,11 @@ class Bulletin extends Component {
       <div className="information_box">
         {this.state.courses && this.state.courses.map(function (course){
           return <div>
-            <br/><b>{" " + course.courseId.substring(0, 3) + " " + course.courseId.substring(3, 6)}: {course.name}</b>
+           <b style={{borderBottom: '2px solid var(--grey)', width: '100%'}}>{" " + course.courseId.substring(0, 3) + " " + course.courseId.substring(3, 6)}: {course.name}</b>
             <br/>{" " + course.description}<br/>
             <br/><b> Semesters:</b>{" " + course.semestersOffered.toString().replace(",", ", ")}<br/>
-            {" " + course.credits} credits</div>
+            <b>Prerequisites:</b>{course.prereqs[0] !== "" ? " " + course.prereqs.toString().replace(",", ", ") : " None"} <br/>
+            {" " + course.credits} {" " + course.credits != 1 ? "credits" : "credit"} <br/> <br/></div>
         })}
       </div>
       </Container>
