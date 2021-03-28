@@ -88,7 +88,7 @@ const ImportItem = (props) => {
         )}
       {props.depts && props.sems && props.years
         && (
-          <div className="flex-horizontal" style={{ flexWrap: 'wrap' }}>
+          <div className="flex-horizontal wrap">
             <span style={{ width: "150px" }}>Semesters</span>
             <Dropdown
               variant="single"

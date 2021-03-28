@@ -47,96 +47,116 @@ const BrowseSearchbar = (props) => {
   }
 
   return (
-    <Container style={{margin: "0.5rem 0", padding: "0"}}>
-      <Row style={{margin: "auto"}}>
-        <Col xs={5}>
-          <InputField type="search" placeholder="Name"
-          value={name} onChange={(e) => setName(e.target.value)}
-          icon={SEARCH_ICON}/>
-        </Col>
-        <Col xs={2}>
+    <Container style={{ padding: "0" }}>
+      {/* Main search bar fields */}
+      <div className="flex-horizontal wrap justify-content-between">
+        <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+          <span style={{ marginRight: '1rem' }}>Search</span>
+          <InputField
+            type="search"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            icon="fa fa-search"
+            style={{ minWidth: '300px', maxWidth: '400px', marginRight: '1rem' }}
+          />
           <button className="advancedButton" onClick={expandFilters}>Advanced Options</button>
-        </Col>
-        <Col xs={4}>
-          <div className="flex-horizontal">
-            <p style={{marginTop: '1rem', marginRight:'1rem'}}>Sort By</p>
-            <div className="test">
-              <Dropdown items={SORT_FIELDS} onChange={setSort} disabled={false}/>
+        </div>
+        <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+          <span style={{ marginRight: '1rem' }}>Sort By</span>
+          <Dropdown items={SORT_FIELDS} onChange={setSort} disabled={false} style={{ width: '220px', marginRight: '1rem' }} />
+          <Button variant="round" text="go" onClick={applyFilters} style={{ width: '70px' }} />
+        </div>
+      </div>
+      {/* Advanced dropdown filters */}
+      {expanded && (
+        <div className="advancedFilters">
+          <div className="flex-horizontal wrap " >
+            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+              <span className="filter-span">SBU ID:</span>
+              <InputField
+                className="filter-component"
+                type="search"
+                placeholder="SBU ID"
+                value={sbuId}
+                onChange={(e) => setSbuId(e.target.value)}
+              />
+            </div>
+            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+              <span className="filter-span">Degree:</span>
+              <InputField
+                className="filter-component"
+                type="search"
+                placeholder="CSE, AMS, ..."
+                value={degree}
+                onChange={(e) => setDegree(e.target.value)}
+              />
+            </div>
+            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+              <span className="filter-span">Track:</span>
+              <InputField
+                className="filter-component"
+                type="search"
+                placeholder="Track"
+                value={track}
+                onChange={(e) => setTrack(e.target.value)}
+              />
+            </div>
+            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+              <span className="filter-span">Entry Sem:</span>
+              <InputField
+                className="filter-component"
+                type="search"
+                placeholder="Fall, Spring, .."
+                value={entrySem}
+                onChange={(e) => setEntrySem(e.target.value)}
+              />
+            </div>
+            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+              <span className="filter-span">Grad Sem:</span>
+              <InputField
+                className="filter-component"
+                type="search"
+                placeholder="Fall, Spring, .."
+                value={gradSem}
+                onChange={(e) => setGradSem(e.target.value)}
+              />
+            </div>
+            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+              <span className="filter-span">Graduated:</span>
+              <Dropdown
+                variant="single"
+                items={BOOLEAN}
+                onChange={(e) => { setGraduated(e.value) }}
+                disabled={false}
+              />
+            </div>
+
+            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+              <span className="filter-span">Entry Year:</span>
+              <InputField
+                className="filter-component"
+                type="search"
+                placeholder="2021, ..."
+                value={entryYear}
+                onChange={(e) => setEntryYear(e.target.value)}
+              />
+            </div>
+            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+              <span className="filter-span">Grad Year:</span>
+              <InputField
+                className="filter-component"
+                type="search"
+                placeholder="2021, ..."
+                value={gradYear}
+                onChange={(e) => setGradYear(e.target.value)}
+              />
             </div>
           </div>
-        </Col>  
-        <Col xs={1} style={{paddingLeft: '0'}}>
-          <Button variant="round" text="go" onClick={applyFilters}/>
-        </Col>
-      </Row>
-      {expanded && (
-        <Container className="advancedFilters">
-          <Row>
-            <Col sm={1} style={{paddingRight: '0'}}>
-              <p style={{marginTop: '1rem', marginRight:'1rem'}}>SBU ID</p>
-            </Col>  
-            <Col sm={3}>
-              <InputField type="search" placeholder="SBU ID"
-                value={sbuId} onChange={(e) => setSbuId(e.target.value)} />
-            </Col>
-            <Col sm={1}>
-              <p style={{marginTop: '1rem', marginRight:'1rem'}}>Degree</p>
-            </Col>  
-            <Col sm={3}>
-              <InputField type="search" placeholder="CSE, AMS, ..."
-                value={degree} onChange={(e) => setDegree(e.target.value)} />
-            </Col>
-            <Col sm={1}>
-              <p style={{marginTop: '1rem', marginRight:'1rem'}}>Track</p>
-            </Col>  
-            <Col sm={3}>
-              <InputField type="search" placeholder="Track"
-                value={track} onChange={(e) => setTrack(e.target.value)} />
-            </Col>
-          </Row>
-          <Row >
-            <Col sm={1} style={{paddingRight: '0'}}>
-              <p style={{marginTop: '1rem', marginRight:'1rem'}}>EntrySem:</p>
-            </Col>  
-            <Col sm={3}>
-              <InputField type="search" placeholder="Search"
-                value={entrySem} onChange={(e) => setEntrySem(e.target.value)} />
-            </Col>
-            <Col sm={1} style={{paddingRight: '0'}}>
-              <p style={{marginTop: '1rem', marginRight:'1rem'}}>GradSem:</p>
-            </Col>  
-            <Col sm={3}>
-              <InputField type="search" placeholder="Search"
-                value={gradSem} onChange={(e) => setGradSem(e.target.value)} />
-            </Col>
-            <Col sm={1} style={{paddingRight: '0'}}>
-              <p style={{marginTop: '1rem', marginRight:'1rem'}}>Graduated:</p>
-            </Col>  
-            <Col sm={3}>
-              <Dropdown variant="single-round" items={BOOLEAN} 
-                onChange={(e) => {setGraduated(e.value)}} disabled={false}/>
-            </Col>
-          </Row>
-          <Row>
-            <Col sm={1} style={{paddingRight: '0'}}>
-              <p style={{marginTop: '1rem', marginRight:'1rem'}}>EntryYear:</p>
-            </Col>  
-            <Col sm={3}>
-              <InputField type="search" placeholder="Search"
-                value={entryYear} onChange={(e) => setEntryYear(e.target.value)} />
-            </Col>
-            <Col sm={1} style={{paddingRight: '0'}}>
-              <p style={{marginTop: '1rem', marginRight:'1rem'}}>GradYear:</p>
-            </Col>  
-            <Col sm={3}>
-              <InputField type="search" placeholder="Search"
-                value={gradYear} onChange={(e) => setGradYear(e.target.value)} />
-            </Col>
-          </Row>
-        </Container>
+        </div>
       )}
     </Container>
-    )
+  )
 
 
 }

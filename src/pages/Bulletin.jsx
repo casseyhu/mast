@@ -48,7 +48,7 @@ class Bulletin extends Component {
         </div>
         <div className="information_box">
           {this.state.courses.map(course => {
-            return <div className="course-info-item">
+            return <div>
               <b style={{ borderBottom: '2px solid var(--grey)' }}>
                 {" " + course.department + " " + course.courseNum}: {course.name}
               </b>

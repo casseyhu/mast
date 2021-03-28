@@ -150,12 +150,6 @@ nav {
   margin-left: 9rem;
 }
 
-#filtersubmit {
-  position: absolute;
-  margin-top: 1.25rem;
-  margin-left: -2.25rem;
-}
-
 .gpd-selected {
   position: absolute;
   background-color: var(--charcoal);
@@ -182,36 +176,38 @@ nav {
   transition: .4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Bulletin Item CSS */
-/* .course-info-item {
-  border-bottom: 0.1rem solid var(--dark-grey);
-} */
+
 /* BrowseSearchbar */
-.test {
-  width: 250px
+.advancedButton {
+  /* padding-top: 1.2rem; */
+  background-color: transparent;
+  border: none;
+  font-size: 14px;
+  width: fit-content;
+}
+
+.advancedButton:hover{
+  text-decoration: underline;
+}
+
+.advancedFilters{
+  /* height: auto; */
+  /* padding: 0.5rem 1rem; */
+  /* background-color:red; */
+}
+.filter-span {
+  width: 100px;
+}
+.filter-component {
+  width: 200px;
+  margin-right: 3rem;
 }
 
 .studentTable {
   margin-left: 0.25rem;
 }
 
-.advancedButton {
-  /* margin-top: 1rem; */
-  padding-top: 1.2rem;
-  background-color: transparent;
-  border: none;
-  font-size: 14px;
-}
 
-.advancedButton:hover{
-  text-decoration:underline;
-}
-
-.advancedFilters{
-  height:auto;
-  padding: 0.5rem 1rem;
-  /* background-color:red; */
-}
 
 /* Extras */
 .parent {
