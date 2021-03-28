@@ -125,12 +125,13 @@ i.fa {
   left: 0%;
   width: 96%;
   border: 1.2px solid;
-  height: 75vh;
+  min-height: 75vh;
   background-color: white;
   display: inline-block;
-  overflow: auto;
+  padding: 15px;
+  border-radius: 10px;
 }
 
 .student_box{
-  width: 100%;
+  width:100%
 }
