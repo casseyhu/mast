@@ -22,7 +22,6 @@ class Bulletin extends Component {
       }
     }).then(response => {
       const foundCourses = response.data;
-      console.log(foundCourses[0])
       this.setState({
         courses: foundCourses
       })
@@ -50,12 +49,12 @@ class Bulletin extends Component {
           {this.state.courses.map(course => {
             return <div>
               <b style={{ borderBottom: '2px solid var(--grey)' }}>
-                {" " + course.department + " " + course.courseNum}: {course.name}
+                {course.department + " " + course.courseNum}: {course.name}
               </b>
-              <br />{" " + course.description}<br />
-              <br /><b> Semesters:</b>{" " + course.semestersOffered.join(", ")}<br />
+              <br />{course.description}<br />
+              <br /><b>Semesters:</b>{" " + course.semestersOffered.join(", ")}<br />
               <b>Prerequisites:</b>{course.prereqs[0] !== "" ? " " + course.prereqs.toString().replace(",", ", ") : " None"} <br />
-              {course.credits} {(course.credits != 1) ? "credits" : "credit"}
+              {course.credits} {(course.credits !== 1) ? "credits" : "credit"}
               <br/> <br/>
             </div>
           })}

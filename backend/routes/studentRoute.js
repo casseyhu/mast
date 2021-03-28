@@ -4,6 +4,9 @@ module.exports = function (app) {
 
   // Create a Student
   app.post('/api/student/create', Student.create);
+  
+  // Create all students from file
+  app.post('/api/student/upload', Student.upload);
 
   // Verify student login
   app.get('/api/student/login', Student.login);

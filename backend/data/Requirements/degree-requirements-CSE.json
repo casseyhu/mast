@@ -1,7 +1,7 @@
 {
     "degree1": { 
         "dept": "CSE",
-        "track": "Advanced Project Option",
+        "track": "Advanced Project",
         "requirementVersion": 202102, 
         "gradeRequirement": null,
         "creditRequirement": 31,
@@ -21,7 +21,7 @@
     },
     "degree2": {
         "dept": "CSE",
-        "track": "Special Project Option",
+        "track": "Special Project",
         "requirementVersion": 202102, 
         "gradeRequirement": null,
         "creditRequirement": 31,
@@ -43,7 +43,7 @@
     },
     "degree3": {
         "dept": "CSE",
-        "track": "Thesis Option",
+        "track": "Thesis",
         "requirementVersion": 202102, 
         "gradeRequirement": null,
         "creditRequirement": 31,

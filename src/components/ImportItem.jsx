@@ -26,12 +26,20 @@ const ImportItem = (props) => {
 
 
   const uploadFile = (e) => {
-    if (file === "") {
+    if (props.header === "Student Data" && (firstfile === "" || file === "")){
+      setError("Must have both student profile and course plan files to upload.")
+      return;
+    }
+    else if (file === "") {
       setError("Must choose a file to upload.")
       return;
     }
+
+    var firstFormData = new FormData();
+    firstFormData.append("file", firstfile);
     var formData = new FormData();
     formData.append("file", file);
+
     let upload_path = '';
     if (props.header === "Course Information") {
       upload_path = 'course/upload';
@@ -43,11 +51,33 @@ const ImportItem = (props) => {
       upload_path = 'degree/upload';
     else if (props.header === "Course Offerings")
       upload_path = 'courseoffering/upload';
-    else if (props.header === "Student Data")
-      upload_path = 'student/upload';
+    else if (props.header === "Student Data"){
+      upload_path = 'student/upload'
+
+      axios.post(upload_path, firstFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function () {
+        console.log('Successfully uploaded file');
+        setLoading(false)
+        setUploading(true)
+        setFirstFile("")
+      }).catch(function (err) {
+        console.log(err.response.data)
+        setLoading(false)
+        setFirstFile("")
+        setError(err.response.data)
+      });
+      
+      return;
+      upload_path = 'courseplan/upload'
+      //also need to handle course plan upload
+    }
     else // Uploading grades. 
       upload_path = 'courseplanitem/upload';
     setLoading(true)
+    console.log(upload_path, formData)
     axios.post(upload_path, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'

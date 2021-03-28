@@ -4,8 +4,13 @@ const bcrypt = require('bcrypt');
 const database = require('../config/database.js');
 
 const Student = database.Student;
+const Degree = database.Degree;
 
-// Create a Student 
+const { IncomingForm } = require('formidable');
+const fs = require('fs');
+const Papa = require('papaparse');
+
+// Create a Student from Add Student 
 exports.create = (req, res) => {
   Student.create({
     sbuId: req.body.sbuId,
@@ -16,6 +21,43 @@ exports.create = (req, res) => {
     res.status(500).send("Error: " + err);
   })
 }
+
+// Create Students from uploading file
+exports.upload = (req, res) => {
+  let form = new IncomingForm();
+  form.parse(req).on('file', (field, file) => {
+    if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel')
+      res.status(500).send('File must be *.csv')
+    else {
+      const f_in = fs.readFileSync(file.path, 'utf-8')
+      let isValid = true;
+      Papa.parse(f_in, {
+        header: true,
+        dynamicTyping: true,
+        complete: (results) => {
+          var header = results.meta['fields']
+          if (header[0] !== 'sbu_id' 
+              && header[1] !== 'department'
+              && header[2] !== 'course_num'
+              && header[3] !== 'section'
+              && header[4] !== 'semester'
+              && header[5] !== 'year'
+              && header[6] !== 'grade') {
+            isValid = false
+            console.log('invalid csv')
+            res.status(500).send("Cannot parse CSV file - headers do not match specifications")
+            return
+          }
+          uploadStudents(results)
+
+        }
+      })
+      if (isValid)
+        res.status(200).send("Success")
+    }
+  })
+}
+
 
 // Verify a student for login
 exports.login = (req, res) => {
@@ -65,5 +107,47 @@ exports.delete = (req, res) => {
   })
 }
 
-
+async function uploadStudents(csv_file) {
+  const degrees = await Degree.findAll()
+  let degree_dict = {};
+  const currentGradYear = 202101
+  for(let i = 0; i < degrees.length; i++){
+    degree_dict[degrees[i].dept + " " + degrees[i].track] = degrees[i].degreeId
+  }
+  let tot = 0;
+  for (let i = 0; i < csv_file.data.length - 1; i++) {
+    student_info = csv_file.data[i]
+    let sems_dict = {'Spring': '02', 'Summer': '06', 'Fall': '08', 'Winter': '01'};
+    let semYear = Number(student_info.entry_year + sems_dict[student_info.entry_semester])
+    let graduated = Number(student_info.graduation_year + sems_dict[student_info.graduation_semester]) <= currentGradYear ? 1 : 0
+    const condition = { sbuId: student_info.sbu_id }
+    const values = {
+      sbuId: student_info.sbu_id,
+      firstName: student_info.first_name,
+      lastName: student_info.last_name,
+      email: student_info.email,
+      password: student_info.password,
+      gpa: student_info.gpa,
+      entrySem: student_info.entry_semester,
+      entryYear: student_info.entry_year,
+      entrySemYear: semYear,
+      gradSem: student_info.graduation_semester,
+      gradYear: student_info.graduation_year,
+      degreeId: degree_dict[student_info.department + " " + student_info.track],
+      graduated: graduated,
+      comments: ""
+    }
+    tot+=1
+    const found = await Student.findOne({ where: condition })
+    if (found) {
+      //console.log(condition)
+      const course = await Student.update(values, { where: condition })
+    }
+    else{
+      const course = await Student.create(values)
+    }
+  }
+  console.log("Done importing " + tot + " students from csv")
+  return true
+}
 // https://www.freecodecamp.org/news/node-js-child-processes-everything-you-need-to-know-e69498fe970a/
