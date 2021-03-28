@@ -31,6 +31,8 @@ for y in YEARS:
     for sem in SEMESTERS:
         entry_sem_years.append(y * 100 + sem)
 
+entry_sem_years.pop()
+
 for j in range(NUM_STUDENTS):
     student_id = random.randint(100000000, 1000000000)
     first_name = names.get_first_name()
