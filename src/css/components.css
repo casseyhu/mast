@@ -73,7 +73,6 @@ nav {
   width: fit-content;
   max-width: 140px;
   margin-bottom: 0.4rem;
-  margin-right: 1rem;
 }
 
 /* Login box */
@@ -151,6 +150,12 @@ nav {
   margin-left: 9rem;
 }
 
+#filtersubmit {
+  position: absolute;
+  margin-top: 1.25rem;
+  margin-left: -2.25rem;
+}
+
 .gpd-selected {
   position: absolute;
   background-color: var(--charcoal);
@@ -181,6 +186,32 @@ nav {
 /* .course-info-item {
   border-bottom: 0.1rem solid var(--dark-grey);
 } */
+/* BrowseSearchbar */
+.test {
+  width: 250px
+}
+
+.studentTable {
+  margin-left: 0.25rem;
+}
+
+.advancedButton {
+  /* margin-top: 1rem; */
+  padding-top: 1rem;
+  background-color: transparent;
+  border: none;
+  font-size: 15px;
+}
+
+.advancedButton:hover{
+  text-decoration:underline;
+}
+
+.advancedFilters{
+  height:auto;
+  padding: 0.5rem 1rem;
+  /* background-color:red; */
+}
 
 /* Extras */
 .parent {

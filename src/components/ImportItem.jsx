@@ -95,6 +95,7 @@ const ImportItem = (props) => {
               items={props.sems}
               disabled={false}
               onChange={(e) => setSem(e.value)}
+              style={{marginRight: '1rem'}}
             />
             <Dropdown
               variant="single"

@@ -35,3 +35,19 @@ export const TESTING = [
   { value: 'strawberry3', label: 'Strawberry3' },
   { value: 'vanilla4', label: 'Vanilla4' },
 ];
+
+export const SORT_FIELDS = [
+  { value: 'lastname', label: 'Last Name'},
+  { value: 'firstname', label: 'First Name'},
+  { value: 'sbuid', label: 'Student ID'},
+  { value: 'satisfied', label: 'Satisfied'},
+  { value: 'pending', label: 'Pending'},
+  { value: 'unsatisfied', label: 'Unsatisfied'},
+  { value: 'degree', label: 'Degree'},
+  { value: 'gpa', label: 'GPA'},
+]
+
+export const BOOLEAN = [
+  { value: 'true', label: 'True'},
+  { value: 'false', label: 'False'},
+]

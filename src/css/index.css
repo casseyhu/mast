@@ -32,6 +32,13 @@ h4 {
   width: 100%;
 }
 
+th {
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  background-color: #D7DDE2;
+  padding: 0.5rem;
+}
 footer {
   position: absolute;
   bottom: 0;
@@ -89,7 +96,6 @@ i.fa {
   top: 0;
   bottom: 0;
   right: 0;
-  /* width: 50%; */
   background-color: var(--charcoal);
   z-index: -1;
 }
@@ -116,13 +122,20 @@ i.fa {
   z-index: -1;
 }
 
-/* .information_box{
+
+.information_box, .student_box{
   position: relative;
   left: 0%;
   width: 100%;
   border: 1.2px solid;
-  height: 75vh;
+  min-height: 75vh;
   background-color: white;
   display: inline-block;
   overflow: auto;
-} */
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.student_box{
+  width:100%
+}

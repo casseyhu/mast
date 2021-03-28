@@ -29,7 +29,6 @@ const customStyles = {
   control: (provided) => ({
     ...provided,
     border: '2px solid rgb(30, 61, 107)',
-    padding: '.1rem',
     borderRadius: '0.5rem',
     "&:hover": {
       border: '2px solid rgb(30, 61, 107)',

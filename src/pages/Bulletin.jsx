@@ -46,14 +46,20 @@ class Bulletin extends Component {
             />
           )}
         </div>
-        {this.state.courses.map(course => {
-          return <div className="course-info-item">
-            <br /><b>{" " + course.department + " " + course.courseNum}: {course.name}</b>
-            <br />{" " + course.description}<br />
-            <br /><b> Semesters:</b>{" " + course.semestersOffered.join(", ")}<br />
-            {" " + course.credits} credits
+        <div className="information_box">
+          {this.state.courses.map(course => {
+            return <div className="course-info-item">
+              <b style={{ borderBottom: '2px solid var(--grey)' }}>
+                {" " + course.department + " " + course.courseNum}: {course.name}
+              </b>
+              <br />{" " + course.description}<br />
+              <br /><b> Semesters:</b>{" " + course.semestersOffered.join(", ")}<br />
+              <b>Prerequisites:</b>{course.prereqs[0] !== "" ? " " + course.prereqs.toString().replace(",", ", ") : " None"} <br />
+              {course.credits} {(course.credits != 1) ? "credits" : "credit"}
+              <br/> <br/>
             </div>
-        })}
+          })}
+        </div>
       </Container>
     );
   }
