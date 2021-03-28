@@ -1,23 +1,22 @@
 import React, { Component } from 'react';
-import jwt_decode from 'jwt-decode';
 import Container from "react-bootstrap/Container";
 import Dropdown from '../components/Dropdown';
 import { DEPARTMENTS } from '../constants';
-import { Redirect } from 'react-router-dom';
 import axios from '../constants/axios';
 
 class Bulletin extends Component {
   state = {
+    user: this.props.user,
     text: "",
     courses: [],
   }
 
-  setDept = (e) =>{
+  setDept = (e) => {
     this.setState({
       dept: e.value
     })
 
-    axios.get('/course',{
+    axios.get('/course', {
       params: {
         dept: e.value
       }
@@ -33,27 +32,28 @@ class Bulletin extends Component {
   }
 
   render() {
-    let token = localStorage.getItem('jwt-token')
-    var decoded = jwt_decode(token)
-    if (!token)
-        return <Redirect to="/"/>
+    let { user } = this.state;
     return (
       <Container fluid="lg" className="container">
-        <div className="flex-horizontal">
-          <h1 style={{position: 'relative',width: '85%'}}>Bulletin</h1>
-          <div style={{position: 'relative', marginTop: '1.5rem'}}>
-            <Dropdown variant="single" items={DEPARTMENTS} onChange={this.setDept} disabled={decoded.type==="student"}></Dropdown>
-          </div>
-      </div>
-      <div className="information_box">
-        {this.state.courses && this.state.courses.map(function (course){
-          return <div>
-            <br/><b>{" " + course.courseId.substring(0, 3) + " " + course.courseId.substring(3, 6)}: {course.name}</b>
-            <br/>{" " + course.description}<br/>
-            <br/><b> Semesters:</b>{" " + course.semestersOffered.toString().replace(",", ", ")}<br/>
-            {" " + course.credits} credits</div>
+        <div className="flex-horizontal justify-content-between">
+          <h1>Bulletin</h1>
+          {user === "gpd" && (
+            <Dropdown
+              variant="single"
+              items={DEPARTMENTS}
+              onChange={this.setDept}
+              style={{ marginTop: '1.5rem' }}
+            />
+          )}
+        </div>
+        {this.state.courses.map(course => {
+          return <div className="course-info-item">
+            <br /><b>{" " + course.department + " " + course.courseNum}: {course.name}</b>
+            <br />{" " + course.description}<br />
+            <br /><b> Semesters:</b>{" " + course.semestersOffered.join(", ")}<br />
+            {" " + course.credits} credits
+            </div>
         })}
-      </div>
       </Container>
     );
   }

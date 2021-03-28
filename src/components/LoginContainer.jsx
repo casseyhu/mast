@@ -42,7 +42,8 @@ class LoginContainer extends Component {
   }
 
   login = (e) => {
-    axios.get(`/${this.state.user}/login`, {
+    let { user } = this.state;
+    axios.get(`/${user}/login`, {
       params: {
         email: this.state.email,
         password: this.state.password
@@ -50,12 +51,11 @@ class LoginContainer extends Component {
     }).then(response => {
       localStorage.setItem('jwt-token', response.data)
       console.log(response.data);
-      this.props.setLoggedIn(true);
-      if (this.state.user === 'gpd') {
+      this.props.setLoggedIn(true, user);
+      if (user === 'gpd')
         this.props.history.push('/browse')
-      } else {
+      else
         this.props.history.push('/student')
-      }
     }).catch(err => {
       this.setState({ error: err.response.data });
     })
@@ -81,14 +81,19 @@ class LoginContainer extends Component {
             <span className="student"> Student </span>
           </div>
         </div>
-        <div className="login-item">
-          <InputField type="email" placeholder="email" onChange={this.setEmail} />
-        </div>
-        <div className="login-item">
-          <InputField type="password" placeholder="password" onChange={this.setPassword} />
-        </div>
+        <InputField
+          className="login-item"
+          type="email"
+          placeholder="email"
+          onChange={this.setEmail}
+        />
+        <InputField
+          className="login-item"
+          type="password"
+          placeholder="password"
+          onChange={this.setPassword} />
         <Button variant="round" text="login" onClick={this.login} />
-        <span className="error" style={{ display: 'table', margin: '0 auto' }}>{this.state.error}</span>
+        <span className="error center-span">{this.state.error}</span>
       </div>
     )
   }

@@ -9,38 +9,67 @@ import Import from './pages/Import';
 import Bulletin from './pages/Bulletin';
 import Suggest from './pages/Suggest';
 import AddEditStudent from './pages/AddEditStudent';
-import TentativePlan from './pages/TentativePlan';
+import EditPlan from './pages/EditPlan';
 import ViewPlan from './pages/ViewPlan';
 import ViewStudent from './pages/ViewStudent';
+import NotFound404 from './pages/NotFound404';
+import jwt_decode from 'jwt-decode';
+
 
 class App extends Component {
 
   state = {
-    loggedIn: false
+    loggedIn: false,
+    user: ''
   }
 
-  setLoggedIn = (val) => {
+  setLoggedIn = (val, user) => {
     this.setState({
-      loggedIn: val
+      loggedIn: val,
+      user: user
     })
   }
+  
+  componentDidMount = () => {
+    let token = localStorage.getItem('jwt-token')
+    if (!token)
+      return
+    var decoded = jwt_decode(token)
+    this.setState({
+      loggedIn: true,
+      user: decoded.type
+    }, () => {
+      console.log("set user", this.state.user)
+    })
+
+    /* Uncomment to turn out persistant logout after 20 mins */
+    // console.log(Date.now() / 1000, decoded.exp)
+    // if (Date.now() / 1000 >= decoded.exp) {
+    //   // token = await refreshToken()
+    //   localStorage.clear()
+    //   // console.log('cleared', localStorage.getItem('jwt-token'))
+    //   this.setLoggedIn(false)
+    // }
+  }
+
 
   render() {
+    const { user } = this.state;
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <NavigationBar loggedIn={this.state.loggedIn} />
         <Switch>
           <Route exact path="/" component={(props) => <MainPage {...props} setLoggedIn={this.setLoggedIn} />} />
-          <Route exact path="/browse" component={Browse} />
-          <Route exact path="/trends" component={Trends} />
-          <Route exact path="/import" component={Import} />
-          <Route exact path="/bulletin" component={Bulletin} />
-          <Route exact path="/suggest" component={Suggest} />
-          <Route exact path="/student" component={ViewStudent} />
-          <Route exact path="/student/edit" component={AddEditStudent} />
-          <Route exact path="/tentative" component={TentativePlan} />
-          <Route exact path="/courseplan" component={ViewPlan} />
-          <Route exact path="/:any" component={(props) => <MainPage {...props} setLoggedIn={this.setLoggedIn} />}/>
+          {user === 'gpd' && <Route path="/browse" component={Browse} />}
+          {user === 'gpd' && <Route path="/trends" component={Trends} />}
+          {user === 'gpd' && <Route path="/import" component={Import} />}
+          {user && <Route path="/bulletin" component={(props) => <Bulletin {...props} user={this.state.user} />} />}
+          {user && <Route path="/suggest" component={Suggest} />}
+          {user && <Route exact path="/student" component={ViewStudent} />}
+          {user && <Route path="/student/edit" component={AddEditStudent} />}
+          {user && <Route exact path="/courseplan" component={ViewPlan} />}
+          {user && <Route path="/courseplan/edit" component={EditPlan} />}
+          <Route component={NotFound404} />
         </Switch>
       </BrowserRouter>
     )

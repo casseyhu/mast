@@ -39,7 +39,7 @@ const customStyles = {
 
 const Dropdown = (props) => {
   return (
-    <div className={`dd-wrapper-${props.variant}`}>
+    <div className={`dd-wrapper-${props.variant}`} style={props.style}>
       <Select
         isMulti={props.variant === 'multi'}
         isSearchable

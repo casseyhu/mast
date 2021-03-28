@@ -2,7 +2,7 @@ import React from 'react';
 
 const InputField = (props) => {
   return (
-    <div className="inputContainer">
+    <div className="inputContainer" style={props.style}>
       <input
         type={props.type}
         className="input"

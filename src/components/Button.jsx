@@ -17,6 +17,7 @@ const Button = (props) => {
   };
 
   return (
+    <div style={props.style}>
     <button className={`${props.variant}-button`} onClick={handleClick}>
       {props.text}
       {(props.variant === "square")
@@ -30,6 +31,7 @@ const Button = (props) => {
         )
       }
     </button>
+    </div>
   )
 }
 

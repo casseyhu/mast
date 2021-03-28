@@ -25,7 +25,7 @@ nav {
   padding: 7px 10px;
   margin: 7px auto;
   border: 2px solid var(--charcoal);
-  border-radius: 2rem;
+  border-radius: 0.5rem;
   width: 100%;
 }
 
@@ -176,6 +176,11 @@ nav {
   transform: translateX(calc((500px - 8rem) / 2));
   transition: .4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
+/* Bulletin Item CSS */
+/* .course-info-item {
+  border-bottom: 0.1rem solid var(--dark-grey);
+} */
 
 /* Extras */
 .parent {

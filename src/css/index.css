@@ -28,7 +28,6 @@ h1 {
 }
 
 h4 {
-  /* margin-top: 1rem; */
   border-bottom: 2px solid var(--grey);
   width: 100%;
 }
@@ -62,6 +61,10 @@ footer {
 
 .error {
   color: #a8201a;
+}
+.center-span {
+  display: table;
+  margin: 0 auto;
 }
 
 i.fa {
@@ -113,13 +116,13 @@ i.fa {
   z-index: -1;
 }
 
-.information_box{
+/* .information_box{
   position: relative;
   left: 0%;
-  width: 96%;
+  width: 100%;
   border: 1.2px solid;
   height: 75vh;
   background-color: white;
   display: inline-block;
   overflow: auto;
-}
+} */
