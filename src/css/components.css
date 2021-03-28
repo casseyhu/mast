@@ -151,6 +151,12 @@ nav {
   margin-left: 9rem;
 }
 
+#filtersubmit {
+  position: absolute;
+  margin-top: 1.25rem;
+  margin-left: -2.25rem;
+}
+
 .gpd-selected {
   position: absolute;
   background-color: var(--charcoal);
@@ -175,6 +181,33 @@ nav {
   line-height: 3rem;
   transform: translateX(calc((500px - 8rem) / 2));
   transition: .4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* BrowseSearchbar */
+.test {
+  width: 250px
+}
+
+.studentTable {
+  margin-left: 0.25rem;
+}
+
+.advancedButton {
+  /* margin-top: 1rem; */
+  padding-top: 1rem;
+  background-color: transparent;
+  border: none;
+  font-size: 15px;
+}
+
+.advancedButton:hover{
+  text-decoration:underline;
+}
+
+.advancedFilters{
+  height:auto;
+  padding: 0.5rem 1rem;
+  /* background-color:red; */
 }
 
 /* Extras */

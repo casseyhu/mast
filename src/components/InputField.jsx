@@ -10,9 +10,10 @@ const InputField = (props) => {
         value={props.value}
         onChange={props.onChange}
       />
-      {props.icon && <i id="filtersubmit" className={props.icon} onClick={props.onClick} />}
+      {props.icon && <img id="filtersubmit" src={`url(${props.icon})`} onClick={props.onClick} />}
     </div>
   )
 }
+
 
 export default InputField

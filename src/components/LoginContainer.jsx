@@ -12,6 +12,7 @@ class LoginContainer extends Component {
   }
 
   setEmail = (e) => {
+    console.log(this.state.email)
     this.setState({
       email: e.target.value
     })

@@ -33,6 +33,13 @@ h4 {
   width: 100%;
 }
 
+th {
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  background-color: #D7DDE2;
+  padding: 0.5rem;
+}
 footer {
   position: absolute;
   bottom: 0;
@@ -113,7 +120,7 @@ i.fa {
   z-index: -1;
 }
 
-.information_box{
+.information_box, .student_box{
   position: relative;
   left: 0%;
   width: 96%;
@@ -122,4 +129,8 @@ i.fa {
   background-color: white;
   display: inline-block;
   overflow: auto;
+}
+
+.student_box{
+  width: 100%;
 }
