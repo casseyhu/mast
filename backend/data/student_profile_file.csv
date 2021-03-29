@@ -1,51 +1,51 @@
 sbu_id,first_name,last_name,email,department,track,entry_semester,entry_year,requirement_version_semester,requirement_version_year,graduation_semester,graduation_year,password
-442522286,Maureen,Newbold,maureennewbold@stonybrook.edu,CSE,Special Project,Spring,2020,Spring,2021,Fall,2021,$2b$12$j0CvCDTNeMm7gDnrfH2T8uDZL3LvqUAvIVcQNOkRHDwVM86w22XHy
-109245727,Mary,Friedlander,maryfriedlander@stonybrook.edu,BMI,Clinical Informatics With Project,Fall,2019,Fall,2019,Spring,2021,$2b$12$dMKiJVGHECm0juXyMJ5Q5esTL.PH3dO5jXlDxpl/B419bJ6vi8rjS
-975483326,Shannon,Marx,shannonmarx@stonybrook.edu,ESE,Thesis,Spring,2019,Fall,2020,Fall,2020,$2b$12$fmWeXOhGZoNRWDhbkyWvde9rOeOqOilzaRLYq7J0tC5UQ0JgDiSke
-213353572,Everett,Mclarty,everettmclarty@stonybrook.edu,CSE,Thesis,Fall,2020,Spring,2021,Spring,2022,$2b$12$XHIw14ODC5uhQv2Vs8/BCeRmgOr8V0xLghxQ/5NX5qwgWqSYgrOcS
-512776214,Robert,Smith,robertsmith@stonybrook.edu,CSE,Special Project,Spring,2020,Spring,2021,Fall,2021,$2b$12$fpYYiUxx1WoYCQwO/R/AS.3WK7Okzer3/nOcxgMDutmM9hrH6vqgS
-366920424,Peter,Leonhardt,peterleonhardt@stonybrook.edu,BMI,Imaging Informatics With Project,Spring,2020,Spring,2021,Fall,2021,$2b$12$4xspU8Jw5pYFN3C.QU5Q2.Z/iHjntHUEpavUkhepZCAEJ.Lk9MXTi
-613200341,Erlinda,Steele,erlindasteele@stonybrook.edu,CSE,Special Project,Fall,2019,Spring,2021,Spring,2021,$2b$12$.OOW9kbKGGXcbUQzwb/1KeSmo7M.HpIxEnyQtY3DrVzChZ7fMovvi
-453935758,Morgan,Greer,morgangreer@stonybrook.edu,ESE,Non-Thesis,Fall,2019,Fall,2019,Spring,2021,$2b$12$YRG9yYX/XRgf5CaDzHoLHezJK7tL/5IimgOzLXJ5Vegx8qfoIc/z6
-772426982,Marie,Downs,mariedowns@stonybrook.edu,BMI,Imaging Informatics With Thesis,Spring,2019,Fall,2020,Fall,2020,$2b$12$pTU5VH1I6NriIDSAMYNR2ez./pLD6jyiAhNQxWW7HXyRde2L9FnfK
-847006941,Alexander,Ferguson,alexanderferguson@stonybrook.edu,BMI,Translational Bioinformatics With Thesis,Spring,2020,Spring,2020,Fall,2021,$2b$12$Z2JfH54aBCv/1fLB2v7AHuunRDR8QY/k51b7biFzkTGkbex50RFx6
-228125039,Gregory,Mayes,gregorymayes@stonybrook.edu,CSE,Thesis,Fall,2020,Spring,2021,Spring,2022,$2b$12$M1ntcWAxJViKDeU61/1Tv.dqs7XsY1Kd0STypTVVqJNTAd9DiuwYq
-428295229,James,Araujo,jamesaraujo@stonybrook.edu,CSE,Advanced Project,Spring,2020,Spring,2020,Fall,2021,$2b$12$gE/5NjZV/6reobC1gOi0C.zX520D/doFsjW11Q8L70HcJpuSz2JEm
-121336545,James,Somers,jamessomers@stonybrook.edu,CSE,Thesis,Spring,2021,Spring,2021,Fall,2022,$2b$12$S6byCruXMl7kPE7HwamtGu5zHeTUGvF4TG8zXouZDM2udZA7juEv2
-143688246,Marlene,Carter,marlenecarter@stonybrook.edu,AMS,Operations Research,Spring,2021,Spring,2021,Fall,2022,$2b$12$OSQPB4RFTACMH5blxzzX3.5DCAts4k/wx7/mTyy3mu7MKRBqSgmGa
-317940370,Judith,Rivera,judithrivera@stonybrook.edu,ESE,Thesis,Spring,2021,Spring,2021,Fall,2022,$2b$12$POpVFrf7sfV/LHaKWxKkU.ctjnW.H8GaQYHpbVrzGMFgQ8yBqy6H.
-147430829,Mackenzie,Ryan,mackenzieryan@stonybrook.edu,ESE,Non-Thesis,Spring,2021,Spring,2021,Fall,2022,$2b$12$jfcGDfAcxGunLHofn/x60.w52TMQsvBY1IcXoGqTkFskjUD9ZT7y2
-925028044,Rose,Wronski,rosewronski@stonybrook.edu,CSE,Advanced Project,Spring,2020,Spring,2021,Fall,2021,$2b$12$XOJIo3aBRkUEuKUxk7jS9.3YaUwIkyNefE/0zYTqJbwUpwdzGdmO6
-250883609,George,Meier,georgemeier@stonybrook.edu,BMI,Translational Bioinformatics With Thesis,Spring,2020,Spring,2020,Fall,2021,$2b$12$wyY1ZLAQ4W0PdMO6baBweupCJ5sjxkrrLSTM1GIfnyIw3u6V3rH1e
-799571079,Christopher,Arnette,christopherarnette@stonybrook.edu,AMS,Quantitative Finance,Spring,2020,Spring,2021,Fall,2021,$2b$12$.rHNF.lfnsLVSOZnfbgxIuzkci7uLzCIZXhS3Zsank95B87.79CD2
-655351657,Colleen,Benedict,colleenbenedict@stonybrook.edu,BMI,Translational Bioinformatics With Thesis,Fall,2019,Spring,2021,Spring,2021,$2b$12$OGR3xpQVAOR4CCwqqujI8OtR0Tb99xExN35r5a9Ldn7OxHVI3CAXy
-559697220,Francis,Vargas,francisvargas@stonybrook.edu,AMS,Quantitative Finance,Spring,2021,Spring,2021,Fall,2022,$2b$12$UD55NvRbvwLpnC6oRuUuI.OxKkuIZJBw9p3bkFmN9J395pAwcgKJy
-880888466,Brian,Delisle,briandelisle@stonybrook.edu,AMS,Computational Biology,Spring,2021,Spring,2021,Fall,2022,$2b$12$jRwMlaGUOGVnaG.VUbqHWO9Sx3SnmgvFrG0obJRvYhJ/qu/7Fpp4y
-462944459,Michael,Carothers,michaelcarothers@stonybrook.edu,BMI,Translational Bioinformatics With Thesis,Spring,2021,Spring,2021,Fall,2022,$2b$12$XCh3TReOkU1dtfcm0p9c6eXSGK2IP0AIFQgjZxo7fWtlC3BUPWZWi
-262117545,Audrey,Despres,audreydespres@stonybrook.edu,AMS,Operations Research,Spring,2021,Spring,2021,Fall,2022,$2b$12$qsdCvOcmNfO9LsmV58lOSeiUKo62/zSMPwPed1KQ5eXyOCdmB8nL6
-649613464,Earl,Griggs,earlgriggs@stonybrook.edu,BMI,Clinical Informatics With Project,Fall,2019,Fall,2019,Spring,2021,$2b$12$iS8PhhBgF7zJ63//1ah6AOvRD01r9SdzajvV1o787O37BtJQrRI1K
-197549995,Latoyia,Epps,latoyiaepps@stonybrook.edu,CSE,Special Project,Spring,2019,Fall,2019,Fall,2020,$2b$12$61od7GYbNovAIITgd20yl.BaJRpk9KBGo2LQQjDWVO4ISTOKXu7DC
-498587525,Carlos,Jones,carlosjones@stonybrook.edu,BMI,Clinical Informatics With Project,Spring,2020,Spring,2020,Fall,2021,$2b$12$eZe3ep0457Z2Xm64mUNwkOKX5kjNgRfG/BnVmXHFMcwWD1ZtfozKC
-833459818,Chester,Nader,chesternader@stonybrook.edu,CSE,Advanced Project,Spring,2021,Spring,2021,Fall,2022,$2b$12$HyKyz8pn6kMykMhix.aVOO11u1cciyStRRHLGq8nwSQWwdbGjN8sq
-932349114,Erik,Weller,erikweller@stonybrook.edu,AMS,Quantitative Finance,Spring,2020,Fall,2020,Fall,2021,$2b$12$EOfQ3EqTorjJ67hX2HFdOODX9RPNFUWJA1gl5xVDI2DpDiMueDBv.
-539431375,Audrey,Bradford,audreybradford@stonybrook.edu,CSE,Thesis,Spring,2020,Spring,2021,Fall,2021,$2b$12$nhdVntRVLwj2KVPJ1A2sOOwUZHn8V9ck.mYozaXwEtM73pgpr755u
-231504236,Benjamin,Spearman,benjaminspearman@stonybrook.edu,CSE,Special Project,Spring,2020,Fall,2020,Fall,2021,$2b$12$SIwbO5BypUfcGN31uK9N6etbMfLCpzHfagOho6pj5.OKl9KcOrwoq
-751946819,Maria,King,mariaking@stonybrook.edu,AMS,Statistics,Spring,2020,Spring,2020,Fall,2021,$2b$12$Lx2S6ibeVl.nPQTvKNakaeh6jDCS26FZV.lB1.GlH66dB3Wibjn3G
-826462912,Teresa,Merritt,teresamerritt@stonybrook.edu,AMS,Operations Research,Spring,2021,Spring,2021,Fall,2022,$2b$12$JkSOzLc5o.OPt.I1Ap0NH.8gAFqZaZZYTxd/6xTqmMujfkaY0zCtq
-934341119,Bonnie,Payan,bonniepayan@stonybrook.edu,BMI,Translational Bioinformatics With Thesis,Fall,2019,Spring,2021,Spring,2021,$2b$12$so21g6qUxrJZexO7aOd19u4nd5XiiXdlY4SX8LwFRkkZyC4UITTc.
-220175826,Sandra,Lopez,sandralopez@stonybrook.edu,AMS,Computational Biology,Spring,2020,Spring,2020,Fall,2021,$2b$12$07hZW8xKi13Uk2hQIeGa3eDiI8EC2Yr0V6.YH36EoTX84J0AVw3aS
-411546270,Emmett,Burton,emmettburton@stonybrook.edu,AMS,Computational Applied Mathematics,Spring,2019,Fall,2019,Fall,2020,$2b$12$gZEXZoYMMblXXvlYd3Clm.G5YWJSjFiRQ9aJkLn1iWOKnGa0su.yy
-284141957,Sarah,Robinson,sarahrobinson@stonybrook.edu,BMI,Clinical Informatics With Project,Fall,2019,Spring,2021,Spring,2021,$2b$12$obsaPrnrBxuCUY.L6MYcOOBfm.ILcYlvsCQGPOan6kHR.FlAAWr96
-908804905,Chris,Barnes,chrisbarnes@stonybrook.edu,ESE,Thesis,Spring,2019,Fall,2020,Fall,2020,$2b$12$Tzgl11yNlUs3z9EE/S87VuO1RF4Q94655bJp2NUIDYLMVtCbZvB7y
-938329032,Charles,Porter,charlesporter@stonybrook.edu,CSE,Thesis,Spring,2020,Spring,2021,Fall,2021,$2b$12$CjnAmpgELeck4nNPXh5BLO3syX9LEFkH4kUnIXkyKGqJ4Fk14LRse
-710337952,Kyle,Anderson,kyleanderson@stonybrook.edu,BMI,Imaging Informatics With Project,Spring,2019,Fall,2020,Fall,2020,$2b$12$aKgxVn7xsNStimi2ytMQUOGJ0jQk8BFr8q6DnQjvmItXDi4LlaPH6
-557418308,Peggy,Hall,peggyhall@stonybrook.edu,BMI,Translational Bioinformatics With Thesis,Fall,2020,Spring,2021,Spring,2022,$2b$12$Pea5A2LMWlRfcPbnTSPNBOVv6mRFKDMjPDM5AYlmZj0U4eOPuxGOa
-381592708,Michael,Dawson,michaeldawson@stonybrook.edu,BMI,Clinical Informatics With Project,Spring,2020,Spring,2020,Fall,2021,$2b$12$1VOBWmBEbH6R7IKHAf5fD.qGas3lJyjLs90PS//gtUN6kybtK11G.
-186012470,Willie,Cooke,williecooke@stonybrook.edu,ESE,Non-Thesis,Spring,2020,Spring,2020,Fall,2021,$2b$12$hKWQDEdrkFZXlQZ2fNGzNuOgli1S0NB9opaq8PICqHoqiITBdUPIu
-409331712,Nancy,Rauf,nancyrauf@stonybrook.edu,CSE,Advanced Project,Fall,2019,Fall,2020,Spring,2021,$2b$12$XkAUagfOHXE2IYcrn0JXnubq23Abb4fhRqd1B833NLDmjbUffq2z2
-558966516,Gertrude,Bennett,gertrudebennett@stonybrook.edu,BMI,Clinical Informatics With Project,Spring,2020,Fall,2020,Fall,2021,$2b$12$Xmm26K/XlJrV9pnN6QREk.l/Um0UGR0Fn/ZZiI9R/KdWd3orrubxm
-328820562,Douglas,Chapman,douglaschapman@stonybrook.edu,CSE,Special Project,Spring,2019,Fall,2019,Fall,2020,$2b$12$LKlejdKvx9FXD5SpcpjnMeDzQzHjw7ph078/SqufD/YwKv0H9Rls6
-417323184,Albert,Coan,albertcoan@stonybrook.edu,AMS,Computational Applied Mathematics,Spring,2019,Spring,2020,Fall,2020,$2b$12$d/ZjsNmJ54tlsLeKlAtbzuTK.QcvmyjkJj/zRDtbg0RnQDmpgKQQ2
-696385372,Tyler,Morado,tylermorado@stonybrook.edu,CSE,Thesis,Spring,2019,Spring,2021,Fall,2020,$2b$12$LzGcbUXRC52/iw0rH0j6O.BXXeUTkgdMRokpOhguURPbHTLI6ZrpO
-782571507,James,Sutton,jamessutton@stonybrook.edu,ESE,Non-Thesis,Spring,2020,Spring,2020,Fall,2021,$2b$12$ZTWlqStYxAlSbPydW9tvT.h3GDr9SZL0WwKPEcNKjZr0XMK3dsV9S
-595499177,Tammy,Welker,tammywelker@stonybrook.edu,AMS,Computational Applied Mathematics,Fall,2019,Spring,2020,Spring,2021,$2b$12$El9H8AHpuOzEPPOHc1TdtO02s5Ie0SA.EP4pTnHUoeg5AWH3pBbiW
+442522286,Maureen,Newbold,maureennewbold@stonybrook.edu,CSE,Special Project,Spring,2020,Spring,2021,Fall,2021,$2b$12$cs0tQawjelxuQ5PTIaIBgehYH2sxKTvvmSZVHa7z4.J02q5d4WEFO
+109245727,Mary,Friedlander,maryfriedlander@stonybrook.edu,BMI,Clinical Informatics With Project,Fall,2019,Fall,2019,Spring,2021,$2b$12$T6QfRRaZ7oW9kZ2iKb03G.xA6Ygot3ELOfz7VfLHz2qKVd1rok9t2
+975483326,Shannon,Marx,shannonmarx@stonybrook.edu,ESE,Thesis,Spring,2019,Fall,2020,Fall,2020,$2b$12$UFiDWc57iSObzrqWsua8o.W00pYl1SFBKpGNpM7KRWHTXEWNloKni
+213353572,Everett,Mclarty,everettmclarty@stonybrook.edu,CSE,Thesis,Fall,2020,Spring,2021,Spring,2022,$2b$12$O9lqtJJnSuCRKZi9lFC2q.g2FyCPGeCyDV4QghUZzLk6Xcwy.Mp.C
+512776214,Robert,Smith,robertsmith@stonybrook.edu,CSE,Special Project,Spring,2020,Spring,2021,Fall,2021,$2b$12$8t0hnn.2l8q0pgfLIO6WdOdJCo7bzbfqbq9W9LsGItlPzc5ZFxs5.
+366920424,Peter,Leonhardt,peterleonhardt@stonybrook.edu,BMI,Imaging Informatics With Project,Spring,2020,Spring,2021,Fall,2021,$2b$12$EdbkIuujvt0PvSkfxELBPeKWzdBroCw0D/yW0vlSV90yRen0VyvJG
+613200341,Erlinda,Steele,erlindasteele@stonybrook.edu,CSE,Special Project,Fall,2019,Spring,2021,Spring,2021,$2b$12$4cl7HT0Jt9.C4LGB9cZaDexKx3eZzMGQCeBUTWTcLcKc27w6ldVni
+453935758,Morgan,Greer,morgangreer@stonybrook.edu,ESE,Non-Thesis,Fall,2019,Fall,2019,Spring,2021,$2b$12$VlXPXAvnaaS8cbmBhzxvFuz8xW2A1mYOPWQkjmy2x1QzXpe7eB55S
+772426982,Marie,Downs,mariedowns@stonybrook.edu,BMI,Imaging Informatics With Thesis,Spring,2019,Fall,2020,Fall,2020,$2b$12$aIlrRAj2dMAnm12frBJ29OrQ73HZGwgFPfTDWEan.AOcnyn.ebcdS
+847006941,Alexander,Ferguson,alexanderferguson@stonybrook.edu,BMI,Translational Bioinformatics With Thesis,Spring,2020,Spring,2020,Fall,2021,$2b$12$8jayoyP3suH0n4W1pR1K6e1GHqQL2Gw/S852g/lDINktMXjH7izEi
+228125039,Gregory,Mayes,gregorymayes@stonybrook.edu,CSE,Thesis,Fall,2020,Spring,2021,Spring,2022,$2b$12$HT4Cyq0qvXlMxgWHsXAOduMQ4U2MLB0zhpKxXFXWIllMftudSB4eO
+428295229,James,Araujo,jamesaraujo@stonybrook.edu,CSE,Advanced Project,Spring,2020,Spring,2020,Fall,2021,$2b$12$Te7N6/PvIw0KuxAtWIK.ROwOrgpKeWXU4g2D19Hck/dsxASF7Aq4q
+121336545,James,Somers,jamessomers@stonybrook.edu,CSE,Thesis,Spring,2021,Spring,2021,Fall,2022,$2b$12$dOaduiwNmE.cR5G/87RZAOrLn/6crmh03AIWRHtjcknklblrPXtw.
+143688246,Marlene,Carter,marlenecarter@stonybrook.edu,AMS,Operations Research,Spring,2021,Spring,2021,Fall,2022,$2b$12$bRzbH7bWI9.yP2u7lIHUQOe1ovJ1ACdcYkzjvmzTu2M5dY8OwE392
+317940370,Judith,Rivera,judithrivera@stonybrook.edu,ESE,Thesis,Spring,2021,Spring,2021,Fall,2022,$2b$12$ZkvSmnlGGC/98BbTwrCkWufpgnWxAyTP60bsIrJesIAZwyg9EZzFu
+147430829,Mackenzie,Ryan,mackenzieryan@stonybrook.edu,ESE,Non-Thesis,Spring,2021,Spring,2021,Fall,2022,$2b$12$w0PzoDD75EAwPhe/sG7LNeYrkpQLnfW87i6X3sm12ajGGGQT9lSia
+925028044,Rose,Wronski,rosewronski@stonybrook.edu,CSE,Advanced Project,Spring,2020,Spring,2021,Fall,2021,$2b$12$6oRblZBCzj7rdwIy/SiEa.mYGe2fk2mGJL82Q0f2TqpVGIqxgipjm
+250883609,George,Meier,georgemeier@stonybrook.edu,BMI,Translational Bioinformatics With Thesis,Spring,2020,Spring,2020,Fall,2021,$2b$12$ZToCxSTbieSpcEQR4A0TE./f3.VwNohB206nOlKFqK6xCZhhHMvaO
+799571079,Christopher,Arnette,christopherarnette@stonybrook.edu,AMS,Quantitative Finance,Spring,2020,Spring,2021,Fall,2021,$2b$12$aJfFLYF2l96gNLTU8T4/Ge14mP9WvR0D1dUTKljOICcRzyCDQQnGi
+655351657,Colleen,Benedict,colleenbenedict@stonybrook.edu,BMI,Translational Bioinformatics With Thesis,Fall,2019,Spring,2021,Spring,2021,$2b$12$XADgKJNdqMGIV8cxgifcduRALx0bo9C0tG6XroG7cyfm.fNb.53ZC
+559697220,Francis,Vargas,francisvargas@stonybrook.edu,AMS,Quantitative Finance,Spring,2021,Spring,2021,Fall,2022,$2b$12$8BIwxjbKH9r/6j2t12xb.eqybI38DFWUSVmRufSGdKVsJQDn6f9UC
+880888466,Brian,Delisle,briandelisle@stonybrook.edu,AMS,Computational Biology,Spring,2021,Spring,2021,Fall,2022,$2b$12$QHReOuilIIYw9Ub3nnG5lOCEZDfL/R8eNFa2PBnOjyaXn9gS6EmeK
+462944459,Michael,Carothers,michaelcarothers@stonybrook.edu,BMI,Translational Bioinformatics With Thesis,Spring,2021,Spring,2021,Fall,2022,$2b$12$W/700kX.XkxzEpRa0TV6leACwrQb5EwGkxruM8NRaW55i6phL0cry
+262117545,Audrey,Despres,audreydespres@stonybrook.edu,AMS,Operations Research,Spring,2021,Spring,2021,Fall,2022,$2b$12$j8iup7o6eCF2QXi67/BbC.PqOeTuKERoywYQv7rd8u7W9JA0Kr3Pe
+649613464,Earl,Griggs,earlgriggs@stonybrook.edu,BMI,Clinical Informatics With Project,Fall,2019,Fall,2019,Spring,2021,$2b$12$mLc4YoeFGL7ZZCUAm4d7S.5qiLSbtNfi67qz.ccw2qyJFkvOOY.nm
+197549995,Latoyia,Epps,latoyiaepps@stonybrook.edu,CSE,Special Project,Spring,2019,Fall,2019,Fall,2020,$2b$12$0qvL1T/LERYpo69KdVzH8O3md.bxo0yqGSn8rId53KVrrFO8qYaCC
+498587525,Carlos,Jones,carlosjones@stonybrook.edu,BMI,Clinical Informatics With Project,Spring,2020,Spring,2020,Fall,2021,$2b$12$usyaPIODoF0u/nIjCVVTLuGwaUm8MuFn7Ldce64R51CL3f7C1uLeS
+833459818,Chester,Nader,chesternader@stonybrook.edu,CSE,Advanced Project,Spring,2021,Spring,2021,Fall,2022,$2b$12$M2n11iSlpq39N34ioPKaQ.wW4goXoYpuwInaC3pTTEIC2cghRmwNO
+932349114,Erik,Weller,erikweller@stonybrook.edu,AMS,Quantitative Finance,Spring,2020,Fall,2020,Fall,2021,$2b$12$QEa/Hnf4Gclk48qnuPtMOOvm3JQz1uBg8rLZT8Fvqrcr2hZTP8bmu
+539431375,Audrey,Bradford,audreybradford@stonybrook.edu,CSE,Thesis,Spring,2020,Spring,2021,Fall,2021,$2b$12$38rTI8sRafiubktZyhiK7.tzu0TGhTtfINBGnmKBBRTfuFgl6Mtxu
+231504236,Benjamin,Spearman,benjaminspearman@stonybrook.edu,CSE,Special Project,Spring,2020,Fall,2020,Fall,2021,$2b$12$DaTqTEs0GHEy14K94VlQ1e0qVM/0HYtlsNaDSI6mYidZr7RNAnIDC
+751946819,Maria,King,mariaking@stonybrook.edu,AMS,Statistics,Spring,2020,Spring,2020,Fall,2021,$2b$12$D02U/Kb2uJWoKUHHReBeF.pxKdII2fCPYprlsp5EjUi/a.3q3md6S
+826462912,Teresa,Merritt,teresamerritt@stonybrook.edu,AMS,Operations Research,Spring,2021,Spring,2021,Fall,2022,$2b$12$H63KUq5F0aeuRMieqNibGumKiIGf9AuMc9y2B5gcWID95mr.OzvZe
+934341119,Bonnie,Payan,bonniepayan@stonybrook.edu,BMI,Translational Bioinformatics With Thesis,Fall,2019,Spring,2021,Spring,2021,$2b$12$dc/kGkX1v4a2QUXsUQ24cuAT4/jKTatkYdaC57UfWs.Nkg4.cACgi
+220175826,Sandra,Lopez,sandralopez@stonybrook.edu,AMS,Computational Biology,Spring,2020,Spring,2020,Fall,2021,$2b$12$G/aVBmPypaCkw8LrOSb4UuJolparaZHAZ/i3d2yjjfaBr6CW/878O
+411546270,Emmett,Burton,emmettburton@stonybrook.edu,AMS,Computational Applied Mathematics,Spring,2019,Fall,2019,Fall,2020,$2b$12$.hWEhuHtSF3yikfdZo.8R.mqzeQAcCd3SnYHDLCoBqNKeu68FDuCC
+284141957,Sarah,Robinson,sarahrobinson@stonybrook.edu,BMI,Clinical Informatics With Project,Fall,2019,Spring,2021,Spring,2021,$2b$12$rMwpSD8SnjaD4gcrJG9ZG.edkYERLoRlUEMSH21F7MTme0REn5S.q
+908804905,Chris,Barnes,chrisbarnes@stonybrook.edu,ESE,Thesis,Spring,2019,Fall,2020,Fall,2020,$2b$12$fxMczCenQX08LonAEW4JRONZbB0zDKCM.8rD6ZgDDkR2d5qNarUWO
+938329032,Charles,Porter,charlesporter@stonybrook.edu,CSE,Thesis,Spring,2020,Spring,2021,Fall,2021,$2b$12$ZC6Ibb4e3Efzbt0mmR/Mn.X5FmWY9MicmdfzHrVBDtvxBGWjRQ25.
+710337952,Kyle,Anderson,kyleanderson@stonybrook.edu,BMI,Imaging Informatics With Project,Spring,2019,Fall,2020,Fall,2020,$2b$12$qo7jhE0qJoIKpTZwate2ee9Y691WG91NBCczFujENyFiJcZpgDvm6
+557418308,Peggy,Hall,peggyhall@stonybrook.edu,BMI,Translational Bioinformatics With Thesis,Fall,2020,Spring,2021,Spring,2022,$2b$12$XrbFFurFFb77arNF0.qZXu1O4nNW3IgLtXISMUVlUsitJSJoPjeYy
+381592708,Michael,Dawson,michaeldawson@stonybrook.edu,BMI,Clinical Informatics With Project,Spring,2020,Spring,2020,Fall,2021,$2b$12$H3N3Qw2YJhh4YpaQEi6xp.MWBGZEapMv2WiN1jeenHOGl.2yOpVoK
+186012470,Willie,Cooke,williecooke@stonybrook.edu,ESE,Non-Thesis,Spring,2020,Spring,2020,Fall,2021,$2b$12$/G017eXGYrvOWcE8XYGqbeXWp9.5bkRuHy3OOoyAs4jyV2bWEYWV.
+409331712,Nancy,Rauf,nancyrauf@stonybrook.edu,CSE,Advanced Project,Fall,2019,Fall,2020,Spring,2021,$2b$12$xdKrZF/tmRcrXqL/kXIHtehKINq3QeTYCqFObJ7MiKZvVvhZkG1h6
+558966516,Gertrude,Bennett,gertrudebennett@stonybrook.edu,BMI,Clinical Informatics With Project,Spring,2020,Fall,2020,Fall,2021,$2b$12$LQjTcwdgYd2GK2iF0JFPfeEJfkvmtjL6YZZKhvzD8M71/h1iI4wv.
+328820562,Douglas,Chapman,douglaschapman@stonybrook.edu,CSE,Special Project,Spring,2019,Fall,2019,Fall,2020,$2b$12$FtxmscqETtRoMnyvCyXhSOSsAOzdScZso8jRGBnGrCLpvtnfV/aMu
+417323184,Albert,Coan,albertcoan@stonybrook.edu,AMS,Computational Applied Mathematics,Spring,2019,Spring,2020,Fall,2020,$2b$12$Bc5jDXlmUea5WynAYJo8puWDJs0Lcn3tKgOqtAfSDRO0nWLkXdc66
+696385372,Tyler,Morado,tylermorado@stonybrook.edu,CSE,Thesis,Spring,2019,Spring,2021,Fall,2020,$2b$12$3cVbC6BpEKP.mgFy.i/j2.c29dp1sQsRRy9B54SAPKnbIB6/mUAAW
+782571507,James,Sutton,jamessutton@stonybrook.edu,ESE,Non-Thesis,Spring,2020,Spring,2020,Fall,2021,$2b$12$J8IKNdxFS1IHpBVEui2GMu1qHK7QdHEjxHTvPkAD9F.jAfEtUqM5i
+595499177,Tammy,Welker,tammywelker@stonybrook.edu,AMS,Computational Applied Mathematics,Fall,2019,Spring,2020,Spring,2021,$2b$12$LJP/1UEgguF1XMNNJvQ33u/KCMhrcc3ubOrHSx4Tj9TCi75vk8OHq
