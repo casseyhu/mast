@@ -72,9 +72,7 @@ async function updateDegree(old_degree, new_degree) {
     // Just delete all the course requirements for this current version and recreate new 
     // courserequirement records. Might end up using memory faster (overflowing autoincrement 
     // in mysql).
-    // @todo: Make the types of the keys to be Sequelize.INTEGER.UNSIGNED? No negatives, anyways.
     old_course_ids = old_degree.dataValues.courseRequirement.split('`')
-    // console.log(old_course_ids)
     for(let i = 0; i < old_course_ids.length; i++){
       const delete_courseReq = await CourseRequirement.destroy({
         where:{

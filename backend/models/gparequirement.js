@@ -17,7 +17,7 @@
 module.exports = (sequelize, Sequelize) => {
   const GpaRequirement = sequelize.define('gparequirement', {
     requirementId: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.INTEGER.UNSIGNED,
       primaryKey: true,
       // autoIncrement: true,
       references: {

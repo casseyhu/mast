@@ -19,4 +19,7 @@ module.exports = function (app) {
 
   // Delete a student
   app.delete('/api/student/:sbuId', Student.delete)
-}
+
+  // Delete all students
+  app.post('/api/student/deleteall', Student.deleteAll)
+} 

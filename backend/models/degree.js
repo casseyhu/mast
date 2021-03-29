@@ -32,7 +32,7 @@ module.exports = (sequelize, Sequelize) => {
     track: Sequelize.STRING,
     requirementVersion: Sequelize.INTEGER,
     gradeRequirement: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.INTEGER.UNSIGNED,
       set(value) {
         // console.log("Setting the degree gradeRequirement with value: ", value)
         this.setDataValue('gradeRequirement', value)
@@ -40,7 +40,7 @@ module.exports = (sequelize, Sequelize) => {
       unique: true
     },
     gpaRequirement: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.INTEGER.UNSIGNED,
       set(value) {
         // console.log("Setting the degree gpaRequirement with value: ", value)
         this.setDataValue('gpaRequirement', value)
@@ -48,7 +48,7 @@ module.exports = (sequelize, Sequelize) => {
       unique: true
     },
     creditRequirement: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.INTEGER.UNSIGNED,
       set(value) {
         // console.log("Setting the degree creditRequirement with value: ", value)
         this.setDataValue('creditRequirement', value)

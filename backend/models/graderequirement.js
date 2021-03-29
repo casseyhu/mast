@@ -15,7 +15,7 @@
 module.exports = (sequelize, Sequelize) => {
   const GradeRequirement = sequelize.define('graderequirement', {
     requirementId: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.INTEGER.UNSIGNED,
       primaryKey: true,
       // autoIncrement: true,
       references: {

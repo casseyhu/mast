@@ -15,7 +15,7 @@
 module.exports = (sequelize, Sequelize) => {
   const CreditRequirement = sequelize.define('creditrequirement', {
     requirementId: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.INTEGER.UNSIGNED,
       primaryKey: true,
       // autoIncrement: true,
       references: {
