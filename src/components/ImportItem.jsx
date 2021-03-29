@@ -53,23 +53,7 @@ const ImportItem = (props) => {
       upload_path = 'courseoffering/upload';
     else if (props.header === "Student Data"){
       upload_path = 'student/upload'
-
-      axios.post(upload_path, firstFormData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(function () {
-        console.log('Successfully uploaded file');
-        setLoading(false)
-        setUploading(true)
-        setFirstFile("")
-      }).catch(function (err) {
-        console.log(err.response.data)
-        setLoading(false)
-        setFirstFile("")
-        setError(err.response.data)
-      });
-      
+      axiosPost(upload_path, firstFormData);
       return;
       upload_path = 'courseplan/upload'
       //also need to handle course plan upload
@@ -78,7 +62,11 @@ const ImportItem = (props) => {
       upload_path = 'courseplanitem/upload';
     setLoading(true)
     console.log(upload_path, formData)
-    axios.post(upload_path, formData, {
+    axiosPost(upload_path, formData);
+  }
+
+  function axiosPost(path, formData){
+    axios.post(path, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -93,7 +81,9 @@ const ImportItem = (props) => {
       setFile("")
       setError(err.response.data)
     });
-  }
+    return
+  } 
+
 
   const selectionHandler = (e) => {
     let value = Array.from(e, option => option.value);
