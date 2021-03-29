@@ -78,7 +78,7 @@
 
 .login-item {
   margin-top: 0;
-  margin-bottom: 0.1rem !important;
+  margin-bottom: 0.3rem !important;
   text-align: center;
   font-weight: 800;
 }
@@ -91,11 +91,13 @@
 }
 
 .gpd {
-  margin-left: 3rem;
+  margin-left: 4rem;
+  font-size: 16pt;
 }
 
 .student {
-  margin-left: 9rem;
+  margin-left: 10rem;
+  font-size: 16pt;
 }
 
 .gpd-selected {

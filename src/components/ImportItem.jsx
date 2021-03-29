@@ -26,7 +26,7 @@ const ImportItem = (props) => {
 
 
   const uploadFile = (e) => {
-    if (props.header === "Student Data" && (firstfile === "" || file === "")){
+    if (props.header === "Student Data" && (firstfile === "" || file === "")) {
       setError("Must have both student profile and course plan files to upload.")
       return;
     }
@@ -51,7 +51,7 @@ const ImportItem = (props) => {
       upload_path = 'degree/upload';
     else if (props.header === "Course Offerings")
       upload_path = 'courseoffering/upload';
-    else if (props.header === "Student Data"){
+    else if (props.header === "Student Data") {
       upload_path = 'student/upload';
       let storeFile = file;
       axiosPost(upload_path, firstFormData);
@@ -67,7 +67,7 @@ const ImportItem = (props) => {
     axiosPost(upload_path, formData);
   }
 
-  function axiosPost(path, formData){
+  function axiosPost(path, formData) {
     axios.post(path, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
@@ -84,23 +84,12 @@ const ImportItem = (props) => {
       setError(err.response.data)
     });
     return
-  } 
+  }
 
 
   const selectionHandler = (e) => {
     let value = Array.from(e, option => option.value);
     setDepts(value);
-  }
-
-  const dropStudents = () => {
-    console.log("Dropping students")
-    axios.post('student/deleteall', { data: 'nothing' }).then(function (response) {
-      console.log(response)
-    }).catch(function (err) {
-      console.log("Axios DELETE error")
-      console.log(err.response.data)
-
-    })
   }
 
   return (
@@ -117,12 +106,6 @@ const ImportItem = (props) => {
               style={{ width: "20" }}
             />
             {firstfile && <small style={{ marginLeft: "1.5rem" }}>{firstfile.name}</small>}
-            <Button
-              variant="round"
-              text="Delete Student Data"
-              onClick={() => dropStudents()}
-              style={{marginLeft:"auto"}}
-            />
           </div>
         )}
       {props.depts && props.sems && props.years
@@ -134,14 +117,14 @@ const ImportItem = (props) => {
               items={props.sems}
               disabled={false}
               onChange={(e) => setSem(e.value)}
-              style={{margin: '0 1rem 0 0'}}
+              style={{ margin: '0 1rem 0.5rem 0' }}
             />
             <Dropdown
               variant="single"
               items={props.years}
               disabled={false}
               onChange={(e) => setYear(e.value)}
-              style={{margin: '0 4rem 0 0'}}
+              style={{ margin: '0 4rem 0.5rem 0' }}
             />
             <div className="flex-horizontal" style={{ width: '540px' }}>
               <span style={{ width: '150px' }}>Departments</span>
@@ -150,7 +133,7 @@ const ImportItem = (props) => {
                 items={props.depts}
                 onChange={selectionHandler}
                 disabled={false}
-                style={{margin: '0 1rem 0 0'}}
+                style={{ margin: '0 1rem 0.5rem 0' }}
               />
             </div>
           </div>
@@ -174,6 +157,14 @@ const ImportItem = (props) => {
       <small className={error ? "error" : ""} style={{ marginLeft: '150px' }}>
         {(!error && file) ? file.name : error}
       </small>
+      {/* {props.first && (
+        <Button
+          variant="round"
+          text="Delete Student Data"
+          onClick={() => dropStudents()}
+          style={{ width: '200px'}}
+        />
+      )} */}
       {loading && <Ring size={120} color="rgb(30, 61, 107)" className="loading" />}
       {uploading && <Checkmark size='xxLarge' color="rgb(30, 61, 107)" className="checkmark" />}
     </div>

@@ -33,7 +33,9 @@ h4 {
   border-bottom: 2px solid var(--grey);
   width: 100%;
 }
-
+table {
+  margin-bottom: 5rem;
+}
 th {
   /* border-style: solid; */
   /* border-color: black;
@@ -41,6 +43,7 @@ th {
   background-color: #1e345acb;
   color: white;
   padding: 0.5rem;
+  text-align: center;
 }
 th, td {
   border-bottom: 1px solid #ddd;
@@ -49,9 +52,11 @@ td {
   padding: .2rem;
 }
 tr:hover {
-  background-color: #727a880e;
+  background-color: #727a8811;
 }
-
+.padleft {
+  padding-left: 1rem;
+}
 
 footer {
   position: absolute;
@@ -83,7 +88,9 @@ footer {
 .wrap {
   flex-wrap: wrap;
 }
-
+.center {
+  text-align: center;
+}
 .lr-padding {
   padding: 0 0.5rem 0 0.5rem;
 }
@@ -112,7 +119,7 @@ i.fa {
 }
 
 
-/* .information_box, .student_box{
+.information_box {
   position: relative;
   left: 0%;
   width: 100%;
@@ -123,7 +130,7 @@ i.fa {
   overflow: auto;
   padding: 15px;
   border-radius: 10px;
-} */
+}
 
 @media (max-width: 1000px) {
   .navbar-collapse {

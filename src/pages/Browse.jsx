@@ -45,33 +45,16 @@ class Browse extends Component {
       else if (typeof a[sortBy] === "number" || typeof a[sortBy] === "boolean")
         return a[sortBy] - b[sortBy];
     });
-    this.setState({students})
+    this.setState({ students })
   }
 
   componentDidMount() {
-    axios.get('/student'
+    axios.get('student'
     ).then(response => {
-      const foundStudents = response.data;
-      this.setState({students: foundStudents});
+      this.setState({ students: response.data });
     }).catch(err => {
       console.log(err)
-    }); 
-
-    axios.get('/degree'
-    ).then(response => {
-      const foundDegrees = response.data;
-      const students = this.state.students;
-      let degrees = {}
-      for (let i = 0; i < foundDegrees.length; i++) {
-        degrees[foundDegrees[i].degreeId] = foundDegrees[i].dept;
-      }
-      for (let i = 0; i < students.length; i++) {
-        students[i].degree = degrees[students[i].degreeId];
-      }
-      this.setState({students});
-    }).catch(err => {
-      console.log(err)
-    });  
+    });
   }
 
   render() {
@@ -82,38 +65,38 @@ class Browse extends Component {
           <Button variant="round" text="+ new student" onClick={() => { this.addStudent() }} style={{ marginTop: '1.5rem' }} />
         </div>
         <div >
-          <BrowseSearchbar parentCallback={this.setSortField}/>
+          <BrowseSearchbar parentCallback={this.setSortField} />
           <div className="studentTable">
             <table className="studentTable" style={{ borderColor: 'inherit' }}>
               <thead>
-                <tr style={{cursor: "pointer"}}>
+                <tr style={{ cursor: "pointer" }}>
                   <th scope='col' style={{ width: '13%' }} onClick={() => this.setSortField("lastName")}>Last Name</th>
-                  <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("firstName")}>First Name</th>
-                  <th scope='col' style={{ width: '10%' }} onClick={() => this.setSortField("sbuId")}>Student ID</th>
-                  <th scope='col' style={{ width: '10%' }} onClick={() => this.setSortField("satisfied")}>Satisfied</th>
-                  <th scope='col' style={{ width: '10%' }} onClick={() => this.setSortField("pending")}>Pending</th>
-                  <th scope='col' style={{ width: '10%' }} onClick={() => this.setSortField("unsatisfied")}>Unsatisfied</th>
+                  <th scope='col' style={{ width: '13%' }} onClick={() => this.setSortField("firstName")}>First Name</th>
+                  <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("sbuId")}>Student ID</th>
+                  <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("satisfied")}>Satisfied</th>
+                  <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("pending")}>Pending</th>
+                  <th scope='col' style={{ width: '8%' }} onClick={() => this.setSortField("unsatisfied")}>Unsatisfied</th>
                   <th scope='col' style={{ width: '10%' }} onClick={() => this.setSortField("degree")}>Degree</th>
-                  <th scope='col' style={{ width: '5%' }} onClick={() => this.setSortField("gpa")}>GPA</th>
-                  <th scope='col' style={{ width: '5%' }} onClick={() => this.setSortField("entrySemYear")}>Entry</th>
-                  <th scope='col' style={{ width: '5%' }} onClick={() => this.setSortField("gradSemYear")}>Grad</th>
+                  <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField("gpa")}>GPA</th>
+                  <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("entrySemYear")}>Entry</th>
+                  <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("gradSemYear")}>Grad</th>
                   <th scope='col' style={{ width: '10%' }} onClick={() => this.setSortField("graduated")}>Graduated</th>
                 </tr>
               </thead>
               <tbody>
                 {this.state.students && this.state.students.map(function (student) {
-                  return <tr>
-                    <td>{student.lastName}</td>
-                    <td>{student.firstName}</td>
-                    <td>{student.sbuId}</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>{student.degree}</td>
-                    <td>{student.gpa}</td>
-                    <td>{student.entrySem == "Fall" ? "F" : "S"} {student.entryYear%2000}</td>
-                    <td>{student.gradSem == "Fall" ? "F" : "S"} {student.gradYear%2000}</td>
-                    <td>{student.graduated ? "Yes" : "No"}</td>
+                  return <tr   >
+                    <td className="padleft">{student.lastName}</td>
+                    <td className="padleft">{student.firstName}</td>
+                    <td className="padleft">{student.sbuId}</td>
+                    <td className="center">0</td>
+                    <td className="center">0</td>
+                    <td className="center">0</td>
+                    <td className="center">{student.department}</td>
+                    <td className="center">-5.0</td>
+                    <td className="center">{student.entrySem == "Fall" ? "F" : "S"} {student.entryYear % 2000}</td>
+                    <td className="center">{student.gradSem == "Fall" ? "F" : "S"} {student.gradYear % 2000}</td>
+                    <td className="center">{student.graduated ? "Yes" : "No"}</td>
                   </tr>
                 })}
               </tbody>

@@ -139,6 +139,7 @@ async function uploadStudents(csv_file) {
       entrySemYear: semYear,
       gradSem: student_info.graduation_semester,
       gradYear: student_info.graduation_year,
+      department: student_info.department,
       degreeId: degree_dict[student_info.department + " " + student_info.track],
       graduated: graduated,
       comments: ""

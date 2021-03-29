@@ -38,6 +38,7 @@ module.exports = (sequelize, Sequelize) => {
     entrySemYear: Sequelize.INTEGER,
     gradSem: Sequelize.STRING,
     gradYear: Sequelize.INTEGER,
+    department: Sequelize.STRING,
     degreeId: Sequelize.INTEGER,
     graduated: Sequelize.BOOLEAN,
     comments: Sequelize.TEXT('long')
