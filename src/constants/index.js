@@ -15,7 +15,7 @@ export const YEARS = [
   { value: '2024', label: '2024' },
   { value: '2025', label: '2025' }
 ];
-// export const DEPARTMENTS = ["AMS (Applied Mathematics)", "BMI (Biomedical Informatics)", "CSE (Computer Science)", "ESE (Computer Engineering)"];
+
 export const DEPARTMENTS = [
   { value: 'AMS', label: 'AMS' },
   { value: 'BMI', label: 'BMI' },

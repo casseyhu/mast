@@ -25,13 +25,8 @@ const NavigationBar = (props) => {
   if (userType === '')
     return <> </>
   return (
-    <Navbar expand="lg" variant="dark">
-      { (userType === 'student')
-        && <Navbar.Brand href="/student">MAST.</Navbar.Brand>
-      }
-      { (userType === 'gpd')
-        && <Navbar.Brand href="/browse">MAST.</Navbar.Brand>
-      }
+    <Navbar className="" expand="lg" variant="dark">
+      <Navbar.Brand href={(userType === 'student') ? "/student" : "/browse"}>MAST.</Navbar.Brand>
       <Navbar.Toggle
         aria-controls="basic-navbar-nav"
         className="toggler"
@@ -76,7 +71,7 @@ const NavigationBar = (props) => {
           }
           <Nav.Link className="nav-link" href={process.env.PUBLIC_URL + "/bulletin"}>
             bulletin
-                    </Nav.Link>
+          </Nav.Link>
 
         </Nav>
       </Navbar.Collapse>

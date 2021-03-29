@@ -13,6 +13,7 @@
   box-sizing: border-box;
   margin: 0;
   font-family: "Montserrat", sans-serif;
+  font-size: 15px;
 }
 
 a {
@@ -80,7 +81,7 @@ footer {
 
 
 i.fa {
-  line-height: 3.4rem; 
+  line-height: 3.2rem; 
   float: right;
   color: var(--charcoal);
   margin-right: 0;
@@ -98,38 +99,6 @@ i.fa {
   transform: translateX(-40px);
 }
 
-.landing-background {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  background-color: var(--charcoal);
-  z-index: -1;
-}
-
-.login-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
-
-.landing-left-svg {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  z-index: -1;
-}
-
-.landing-right-svg {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
-}
-
 
 .information_box, .student_box{
   position: relative;
@@ -144,3 +113,12 @@ i.fa {
   border-radius: 10px;
 }
 
+@media (max-width: 1000px) {
+  .navbar-collapse {
+    z-index: 10;
+  }
+  .navbar-dark .navbar-nav .nav-link {
+    color: var(--charcoal) !important;
+    margin-left: auto !important;
+  }
+}

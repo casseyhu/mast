@@ -37,10 +37,10 @@ class Browse extends Component {
           <h1>Browse Student</h1>
           <Button variant="round" text="+ new student" onClick={() => { this.addStudent() }} style={{ marginTop: '1.5rem' }}/>
         </div>
-        <div className="student_box">
+        <div>
         <BrowseSearchbar parentCallback={this.searchCallback} />
-        <div className="studentTable">
-          <table className="studentTable" style={{ borderColor: 'inherit' }}>
+        <div>
+          <table style={{ borderColor: 'inherit' }}>
             <thead>
               <tr>
                 <th scope='col' style={{ width: '10%' }}>Last Name</th>

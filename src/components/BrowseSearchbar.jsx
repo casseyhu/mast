@@ -3,13 +3,8 @@ import Button from './Button';
 import Dropdown from './Dropdown';
 import axios from '../constants/axios';
 import InputField from './InputField'
-import { SORT_FIELDS, BOOLEAN } from '../constants';
-import { SEARCH_ICON } from '../constants/svgs'
-import {
-  Container,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { SORT_FIELDS, BOOLEAN, DEPARTMENTS, SEMESTERS, YEARS } from '../constants';
+import { Container, } from "react-bootstrap";
 
 const BrowseSearchbar = (props) => {
 
@@ -47,13 +42,13 @@ const BrowseSearchbar = (props) => {
   }
 
   return (
-    <Container style={{ padding: "0" }}>
+    <Container>
       {/* Main search bar fields */}
       <div className="flex-horizontal wrap justify-content-between">
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
           <span style={{ marginRight: '1rem' }}>Search</span>
           <InputField
-            type="search"
+            type="text"
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -65,13 +60,13 @@ const BrowseSearchbar = (props) => {
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
           <span style={{ marginRight: '1rem' }}>Sort By</span>
           <Dropdown items={SORT_FIELDS} onChange={setSort} disabled={false} style={{ width: '220px', marginRight: '1rem' }} />
-          <Button variant="round" text="go" onClick={applyFilters} style={{ width: '70px' }} />
+          <Button variant="round" text="find" onClick={applyFilters} style={{ width: '70px' }} />
         </div>
       </div>
       {/* Advanced dropdown filters */}
       {expanded && (
         <div className="advancedFilters">
-          <div className="flex-horizontal wrap " >
+          <div className="flex-horizontal wrap" >
             <div className="flex-horizontal" style={{ width: 'fit-content' }}>
               <span className="filter-span">SBU ID:</span>
               <InputField
@@ -84,12 +79,12 @@ const BrowseSearchbar = (props) => {
             </div>
             <div className="flex-horizontal" style={{ width: 'fit-content' }}>
               <span className="filter-span">Degree:</span>
-              <InputField
+              <Dropdown
                 className="filter-component"
-                type="search"
-                placeholder="CSE, AMS, ..."
-                value={degree}
-                onChange={(e) => setDegree(e.target.value)}
+                variant="single"
+                items={DEPARTMENTS}
+                onChange={(e) => { setDegree(e.value) }}
+                disabled={false}
               />
             </div>
             <div className="flex-horizontal" style={{ width: 'fit-content' }}>
@@ -104,27 +99,28 @@ const BrowseSearchbar = (props) => {
             </div>
             <div className="flex-horizontal" style={{ width: 'fit-content' }}>
               <span className="filter-span">Entry Sem:</span>
-              <InputField
+              <Dropdown
                 className="filter-component"
-                type="search"
-                placeholder="Fall, Spring, .."
-                value={entrySem}
-                onChange={(e) => setEntrySem(e.target.value)}
+                variant="single"
+                items={SEMESTERS}
+                onChange={(e) => { setEntrySem(e.value) }}
+                disabled={false}
               />
             </div>
             <div className="flex-horizontal" style={{ width: 'fit-content' }}>
               <span className="filter-span">Grad Sem:</span>
-              <InputField
+              <Dropdown
                 className="filter-component"
-                type="search"
-                placeholder="Fall, Spring, .."
-                value={gradSem}
-                onChange={(e) => setGradSem(e.target.value)}
+                variant="single"
+                items={SEMESTERS}
+                onChange={(e) => { setGradSem(e.value) }}
+                disabled={false}
               />
             </div>
             <div className="flex-horizontal" style={{ width: 'fit-content' }}>
               <span className="filter-span">Graduated:</span>
               <Dropdown
+                className="filter-component"
                 variant="single"
                 items={BOOLEAN}
                 onChange={(e) => { setGraduated(e.value) }}
@@ -134,22 +130,22 @@ const BrowseSearchbar = (props) => {
 
             <div className="flex-horizontal" style={{ width: 'fit-content' }}>
               <span className="filter-span">Entry Year:</span>
-              <InputField
+              <Dropdown
                 className="filter-component"
-                type="search"
-                placeholder="2021, ..."
-                value={entryYear}
-                onChange={(e) => setEntryYear(e.target.value)}
+                variant="single"
+                items={YEARS}
+                onChange={(e) => { setEntryYear(e.value) }}
+                disabled={false}
               />
             </div>
             <div className="flex-horizontal" style={{ width: 'fit-content' }}>
               <span className="filter-span">Grad Year:</span>
-              <InputField
+              <Dropdown
                 className="filter-component"
-                type="search"
-                placeholder="2021, ..."
-                value={gradYear}
-                onChange={(e) => setGradYear(e.target.value)}
+                variant="single"
+                items={YEARS}
+                onChange={(e) => { setGradYear(e.value) }}
+                disabled={false}
               />
             </div>
           </div>
