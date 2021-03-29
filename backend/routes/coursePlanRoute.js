@@ -6,8 +6,15 @@ module.exports = function (app) {
   app.post('/api/courseplan/create', CoursePlan.createPlan);
 
   // Create all courses from file
-  app.post('/api/courseplan/upload', CoursePlan.upload);
+  app.post('/api/courseplan/upload', CoursePlan.uploadPlans);
+
+  //find all course plans
+  app.get('/api/courseplan', CoursePlan.findAll);
 
   // Create new course plan item
   app.post('/api/courseplanitem/create', CoursePlan.createItem);
+
+  app.post('/api/courseplanitem/upload', CoursePlan.uploadPlans);
+
+  app.get('/api/courseplanitem/findItem', CoursePlan.findItems);
 }

@@ -1,5 +1,9 @@
 const database = require('../config/database.js');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
+const Student = database.Student;
+const Course = database.Course;
 const CoursePlan = database.CoursePlan;
 const CoursePlanItem = database.CoursePlanItem;
 
@@ -16,7 +20,7 @@ exports.createPlan = (req, res) => {
   res.send(req);
 }
 
-exports.upload = (req, res) => {
+exports.uploadPlans = (req, res) => {
   let form = new IncomingForm();
   form.parse(req).on('file', (field, file) => {
     if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel')
@@ -41,12 +45,24 @@ exports.upload = (req, res) => {
             res.status(500).send("Cannot parse CSV file - headers do not match specifications")
             return
           }
-          uploadCoursePlans(results);
+          Course.findAll().then(courses => {
+            uploadCoursePlans(results, courses);
+          }).catch(err => {
+            res.status(500).send("Error: " + err);
+          })
         }
       })
       if (isValid)
         res.status(200).send("Success")
     }
+  })
+}
+
+exports.findAll = (req, res) => {
+  CoursePlan.findAll().then(coursePlan => {
+    res.send(coursePlan);
+  }).catch(err => {
+    res.status(500).send("Error: " + err);
   })
 }
 
@@ -60,6 +76,7 @@ exports.createItem = (req, res) => {
 
 
 async function uploadCoursePlans(csv_file) {
+  let students_planid = {}
   for (let i = 0; i < csv_file.data.length - 1; i++) {
     if(!csv_file.data[i].sbu_id){
       continue
@@ -70,12 +87,11 @@ async function uploadCoursePlans(csv_file) {
       studentId: csv_file.data[i].sbu_id,
       coursePlanState: 0
     }
-
     let found = await CoursePlan.findOne({ where: condition })
     if (!found){
       found = await CoursePlan.create(values)
     }
-    
+    students_planid[csv_file.data[i].sbu_id] = found.dataValues.coursePlanId
     //create course plan item here
     condition = {
       coursePlanId: found.dataValues.coursePlanId,
@@ -101,6 +117,59 @@ async function uploadCoursePlans(csv_file) {
     else{
       course = await CoursePlanItem.create(values)
     }
-    // CoursePlanItem.create
   }
+  Course.findAll().then(courses => {
+    let course_credit = {}
+    for(let j = 0; j < courses.length; j++){
+      course_credit[courses[j].courseId] = courses[j].credits
+    }
+    calculateGPA(students_planid, course_credit)
+  })
+  .catch(err => { 
+    console.log(err)
+  })
+}
+async function updateStudent(GPA, key){
+  if(key && !isNaN(GPA)){
+    GPA = GPA.toFixed(2)
+    await Student.update({gpa : GPA}, {where: {sbuId: key}})
+  }
+}
+async function calculateGPA(students_planid, course_credit){
+  let grades_point = {'A': 4.0, 'A-': 3.67, 'B+': 3.3, 'B': 3, 'B-': 2.67, 'C+': 2.3, 'C': 2, 'C-': 1.67, 'D+': 1.3, 'D': 1}
+  for(let key in students_planid){
+    let condition = { coursePlanId: students_planid[key] }
+    await CoursePlanItem.findAll({
+      where: condition
+    }).then(items => {
+      if(items){
+        const foundItems = items.filter(item => (item.grade !== null && item.grade !== ""))
+        let earned_points = 0
+        let tot_points = 0
+        for(let i = 0; i < foundItems.length; i++){
+          earned_points += grades_point[foundItems[i].grade] * course_credit[foundItems[i].courseId]
+          tot_points += course_credit[foundItems[i].courseId]
+        }
+        let gpa = (earned_points/tot_points)
+        updateStudent(gpa, key)
+      }
+    })
+    .catch(err => { 
+      console.log(err)
+    })
+  }
+}
+
+/* 
+  Course Plan Items
+*/
+
+exports.findItems = (req, res) => {
+  CoursePlanItem.findAll({where: { grade:  {[Op.not]: req.query.grade } }})
+  .then(foundGrades => {
+    res.status(200).send(foundGrades)
+  })
+  .catch(err => { 
+    console.log(err)
+  })
 }
