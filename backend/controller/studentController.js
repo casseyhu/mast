@@ -9,7 +9,6 @@ const Degree = database.Degree;
 const { IncomingForm } = require('formidable');
 const fs = require('fs');
 const Papa = require('papaparse');
-const { sequelize } = require('../config/database.js');
 
 // Create a Student from Add Student 
 exports.create = (req, res) => {
@@ -38,12 +37,18 @@ exports.upload = (req, res) => {
         complete: (results) => {
           var header = results.meta['fields']
           if (header[0] !== 'sbu_id' 
-              && header[1] !== 'department'
-              && header[2] !== 'course_num'
-              && header[3] !== 'section'
-              && header[4] !== 'semester'
-              && header[5] !== 'year'
-              && header[6] !== 'grade') {
+              || header[1] !== 'first_name'
+              || header[2] !== 'last_name'
+              || header[3] !== 'email'
+              || header[4] !== 'department'
+              || header[5] !== 'track'
+              || header[6] !== 'entry_semester'
+              || header[7] !== 'entry_year'
+              || header[8] !== 'requirement_version_semester'
+              || header[9] !== 'requirement_version_year'
+              || header[10] !== 'graduation_semester'
+              || header[11] !== 'graduation_year'
+              || header[12] !== 'password') {
             isValid = false
             console.log('invalid csv')
             res.status(500).send("Cannot parse CSV file - headers do not match specifications")
@@ -152,17 +157,3 @@ async function uploadStudents(csv_file) {
   return true
 }
 // https://www.freecodecamp.org/news/node-js-child-processes-everything-you-need-to-know-e69498fe970a/
-
-
-exports.deleteAll = (req, res) => {
-  Student.drop().then(() => {
-    res.status(200).send("Deleted student data.");
-    database.sequelize.sync({ force: false }).then(() => {
-      console.log("Synced database");
-    })
-  }).catch(err => {
-    console.log("Error")
-    console.log(err)
-    res.status(500).send("Error: " + err);
-  })
-}

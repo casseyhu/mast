@@ -52,16 +52,18 @@ const ImportItem = (props) => {
     else if (props.header === "Course Offerings")
       upload_path = 'courseoffering/upload';
     else if (props.header === "Student Data"){
-      upload_path = 'student/upload'
+      upload_path = 'student/upload';
+      let storeFile = file;
       axiosPost(upload_path, firstFormData);
-      return;
-      upload_path = 'courseplan/upload'
+      setFirstFile("")
+      setFile(storeFile)
+      upload_path = 'courseplan/upload';
       //also need to handle course plan upload
     }
     else // Uploading grades. 
       upload_path = 'courseplanitem/upload';
+
     setLoading(true)
-    console.log(upload_path, formData)
     axiosPost(upload_path, formData);
   }
 
@@ -90,17 +92,6 @@ const ImportItem = (props) => {
     setDepts(value);
   }
 
-  const dropStudents = () => {
-    console.log("Dropping students")
-    axios.post('student/deleteall', { data: 'nothing' }).then(function (response) {
-      console.log(response)
-    }).catch(function (err) {
-      console.log("Axios DELETE error")
-      console.log(err.response.data)
-
-    })
-  }
-
   return (
     <div style={{ margin: "1rem 0" }}>
       <h4>{props.header}</h4>
@@ -115,12 +106,6 @@ const ImportItem = (props) => {
               style={{ width: "20" }}
             />
             {firstfile && <small style={{ marginLeft: "1.5rem" }}>{firstfile.name}</small>}
-            <Button
-              variant="round"
-              text="Delete Student Data"
-              onClick={() => dropStudents()}
-              style={{marginLeft:"auto"}}
-            />
           </div>
         )}
       {props.depts && props.sems && props.years
