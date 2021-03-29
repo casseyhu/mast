@@ -32,12 +32,7 @@ const BrowseSearchbar = (props) => {
     // After querying, send the results to the parent (Browse.jsx)
     // to set the table of students to view. 
     console.log("Query DB with all filters (all states).")
-
-    // axios.get('/???',{
-    //  ...
-    // });
-
-    props.parentCallback(/*results*/)
+    props.parentCallback(sortBy.value)
   }
 
 
@@ -45,6 +40,7 @@ const BrowseSearchbar = (props) => {
     console.log("Clicked advanced options. Set state to: ", !expanded)
     setExpanded(!expanded)
   }
+  
 
   return (
     <Container style={{ padding: "0" }}>

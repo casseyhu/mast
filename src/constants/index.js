@@ -37,14 +37,18 @@ export const TESTING = [
 ];
 
 export const SORT_FIELDS = [
-  { value: 'lastname', label: 'Last Name'},
-  { value: 'firstname', label: 'First Name'},
-  { value: 'sbuid', label: 'Student ID'},
+  { value: 'lastName', label: 'Last Name'},
+  { value: 'firstName', label: 'First Name'},
+  { value: 'sbuId', label: 'Student ID'},
   { value: 'satisfied', label: 'Satisfied'},
   { value: 'pending', label: 'Pending'},
   { value: 'unsatisfied', label: 'Unsatisfied'},
   { value: 'degree', label: 'Degree'},
   { value: 'gpa', label: 'GPA'},
+  { value: 'entrySemYear', label: 'Entry'},
+  { value: 'gradSemYear', label: 'Grad'},
+  { value: 'graduated', label: 'Graduated'}
+
 ]
 
 export const BOOLEAN = [

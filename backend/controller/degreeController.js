@@ -30,6 +30,15 @@ exports.upload = (req, res) => {
   })
 }
 
+//Find all degrees
+exports.findAll = (req, res) => {
+  Degree.findAll().then(degrees => {
+    res.send(degrees);
+  }).catch(err => {
+    res.status(500).send("Error: " + err);
+  })
+}
+
 
 async function importDegree(json_file) {
   for (let deg_and_track of Object.keys(json_file)) {
