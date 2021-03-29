@@ -9,6 +9,7 @@ const Degree = database.Degree;
 const { IncomingForm } = require('formidable');
 const fs = require('fs');
 const Papa = require('papaparse');
+const { sequelize } = require('../config/database.js');
 
 // Create a Student from Add Student 
 exports.create = (req, res) => {
@@ -151,3 +152,17 @@ async function uploadStudents(csv_file) {
   return true
 }
 // https://www.freecodecamp.org/news/node-js-child-processes-everything-you-need-to-know-e69498fe970a/
+
+
+exports.deleteAll = (req, res) => {
+  Student.drop().then(() => {
+    res.status(200).send("Deleted student data.");
+    database.sequelize.sync({ force: false }).then(() => {
+      console.log("Synced database");
+    })
+  }).catch(err => {
+    console.log("Error")
+    console.log(err)
+    res.status(500).send("Error: " + err);
+  })
+}

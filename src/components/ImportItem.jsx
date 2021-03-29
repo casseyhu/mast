@@ -90,6 +90,17 @@ const ImportItem = (props) => {
     setDepts(value);
   }
 
+  const dropStudents = () => {
+    console.log("Dropping students")
+    axios.post('student/deleteall', { data: 'nothing' }).then(function (response) {
+      console.log(response)
+    }).catch(function (err) {
+      console.log("Axios DELETE error")
+      console.log(err.response.data)
+
+    })
+  }
+
   return (
     <div style={{ margin: "1rem 0" }}>
       <h4>{props.header}</h4>
@@ -104,6 +115,12 @@ const ImportItem = (props) => {
               style={{ width: "20" }}
             />
             {firstfile && <small style={{ marginLeft: "1.5rem" }}>{firstfile.name}</small>}
+            <Button
+              variant="round"
+              text="Delete Student Data"
+              onClick={() => dropStudents()}
+              style={{marginLeft:"auto"}}
+            />
           </div>
         )}
       {props.depts && props.sems && props.years
