@@ -5,6 +5,9 @@ module.exports = function (app) {
   // Upload degree
   app.post('/api/degree/upload', Degree.upload);
 
+  // Get all degrees
+  app.get('/api/degree', Degree.findAll);
+
   // // Create new grade requirement object
   // app.post('/api/degree/gradereq/create', Degree.createGrade);
 

@@ -26,6 +26,7 @@ ul {
 
 h1 {
   margin-top: 1.5rem;
+  font-size: 32px;
 }
 
 h4 {
@@ -34,12 +35,24 @@ h4 {
 }
 
 th {
-  border-style: solid;
-  border-color: black;
-  border-width: 1px;
-  background-color: #D7DDE2;
+  /* border-style: solid; */
+  /* border-color: black;
+  border-width: 1px; */
+  background-color: #1e345acb;
+  color: white;
   padding: 0.5rem;
 }
+th, td {
+  border-bottom: 1px solid #ddd;
+}
+td {
+  padding: .2rem;
+}
+tr:hover {
+  background-color: #727a880e;
+}
+
+
 footer {
   position: absolute;
   bottom: 0;
@@ -71,6 +84,10 @@ footer {
   flex-wrap: wrap;
 }
 
+.lr-padding {
+  padding: 0 0.5rem 0 0.5rem;
+}
+
 .error {
   color: #a8201a;
 }
@@ -81,18 +98,13 @@ footer {
 
 
 i.fa {
-  line-height: 3.2rem; 
-  float: right;
-  color: var(--charcoal);
+  line-height: 3rem; 
+  /* float: right; */
+  color: rgba(52, 64, 85, 0.85);
   margin-right: 0;
 }
 
-/* .icon {
-  padding: 15px;
-  color: rgb(49, 0, 128);
-  width: 70px;
-  text-align: left;
-} */
+
 
 .inputContainer i {
   position: absolute;
@@ -100,7 +112,7 @@ i.fa {
 }
 
 
-.information_box, .student_box{
+/* .information_box, .student_box{
   position: relative;
   left: 0%;
   width: 100%;
@@ -111,7 +123,7 @@ i.fa {
   overflow: auto;
   padding: 15px;
   border-radius: 10px;
-}
+} */
 
 @media (max-width: 1000px) {
   .navbar-collapse {

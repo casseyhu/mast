@@ -8,6 +8,7 @@ nav {
 .navbar-dark .navbar-nav .nav-link, .navbar-brand {
   color: white;
   margin: 0 0.7rem;
+  font-size: 16px;
 }
 
 .toggler {
@@ -70,6 +71,7 @@ nav {
   background-color: transparent;
   border: none;
   width: fit-content;
+  font-size: 14px;
 }
 
 .advancedButton:hover{
@@ -78,13 +80,16 @@ nav {
 
 .advancedFilters{
   height: auto;
-  /* padding: 0.5rem 1rem; */
-  /* background-color:red; */
+  /* padding: 0.5rem; */
+  /* background-color: var(--grey); */
 }
 
+.filter-span-reg {
+  margin-right: 0.7rem;
+}
 .filter-span {
-  width: 82px;
-  font-size: 12px !important;
+  width: 90px;
+  /* font-size: 14px !important; */
 }
 .filter-component {
   width: 150px;

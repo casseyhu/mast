@@ -66,7 +66,7 @@ class App extends Component {
           {user && <Route path="/bulletin" component={(props) => <Bulletin {...props} user={this.state.user} />} />}
           {user && <Route path="/suggest" component={Suggest} />}
           {user && <Route exact path="/student" component={ViewStudent} />}
-          {user && <Route path="/student/edit" component={AddEditStudent} />}
+          {user && <Route path="/student/edit" component={(props) => <AddEditStudent {...props} user={this.state.user} />} />}
           {user && <Route exact path="/courseplan" component={ViewPlan} />}
           {user && <Route path="/courseplan/edit" component={EditPlan} />}
           <Route component={NotFound404} />

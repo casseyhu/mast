@@ -27,12 +27,7 @@ const BrowseSearchbar = (props) => {
     // After querying, send the results to the parent (Browse.jsx)
     // to set the table of students to view. 
     console.log("Query DB with all filters (all states).")
-
-    // axios.get('/???',{
-    //  ...
-    // });
-
-    props.parentCallback(/*results*/)
+    props.parentCallback(sortBy.value)
   }
 
 
@@ -40,13 +35,14 @@ const BrowseSearchbar = (props) => {
     console.log("Clicked advanced options. Set state to: ", !expanded)
     setExpanded(!expanded)
   }
+  
 
   return (
-    <Container>
+    <Container style={{margin:'0.2rem 0 0.5rem 0'}}>
       {/* Main search bar fields */}
       <div className="flex-horizontal wrap justify-content-between">
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
-          <span style={{ marginRight: '1rem' }}>Search</span>
+          <span className="filter-span-reg">Search</span>
           <InputField
             type="text"
             placeholder="Name"
@@ -58,7 +54,7 @@ const BrowseSearchbar = (props) => {
           <button className="advancedButton" onClick={expandFilters}>Advanced Options</button>
         </div>
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
-          <span style={{ marginRight: '1rem' }}>Sort By</span>
+          <span className="filter-span-reg">Sort By</span>
           <Dropdown items={SORT_FIELDS} onChange={setSort} disabled={false} style={{ width: '220px', marginRight: '1rem' }} />
           <Button variant="round" text="find" onClick={applyFilters} style={{ width: '70px' }} />
         </div>

@@ -41,7 +41,7 @@ class Bulletin extends Component {
               variant="single"
               items={DEPARTMENTS}
               onChange={this.setDept}
-              style={{ marginTop: '1.5rem' }}
+              style={{ margin: '1.5rem 0 0 0' }}
             />
           )}
         </div>
