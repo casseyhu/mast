@@ -53,9 +53,12 @@ class Browse extends Component {
   }
 
   handleResize = () => {
+    let numPerPage = Math.max(1, Math.ceil((window.innerHeight - 350) / 30))
+    let maxPage = Math.ceil(this.state.students.length / numPerPage)
     this.setState({
-      numPerPage: Math.ceil((window.innerHeight - 350) / 30),
-      maxPage: Math.ceil(this.state.students.length / Math.ceil((window.innerHeight - 350) / 30))
+      numPerPage: numPerPage,
+      maxPage: maxPage,
+      page: Math.min(this.state.page, maxPage)
     })
   }
 
