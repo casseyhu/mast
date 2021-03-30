@@ -96,10 +96,19 @@ nav {
   margin-right: 1.5rem;
 }
 
-.studentTable {
-  margin-left: 0.25rem;
-}
 
+/* Pagination CSS */
+.page-link {
+  color: var(--charcoal);
+}
+.page-link:hover {
+  background-color: rgba(197, 197, 197, 0);
+  color: var(--charcoal);
+}
+.page-item.active .page-link {
+  background-color: var(--charcoal);
+  border-color: var(--charcoal);
+}
 
 
 /* Extras */

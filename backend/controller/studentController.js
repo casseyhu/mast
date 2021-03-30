@@ -36,19 +36,19 @@ exports.upload = (req, res) => {
         dynamicTyping: true,
         complete: (results) => {
           var header = results.meta['fields']
-          if (header[0] !== 'sbu_id' 
-              || header[1] !== 'first_name'
-              || header[2] !== 'last_name'
-              || header[3] !== 'email'
-              || header[4] !== 'department'
-              || header[5] !== 'track'
-              || header[6] !== 'entry_semester'
-              || header[7] !== 'entry_year'
-              || header[8] !== 'requirement_version_semester'
-              || header[9] !== 'requirement_version_year'
-              || header[10] !== 'graduation_semester'
-              || header[11] !== 'graduation_year'
-              || header[12] !== 'password') {
+          if (header[0] !== 'sbu_id'
+            || header[1] !== 'first_name'
+            || header[2] !== 'last_name'
+            || header[3] !== 'email'
+            || header[4] !== 'department'
+            || header[5] !== 'track'
+            || header[6] !== 'entry_semester'
+            || header[7] !== 'entry_year'
+            || header[8] !== 'requirement_version_semester'
+            || header[9] !== 'requirement_version_year'
+            || header[10] !== 'graduation_semester'
+            || header[11] !== 'graduation_year'
+            || header[12] !== 'password') {
             isValid = false
             console.log('invalid csv')
             res.status(500).send("Cannot parse CSV file - headers do not match specifications")
@@ -117,13 +117,13 @@ async function uploadStudents(csv_file) {
   const degrees = await Degree.findAll()
   let degree_dict = {};
   const currentGradYear = 202101
-  for(let i = 0; i < degrees.length; i++){
+  for (let i = 0; i < degrees.length; i++) {
     degree_dict[degrees[i].dept + " " + degrees[i].track] = degrees[i].degreeId
   }
   let tot = 0;
   for (let i = 0; i < csv_file.data.length - 1; i++) {
     student_info = csv_file.data[i]
-    let sems_dict = {'Spring': '02', 'Summer': '06', 'Fall': '08', 'Winter': '01'};
+    let sems_dict = { 'Spring': '02', 'Summer': '06', 'Fall': '08', 'Winter': '01' };
     let semYear = Number(student_info.entry_year + sems_dict[student_info.entry_semester])
     let graduated = Number(student_info.graduation_year + sems_dict[student_info.graduation_semester]) <= currentGradYear ? 1 : 0
     const condition = { sbuId: student_info.sbu_id }
@@ -144,15 +144,13 @@ async function uploadStudents(csv_file) {
       graduated: graduated,
       comments: ""
     }
-    tot+=1
+    tot += 1
     const found = await Student.findOne({ where: condition })
-    if (found) {
+    if (found)
       //console.log(condition)
-      const course = await Student.update(values, { where: condition })
-    }
-    else{
-      const course = await Student.create(values)
-    }
+      await Student.update(values, { where: condition })
+    else
+      await Student.create(values)
   }
   console.log("Done importing " + tot + " students from csv")
   return true
@@ -167,8 +165,7 @@ exports.deleteAll = (req, res) => {
       console.log("Synced database");
     })
   }).catch(err => {
-    console.log("Error")
-    console.log(err)
+    console.log("Error" + err)
     res.status(500).send("Error: " + err);
   })
-} 
+}

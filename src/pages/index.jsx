@@ -16,7 +16,7 @@ const MainPage = (props) => {
 			props.history.push('/student')
 		else if (decoded.type === 'gpd')
 			props.history.push('/browse')
-	}, [])
+	}, [props.history])
 
 	return (
 		<Container fluid="lg" className="container" style={{ height: "100vh" }}>

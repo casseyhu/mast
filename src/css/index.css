@@ -16,6 +16,8 @@
   font-size: 15px;
 }
 
+
+/* Tag styling CSS */
 a {
   text-decoration: none !important;
 }
@@ -33,30 +35,6 @@ h4 {
   border-bottom: 2px solid var(--grey);
   width: 100%;
 }
-table {
-  margin-bottom: 5rem;
-}
-th {
-  /* border-style: solid; */
-  /* border-color: black;
-  border-width: 1px; */
-  background-color: #1e345acb;
-  color: white;
-  padding: 0.5rem;
-  text-align: center;
-}
-th, td {
-  border-bottom: 1px solid #ddd;
-}
-td {
-  padding: .2rem;
-}
-tr:hover {
-  background-color: #727a8811;
-}
-.padleft {
-  padding-left: 1rem;
-}
 
 footer {
   position: absolute;
@@ -69,6 +47,33 @@ footer {
   color: white;
 }
 
+
+/* Table styling CSS */
+table {
+  margin-bottom: 0.5rem;
+  display: block;
+}
+th {
+  border: none;
+  background-color: #1e345acb;
+  color: white;
+  padding: 0.5rem;
+  text-align: center;
+}
+td {
+  padding: .2rem;
+  border-bottom: 1px solid #ddd;
+}
+tr:hover {
+  background-color: #727a8811;
+}
+
+.padleft {
+  padding-left: 1rem;
+}
+
+
+/* Display CSS */
 .flex-horizontal {
   display: flex;
   flex-direction: row;
@@ -93,6 +98,9 @@ footer {
 }
 .lr-padding {
   padding: 0 0.5rem 0 0.5rem;
+}
+.ud-padding {
+  padding: 0.5rem 0 0.5rem 0;
 }
 
 .error {
@@ -121,19 +129,19 @@ i.fa {
 
 .information_box {
   position: relative;
-  left: 0%;
   width: 100%;
   border: 1.2px solid;
   min-height: 75vh;
   background-color: white;
-  display: inline-block;
-  overflow: auto;
-  padding: 15px;
-  border-radius: 10px;
+  padding: 1rem;
+  border-radius: 0.5rem;
 }
 
+
+/* Media queries CSS */
 @media (max-width: 1000px) {
   .navbar-collapse {
+    padding-top: 0.3rem;
     z-index: 10;
   }
   .navbar-dark .navbar-nav .nav-link {
