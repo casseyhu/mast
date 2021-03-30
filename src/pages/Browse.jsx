@@ -47,6 +47,10 @@ class Browse extends Component {
       if (typeof a[sortBy] === "string")
         return a[sortBy].localeCompare(b[sortBy]);
       else if (typeof a[sortBy] === "number" || typeof a[sortBy] === "boolean")
+        if (a === null)
+          return 1;
+        else if (b === null)
+          return -1;
         return a[sortBy] - b[sortBy];
     });
     this.setState({ students })
@@ -123,7 +127,7 @@ class Browse extends Component {
                 <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("satisfied")}>Satisfied</th>
                 <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("pending")}>Pending</th>
                 <th scope='col' style={{ width: '8%' }} onClick={() => this.setSortField("unsatisfied")}>Unsatisfied</th>
-                <th scope='col' style={{ width: '10%' }} onClick={() => this.setSortField("degree")}>Degree</th>
+                <th scope='col' style={{ width: '10%' }} onClick={() => this.setSortField("department")}>Degree</th>
                 <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField("gpa")}>GPA</th>
                 <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("entrySemYear")}>Entry</th>
                 <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("gradSemYear")}>Grad</th>
