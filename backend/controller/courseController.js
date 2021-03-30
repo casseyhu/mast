@@ -254,7 +254,7 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
                   else
                     others += " " + s.str;
                 }
-              }
+              } 
               else
                 others += + s.str;
             }

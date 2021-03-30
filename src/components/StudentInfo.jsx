@@ -19,7 +19,7 @@ class StudentInfo extends Component {
 				</div>
 			</div>
 		);
-	}
+	} 
 }
 
 export default StudentInfo;
