@@ -43,7 +43,7 @@ export const SORT_FIELDS = [
   { value: 'satisfied', label: 'Satisfied'},
   { value: 'pending', label: 'Pending'},
   { value: 'unsatisfied', label: 'Unsatisfied'},
-  { value: 'degree', label: 'Degree'},
+  { value: 'department', label: 'Degree'},
   { value: 'gpa', label: 'GPA'},
   { value: 'entrySemYear', label: 'Entry'},
   { value: 'gradSemYear', label: 'Grad'},
@@ -55,3 +55,44 @@ export const BOOLEAN = [
   { value: 'true', label: 'True'},
   { value: 'false', label: 'False'},
 ]
+
+export const TRACKS = {
+  "AMS": [
+    { value: 'Computational Applied Mathematics', label:'Computational Applied Mathematics'},
+    { value: 'Computational Biology', label : 'Computational Biology'},
+    { value: 'Operations Research', label: 'Operations Research'},
+    { value: 'Statistics', label: 'Statistics'},
+    { value: 'Quantitative Finance', label: 'Quantitative Finance'}
+  ],
+  "BMI": [
+    { value: 'Imaging Informatics With Thesis', label:'Imaging Informatics With Thesis'},
+    { value: 'Imaging Informatics With Project', label: 'Imaging Informatics With Project'},
+    { value: 'Clinical Informatics With Thesis', label: 'Clinical Informatics With Thesis'},
+    { value: 'Clinical Informatics With Project', label: 'Clinical Informatics With Project'},
+    { value: 'Translational Bioinformatics With Thesis', label: 'Translational Bioinformatics With Thesis'},
+    { value: 'Translational Bioinformatics With Project', label: 'Translational Bioinformatics With Project'}
+  ],
+  "CSE": [
+    { value: 'Advanced Project', label:'Advanced Project'},
+    { value: 'Special Project', label: 'Special Project'},
+    { value: 'Thesis', label: 'Thesis'}
+  ],
+  "ESE": [
+    { value: 'Non-Thesis', label:'Non-Thesis'},
+    { value: 'Thesis', label: 'Thesis'}
+  ]
+
+}
+
+export const BMI_TRACKS = [
+  { value: 'test', label: 'test'},
+]
+
+export const CSE_TRACKS = [
+  [ ],
+]
+
+export const ESE_TRACKS = [
+  [ ],
+]
+

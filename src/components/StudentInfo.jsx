@@ -1,10 +1,20 @@
 import React, { Component } from 'react'
 import InputField from './InputField';
 import Dropdown from './Dropdown';
-import { BOOLEAN, DEPARTMENTS, SEMESTERS, YEARS } from '../constants';
+import { BOOLEAN, DEPARTMENTS, SEMESTERS, YEARS, TRACKS } from '../constants';
 
 class StudentInfo extends Component {
-  state = {}
+  state = {
+    dept: "",
+    track: ""
+  }
+
+  setDepartment = (e) => {
+    this.setState({
+      dept: e
+    })
+  }
+
   render() {
     return (
       <div div className="flex-horizontal wrap">
@@ -66,10 +76,11 @@ class StudentInfo extends Component {
             <Dropdown
               className="all-padding"
               items={DEPARTMENTS}
-              placeholder="Dept" />
+              placeholder="Dept"
+              onChange={ (e) => { this.setDepartment(e.value) }} />
             <Dropdown
               className="all-padding"
-
+              items={TRACKS[this.state.dept]}
               placeholder="Track" />
             <Dropdown
               className="all-padding"
