@@ -84,15 +84,4 @@ export const TRACKS = {
 
 }
 
-export const BMI_TRACKS = [
-  { value: 'test', label: 'test'},
-]
-
-export const CSE_TRACKS = [
-  [ ],
-]
-
-export const ESE_TRACKS = [
-  [ ],
-]
 
