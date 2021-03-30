@@ -157,14 +157,6 @@ const ImportItem = (props) => {
       <small className={error ? "error" : ""} style={{ marginLeft: '150px' }}>
         {(!error && file) ? file.name : error}
       </small>
-      {/* {props.first && (
-        <Button
-          variant="round"
-          text="Delete Student Data"
-          onClick={() => dropStudents()}
-          style={{ width: '200px'}}
-        />
-      )} */}
       {loading && <Ring size={120} color="rgb(30, 61, 107)" className="loading" />}
       {uploading && <Checkmark size='xxLarge' color="rgb(30, 61, 107)" className="checkmark" />}
     </div>

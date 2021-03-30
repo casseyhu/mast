@@ -41,7 +41,7 @@ class Bulletin extends Component {
               variant="single"
               items={DEPARTMENTS}
               onChange={this.setDept}
-              style={{ margin: '1.5rem 0 0 0' }}
+              style={{ margin: '1rem 0 0 0' }}
             />
           )}
         </div>
@@ -55,7 +55,7 @@ class Bulletin extends Component {
               <br /><b>Semesters:</b>{" " + course.semestersOffered.join(", ")}<br />
               <b>Prerequisites:</b>{course.prereqs[0] !== "" ? " " + course.prereqs.toString().replace(",", ", ") : " None"} <br />
               {course.credits} {(course.credits !== 1) ? "credits" : "credit"}
-              <br/> <br/>
+              <br /> <br />
             </div>
           })}
         </div>

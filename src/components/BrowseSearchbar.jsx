@@ -35,10 +35,10 @@ const BrowseSearchbar = (props) => {
     console.log("Clicked advanced options. Set state to: ", !expanded)
     setExpanded(!expanded)
   }
-  
+
 
   return (
-    <Container style={{margin:'0.2rem 0 0.5rem 0'}}>
+    <Container style={{ margin: '0.2rem 0 0.5rem 0' }}>
       {/* Main search bar fields */}
       <div className="flex-horizontal wrap justify-content-between">
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
