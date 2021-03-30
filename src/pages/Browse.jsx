@@ -72,32 +72,32 @@ class Browse extends Component {
       console.log(err)
     });
 
-    axios.get('courseplanitem/findItem', {
-      params: {
-        grade: ""
-      }
-    }).then(response => {
-      const foundGrades = response.data;
-      axios.get('courseplan')
-        .then(response => {
-          const coursePlans = response.data
-          let id_dict = {}
-          let course_plan_dict = {}
-          for (let i = 0; i < coursePlans.length; i++) {
-            id_dict[coursePlans[i].studentId] = coursePlans[i].coursePlanId
-          }
-          for (let i = 0; i < coursePlans.length; i++) {
-            course_plan_dict[coursePlans[i].studentId] =
-              foundGrades.filter(foundGrade => foundGrade.coursePlanId === id_dict[coursePlans[i].studentId])
-          }
-          this.setState({ coursePlan: course_plan_dict })
-          console.log(this.state.coursePlan)
-        }).catch(err => {
-          console.log(err)
-        })
-    }).catch(err => {
-      console.log(err)
-    })
+    // axios.get('courseplanitem/findItem', {
+    //   params: {
+    //     grade: ""
+    //   }
+    // }).then(response => {
+    //   const foundGrades = response.data;
+    //   axios.get('courseplan')
+    //     .then(response => {
+    //       const coursePlans = response.data
+    //       let id_dict = {}
+    //       let course_plan_dict = {}
+    //       for (let i = 0; i < coursePlans.length; i++) {
+    //         id_dict[coursePlans[i].studentId] = coursePlans[i].coursePlanId
+    //       }
+    //       for (let i = 0; i < coursePlans.length; i++) {
+    //         course_plan_dict[coursePlans[i].studentId] =
+    //           foundGrades.filter(foundGrade => foundGrade.coursePlanId === id_dict[coursePlans[i].studentId])
+    //       }
+    //       this.setState({ coursePlan: course_plan_dict })
+    //       console.log(this.state.coursePlan)
+    //     }).catch(err => {
+    //       console.log(err)
+    //     })
+    // }).catch(err => {
+    //   console.log(err)
+    // })
 
   }
 
