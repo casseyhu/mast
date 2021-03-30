@@ -80,15 +80,11 @@ class StudentInfo extends Component {
               items={YEARS}
               placeholder="Year" />
           </div>
-
-
         </div>
 
-
-
-        <div className="flex-vertical wrap" style={{ width: 'fit-content' }}>
-          {/* <span className="filter-span-reg">Comments:</span> */}
-          <InputField className="lr-padding" style={{ width: "420px" }} type="text" placeholder="Comments" />
+        <div className="flex-vertical wrap" style={{ width: 'fit-content', marginLeft:'0.7rem' }}>
+          <textarea class="textarea resize-ta" style={{ minWidth: "400px" }} placeholder="GPD Comments"/>
+          <textarea class="textarea resize-ta" style={{ minWidth: "400px" }} placeholder="Student Comments"/>
         </div>
       </div>
     );

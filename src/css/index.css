@@ -72,6 +72,13 @@ tr:hover {
   padding-left: 1rem;
 }
 
+textarea {
+  display: block;
+  resize: none;
+  overflow: auto;
+  height: 130px;
+}
+
 
 /* Display CSS */
 .flex-horizontal {
