@@ -43,7 +43,7 @@ export const SORT_FIELDS = [
   { value: 'satisfied', label: 'Satisfied'},
   { value: 'pending', label: 'Pending'},
   { value: 'unsatisfied', label: 'Unsatisfied'},
-  { value: 'degree', label: 'Degree'},
+  { value: 'department', label: 'Degree'},
   { value: 'gpa', label: 'GPA'},
   { value: 'entrySemYear', label: 'Entry'},
   { value: 'gradSemYear', label: 'Grad'},
