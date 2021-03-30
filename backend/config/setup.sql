@@ -14,3 +14,4 @@ INSERT INTO students VALUES (111645277, 'Sooyeon', 'Kim', 'sooyeonkim@stonybrook
 INSERT INTO students VALUES (112206686, 'Eddie', 'Xu', 'eddiexu@stonybrook.edu', '$2b$10$jNBkorAEABkW91w6BeXkdeWvOmeP4uGElD0yWacpP1Q9YWUqxX2E2', null, 'Fall', 2020, 202008, 'Spring', 2022, 1, 0, 'u failed');
 INSERT INTO students VALUES (111513756, 'Andrew', 'Kong', 'andrewkong@stonybrook.edu', '$2b$10$ZCKcaUIuWuUt8tobrgvhNuSkMfpLUROiJW5EdymvZkt8DhkBAtGR6', null, 'Fall', 2020, 202008, 'Spring', 2022, 1, 0, 'good job');
 
+ 

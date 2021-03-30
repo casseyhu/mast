@@ -102,6 +102,10 @@ tr:hover {
 .ud-padding {
   padding: 0.5rem 0 0.5rem 0;
 }
+.all-padding {
+  width:150px;
+  padding: 0.25rem 0.5rem;
+}
 
 .error {
   color: #a8201a;

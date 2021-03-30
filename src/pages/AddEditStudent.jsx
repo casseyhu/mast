@@ -11,12 +11,12 @@ class AddEditStudent extends Component {
   componentDidMount = () => {
 
   }
-
+  
 
   render() {
     let { type } = this.state;
     return (
-      <Container>
+      <Container fluid="lg" className="container">
         <h1>{type} Student</h1>
         <StudentInfo/>
       </Container>
