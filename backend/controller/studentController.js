@@ -55,7 +55,6 @@ exports.upload = (req, res) => {
             return
           }
           uploadStudents(results)
-
         }
       })
       if (isValid)
@@ -113,6 +112,24 @@ exports.delete = (req, res) => {
   })
 }
 
+// https://www.freecodecamp.org/news/node-js-child-processes-everything-you-need-to-know-e69498fe970a/
+
+
+// Delete all students from database. Used primarly for testing by GPD
+exports.deleteAll = (req, res) => {
+  Student.drop().then(() => {
+    res.status(200).send("Deleted student data.");
+    database.sequelize.sync({ force: false }).then(() => {
+      console.log("Synced database");
+    })
+  }).catch(err => {
+    console.log("Error" + err)
+    res.status(500).send("Error: " + err);
+  })
+}
+
+
+
 async function uploadStudents(csv_file) {
   const degrees = await Degree.findAll()
   let degree_dict = {};
@@ -154,18 +171,4 @@ async function uploadStudents(csv_file) {
   }
   console.log("Done importing " + tot + " students from csv")
   return true
-}
-// https://www.freecodecamp.org/news/node-js-child-processes-everything-you-need-to-know-e69498fe970a/
-
-
-exports.deleteAll = (req, res) => {
-  Student.drop().then(() => {
-    res.status(200).send("Deleted student data.");
-    database.sequelize.sync({ force: false }).then(() => {
-      console.log("Synced database");
-    })
-  }).catch(err => {
-    console.log("Error" + err)
-    res.status(500).send("Error: " + err);
-  })
 }

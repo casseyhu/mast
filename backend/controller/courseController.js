@@ -179,7 +179,7 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
                 department: chosenDept,
                 courseNum: Number(courseNum),
                 semester: semester,
-                year: year,
+                year: Number(year),
                 semestersOffered: foundSem,
                 name: name,
                 description: desc,
