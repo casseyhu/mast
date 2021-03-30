@@ -62,6 +62,7 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
   let checkOthers = false
   let others = ""
   dept = dept.split(',')
+  dept.push('FIN', 'CHE')
   pdfExtract.extract(filePath, options, (err, data) => {
     if (err) return console.log(err);
     let pages = data.pages
