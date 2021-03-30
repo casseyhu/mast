@@ -112,6 +112,7 @@ class Browse extends Component {
           <h1>Browse Student</h1>
           <Button variant="round" text="+ new student" onClick={() => { this.addStudent() }} style={{ marginTop: '1rem' }} />
         </div>
+        {/* <hr style={{margin: "0.5rem 0"}}></hr> */}
         <BrowseSearchbar parentCallback={this.setSortField} />
         <div className="studentTable">
           <table >

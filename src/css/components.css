@@ -96,6 +96,17 @@ nav {
   margin-right: 1.5rem;
 }
 
+.add-student-reg {
+  margin-right: 0.7rem;
+}
+
+.add-student {
+  width:90px;
+}
+
+.add-student-col {
+  width: 130px;
+}
 
 /* Pagination CSS */
 .page-link {
@@ -125,4 +136,3 @@ nav {
   top: calc(50% - 60px);
   left: calc(50% - 60px);
 }
-
