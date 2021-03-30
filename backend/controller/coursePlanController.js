@@ -143,7 +143,7 @@ async function calculateGPA(students_planid, course_credit){
       where: condition
     }).then(items => {
       if(items){
-        const foundItems = items.filter(item => (item.grade !== null && item.grade !== ""))
+        const foundItems = items.filter(item => (item.grade !== null))
         let earned_points = 0
         let tot_points = 0
         for(let i = 0; i < foundItems.length; i++){
