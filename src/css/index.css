@@ -31,6 +31,11 @@ h1 {
   font-size: 32px;
 }
 
+h3 {
+  font-size: 24px;
+  border-bottom: 2px solid #2f323ac4;
+}
+
 h4 {
   border-bottom: 2px solid var(--grey);
   width: 100%;
@@ -122,7 +127,6 @@ textarea {
   margin: 0 auto;
 }
 
-
 i.fa {
   line-height: 3rem; 
   /* float: right; */
@@ -146,6 +150,30 @@ i.fa {
   background-color: white;
   padding: 1rem;
   border-radius: 0.5rem;
+}
+
+/* Color CSS */
+.req-state {
+  vertical-align: middle;
+  display: table-cell;
+  padding-left: 0.5rem;
+  padding-right: 3rem;
+}
+.color-box {
+  width: 30px;
+  height: 30px;
+  /* display: inline-block; */
+  vertical-align: middle;
+  display: table-cell;
+}
+.green {
+  background-color: #80FFC2;
+}
+.yellow {
+  background-color: #FFF0A4;
+}
+.red {
+  background-color: #FFAAAA;
 }
 
 

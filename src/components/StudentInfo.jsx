@@ -11,16 +11,13 @@ class StudentInfo extends Component {
 
   setDepartment = (e) => {
     this.setState({
-      dept: e
+      dept: e.value
     })
   }
 
   render() {
     return (
-      <div div className="flex-horizontal wrap">
-
-
-
+      <div className="flex-horizontal wrap">
         <div className="flex-vertical wrap" style={{ width: 'fit-content' }}>
 
           <div className="flex-horizontal" style={{ width: 'fit-content' }}>
@@ -94,8 +91,8 @@ class StudentInfo extends Component {
         </div>
 
         <div className="flex-vertical wrap" style={{ width: 'fit-content', marginLeft:'0.7rem' }}>
-          <textarea class="textarea resize-ta" style={{ minWidth: "400px" }} placeholder="GPD Comments"/>
-          <textarea class="textarea resize-ta" style={{ minWidth: "400px" }} placeholder="Student Comments"/>
+          <textarea className="textarea resize-ta" style={{ minWidth: "400px" }} placeholder="GPD Comments"/>
+          <textarea className="textarea resize-ta" style={{ minWidth: "400px" }} placeholder="Student Comments"/>
         </div>
       </div>
     );

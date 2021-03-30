@@ -5,18 +5,13 @@ module.exports = function (app) {
   // Upload degree
   app.post('/api/degree/upload', Degree.upload);
 
+  // Find a degree
+  app.get('/api/degree', Degree.findOne);
+
+  // Find a degree
+  app.get('/api/requirements', Degree.findRequirements);
+
   // Get all degrees
-  app.get('/api/degree', Degree.findAll);
+  app.get('/api/degrees', Degree.findAll);
 
-  // // Create new grade requirement object
-  // app.post('/api/degree/gradereq/create', Degree.createGrade);
-
-  // // Create new gpa requirement object
-  // app.post('/api/degree/gpareq/create', Degree.createGpa);
-
-  // // Create new credit requirement object
-  // app.post('/api/degree/creditreq/create', Degree.createCredit);
-
-  // // Create new course requirement object
-  // app.post('/api/degree/coursereq/create', Degree.createCourse);
 }
