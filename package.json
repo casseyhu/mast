@@ -1,12 +1,17 @@
 {
   "name": "mast",
   "version": "1.0.0",
+  "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/casseyhu/mast.git"
   },
   "author": "",
   "license": "ISC",
+  "homepage": "https://github.com/casseyhu/mast#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
