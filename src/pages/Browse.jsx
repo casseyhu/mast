@@ -17,7 +17,6 @@ class Browse extends Component {
   // We will always show the list in ascending lastName by default. 
   state = {
     students: [],
-    coursePlan: {},
     grades: {},
     sortBy: '',
     filters: {},
@@ -28,20 +27,24 @@ class Browse extends Component {
 
   addStudent = () => {
     this.props.history.push({
-      pathname: '/student/edit'
+      pathname: '/student/edit',
+      state: { mode: 'Add' }
     })
   }
 
-  viewStudent = () => {
+  viewStudent = (student) => {
     this.props.history.push({
-      pathname: '/student/edit'
+      pathname: '/student/edit',
+      state: { 
+        mode: 'Edit',
+        student: student
+      }
     })
   }
 
   setFilter = (filters) => {
     this.setState({ filters }, this.filter)
   }
-
 
   setSortField = (field) => {
     this.setState({ sortBy: field }, this.sortStudents)
@@ -62,7 +65,7 @@ class Browse extends Component {
         graduated: this.state.filters['graduated']
       }
     }).then(response => {
-      this.setState({students : response.data }, this.handleResize)
+      this.setState({ students: response.data })
       this.setSortField(this.state.sortBy)
     }).catch(err => {
       console.log(err)
@@ -99,8 +102,6 @@ class Browse extends Component {
       page: Math.min(this.state.page, maxPage)
     })
   }
-
-  
 
   componentDidMount() {
     window.addEventListener('resize', this.handleResize)
@@ -150,9 +151,8 @@ class Browse extends Component {
       <Container fluid className="container">
         <div className="flex-horizontal justify-content-between">
           <h1>Browse Student</h1>
-          <Button variant="round" text="+ new student" onClick={() => { this.addStudent() }} style={{ marginTop: '1rem' }} />
+          <Button variant="round" text="+ new student" onClick={this.addStudent} style={{ marginTop: '1rem' }} />
         </div>
-        {/* <hr style={{margin: "0.5rem 0"}}></hr> */}
         <BrowseSearchbar sortField={this.setSortField} filter={this.setFilter} />
         <div className="studentTable">
           <table >
@@ -172,8 +172,8 @@ class Browse extends Component {
               </tr>
             </thead>
             <tbody>
-              {students.slice((page - 1) * numPerPage, page * numPerPage).map((student) => {
-                return <tr onClick={() => { this.viewStudent() }}>
+              {students.slice((page - 1) * numPerPage, page * numPerPage).map((student, i) => {
+                return <tr key={i} onClick={(e) => this.viewStudent(student)} style={{ cursor: 'pointer' }}>
                   <td className="padleft">{student.lastName}</td>
                   <td className="padleft">{student.firstName}</td>
                   <td className="padleft">{student.sbuId}</td>

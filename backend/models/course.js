@@ -23,8 +23,6 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       primaryKey: true,
     },
-    department: Sequelize.STRING,
-    courseNum: Sequelize.INTEGER,
     semester: {
       type: Sequelize.STRING,
       primaryKey: true,
@@ -33,6 +31,8 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
       primaryKey: true,
     },
+    department: Sequelize.STRING,
+    courseNum: Sequelize.INTEGER,
     semestersOffered: {
       type: Sequelize.STRING,
       get() {

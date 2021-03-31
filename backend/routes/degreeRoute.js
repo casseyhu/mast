@@ -5,13 +5,11 @@ module.exports = function (app) {
   // Upload degree
   app.post('/api/degree/upload', Degree.upload);
 
-  // Find a degree
-  app.get('/api/degree', Degree.findOne);
-
-  // Find a degree
+  // Find requirements for a degree
   app.get('/api/requirements', Degree.findRequirements);
 
   // Get all degrees
   app.get('/api/degrees', Degree.findAll);
 
+  
 }

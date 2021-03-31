@@ -187,7 +187,11 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
                 credits: Number(creds),
                 prereqs: prereqs,
                 repeat: 0
-              }, { courseId: chosenDept + courseNum })
+              }, { 
+                courseId: chosenDept + courseNum,
+                semester: semester,
+                year: Number(year) 
+              })
               // .then(res => {
               //   console.log(res.created + ':' + res.course)
               // })

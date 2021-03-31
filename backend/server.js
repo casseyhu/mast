@@ -1,5 +1,6 @@
 
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config();
@@ -12,6 +13,9 @@ const app = express();
 app.use(bodyParser.json())
 
 app.use(cors())
+const buildPath = path.join(__dirname, '..', 'build');
+app.use(express.static(buildPath));
+
 // app.use(session({
 // 	secret: process.env.SESSION_PASSWORD,
 // 	resave: true,
@@ -31,6 +35,8 @@ require('./routes/courseOfferingRoute.js')(app);
 require('./routes/coursePlanRoute.js')(app);
 require('./routes/degreeRoute.js')(app);
 
-app.listen(process.env.PORT || 8080, () => {
-  console.log(`Listening on port ${process.env.PORT || 8080}`);
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
 })

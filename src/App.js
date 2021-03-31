@@ -29,7 +29,7 @@ class App extends Component {
       user: user
     })
   }
-  
+
   componentDidMount = () => {
     let token = localStorage.getItem('jwt-token')
     if (!token)
@@ -38,8 +38,6 @@ class App extends Component {
     this.setState({
       loggedIn: true,
       user: decoded.type
-    }, () => {
-      console.log("set user", this.state.user)
     })
 
     /* Uncomment to turn out persistant logout after 20 mins */

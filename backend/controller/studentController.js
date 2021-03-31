@@ -16,6 +16,7 @@ const Papa = require('papaparse');
 
 // Create a Student from Add Student 
 exports.create = (req, res) => {
+  console.log(req.body)
   Student.create({
     sbuId: req.body.sbuId,
     email: req.body.email,

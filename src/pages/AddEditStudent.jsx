@@ -1,39 +1,40 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from "react-bootstrap/Container";
+import Button from '../components/Button';
 import StudentInfo from '../components/StudentInfo';
 import Requirements from '../components/Requirements';
 import CoursePlan from '../components/CoursePlan';
 import axios from '../constants/axios';
 
-class AddEditStudent extends Component {
-  state = {
-    type: 'Add',
-    user: this.props.user,
-    requirements: []
-  }
+const AddEditStudent = (props) => {
+  const [requirements, setrequirements] = useState([])
 
-  componentDidMount = () => {
-    axios.get('requirements', {params: {
-      department: 'CSE',
-      track: 'Advanced Project'
-    }}).then(results => {
+  useEffect(() => {
+    axios.get('requirements', {
+      params: {
+        department: 'CSE',
+        track: 'Advanced Project'
+      }
+    }).then(results => {
       console.log(results.data)
-      this.setState({requirements: results.data})
+      setrequirements(results.data)
     })
-  }
+  }, [])
 
+  let mode = props.location.state.mode
+  let { user } = props
+  return (
+    <Container fluid="lg" className="container">
+      <div className="flex-horizontal justify-content-between"> 
+      <h1>{mode} Student</h1>
+      <Button variant="round" text={mode === 'Add' ? "Add Student" : "Save Student"} style={{ marginTop: '1rem' }}/>
+      </div>
+      <StudentInfo mode={mode} user={user}/>
+      <Requirements user={user} requirements={requirements} />
+      <CoursePlan />
+    </Container>
+  );
 
-  render() {
-    let { type } = this.state;
-    return (
-      <Container fluid="lg" className="container">
-        <h1>{type} Student</h1>
-        <StudentInfo />
-        <Requirements requirements={this.state.requirements} />
-        <CoursePlan />
-      </Container>
-    );
-  }
 }
 
 export default AddEditStudent;
