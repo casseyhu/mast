@@ -206,7 +206,8 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
           else if (s.fontName == "Times" && !s.str.includes("credits")
             && s.str.substring(0, 13) !== "Prerequisites"
             && s.str.substring(0, 12) !== "Prerequisite"
-            && !s.str.includes("S/U grading")) {
+            && !s.str.includes("S/U grading")
+            && !s.str.includes("credit")) {
             //reaches description
             if (checkCourseName) {
               if (courses.includes(courseName) == false && courseName != "") {
@@ -227,7 +228,8 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
             || s.str.includes("credits")
             || s.str.includes("Prerequisites:")
             || s.str.includes('Prerequisite:')
-            || s.str.includes("S/U grading")) {
+            || s.str.includes("S/U grading")
+            || s.str.includes("credit")) {
 
             if (desc === "") {
               chosenDept = courseName.substring(0, 3)

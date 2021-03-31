@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Container from "react-bootstrap/Container";
 import StudentInfo from '../components/StudentInfo';
 import Requirements from '../components/Requirements';
+import CoursePlan from '../components/CoursePlan';
 import axios from '../constants/axios';
 
 class AddEditStudent extends Component {
@@ -29,6 +30,7 @@ class AddEditStudent extends Component {
         <h1>{type} Student</h1>
         <StudentInfo />
         <Requirements requirements={this.state.requirements} />
+        <CoursePlan />
       </Container>
     );
   }

@@ -19,12 +19,12 @@ const Requirements = (props) => {
 			</div>
 
 			<div className="flex-vertical" style={{ width: '100%' }}>
-				{requirements &&
+				{/* {requirements &&
 					<div>
 						{/* <div className="green">Minimum GPA {requirements[1].cumulative}</div>
 						<div className="red">Minimum Credits {requirements[2].minCredit}</div> */}
 					</div>
-				}
+				} */}
 				{/* {props.requirements.map(req => {
 					<div>
 						req

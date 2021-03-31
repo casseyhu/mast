@@ -20,6 +20,7 @@ class Browse extends Component {
     coursePlan: {},
     grades: {},
     sortBy: '',
+    filters: {},
     page: 1,
     numPerPage: Math.ceil((window.innerHeight - 350) / 30),
     maxPage: 1
@@ -31,8 +32,41 @@ class Browse extends Component {
     })
   }
 
+  viewStudent = () => {
+    this.props.history.push({
+      pathname: '/student/edit'
+    })
+  }
+
+  setFilter = (filters) => {
+    this.setState({ filters }, this.filter)
+  }
+
+
   setSortField = (field) => {
     this.setState({ sortBy: field }, this.sortStudents)
+  }
+
+  filter = () => {
+    axios.get('/student/filter', {
+      params: {
+        firstName: this.state.filters['firstName'],
+        lastName: this.state.filters['lastName'],
+        sbuId: this.state.filters['sbuId'],
+        entrySem: this.state.filters['entrySem'],
+        entryYear: this.state.filters['entryYear'],
+        degree: this.state.filters['degree'],
+        gradSem: this.state.filters['gradSem'],
+        gradYear: this.state.filters['gradYear'],
+        track: this.state.filters['track'],
+        graduated: this.state.filters['graduated']
+      }
+    }).then(response => {
+      this.setState({students : response.data }, this.handleResize)
+      this.setSortField(this.state.sortBy)
+    }).catch(err => {
+      console.log(err)
+    });
   }
 
   sortStudents = () => {
@@ -51,7 +85,7 @@ class Browse extends Component {
           return 1;
         else if (b === null)
           return -1;
-        return a[sortBy] - b[sortBy];
+      return a[sortBy] - b[sortBy];
     });
     this.setState({ students })
   }
@@ -65,6 +99,8 @@ class Browse extends Component {
       page: Math.min(this.state.page, maxPage)
     })
   }
+
+  
 
   componentDidMount() {
     window.addEventListener('resize', this.handleResize)
@@ -117,7 +153,7 @@ class Browse extends Component {
           <Button variant="round" text="+ new student" onClick={() => { this.addStudent() }} style={{ marginTop: '1rem' }} />
         </div>
         {/* <hr style={{margin: "0.5rem 0"}}></hr> */}
-        <BrowseSearchbar parentCallback={this.setSortField} />
+        <BrowseSearchbar sortField={this.setSortField} filter={this.setFilter} />
         <div className="studentTable">
           <table >
             <thead>
@@ -136,8 +172,8 @@ class Browse extends Component {
               </tr>
             </thead>
             <tbody>
-              {students.slice((page - 1) * numPerPage, page * numPerPage).map(function (student) {
-                return <tr   >
+              {students.slice((page - 1) * numPerPage, page * numPerPage).map((student) => {
+                return <tr onClick={() => { this.viewStudent() }}>
                   <td className="padleft">{student.lastName}</td>
                   <td className="padleft">{student.firstName}</td>
                   <td className="padleft">{student.sbuId}</td>

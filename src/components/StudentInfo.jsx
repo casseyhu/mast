@@ -74,7 +74,7 @@ class StudentInfo extends Component {
               className="all-padding"
               items={DEPARTMENTS}
               placeholder="Dept"
-              onChange={ (e) => { this.setDepartment(e.value) }} />
+              onChange={ (e) => { this.setDepartment(e) }} />
             <Dropdown
               className="all-padding"
               items={TRACKS[this.state.dept]}

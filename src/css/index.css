@@ -58,7 +58,7 @@ footer {
 /* Table styling CSS */
 table {
   margin-bottom: 0.5rem;
-  display: block;
+  /* display: block; */
 }
 th {
   border: none;
