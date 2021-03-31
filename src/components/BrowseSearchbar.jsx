@@ -26,8 +26,30 @@ const BrowseSearchbar = (props) => {
     // Query goes here. 
     // After querying, send the results to the parent (Browse.jsx)
     // to set the table of students to view. 
+    
+    let fullName = name.split(' ')
+    let firstName = fullName[0]
+    let lastName = fullName.length === 1 ? '' : fullName[1]
+    let hasGraduated = graduated;
+    if(hasGraduated !== "")
+      hasGraduated === "true" ? hasGraduated = 1 : hasGraduated = 0;
+
+    let filteredConditions = {
+      firstName: firstName + "%",
+      lastName: lastName + "%",
+      sbuId: sbuId + "%",
+      entrySem: entrySem + "%",
+      entryYear: entryYear + "%",
+      degree: degree + "%",
+      gradSem: gradSem + "%",
+      gradYear: gradYear + "%",
+      track: track + "%",
+      graduated: hasGraduated + "%"
+    }
+
+    props.filter(filteredConditions)
+    props.sortField(sortBy.value)
     console.log("Query DB with all filters (all states).")
-    props.parentCallback(sortBy.value)
   }
 
 
@@ -35,7 +57,6 @@ const BrowseSearchbar = (props) => {
     console.log("Clicked advanced options. Set state to: ", !expanded)
     setExpanded(!expanded)
   }
-
 
   return (
     <Container style={{ margin: '0.2rem 0 0.5rem 0' }}>

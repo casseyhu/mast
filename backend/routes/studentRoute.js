@@ -4,12 +4,15 @@ module.exports = function (app) {
 
   // Create a Student
   app.post('/api/student/create', Student.create);
-  
+
   // Create all students from file
   app.post('/api/student/upload', Student.upload);
 
   // Verify student login
   app.get('/api/student/login', Student.login);
+
+  // Get all students by filtered conditions
+  app.get('/api/student/filter', Student.filter);
 
   // Get a Student
   app.get('/api/student/:sbuId', Student.findById);
@@ -22,4 +25,4 @@ module.exports = function (app) {
 
   // Delete all students
   app.post('/api/student/deleteall', Student.deleteAll)
-} 
+}
