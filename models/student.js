@@ -41,7 +41,8 @@ module.exports = (sequelize, Sequelize) => {
     department: Sequelize.STRING,
     degreeId: Sequelize.INTEGER,
     graduated: Sequelize.BOOLEAN,
-    comments: Sequelize.TEXT('long')
+    studentComments: Sequelize.TEXT('long'),
+    gpdComments: Sequelize.TEXT('long')
   }, {
     timestamps: false
   })

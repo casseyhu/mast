@@ -21,15 +21,31 @@ const AddEditStudent = (props) => {
     })
   }, [])
 
+  const modeHandler = (studentInfo) => {
+    console.log("Page mode: ", props.location.state.mode)
+    console.log(studentInfo)
+    if(props.location.state.mode === 'Add') {
+      /* Add new student into the db */
+      axios.post('student/create', {
+        params: studentInfo
+      }).then((response) => {
+        console.log(response.data)
+      }).catch(function (err) {
+        console.log("Axios student create error")
+        console.log(err.response.data)
+      })
+    } else {
+      /* Saving student info, UPDATE student in the db*/
+    }
+  }
+
+
+
   let mode = props.location.state.mode
   let { user } = props
   return (
     <Container fluid="lg" className="container">
-      <div className="flex-horizontal justify-content-between"> 
-      <h1>{mode} Student</h1>
-      <Button variant="round" text={mode === 'Add' ? "Add Student" : "Save Student"} style={{ marginTop: '1rem' }}/>
-      </div>
-      <StudentInfo mode={mode} user={user}/>
+      <StudentInfo mode={mode} user={user} mode={props.location.state.mode} onSubmit={(e) => modeHandler(e)}/>
       <Requirements user={user} requirements={requirements} />
       <CoursePlan />
     </Container>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import InputField from './InputField';
 import Dropdown from './Dropdown';
+import Button from '../components/Button';
 import { BOOLEAN, DEPARTMENTS, SEMESTERS, YEARS, TRACKS } from '../constants';
 import axios from '../constants/axios';
 
@@ -33,8 +34,22 @@ const StudentInfo = (props) => {
     }))
   }
 
+  const modeButtonHandler = () => {
+    console.log("Student info component")
+    props.onSubmit(userInfo)
+  }
+
   return (
     <div className="flex-horizontal wrap">
+      <div className="flex-horizontal justify-content-between">
+        <h1>{props.mode} Student</h1>
+        <Button
+          variant="round"
+          text={props.mode === 'Add' ? "Add Student" : "Save Student"}
+          style={{ marginTop: '1rem' }} 
+          onClick={() => modeButtonHandler()}/>
+      </div>
+
       <div className="flex-vertical wrap" style={{ width: 'fit-content' }}>
 
         <div className="flex-horizontal wrap" style={{ width: 'fit-content' }}>

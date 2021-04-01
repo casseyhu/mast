@@ -16,15 +16,51 @@ const Papa = require('papaparse');
 
 // Create a Student from Add Student 
 exports.create = (req, res) => {
-  console.log(req.body)
-  Student.create({
-    sbuId: req.body.sbuId,
-    email: req.body.email,
-  }).then(student => {
-    res.send(student);
-  }).catch(err => {
-    res.status(500).send("Error: " + err);
-  })
+  let student = req.body.params
+  let first = student.firstName.charAt(0).toLowerCase() 
+  let last = student.lastName.charAt(0).toLowerCase() 
+  let password = first+last+student.sbuId
+  let salt = bcrypt.genSaltSync(10);
+  let hash_password = bcrypt.hashSync(password, salt);
+  let semDict = {
+    "Fall": "08",
+    "Spring": "02",
+    "Winter": "01",
+    "Summer": "05"
+  }
+  console.log(Number(student.degreeYear.concat(semDict[student.degreeSem])))
+  console.log(student.track)
+  console.log(student.dept)
+  let query = Degree.findOne({
+    where: {
+      dept: student.dept,
+      track: student.track,
+      requirementVersion:  Number(student.degreeYear.concat(semDict[student.degreeSem])),
+    }
+  }).then((degree) => {
+    Student.create({
+      sbuId: student.sbuId,
+      email: student.email,
+      firstName: student.firstName,
+      lastName: student.lastName,
+      password: hash_password,
+      gpa: Number(student.gpa),
+      entrySem: student.entrySem,
+      entryYear: Number(student.entryYear),
+      entrySemYear: Number(student.entryYear.concat(semDict[student.entrySem])),
+      gradSem: student.gradSem,
+      gradYear: Number(student.gradYear),
+      department: student.dept,
+      degreeId: degree.degreeId,
+      graduated: (student.graduated === 'false' ? 0 : 1),
+      gpdComments: student.gpdComments,
+      studentComments: student.studentComments
+    }).then(() => {
+      res.status(200).send("Added student into DB.");
+    }).catch(err => {
+      res.status(500).send("Error: " + err);
+    })
+  });
 }
 
 // Create Students from uploading file
