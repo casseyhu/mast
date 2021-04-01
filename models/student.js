@@ -28,17 +28,41 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
       allowNull: false
     },
-    firstName: Sequelize.STRING,
-    lastName: Sequelize.STRING,
-    email: Sequelize.STRING,
+    firstName: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    lastName: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    email: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
     password: Sequelize.STRING,
     gpa: Sequelize.FLOAT,
-    entrySem: Sequelize.STRING,
-    entryYear: Sequelize.INTEGER,
+    entrySem: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    entryYear: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
     entrySemYear: Sequelize.INTEGER,
-    gradSem: Sequelize.STRING,
-    gradYear: Sequelize.INTEGER,
-    department: Sequelize.STRING,
+    gradSem: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    gradYear: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    department: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
     degreeId: Sequelize.INTEGER,
     graduated: Sequelize.BOOLEAN,
     studentComments: Sequelize.TEXT('long'),

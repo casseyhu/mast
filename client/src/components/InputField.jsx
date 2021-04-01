@@ -8,6 +8,7 @@ const InputField = (props) => {
         className={`input ${props.inputStyle}`}
         placeholder={props.placeholder}
         value={props.value}
+        disabled={props.disabled}
         onChange={props.onChange}
       />
       {props.icon && <i id="icon" className={props.icon} onClick={props.onClick} />}
