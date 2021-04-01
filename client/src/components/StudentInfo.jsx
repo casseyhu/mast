@@ -49,7 +49,10 @@ const StudentInfo = (props) => {
           style={{ marginTop: '1rem' }} 
           onClick={() => modeButtonHandler()}/>
       </div>
-
+      {props.errorMessage !== "" &&
+        <div className="flex-horizontal wrap" style={{ marginBottom: "0.5rem",  width: '100%', color:"red" }}>
+          <span><strong>{props.errorMessage}</strong></span>
+        </div>}
       <div className="flex-vertical wrap" style={{ width: 'fit-content' }}>
 
         <div className="flex-horizontal wrap" style={{ width: 'fit-content' }}>
@@ -93,13 +96,19 @@ const StudentInfo = (props) => {
             placeholder="Email"
             onChange={e => handleSelection('email', e.target)}
             style={{ width: "300px" }} />
-          <span className="filter-span" style={{ marginLeft: "0.6rem" }}>Graduated:</span>
-          <Dropdown
+          <span className="filter-span" style={{ marginLeft: "0.6rem" }}>Graduated: </span>
+          <span className="lr-padding" style={{width:"200px"}}>False</span>
+          {/* <InputField
+            className="lr-padding"
+            placeholder="False"
+            disabled={true}
+            style={{ width: "200px" }} /> */}
+          {/* <Dropdown
             className="lr-padding"
             style={{ width: "200px" }}
             items={BOOLEAN}
             placeholder="False"
-            onChange={e => handleSelection('graduated', e)} />
+            onChange={e => handleSelection('graduated', e)} /> */}
         </div>
 
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
