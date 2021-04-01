@@ -3,7 +3,7 @@ import Container from "react-bootstrap/Container";
 import LoginContainer from '../components/LoginContainer';
 import jwt_decode from 'jwt-decode';
 import '../css/login.css';
-import { LANDING_WAVE_LINES } from '../constants/svgs';
+import { LANDING_OVAL } from '../constants/svgs';
 
 const MainPage = (props) => {
 
@@ -19,9 +19,9 @@ const MainPage = (props) => {
 	}, [props.history])
 
 	return (
-		<Container fluid="lg" className="container" style={{ height: "100vh" }}>
+		<Container fluid="lg" style={{ height: "100vh" }}>
 			<div className="landing-background" />
-			<div className="landing-wave-svg">{LANDING_WAVE_LINES}</div>
+			<div className="landing-svg">{LANDING_OVAL}</div>
 			<div className="login-container">
 				<LoginContainer history={props.history} setLoggedIn={props.setLoggedIn} />
 			</div>

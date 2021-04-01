@@ -111,18 +111,18 @@ const ImportItem = (props) => {
       {props.depts && props.sems && props.years
         && (
           <div className="flex-horizontal wrap justify-content-start">
-            <span style={{ width: "150px" }}>Semesters</span>
+            <span className="filter-span" style={{ width: "150px" }}>Semesters</span>
             <Dropdown
               variant="single"
               items={props.sems}
-              disabled={false}
+              placeholder="Semester"
               onChange={(e) => setSem(e.value)}
               style={{ margin: '0 1rem 0.5rem 0' }}
             />
             <Dropdown
               variant="single"
               items={props.years}
-              disabled={false}
+              placeholder="Year"
               onChange={(e) => setYear(e.value)}
               style={{ margin: '0 4rem 0.5rem 0' }}
             />
@@ -132,7 +132,6 @@ const ImportItem = (props) => {
                 variant="multi"
                 items={props.depts}
                 onChange={selectionHandler}
-                disabled={false}
                 style={{ margin: '0 1rem 0.5rem 0' }}
               />
             </div>

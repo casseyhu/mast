@@ -4,7 +4,7 @@
   top: 0;
   bottom: 0;
   right: 0;
-  background-color: #232946;
+  /* background-color: #232946; */
   z-index: -1;
 }
 
@@ -15,11 +15,11 @@
   height: 100vh;
 }
 
-.landing-wave-svg {
+.landing-svg svg {
   position: absolute;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width:100vw;
+  min-height: 100vh;
   z-index: -1;
 }
 
@@ -65,12 +65,13 @@
   background-color: var(--white);
   border-radius: 1rem;
   padding: 4rem 3rem 3rem 3rem;
+  /* border: 2px solid var(--dark) */
 }
 
 .user-slider {
   height: 3rem;
   background-color: var(--secondary);
-  color: white;
+  color: var(--white);
   font: 18pt bold;
   border-radius: 1.5rem;
   width: 100%;

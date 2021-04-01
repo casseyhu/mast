@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import InputField from './InputField';
 import Dropdown from './Dropdown';
 import Button from '../components/Button';
-import { BOOLEAN, DEPARTMENTS, SEMESTERS, YEARS, TRACKS } from '../constants';
+import { BOOLEAN, DEPARTMENTS_REQ, SEMESTERS, YEARS, TRACKS } from '../constants';
 import axios from '../constants/axios';
 
 
@@ -84,6 +84,7 @@ const StudentInfo = (props) => {
             className="lr-padding"
             type="text"
             placeholder="GPA"
+            disabled
             onChange={e => handleSelection('gpa', e.target)}
             style={{ width: "200px" }} />
         </div>
@@ -97,12 +98,12 @@ const StudentInfo = (props) => {
             onChange={e => handleSelection('email', e.target)}
             style={{ width: "300px" }} />
           <span className="filter-span" style={{ marginLeft: "0.6rem" }}>Graduated: </span>
-          <span className="lr-padding" style={{width:"200px"}}>False</span>
-          {/* <InputField
+          {/* <span className="lr-padding" style={{width:"200px"}}>False</span> */}
+          <InputField
             className="lr-padding"
             placeholder="False"
-            disabled={true}
-            style={{ width: "200px" }} /> */}
+            disabled
+            style={{ width: "200px" }} />
           {/* <Dropdown
             className="lr-padding"
             style={{ width: "200px" }}
@@ -143,7 +144,7 @@ const StudentInfo = (props) => {
           <span className="filter-span">Degree:</span>
           <Dropdown
             className="all-padding"
-            items={DEPARTMENTS}
+            items={DEPARTMENTS_REQ}
             placeholder="Dept"
             onChange={e => handleSelection('dept', e)} />
           <Dropdown
@@ -169,12 +170,12 @@ const StudentInfo = (props) => {
           className="textarea resize-ta"
           placeholder="GPD Comments"
           onChange={e => handleSelection('gpdComments', e.target)}
-          style={{ minWidth: "400px" }} />
+          style={{ minWidth: "375px" }} />
         <textarea
           placeholder="Student Comments"
           className="textarea resize-ta"
           onChange={e => handleSelection('studentComments', e.target)}
-          style={{ minWidth: "400px" }} />
+          style={{ minWidth: "375px" }} />
       </div>
     </div>
   );

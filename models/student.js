@@ -63,6 +63,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false
     },
+    track: Sequelize.STRING,
+    unsatisfied: Sequelize.INTEGER,
+    pending: Sequelize.INTEGER,
+    satisfied: Sequelize.INTEGER,
     degreeId: Sequelize.INTEGER,
     graduated: Sequelize.BOOLEAN,
     studentComments: Sequelize.TEXT('long'),

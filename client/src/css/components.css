@@ -16,10 +16,6 @@ nav {
 .toggler {
   border: none;
 }
-.container {
-  background-color: #fffffe;
-  min-height: calc(100vh - 4rem);
-}
 
 /* Buttons and Input CSS */
 
@@ -36,13 +32,13 @@ nav {
   color: white;
   align-items: center;
   justify-content: center;
-  transition: background 0.3s, border-radius 0.3s;
+  transition: background 0.4s, border-radius 0.4s;
 }
 
 .round-button:hover {
   background: var(--white);
   color: var(--primary);
-  transition: background 0.3s, border-radius 1s;
+  transition: background 0.4s, border-radius 1s;
   border: 2px solid rgba(30, 61, 107, 0.95);
   border-radius: 2rem;
 }

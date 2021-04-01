@@ -2,10 +2,10 @@
 module.exports = function (app) {
   const Student = require('../controller/studentController.js');
 
-  // Create a Student
+  // Create a Student from Add Student 
   app.post('/api/student/create', Student.create);
 
-  // Create all students from file
+  // Upload all students from CSV file
   app.post('/api/student/upload', Student.upload);
 
   // Verify student login

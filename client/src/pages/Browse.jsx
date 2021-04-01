@@ -35,7 +35,7 @@ class Browse extends Component {
   viewStudent = (student) => {
     this.props.history.push({
       pathname: '/student/edit',
-      state: { 
+      state: {
         mode: 'Edit',
         student: student
       }
@@ -158,17 +158,18 @@ class Browse extends Component {
           <table >
             <thead>
               <tr style={{ cursor: "pointer" }}>
-                <th scope='col' style={{ width: '13%' }} onClick={() => this.setSortField("lastName")}>Last Name</th>
-                <th scope='col' style={{ width: '13%' }} onClick={() => this.setSortField("firstName")}>First Name</th>
+                <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("lastName")}>Last Name</th>
+                <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("firstName")}>First Name</th>
                 <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("sbuId")}>Student ID</th>
-                <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("satisfied")}>Satisfied</th>
-                <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("pending")}>Pending</th>
-                <th scope='col' style={{ width: '8%' }} onClick={() => this.setSortField("unsatisfied")}>Unsatisfied</th>
-                <th scope='col' style={{ width: '10%' }} onClick={() => this.setSortField("department")}>Degree</th>
+                <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("satisfied")}>S/P/U</th>
+                {/* <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("pending")}>Pending</th>
+                <th scope='col' style={{ width: '8%' }} onClick={() => this.setSortField("unsatisfied")}>Unsatisfied</th> */}
+                <th scope='col' style={{ width: '8%' }} onClick={() => this.setSortField("department")}>Degree</th>
+                <th scope='col' style={{ width: '20%' }} onClick={() => this.setSortField("department")}>Track</th>
                 <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField("gpa")}>GPA</th>
-                <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("entrySemYear")}>Entry</th>
-                <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("gradSemYear")}>Grad</th>
-                <th scope='col' style={{ width: '10%' }} onClick={() => this.setSortField("graduated")}>Graduated</th>
+                <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField("entrySemYear")}>Entry</th>
+                <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField("gradSemYear")}>Grad</th>
+                <th scope='col' style={{ width: '8%' }} onClick={() => this.setSortField("graduated")}>Graduated</th>
               </tr>
             </thead>
             <tbody>
@@ -177,10 +178,11 @@ class Browse extends Component {
                   <td className="padleft">{student.lastName}</td>
                   <td className="padleft">{student.firstName}</td>
                   <td className="padleft">{student.sbuId}</td>
-                  <td className="center">0</td>
-                  <td className="center">0</td>
-                  <td className="center">0</td>
+                  {/* <td className="center">0</td>
+                  <td className="center">0</td> */}
+                  <td className="center">0/0/0</td>
                   <td className="center">{student.department}</td>
+                  <td className="center">{student.track.substring(0,22)}{student.track.length > 22 ? '...' : ''}</td>
                   <td className="center">{(student.gpa === null) ? "N/A" : student.gpa}</td>
                   <td className="center">{student.entrySem.slice(0, 2)} {student.entryYear % 2000}</td>
                   <td className="center">{student.gradSem.slice(0, 2)} {student.gradYear % 2000}</td>
@@ -205,6 +207,12 @@ class Browse extends Component {
             )}
             {(page + 2 <= maxPage) && (
               <Pagination.Item onClick={() => this.setState({ page: page + 2 })}>{page + 2}</Pagination.Item>
+            )}
+            {!(page - 2 > 0) && (page + 3 <= maxPage) && (
+              <Pagination.Item onClick={() => this.setState({ page: page + 3 })}>{page + 3}</Pagination.Item>
+            )}
+            {!(page - 1 > 0) && (page + 4 <= maxPage) && (
+              <Pagination.Item onClick={() => this.setState({ page: page + 4 })}>{page + 4}</Pagination.Item>
             )}
             {(page + 3 <= maxPage) && <Pagination.Ellipsis />}
             <Pagination.Next disabled={page === maxPage} onClick={() => this.setState({ page: page + 1 })} />

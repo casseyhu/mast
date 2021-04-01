@@ -4,9 +4,8 @@ export const LANDING_LEFT = <svg width="576" height="725" viewBox="0 0 576 725" 
   <path d="M140.455 381.711C176.782 240.649 125.215 -97.8432 -94.0235 86.4278C-136.581 122.198 -380.243 179.305 -146.77 476.977C86.7027 774.649 -176.345 963.655 -17.6741 1011.01C163.231 1035.44 663.063 745.577 435.015 641.984C132.988 504.786 112.909 488.673 140.455 381.711Z" fill="#727A88" />
 </svg>
 
-
-export const LANDING_RIGHT = <svg width="489" height="609" viewBox="0 0 489 609" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M174.39 446.847C87.9949 540.271 110.61 920.104 349.953 866.067C396.413 855.577 651.967 934.39 605.934 614.475C559.9 294.56 853.076 285.848 756.27 186.847C633.403 96.5607 389.965 -11.5514 389.965 218.449C389.965 496.617 239.901 376.007 174.39 446.847Z" fill="#727A88" />
+export const LANDING_OVAL = <svg width="1440" viewBox="0 0 1378 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M289.855 911.562C-223.953 488.488 -211.693 -100.865 155.571 -149.419C337.563 -173.479 899.298 -91.6477 1248.23 504.825C1684.39 1250.42 932.115 1440.4 289.855 911.562Z" fill="#D8EEFE"/>
 </svg>
 
 export const LANDING_WAVE_LINES = <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xlink="http://www.w3.org/1999/xlink" svgjs="http://svgjs.com/svgjs" preserveAspectRatio="none" viewBox="0 0 1440 560">

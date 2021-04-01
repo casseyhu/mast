@@ -1,22 +1,20 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-
-const database = require('../config/database.js');
-const Op = database.Sequelize.Op;
-
-
-
-const Student = database.Student;
-const Degree = database.Degree;
-
 const { IncomingForm } = require('formidable');
 const fs = require('fs');
 const Papa = require('papaparse');
 
+const database = require('../config/database.js');
+const Op = database.Sequelize.Op;
+
+const Student = database.Student;
+const Degree = database.Degree;
+
+
 // Create a Student from Add Student 
 exports.create = (req, res) => {
   const student = req.body.params
-  if(emptyFields(student)) {
+  if (emptyFields(student)) {
     let err_msg = "Error in adding student. Please check that all necessary student information are filled out."
     res.status(500).send(err_msg);
   }
@@ -26,56 +24,55 @@ exports.create = (req, res) => {
     "Winter": "01",
     "Summer": "05"
   }
-  let query = Degree.findOne({
+  Degree.findOne({
     where: {
       dept: student.dept,
       track: student.track,
-      requirementVersion:  Number(student.degreeYear+semDict[student.degreeSem]),
+      requirementVersion: Number(student.degreeYear + semDict[student.degreeSem]),
     }
   }).then((degree) => {
-    // No degree + track + requirement version was found in the DB. 
-    if(degree.degreeId === null) {
-      res.status(500).send("Invalid requirement version.")
-      return
-    } 
-
     // Hash the password for the student. (first init + last init + sbuid)
-    let first = student.firstName.charAt(0).toLowerCase() 
-    let last = student.lastName.charAt(0).toLowerCase() 
-    let password = first+last+student.sbuId
+    let first = student.firstName.charAt(0).toLowerCase()
+    let last = student.lastName.charAt(0).toLowerCase()
+    let password = first + last + student.sbuId
     let salt = bcrypt.genSaltSync(10);
     let hash_password = bcrypt.hashSync(password, salt);
 
     // Check for valid graduation date. If EntryDate == GradDate, it's valid for now.
-    let grad_date = Number(student.gradYear+semDict[student.gradSem])
-    let entry_date = Number(student.entryYear+semDict[student.entrySem])
+    let grad_date = Number(student.gradYear + semDict[student.gradSem])
+    let entry_date = Number(student.entryYear + semDict[student.entrySem])
+    let degree_version = Number(student.degreeYear + semDict[student.degreeSem])
     if (grad_date < entry_date) {
       res.status(500).send("Graduation date cannot be earlier than entry date.");
       return
     }
+    if (degree_version < entry_date) {
+      res.status(500).send("Degree version cannot be earlier than entry date.");
+      return
+    }
+    if (degree_version > grad_date) {
+      res.status(500).send("Degree version cannot be later than graduation date.");
+      return
+    }
 
     // Check for proper 9-digit SBUID
-    if (student.sbuId.length !== 9) {
+    let regex = /^\d{9}$/;
+    console.log(student.sbuId)
+    if (!regex.test(student.sbuId)) {
       res.status(500).send("SBUID must be a 9-digit string of numbers 0-9.");
       return
     }
 
-    // Checks for valid GPA: On 0-4.0 scale, only (0-9) + '.'. 
-    if (student.gpa !== "") {
-      const regex = /^(?:\d{0,1})?(?:\.\d{1,2})?$/;
-      console.log("Checking gpa")
-      if (regex.test(student.gpa)) {
-        console.log("Passed regex")
-        if (Number(student.gpa) > 4.0 || Number(student.gpa) < 0) {
-          res.status(500).send("GPA must be on a 4.0 scale.");
-          return
-        }
-      } else {
-        console.log("Failed (has chatacters not 0-9 and '.')")
-        res.status(500).send("GPA must be a valid number (i.e. 2, 3.4, ...).");
-        return
-      }
+    // Check for proper .edu email address
+    regex = /^\w+@\w+\.edu$/;
+    console.log(student.email)
+    if (!regex.test(student.email)) {
+      res.status(500).send("Student must have a valid .edu email.");
+      return
     }
+
+    // TODO: get number of degree requirements and set initial state of each requirement to unsatisfied
+
 
     // Tries to create the student with all fields. 
     Student.create({
@@ -84,13 +81,18 @@ exports.create = (req, res) => {
       firstName: student.firstName,
       lastName: student.lastName,
       password: hash_password,
-      gpa: (student.gpa === "") ? null : Number(student.gpa),
+      gpa: null,
       entrySem: student.entrySem,
       entryYear: Number(student.entryYear),
       entrySemYear: Number(student.entryYear.concat(semDict[student.entrySem])),
       gradSem: student.gradSem,
       gradYear: Number(student.gradYear),
       department: student.dept,
+      track: student.track,
+      // set # unsatisfied, pending, satisfied
+      satisfied: 0,
+      unsatisfied: 0,
+      pending: 0,
       degreeId: degree.degreeId,
       graduated: 0,
       gpdComments: student.gpdComments,
@@ -105,21 +107,22 @@ exports.create = (req, res) => {
       res.status(500).send(err_msg);
     })
   }).catch((err) => {
-    let err_msg =  "Error in adding student. Please check student information type (i.e. SBUID must be numbers 0-9)."
-    res.status(500).send(err_msg);
+    // No degree + track + requirement version was found in the DB. 
+    res.status(500).send("Degree requirement version does not exist.")
+    return
   });
 }
 
 // Checks if any of the AddStudent fields were empty. All fields, except for
 // GPA, GPD comments, Student comments CANNOT be empty. 
-function emptyFields(student){
+function emptyFields(student) {
   for (let fields of Object.keys(student)) {
-    if(fields === "studentComments"  
-      || fields === "gpdComments" 
-      || fields === "gpa"){
+    if (fields === "studentComments"
+      || fields === "gpdComments"
+      || fields === "gpa") {
       continue
     }
-    if(student[fields] === ""){
+    if (student[fields] === "") {
       return true
     }
   }
@@ -198,42 +201,52 @@ exports.findById = (req, res) => {
   })
 }
 
+// Filter all students by filters
 exports.filter = (req, res) => {
-  Student.findAll({
-    where: {
-      firstName: { [Op.like]: req.query.firstName },
-      lastName: { [Op.like]: req.query.lastName },
-      sbuId: { [Op.like]: req.query.sbuId},
-      entrySem: { [Op.like]: req.query.entrySem },
-      entryYear: { [Op.like]: req.query.entryYear },
-      department: { [Op.like]: req.query.degree },
-      gradSem: { [Op.like]: req.query.gradSem },
-      gradYear: { [Op.like]: req.query.gradYear },
-      graduated: { [Op.like]: req.query.graduated }
-    }
-  }).then(students => {
-    res.send(students);
-  }).catch(err => {
-    res.status(500).send("Error: " + err);
-  })
+  Student
+    .findAll({
+      where: {
+        firstName: { [Op.like]: req.query.firstName },
+        lastName: { [Op.like]: req.query.lastName },
+        sbuId: { [Op.like]: req.query.sbuId },
+        entrySem: { [Op.like]: req.query.entrySem },
+        entryYear: { [Op.like]: req.query.entryYear },
+        department: { [Op.like]: req.query.degree },
+        gradSem: { [Op.like]: req.query.gradSem },
+        gradYear: { [Op.like]: req.query.gradYear },
+        graduated: { [Op.like]: req.query.graduated }
+      }
+    })
+    .then(students => {
+      res.send(students);
+    })
+    .catch(err => {
+      res.status(500).send("Error: " + err);
+    })
 }
 
 // Find all Students 
 exports.findAll = (req, res) => {
-  Student.findAll().then(students => {
-    res.send(students);
-  }).catch(err => {
-    res.status(500).send("Error: " + err);
-  })
+  Student
+    .findAll()
+    .then(students => {
+      res.send(students);
+    })
+    .catch(err => {
+      res.status(500).send("Error: " + err);
+    })
 }
 
 // Delete a Student
 exports.delete = (req, res) => {
-  Student.destroy({ where: { sbuId: req.params.sbuId } }).then(() => {
-    res.status(200).send("Student deleted!");
-  }).catch(err => {
-    res.status(500).send("Error: " + err);
-  })
+  Student
+    .destroy({ where: { sbuId: req.params.sbuId } })
+    .then(() => {
+      res.status(200).send("Student deleted!");
+    })
+    .catch(err => {
+      res.status(500).send("Error: " + err);
+    })
 }
 
 // https://www.freecodecamp.org/news/node-js-child-processes-everything-you-need-to-know-e69498fe970a/
@@ -241,15 +254,18 @@ exports.delete = (req, res) => {
 
 // Delete all students from database. Used primarly for testing by GPD
 exports.deleteAll = (req, res) => {
-  Student.drop().then(() => {
-    res.status(200).send("Deleted student data.");
-    database.sequelize.sync({ force: false }).then(() => {
-      console.log("Synced database");
+  Student
+    .drop()
+    .then(() => {
+      res.status(200).send("Deleted student data.");
+      database.sequelize.sync({ force: false }).then(() => {
+        console.log("Synced database");
+      })
     })
-  }).catch(err => {
-    console.log("Error" + err)
-    res.status(500).send("Error: " + err);
-  })
+    .catch(err => {
+      console.log("Error" + err)
+      res.status(500).send("Error: " + err);
+    })
 }
 
 
@@ -281,6 +297,10 @@ async function uploadStudents(csv_file) {
       gradSem: student_info.graduation_semester,
       gradYear: student_info.graduation_year,
       department: student_info.department,
+      track: student_info.track,
+      satisfied: 0,
+      unsatisfied: 0,
+      pending: 0,
       degreeId: degree_dict[student_info.department + " " + student_info.track],
       graduated: graduated,
       gpdComments: "",
@@ -289,7 +309,6 @@ async function uploadStudents(csv_file) {
     tot += 1
     const found = await Student.findOne({ where: condition })
     if (found)
-      //console.log(condition)
       await Student.update(values, { where: condition })
     else
       await Student.create(values)

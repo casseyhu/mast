@@ -24,6 +24,12 @@ export const DEPARTMENTS = [
   { value: 'ESE', label: 'ESE' }
 ];
 
+export const DEPARTMENTS_REQ = [
+  { value: 'AMS', label: 'AMS' },
+  { value: 'BMI', label: 'BMI' },
+  { value: 'CSE', label: 'CSE' },
+  { value: 'ESE', label: 'ESE' }
+];
 
 export const TESTING = [
   { value: 'chocolate', label: 'Chocolate' },
@@ -44,12 +50,10 @@ export const SORT_FIELDS = [
   { value: 'satisfied', label: 'Satisfied'},
   { value: 'pending', label: 'Pending'},
   { value: 'unsatisfied', label: 'Unsatisfied'},
-  { value: 'department', label: 'Degree'},
   { value: 'gpa', label: 'GPA'},
   { value: 'entrySemYear', label: 'Entry'},
   { value: 'gradSemYear', label: 'Grad'},
   { value: 'graduated', label: 'Graduated'}
-
 ]
 
 export const BOOLEAN = [
