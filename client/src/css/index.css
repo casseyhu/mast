@@ -1,14 +1,20 @@
 @import '~bootstrap/dist/css/bootstrap.css';
 :root {
   --slate-black: #2F323A;
+  /*344055*/
   --charcoal: #344055;
+  --primary: #094067;
+  --secondary: #90b4ce;
   --dark-blue: #223E6E;
+  --white: #fffffe;
+  --light: #d8eefe;
+  --dark: #5f6c7b;
   --dark-blue-70o: rgba(34, 62, 110, 0.7);
   --light-blue: #91B3ED;
   --med-blue: #325AA1;
   --off-white: rgb(246, 248, 248);
   --grey: rgb(215, 221, 226);
-  --dark-grey: #6279A1;
+  --dark-grey: #5f6c7b;
 }
 
 * {
@@ -62,8 +68,8 @@ table {
 }
 th {
   border: none;
-  background-color: var(--dark-blue-70o);
-  color: white;
+  background-color: var(--light);
+  color: var(--slate-black);
   padding: 0.5rem;
   text-align: center;
 }
@@ -186,7 +192,7 @@ i.fa {
     z-index: 10;
   }
   .navbar-dark .navbar-nav .nav-link {
-    color: var(--charcoal) !important;
+    color: var(--primary) !important;
     margin-left: auto !important;
   }
 }

@@ -30,13 +30,5 @@ module.exports = (sequelize, Sequelize) => {
     timestamps: false
   });
 
-
-  // CreditRequirement.associate = models => {
-  //   CreditRequirement.belongsTo(models.Degree, {
-  //     targetKey: 'creditRequirement',
-  //     foreignKey: 'requirementId'
-  //   })
-  // }
-
   return CreditRequirement;
 }

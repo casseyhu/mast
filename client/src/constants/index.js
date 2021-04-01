@@ -17,6 +17,7 @@ export const YEARS = [
 ];
 
 export const DEPARTMENTS = [
+  { value: '', label: 'All' },
   { value: 'AMS', label: 'AMS' },
   { value: 'BMI', label: 'BMI' },
   { value: 'CSE', label: 'CSE' },

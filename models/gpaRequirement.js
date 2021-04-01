@@ -34,13 +34,5 @@ module.exports = (sequelize, Sequelize) => {
     timestamps: false
   });
 
-
-  // GpaRequirement.associate = models => {
-  //   GpaRequirement.belongsTo(models.Degree, {
-  //     targetKey: 'gpaRequirement',
-  //     foreignKey: 'requirementId'
-  //   })
-  // }
-
   return GpaRequirement;
 }

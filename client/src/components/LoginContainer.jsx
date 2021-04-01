@@ -74,7 +74,7 @@ class LoginContainer extends Component {
           </p>
         </div>
         <h2 className="login-item">USER LOGIN</h2>
-        <div className="flex-horizontal user-slider " onClick={this.switchUser}>
+        <div className="user-slider " onClick={this.switchUser}>
           <div className={`gpd${this.state.user === "gpd" ? '-selected' : ''}`} />
           <div className={`student${this.state.user === "student" ? '-selected' : ''}`} />
           <div className="users">

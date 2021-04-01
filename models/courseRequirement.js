@@ -15,6 +15,7 @@
  * @param Sequelize 
  * @returns A Promise<Model> indicating whether the object was created or not. 
  */
+
 module.exports = (sequelize, Sequelize) => {
   const CourseRequirement = sequelize.define('courserequirement', {
     requirementId: {
