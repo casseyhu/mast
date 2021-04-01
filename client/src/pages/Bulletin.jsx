@@ -45,7 +45,7 @@ class Bulletin extends Component {
             />
           )}
         </div>
-        <div className="information_box">
+        <div className="">
           {this.state.courses.map(course => {
             return <div>
               <b style={{ borderBottom: '2px solid var(--grey)' }}>

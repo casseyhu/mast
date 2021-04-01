@@ -4,7 +4,6 @@ import Dropdown from './Dropdown';
 import axios from '../constants/axios';
 import InputField from './InputField'
 import { SORT_FIELDS, BOOLEAN, DEPARTMENTS, SEMESTERS, YEARS } from '../constants';
-import { Container, } from "react-bootstrap";
 
 const BrowseSearchbar = (props) => {
 
@@ -59,7 +58,7 @@ const BrowseSearchbar = (props) => {
   }
 
   return (
-    <Container style={{ margin: '0.2rem 0 0.5rem 0' }}>
+    <div style={{ margin: '0.2rem 0 0.5rem 0' }}>
       {/* Main search bar fields */}
       <div className="flex-horizontal wrap justify-content-between">
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
@@ -168,7 +167,7 @@ const BrowseSearchbar = (props) => {
           </div>
         </div>
       )}
-    </Container>
+    </div>
   )
 
 

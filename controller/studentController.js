@@ -2,8 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const database = require('../config/database.js');
-const Sequelize = require('sequelize')
-const Op = Sequelize.Op;
+const Op = database.Sequelize.Op;
 
 
 
@@ -220,7 +219,8 @@ async function uploadStudents(csv_file) {
       department: student_info.department,
       degreeId: degree_dict[student_info.department + " " + student_info.track],
       graduated: graduated,
-      comments: ""
+      gpdComments: "",
+      studentComments: ""
     }
     tot += 1
     const found = await Student.findOne({ where: condition })

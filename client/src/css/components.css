@@ -2,17 +2,23 @@
 
 nav {
   height: 3.5rem;
+  /* background-color: transparent; */
   background-color: var(--charcoal) !important;
 }
 
 .navbar-dark .navbar-nav .nav-link, .navbar-brand {
   color: white;
+  /* color: var(--slate-black); */
   margin: 0 0.7rem;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .toggler {
   border: none;
+}
+.container {
+  background-color: #fffffe;
+  min-height: calc(100vh - 4rem);
 }
 
 /* Buttons and Input CSS */
@@ -20,26 +26,30 @@ nav {
 .input, .round-button, .square-button, textarea {
   padding: 5px 10px;
   margin: 4px auto;
-  border: 2px solid var(--charcoal);
+  border: 2px solid var(--primary);
   border-radius: 0.5rem;
   width: 100%;
 }
 
 .round-button {
-  background-color: var(--charcoal);
+  background-color: var(--primary);
   color: white;
   align-items: center;
   justify-content: center;
+  transition: background 0.3s, border-radius 0.3s;
 }
 
 .round-button:hover {
-  background: rgba(30, 61, 107, 0.95);
+  background: var(--white);
+  color: var(--primary);
+  transition: background 0.3s, border-radius 1s;
   border: 2px solid rgba(30, 61, 107, 0.95);
+  border-radius: 2rem;
 }
 
 .square-button {
   background-color: white;
-  color: var(--charcoal);
+  color: var(--primary);
 }
 
 .input, textarea {
@@ -110,15 +120,15 @@ nav {
 
 /* Pagination CSS */
 .page-link {
-  color: var(--charcoal);
+  color: var(--primary);
 }
 .page-link:hover {
   background-color: rgba(197, 197, 197, 0);
-  color: var(--charcoal);
+  color: var(--primary);
 }
 .page-item.active .page-link {
-  background-color: var(--charcoal);
-  border-color: var(--charcoal);
+  background-color: var(--primary);
+  border-color: var(--primary);
 }
 
 
