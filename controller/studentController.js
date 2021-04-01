@@ -2,6 +2,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const database = require('../config/database.js');
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op;
+
+
 
 const Student = database.Student;
 const Degree = database.Degree;
@@ -12,6 +16,7 @@ const Papa = require('papaparse');
 
 // Create a Student from Add Student 
 exports.create = (req, res) => {
+  console.log(req.body)
   Student.create({
     sbuId: req.body.sbuId,
     email: req.body.email,
@@ -89,6 +94,26 @@ exports.login = (req, res) => {
 exports.findById = (req, res) => {
   Student.findById(req.params.sbuId).then(student => {
     res.send(student);
+  }).catch(err => {
+    res.status(500).send("Error: " + err);
+  })
+}
+
+exports.filter = (req, res) => {
+  Student.findAll({
+    where: {
+      firstName: { [Op.like]: req.query.firstName },
+      lastName: { [Op.like]: req.query.lastName },
+      sbuId: { [Op.like]: req.query.sbuId},
+      entrySem: { [Op.like]: req.query.entrySem },
+      entryYear: { [Op.like]: req.query.entryYear },
+      department: { [Op.like]: req.query.degree },
+      gradSem: { [Op.like]: req.query.gradSem },
+      gradYear: { [Op.like]: req.query.gradYear },
+      graduated: { [Op.like]: req.query.graduated }
+    }
+  }).then(students => {
+    res.send(students);
   }).catch(err => {
     res.status(500).send("Error: " + err);
   })

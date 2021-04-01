@@ -6,6 +6,7 @@ const customStyles = {
     ...provided,
     color: state.isFocused ? 'white' : 'black',
     backgroundColor: state.isFocused ? 'rgb(30, 61, 107)' : 'white',
+    overflowX: 'hidden',
   }),
   multiValue: (provided) => ({
     ...provided,

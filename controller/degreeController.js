@@ -30,6 +30,7 @@ exports.upload = (req, res) => {
   })
 }
 
+
 //Find all degrees
 exports.findAll = (req, res) => {
   Degree.findAll().then(degrees => {
@@ -37,6 +38,36 @@ exports.findAll = (req, res) => {
   }).catch(err => {
     res.status(500).send("Error: " + err);
   })
+}
+
+
+//Find all requirements for a degree by department and track
+exports.findRequirements = (req, res) => {
+  Degree.findOne({ where: {
+    dept: req.query.department,
+    track: req.query.track
+  }}).then(degree => {
+    // console.log(degree)
+    findRequirements(degree, res)
+  })
+}
+
+
+async function findRequirements(degree, res) {
+  let gradeReq = await GradeRequirement.findOne({ where: {
+    requirementId: degree.gradeRequirement
+  }})
+  let gpaReq = await GpaRequirement.findOne({ where: {
+    requirementId: degree.gpaRequirement
+  }})
+  let creditReq = await CreditRequirement.findOne({ where: {
+    requirementId: degree.creditRequirement
+  }})
+  let courseReq = await CourseRequirement.findAll({ where: {
+    requirementId: degree.courseRequirement
+  }})
+  // console.log(courseReq)
+  res.status(200).send([gradeReq, gpaReq, creditReq, courseReq])
 }
 
 

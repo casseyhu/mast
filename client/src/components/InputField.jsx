@@ -5,7 +5,7 @@ const InputField = (props) => {
     <div className={`inputContainer ${props.className}`} style={props.style}>
       <input
         type={props.type}
-        className="input"
+        className={`input ${props.inputStyle}`}
         placeholder={props.placeholder}
         value={props.value}
         onChange={props.onChange}

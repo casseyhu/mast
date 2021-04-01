@@ -2,11 +2,13 @@
 :root {
   --slate-black: #2F323A;
   --charcoal: #344055;
-  --dark-blue: rgb(30, 61, 107);
-  --light-blue: rgb(72, 123, 189);
+  --dark-blue: #223E6E;
+  --dark-blue-70o: rgba(34, 62, 110, 0.7);
+  --light-blue: #91B3ED;
+  --med-blue: #325AA1;
   --off-white: rgb(246, 248, 248);
   --grey: rgb(215, 221, 226);
-  --dark-grey: #727A88;
+  --dark-grey: #6279A1;
 }
 
 * {
@@ -31,6 +33,11 @@ h1 {
   font-size: 32px;
 }
 
+h3 {
+  font-size: 24px;
+  border-bottom: 2px solid var(--dark-blue-70o);
+}
+
 h4 {
   border-bottom: 2px solid var(--grey);
   width: 100%;
@@ -51,11 +58,11 @@ footer {
 /* Table styling CSS */
 table {
   margin-bottom: 0.5rem;
-  display: block;
+  /* display: block; */
 }
 th {
   border: none;
-  background-color: #1e345acb;
+  background-color: var(--dark-blue-70o);
   color: white;
   padding: 0.5rem;
   text-align: center;
@@ -70,6 +77,13 @@ tr:hover {
 
 .padleft {
   padding-left: 1rem;
+}
+
+textarea {
+  display: block;
+  resize: none;
+  overflow: auto;
+  height: 130px;
 }
 
 
@@ -115,7 +129,6 @@ tr:hover {
   margin: 0 auto;
 }
 
-
 i.fa {
   line-height: 3rem; 
   /* float: right; */
@@ -139,6 +152,30 @@ i.fa {
   background-color: white;
   padding: 1rem;
   border-radius: 0.5rem;
+}
+
+/* Color CSS */
+.req-state {
+  vertical-align: middle;
+  display: table-cell;
+  padding-left: 0.5rem;
+  padding-right: 3rem;
+}
+.color-box {
+  width: 30px;
+  height: 30px;
+  /* display: inline-block; */
+  vertical-align: middle;
+  display: table-cell;
+}
+.green {
+  background-color: #80FFC2;
+}
+.yellow {
+  background-color: #FFF0A4;
+}
+.red {
+  background-color: #FFAAAA;
 }
 
 

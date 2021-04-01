@@ -30,6 +30,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+// console.log(__dirname)
 // All models and tables
 db.Gpd = require('../models/gpd.js')(sequelize, Sequelize);
 db.Student = require('../models/student.js')(sequelize, Sequelize);
