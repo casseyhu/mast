@@ -4,7 +4,7 @@ import bcrypt
 import csv
 from pathlib import Path
 
-NUM_STUDENTS = 150
+NUM_STUDENTS = 15
 
 DEPARTMENTS = ["CSE", "AMS", "BMI", "ESE"]
 TRACKS = {
@@ -54,7 +54,7 @@ for j in range(NUM_STUDENTS):
         grad_sem_year = entry_sem_year + 194
     grad_sem = SEMESTERS[grad_sem_year % 100]
     grad_year = grad_sem_year // 100
-    password = bcrypt.hashpw(str.encode((first_name).lower()), bcrypt.gensalt()).decode("utf-8")
+    password = bcrypt.hashpw(str.encode((first_name[0] + last_name[0] + str(student_id)).lower()), bcrypt.gensalt()).decode("utf-8")
     student_list.append([student_id, first_name, last_name, email, dept, track, entry_sem, entry_year, req_sem,
                          req_year, grad_sem, grad_year, password])
 
