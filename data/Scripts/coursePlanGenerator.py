@@ -101,7 +101,8 @@ prereq_df = prereq_df[prereq_df['prereqs'].notna()]
 # Get all students and their relevant information from student_profile_file.csv
 students = []
 profile_df = pd.read_csv(path + '/student_profile_file.csv')
-df = profile_df.loc[200:]
+# df = profile_df.loc[200:]
+df = profile_df
 for ind in df.index:
     track = df['track'][ind]
     if df['department'][ind] == 'CSE':
