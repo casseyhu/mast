@@ -8,10 +8,9 @@ import Trends from './pages/Trends';
 import Import from './pages/Import';
 import Bulletin from './pages/Bulletin';
 import Suggest from './pages/Suggest';
-import AddEditStudent from './pages/AddEditStudent';
+import Student from './pages/Student';
 import EditPlan from './pages/EditPlan';
 import ViewPlan from './pages/ViewPlan';
-import ViewStudent from './pages/ViewStudent';
 import NotFound404 from './pages/NotFound404';
 import jwt_decode from 'jwt-decode';
 
@@ -63,8 +62,7 @@ class App extends Component {
           {user === 'gpd' && <Route path="/import" component={Import} />}
           {user && <Route path="/bulletin" component={(props) => <Bulletin {...props} user={this.state.user} />} />}
           {user && <Route path="/suggest" component={Suggest} />}
-          {user && <Route exact path="/student" component={ViewStudent} />}
-          {user && <Route path="/student/edit" component={(props) => <AddEditStudent {...props} user={this.state.user} />} />}
+          {user && <Route path="/student" component={(props) => <Student {...props} user={this.state.user} />} />}
           {user && <Route exact path="/courseplan" component={ViewPlan} />}
           {user && <Route path="/courseplan/edit" component={EditPlan} />}
           <Route component={NotFound404} />

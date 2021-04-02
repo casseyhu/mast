@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 const CoursePlan = (props) => {
-  const [courses, setCourses] = useState(props.items);
-
 
   return (
     <div >
@@ -18,13 +16,13 @@ const CoursePlan = (props) => {
           </tr>
         </thead>
         <tbody>
-          {courses.map((course, i) => {
+          {props.items.map((course, i) => {
             return <tr key={i} style={{ cursor: 'pointer' }}>
               <td className="center">{course.courseId.substring(0,3)}</td>
               <td className="center">{course.courseId.substring(3,6)}</td>
               <td className="center">{course.semester}</td>
               <td className="center">{course.year}</td>
-              <td className="center">{course.grade}</td>
+              <td className="center">{course.grade ? course.grade : 'N/A'}</td>
             </tr>
           })}
         </tbody>

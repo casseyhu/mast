@@ -38,6 +38,7 @@ const Import = (props) => {
           style={{ width: '200px', marginBottom: '3rem' }}
         />
         <CenteredModal
+          variant="multi"
           show={showConfirmation}
           onHide={() => setshowConfirmation(false)}
           onConfirm={() => dropStudents()}

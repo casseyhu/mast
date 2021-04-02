@@ -27,8 +27,12 @@ class Browse extends Component {
 
   addStudent = () => {
     this.props.history.push({
-      pathname: '/student/edit',
-      state: { mode: 'Add' }
+      pathname: '/student',
+      state: { 
+        mode: 'Add',
+        student: '',
+        items: []
+      }
     })
   }
 
@@ -39,9 +43,9 @@ class Browse extends Component {
       }
     }).then(response => {
       this.props.history.push({
-        pathname: '/student/edit',
+        pathname: '/student',
         state: {
-          mode: 'Edit',
+          mode: 'View',
           student: student,
           items: response.data
         }
@@ -171,8 +175,6 @@ class Browse extends Component {
                 <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("firstName")}>First Name</th>
                 <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("sbuId")}>Student ID</th>
                 <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("satisfied")}>S/P/U</th>
-                {/* <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("pending")}>Pending</th>
-                <th scope='col' style={{ width: '8%' }} onClick={() => this.setSortField("unsatisfied")}>Unsatisfied</th> */}
                 <th scope='col' style={{ width: '8%' }} onClick={() => this.setSortField("department")}>Degree</th>
                 <th scope='col' style={{ width: '20%' }} onClick={() => this.setSortField("department")}>Track</th>
                 <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField("gpa")}>GPA</th>
@@ -187,9 +189,7 @@ class Browse extends Component {
                   <td className="padleft">{student.lastName}</td>
                   <td className="padleft">{student.firstName}</td>
                   <td className="padleft">{student.sbuId}</td>
-                  {/* <td className="center">0</td>
-                  <td className="center">0</td> */}
-                  <td className="center">0/0/0</td>
+                  <td className="center">{student.satisfied}/{student.pending}/{student.unsatisfied}</td>
                   <td className="center">{student.department}</td>
                   <td className="center">{student.track.substring(0, 22)}{student.track.length > 22 ? '...' : ''}</td>
                   <td className="center">{(student.gpa === null) ? "N/A" : student.gpa}</td>

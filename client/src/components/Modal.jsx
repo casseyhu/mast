@@ -16,15 +16,15 @@ const CenteredModal = (props) => {
 		>
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
-					Please Confirm
+					{props.variant === "multi" ? "Please Confirm" : "Success"}
         </Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				{props.body}
 			</Modal.Body>
 			<Modal.Footer>
-				<Button variant="round" text="Cancel" onClick={props.onHide} />
-				<Button variant="round" text="Confirm" onClick={props.onConfirm} />
+				{props.variant && <Button variant="round" text="Cancel" onClick={props.onHide} />}
+				<Button variant="round" text={props.variant === "multi" ? "Confirm" : "Ok"} onClick={props.onConfirm} />
 			</Modal.Footer>
 		</Modal>
 	)

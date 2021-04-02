@@ -65,17 +65,13 @@ exports.uploadPlans = (req, res) => {
 async function uploadCoursePlans(csv_file) {
   let students_planid = {}
   // Create/Update all the course plan items
-  for (let i = 0; i < csv_file.data.length - 1; i++) {
+  for (let i = 0; i < csv_file.data.length ; i++) {
     if (!csv_file.data[i].sbu_id)
       continue
     let condition = { studentId: csv_file.data[i].sbu_id }
-    let values = {
-      studentId: csv_file.data[i].sbu_id,
-      coursePlanState: 0
-    }
     let found = await CoursePlan.findOne({ where: condition })
     if (!found)
-      found = await CoursePlan.create(values)
+      console.log(condition)
     students_planid[csv_file.data[i].sbu_id] = found.coursePlanId
     condition = {
       coursePlanId: found.coursePlanId,

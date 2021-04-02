@@ -52,13 +52,35 @@ const ImportItem = (props) => {
     else if (props.header === "Course Offerings")
       upload_path = 'courseoffering/upload';
     else if (props.header === "Student Data") {
-      upload_path = 'student/upload';
-      let storeFile = file;
-      axiosPost(upload_path, firstFormData);
-      setFirstFile("")
-      setFile(storeFile)
-      upload_path = 'courseplan/upload';
-      //also need to handle course plan upload
+      setLoading(true)
+      axios.post('student/upload', firstFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function () {
+        console.log('Successfully uploaded profile');
+        axios.post('courseplan/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(res => {
+          console.log('Successfully uploaded course plans');
+          setLoading(false)
+          setUploading(true)
+          setFile("")
+        }).catch(err => {
+          setLoading(false)
+          setFile("")
+          setError(err.response.data)
+        })
+        setFirstFile("")
+      }).catch(function (err) {
+        console.log(err.response.data)
+        setLoading(false)
+        setFirstFile("")
+        setError(err.response.data)
+      });
+      return
     }
     else // Uploading grades. 
       upload_path = 'courseplan/upload';

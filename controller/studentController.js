@@ -9,7 +9,7 @@ const Op = database.Sequelize.Op;
 
 const Student = database.Student;
 const Degree = database.Degree;
-
+const CoursePlan = database.CoursePlan;
 
 // Create a Student from Add Student 
 exports.create = (req, res) => {
@@ -17,6 +17,7 @@ exports.create = (req, res) => {
   if (emptyFields(student)) {
     let err_msg = "Error in adding student. Please check that all necessary student information are filled out."
     res.status(500).send(err_msg);
+    return
   }
   const semDict = {
     "Fall": "08",
@@ -31,6 +32,11 @@ exports.create = (req, res) => {
       requirementVersion: Number(student.degreeYear + semDict[student.degreeSem]),
     }
   }).then((degree) => {
+    if (!degree) {
+      // No degree + track + requirement version was found in the DB. 
+      res.status(500).send("Degree requirement version does not exist.")
+      return
+    }
     // Hash the password for the student. (first init + last init + sbuid)
     let first = student.firstName.charAt(0).toLowerCase()
     let last = student.lastName.charAt(0).toLowerCase()
@@ -75,42 +81,55 @@ exports.create = (req, res) => {
 
 
     // Tries to create the student with all fields. 
-    Student.create({
-      sbuId: student.sbuId,
-      email: student.email,
-      firstName: student.firstName,
-      lastName: student.lastName,
-      password: hash_password,
-      gpa: null,
-      entrySem: student.entrySem,
-      entryYear: Number(student.entryYear),
-      entrySemYear: Number(student.entryYear.concat(semDict[student.entrySem])),
-      gradSem: student.gradSem,
-      gradYear: Number(student.gradYear),
-      department: student.dept,
-      track: student.track,
-      // set # unsatisfied, pending, satisfied
-      satisfied: 0,
-      unsatisfied: 0,
-      pending: 0,
-      degreeId: degree.degreeId,
-      graduated: 0,
-      gpdComments: student.gpdComments,
-      studentComments: student.studentComments
-    }).then(() => {
-      res.status(200).send("Successfully added new student.");
-    }).catch(err => {
+    Student
+      .create({
+        sbuId: student.sbuId,
+        email: student.email,
+        firstName: student.firstName,
+        lastName: student.lastName,
+        password: hash_password,
+        gpa: null,
+        entrySem: student.entrySem,
+        entryYear: Number(student.entryYear),
+        entrySemYear: Number(student.entryYear.concat(semDict[student.entrySem])),
+        gradSem: student.gradSem,
+        gradYear: Number(student.gradYear),
+        department: student.dept,
+        track: student.track,
+        // set # unsatisfied, pending, satisfied
+        satisfied: 0,
+        unsatisfied: 0,
+        pending: 0,
+        degreeId: degree.degreeId,
+        graduated: 0,
+        gpdComments: student.gpdComments,
+        studentComments: student.studentComments
+      })
+      .then(() => {
+        CoursePlan
+          .create({
+            studentId: student.sbuId,
+            coursePlanState: 0
+          })
+          .then(coursePlan => {
+            res.status(200).send("Successfully added new student.");
+          })
+          .catch(err => {
+            res.status(200).send("Error creating student course plan.");
+          })
+      }).catch(err => {
+        err_msg = "Error in adding student. Please check student information type (i.e. SBUID must be numbers 0-9)."
+        if (err.parent.code !== undefined && err.parent.code === "ER_DUP_ENTRY") {
+          err_msg = "Student with ID: " + student.sbuId + " exists already."
+        }
+        res.status(500).send(err_msg);
+      })
+  })
+    .catch((err) => {
       err_msg = "Error in adding student. Please check student information type (i.e. SBUID must be numbers 0-9)."
-      if (err.parent.code !== undefined && err.parent.code === "ER_DUP_ENTRY") {
-        err_msg = "Student with ID: " + student.sbuId + " exists already."
-      }
       res.status(500).send(err_msg);
-    })
-  }).catch((err) => {
-    // No degree + track + requirement version was found in the DB. 
-    res.status(500).send("Degree requirement version does not exist.")
-    return
-  });
+      return
+    });
 }
 
 // Checks if any of the AddStudent fields were empty. All fields, except for
@@ -119,12 +138,12 @@ function emptyFields(student) {
   for (let fields of Object.keys(student)) {
     if (fields === "studentComments"
       || fields === "gpdComments"
-      || fields === "gpa") {
+      || fields === "gpa"
+      || fields === "graduated") {
       continue
     }
-    if (student[fields] === "") {
+    if (student[fields] === "")
       return true
-    }
   }
   return false
 }
@@ -137,7 +156,6 @@ exports.upload = (req, res) => {
       res.status(500).send('File must be *.csv')
     else {
       const f_in = fs.readFileSync(file.path, 'utf-8')
-      let isValid = true;
       Papa.parse(f_in, {
         header: true,
         dynamicTyping: true,
@@ -156,16 +174,14 @@ exports.upload = (req, res) => {
             || header[10] !== 'graduation_semester'
             || header[11] !== 'graduation_year'
             || header[12] !== 'password') {
-            isValid = false
             console.log('invalid csv')
             res.status(500).send("Cannot parse CSV file - headers do not match specifications")
             return
           }
-          uploadStudents(results)
+          else
+            uploadStudents(results, res)
         }
       })
-      if (isValid)
-        res.status(200).send("Success")
     }
   })
 }
@@ -270,7 +286,7 @@ exports.deleteAll = (req, res) => {
 
 
 
-async function uploadStudents(csv_file) {
+async function uploadStudents(csv_file, res) {
   const degrees = await Degree.findAll()
   let degree_dict = {};
   const currentGradYear = 202101
@@ -278,13 +294,13 @@ async function uploadStudents(csv_file) {
     degree_dict[degrees[i].dept + " " + degrees[i].track] = degrees[i].degreeId
   }
   let tot = 0;
-  for (let i = 0; i < csv_file.data.length - 1; i++) {
+  for (let i = 0; i < csv_file.data.length ; i++) {
     student_info = csv_file.data[i]
     let sems_dict = { 'Spring': '02', 'Summer': '06', 'Fall': '08', 'Winter': '01' };
     let semYear = Number(student_info.entry_year + sems_dict[student_info.entry_semester])
     let graduated = Number(student_info.graduation_year + sems_dict[student_info.graduation_semester]) <= currentGradYear ? 1 : 0
-    const condition = { sbuId: student_info.sbu_id }
-    const values = {
+    let condition = { sbuId: student_info.sbu_id }
+    let values = {
       sbuId: student_info.sbu_id,
       firstName: student_info.first_name,
       lastName: student_info.last_name,
@@ -307,12 +323,23 @@ async function uploadStudents(csv_file) {
       studentComments: ""
     }
     tot += 1
-    const found = await Student.findOne({ where: condition })
+    let found = await Student.findOne({ where: condition })
     if (found)
       await Student.update(values, { where: condition })
     else
       await Student.create(values)
+    
+    condition = {studentId: student_info.sbu_id}
+    values = {
+      studentId: student_info.sbu_id,
+      coursePlanState: 0
+    }
+    found = await CoursePlan.findOne({ where: condition })
+    if (found)
+      await CoursePlan.update(values, { where: condition })
+    else
+      await CoursePlan.create(values)
   }
   console.log("Done importing " + tot + " students from csv")
-  return true
+  res.status(200).send("Success")
 }
