@@ -33,13 +33,22 @@ class Browse extends Component {
   }
 
   viewStudent = (student) => {
-    this.props.history.push({
-      pathname: '/student/edit',
-      state: {
-        mode: 'Edit',
-        student: student
+    axios.get('/courseplanitem/findItems', {
+      params: {
+        studentId: student.sbuId
       }
-    })
+    }).then(response => {
+      this.props.history.push({
+        pathname: '/student/edit',
+        state: {
+          mode: 'Edit',
+          student: student,
+          items: response.data
+        }
+      })
+    }).catch(err => {
+      console.log(err)
+    });
   }
 
   setFilter = (filters) => {
@@ -182,7 +191,7 @@ class Browse extends Component {
                   <td className="center">0</td> */}
                   <td className="center">0/0/0</td>
                   <td className="center">{student.department}</td>
-                  <td className="center">{student.track.substring(0,22)}{student.track.length > 22 ? '...' : ''}</td>
+                  <td className="center">{student.track.substring(0, 22)}{student.track.length > 22 ? '...' : ''}</td>
                   <td className="center">{(student.gpa === null) ? "N/A" : student.gpa}</td>
                   <td className="center">{student.entrySem.slice(0, 2)} {student.entryYear % 2000}</td>
                   <td className="center">{student.gradSem.slice(0, 2)} {student.gradYear % 2000}</td>

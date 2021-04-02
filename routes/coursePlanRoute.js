@@ -8,5 +8,5 @@ module.exports = function (app) {
   // Upload student course plans from CSV file
   app.post('/api/courseplan/upload', CoursePlan.uploadPlans);
 
-  app.get('/api/courseplanitem/findItem', CoursePlan.findItems);
+  app.get('/api/courseplanitem/findItems', CoursePlan.findItems);
 }

@@ -33,13 +33,13 @@ exports.upload = (req, res) => {
 //find all courses based on the dept
 exports.findAll = (req, res) => {
   const condition = req.query.dept;
-  Course.findAll({where: { department: condition }})
-  .then(foundCourses => {
-    res.status(200).send(foundCourses)
-  })
-  .catch(err => { 
-    console.log(err)
-  })
+  Course.findAll({ where: { department: condition } })
+    .then(foundCourses => {
+      res.status(200).send(foundCourses)
+    })
+    .catch(err => {
+      console.log(err)
+    })
 }
 
 // dept : list of departments to scrape from
@@ -109,10 +109,10 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
                   }
                 }
               }
-              else if(desc.includes("Prerequisites: ")){
+              else if (desc.includes("Prerequisites: ")) {
                 let full_prereqs = desc.substring(desc.indexOf("Prerequisites: "))
-                if(full_prereqs.includes('and')){
-                  if(full_prereqs.includes(' or')){
+                if (full_prereqs.includes('and')) {
+                  if (full_prereqs.includes(' or')) {
                     full_prereqs = full_prereqs.substring(0, full_prereqs.indexOf(' or'))
                   }
                   full_prereqs = full_prereqs.replace("Prerequisites: ", "")
@@ -120,11 +120,11 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
                   full_prereqs = full_prereqs.replace(" and", ",")
                   prereqs = full_prereqs.split(', ')
                 }
-                else{
+                else {
                   full_prereqs = full_prereqs.replace("Prerequisites: ", "")
                   full_prereqs = full_prereqs.replace(" ", "")
                   full_prereqs = full_prereqs.replace(".", "")
-                  if(isNaN(parseInt(full_prereqs.substring(3, 6))) === false)
+                  if (isNaN(parseInt(full_prereqs.substring(3, 6))) === false)
                     prereqs.push(full_prereqs)
                 }
               }
@@ -187,10 +187,10 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
                 credits: Number(creds),
                 prereqs: prereqs,
                 repeat: 0
-              }, { 
+              }, {
                 courseId: chosenDept + courseNum,
                 semester: semester,
-                year: Number(year) 
+                year: Number(year)
               })
               // .then(res => {
               //   console.log(res.created + ':' + res.course)
@@ -207,11 +207,11 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
             //continues if course + course name exceeds more than one line
             courseName += " " + s.str;
           }
-          else if (s.fontName == "Times" && !s.str.includes("credits")
-            && s.str.substring(0, 13) !== "Prerequisites"
-            && s.str.substring(0, 12) !== "Prerequisite"
+          else if (s.fontName == "Times" && !s.str.includes("credits,")
+            && s.str.includes(0, 13) !== "Prerequisites"
+            && s.str.includes(0, 12) !== "Prerequisite"
             && !s.str.includes("S/U grading")
-            && !s.str.includes("credit")) {
+            && !s.str.includes("credit,")) {
             //reaches description
             if (checkCourseName) {
               if (courses.includes(courseName) == false && courseName != "") {
@@ -233,8 +233,7 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
             || s.str.includes("Prerequisites:")
             || s.str.includes('Prerequisite:')
             || s.str.includes("S/U grading")
-            || s.str.includes("credit")) {
-
+            || s.str.includes("credit,")) {
             if (desc === "") {
               chosenDept = courseName.substring(0, 3)
               courseNum = courseName.substring(5, 8)
@@ -261,7 +260,7 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
                   else
                     others += " " + s.str;
                 }
-              } 
+              }
               else
                 others += + s.str;
             }

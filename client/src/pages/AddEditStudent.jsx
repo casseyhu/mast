@@ -13,7 +13,6 @@ const AddEditStudent = (props) => {
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-
   useEffect(() => {
     axios.get('requirements', {
       params: {
@@ -68,9 +67,11 @@ const AddEditStudent = (props) => {
         user={user}
         errorMessage={errorMsg}
         mode={props.location.state.mode}
+        student={props.location.state.student}
         onSubmit={(e) => modeHandler(e)} />
       <Requirements user={user} requirements={requirements} />
-      <CoursePlan />
+      <CoursePlan
+        items={props.location.state.items} />
       {loading && <Ring size={120} color="rgb(30, 61, 107)" className="loading" />}
       {uploading && <Checkmark size='xxLarge' color="rgb(30, 61, 107)" className="checkmark" />}
     </Container>

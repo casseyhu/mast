@@ -142,12 +142,22 @@ async function calculateGPA(students_planid, course_credit) {
 */
 
 exports.findItems = (req, res) => {
-  CoursePlanItem
-    .findAll({ where: { grade: { [Op.not]: req.query.grade } } })
-    .then(foundGrades => {
-      res.status(200).send(foundGrades)
-    })
-    .catch(err => {
+  let condition = req.query;
+  CoursePlan.findOne({ where : condition }).then(coursePlan => {
+    condition = { coursePlanId : coursePlan.coursePlanId}
+    CoursePlanItem.findAll({ where : condition}).then(coursePlanItems => {
+      res.status(200).send(coursePlanItems)
+    }).catch(err => {
       console.log(err)
     })
+
+  })
+  // CoursePlanItem
+  //   .findAll({ where: { grade: { [Op.not]: req.query.grade } } })
+  //   .then(foundGrades => {
+  //     res.status(200).send(foundGrades)
+  //   })
+  //   .catch(err => {
+  //     console.log(err)
+  //   })
 }

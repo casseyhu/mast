@@ -45,6 +45,7 @@ const Dropdown = (props) => {
         isSearchable
         onChange={props.onChange}
         options={props.items}
+        value={props.value}
         placeholder={props.placeholder}
         styles={customStyles}
         isDisabled={props.disabled}

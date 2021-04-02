@@ -61,7 +61,7 @@ const ImportItem = (props) => {
       //also need to handle course plan upload
     }
     else // Uploading grades. 
-      upload_path = 'courseplanitem/upload';
+      upload_path = 'courseplan/upload';
 
     setLoading(true)
     axiosPost(upload_path, formData);

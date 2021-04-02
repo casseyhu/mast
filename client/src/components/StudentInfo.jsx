@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import InputField from './InputField';
 import Dropdown from './Dropdown';
 import Button from '../components/Button';
@@ -8,22 +8,22 @@ import axios from '../constants/axios';
 
 const StudentInfo = (props) => {
   const [userInfo, setUserInfo] = useState({
-    firstName: '',
-    lastName: '',
-    sbuId: '',
-    email: '',
-    gpa: '',
-    graduated: 0,
-    dept: '',
-    track: '',
-    entrySem: '',
-    entryYear: '',
-    gradSem: '',
-    gradYear: '',
+    firstName: props.student ? props.student.firstName : '',
+    lastName: props.student ? props.student.lastName : '',
+    sbuId: props.student ? props.student.sbuId : '',
+    email: props.student ? props.student.email : '',
+    gpa: props.student ? props.student.gpa : '',
+    graduated: props.student ? (props.student.graduated ? "True" : "False" ) : "",
+    dept: props.student ? props.student.department : 'Degree',
+    track: props.student ? props.student.track : 'Track',
+    entrySem: props.student ? props.student.entrySem : "Semester",
+    entryYear: props.student ? props.student.entryYear.toString() : 'Year',
+    gradSem: props.student ? props.student.gradSem : 'Semester',
+    gradYear: props.student ? props.student.gradYear.toString() : 'Year',
     degreeSem: '',
     degreeYear: '',
-    gpdComments: '',
-    studentComments: ''
+    gpdComments: props.student ? props.student.gpdComments : '',
+    studentComments: props.student ? props.student.studentComments : ''
   })
 
 
@@ -62,12 +62,14 @@ const StudentInfo = (props) => {
             type="text"
             placeholder="First Name"
             onChange={e => handleSelection('firstName', e.target)}
+            value={userInfo.firstName}
             style={{ width: "300px" }} />
           <InputField
             className="lr-padding"
             type="text"
             placeholder="Last Name"
             onChange={e => handleSelection('lastName', e.target)}
+            value={userInfo.lastName}
             style={{ width: "300px" }} />
         </div>
 
@@ -78,6 +80,7 @@ const StudentInfo = (props) => {
             type="text"
             placeholder="SBU ID"
             onChange={e => handleSelection('sbuId', e.target)}
+            value={userInfo.sbuId}
             style={{ width: "300px" }} />
           <span className="filter-span" style={{ marginLeft: "0.6rem" }}>GPA:</span>
           <InputField
@@ -86,6 +89,7 @@ const StudentInfo = (props) => {
             placeholder="GPA"
             disabled
             onChange={e => handleSelection('gpa', e.target)}
+            value={userInfo.gpa}
             style={{ width: "200px" }} />
         </div>
 
@@ -96,12 +100,14 @@ const StudentInfo = (props) => {
             type="email"
             placeholder="Email"
             onChange={e => handleSelection('email', e.target)}
+            value={userInfo.email}
             style={{ width: "300px" }} />
           <span className="filter-span" style={{ marginLeft: "0.6rem" }}>Graduated: </span>
           {/* <span className="lr-padding" style={{width:"200px"}}>False</span> */}
           <InputField
             className="lr-padding"
             placeholder="False"
+            value={userInfo.graduated}
             disabled
             style={{ width: "200px" }} />
           {/* <Dropdown
@@ -118,11 +124,13 @@ const StudentInfo = (props) => {
             className="all-padding"
             items={SEMESTERS}
             placeholder="Semester"
+            value={{"label" : userInfo.entrySem, value: userInfo.entrySem}}
             onChange={e => handleSelection('entrySem', e)} />
           <Dropdown
             className="all-padding"
             items={YEARS}
             placeholder="Year"
+            value={{"label" : userInfo.entryYear, value: userInfo.entryYear}}
             onChange={e => handleSelection('entryYear', e)} />
         </div>
 
@@ -132,11 +140,13 @@ const StudentInfo = (props) => {
             className="all-padding"
             items={SEMESTERS}
             placeholder="Semester"
+            value={{"label" : userInfo.gradSem, value: userInfo.gradSem}}
             onChange={e => handleSelection('gradSem', e)} />
           <Dropdown
             className="all-padding"
             items={YEARS}
             placeholder="Year"
+            value={{"label" : userInfo.gradYear, value: userInfo.gradYear}}
             onChange={e => handleSelection('gradYear', e)} />
         </div>
 
@@ -146,11 +156,13 @@ const StudentInfo = (props) => {
             className="all-padding"
             items={DEPARTMENTS_REQ}
             placeholder="Dept"
+            value={{"label" : userInfo.dept, value: userInfo.dept}}
             onChange={e => handleSelection('dept', e)} />
           <Dropdown
             className="all-padding"
             items={TRACKS[userInfo.dept]}
             placeholder="Track"
+            value={{"label" : userInfo.track, value: userInfo.track}}
             onChange={e => handleSelection('track', e)} />
           <Dropdown
             className="all-padding"
@@ -169,11 +181,15 @@ const StudentInfo = (props) => {
         <textarea
           className="textarea resize-ta"
           placeholder="GPD Comments"
+          value={userInfo.gpdComments}
+          disabled={props.user === "gpd" ? false : true}
           onChange={e => handleSelection('gpdComments', e.target)}
           style={{ minWidth: "375px" }} />
         <textarea
           placeholder="Student Comments"
           className="textarea resize-ta"
+          value={userInfo.studentComments}
+          disabled={props.user === "student" ? false : true}
           onChange={e => handleSelection('studentComments', e.target)}
           style={{ minWidth: "375px" }} />
       </div>
