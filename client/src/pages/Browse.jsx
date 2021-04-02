@@ -74,7 +74,7 @@ class Browse extends Component {
         graduated: this.state.filters['graduated']
       }
     }).then(response => {
-      this.setState({ students: response.data })
+      this.setState({ students: response.data }, this.handleResize)
       this.setSortField(this.state.sortBy)
     }).catch(err => {
       console.log(err)

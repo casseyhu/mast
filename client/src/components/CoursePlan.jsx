@@ -18,7 +18,7 @@ const CoursePlan = (props) => {
           </tr>
         </thead>
         <tbody>
-          {courses.map((course, i) => {
+          {courses && courses.map((course, i) => {
             return <tr key={i} style={{ cursor: 'pointer' }}>
               <td className="center">{course.courseId.substring(0,3)}</td>
               <td className="center">{course.courseId.substring(3,6)}</td>
