@@ -4,7 +4,7 @@ import bcrypt
 import csv
 from pathlib import Path
 
-NUM_STUDENTS = 15
+NUM_STUDENTS = 300
 
 DEPARTMENTS = ["CSE", "AMS", "BMI", "ESE"]
 TRACKS = {
