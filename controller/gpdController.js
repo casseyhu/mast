@@ -29,7 +29,7 @@ exports.login = (req, res) => {
         algorithm: process.env.JWT_ALGO,
         expiresIn: 1200 // Expires in 20 minutes.
       });
-      res.send(token);
+      res.send([token, gpd]);
     }).catch(err => {
       res.status(500).send("Invalid login credentials");
     })

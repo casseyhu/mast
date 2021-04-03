@@ -62,7 +62,7 @@ class App extends Component {
           {user === 'gpd' && <Route path="/import" component={Import} />}
           {user && <Route path="/bulletin" component={(props) => <Bulletin {...props} user={this.state.user} />} />}
           {user && <Route path="/suggest" component={Suggest} />}
-          {user && <Route path="/student" component={(props) => <Student {...props} user={this.state.user} />} />}
+          {user && <Route path="/student" component={Student} />}
           {user && <Route exact path="/courseplan" component={ViewPlan} />}
           {user && <Route path="/courseplan/edit" component={EditPlan} />}
           <Route component={NotFound404} />

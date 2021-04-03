@@ -6,7 +6,7 @@ import Requirements from '../components/Requirements';
 import CoursePlan from '../components/CoursePlan';
 import axios from '../constants/axios';
 
-const AddEditStudent = (props) => {
+const Student = (props) => {
   const [requirements, setrequirements] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false)
@@ -51,16 +51,14 @@ const AddEditStudent = (props) => {
     setMode('View')
   }
 
-  let { user } = props
   return (
     <Container fluid="lg" className="container">
       <StudentInfo
         mode={mode}
-        user={user}
         errorMessage={errorMsg}
         student={props.location.state.student}
         onSubmit={(e) => modeHandler(e)} />
-      <Requirements user={user} requirements={requirements} />
+      <Requirements requirements={requirements} />
       <CoursePlan
         items={props.location.state.items} />
       <CenteredModal
@@ -70,9 +68,7 @@ const AddEditStudent = (props) => {
         body="Student successfully saved"
       />
     </Container>
-
   );
-
 }
 
-export default AddEditStudent;
+export default Student;

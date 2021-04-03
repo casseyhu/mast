@@ -29,7 +29,6 @@ const StudentInfo = (props) => {
     studentComments: props.student ? props.student.studentComments : ''
   })
 
-
   const handleSelection = (name, e) => {
     setUserInfo(prevState => ({
       ...prevState,

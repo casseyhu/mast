@@ -12,7 +12,6 @@ class LoginContainer extends Component {
   }
 
   setEmail = (e) => {
-    console.log(this.state.email)
     this.setState({
       email: e.target.value
     })
@@ -50,14 +49,33 @@ class LoginContainer extends Component {
         password: this.state.password
       }
     }).then(response => {
-      localStorage.setItem('jwt-token', response.data)
-      console.log(response.data);
+      localStorage.setItem('jwt-token', response.data[0])
+      console.log("login response", response.data[1].sbuId);
       this.props.setLoggedIn(true, user);
       if (user === 'gpd')
         this.props.history.push('/browse')
-      else
-        this.props.history.push('/student')
+      else {
+        axios.get('/courseplanitem/findItems', {
+          params: {
+            studentId: response.data[1].sbuId
+          }
+        }).then(res => {
+          console.log(res.data)
+          console.log(response.data[1])
+          this.props.history.push({
+            pathname: '/student',
+            state: {
+              mode: 'View',
+              student: response.data[1],
+              items: res.data
+            }
+          })
+        }).catch(err => {
+          console.log(err)
+        });
+      }
     }).catch(err => {
+      console.log(err)
       this.setState({ error: err.response.data });
     })
   }

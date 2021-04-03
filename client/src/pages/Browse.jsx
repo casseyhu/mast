@@ -117,6 +117,7 @@ class Browse extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props)
     window.addEventListener('resize', this.handleResize)
     axios.get('student'
     ).then(response => {

@@ -35,7 +35,7 @@ const NavigationBar = (props) => {
         <Nav className="mr-auto">
           {(userType === 'gpd')
             && (
-              <Nav.Link href={process.env.PUBLIC_URL + "/browse"}>
+              <Nav.Link className="nav-link" href={process.env.PUBLIC_URL + "/browse"}>
                 browse
               </Nav.Link>
             )
