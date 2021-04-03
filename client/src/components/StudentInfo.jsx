@@ -48,12 +48,14 @@ const StudentInfo = (props) => {
       <div className="flex-horizontal justify-content-between">
         <h1>{mode} Student</h1>
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
-          <Button
-            variant="round"
-            text="Back"
-            style={{ margin: '1rem 1rem 0 0' }}
-            onClick={() => history.goBack()}
-          />
+          {props.user === "gpd" && (
+            <Button
+              variant="round"
+              text="Back"
+              style={{ margin: '1rem 1rem 0 0' }}
+              onClick={() => history.goBack()}
+            />
+          )}
           <Button
             variant="round"
             text={mode === 'Add' ? 'Add Student' : (mode === 'Edit' ? 'Save Student' : 'Edit Student')}
@@ -121,18 +123,20 @@ const StudentInfo = (props) => {
             style={{ width: "300px" }} />
           <span className="filter-span" style={{ marginLeft: "0.6rem" }}>Graduated: </span>
           {/* <span className="lr-padding" style={{width:"200px"}}>False</span> */}
-          <InputField
+          {/* <InputField
             className="lr-padding"
             placeholder="False"
             value={userInfo.graduated}
             disabled={mode === 'View' || mode === 'Add'}
-            style={{ width: "200px" }} />
-          {/* <Dropdown
+            style={{ width: "200px" }} /> */}
+          <Dropdown
             className="lr-padding"
-            style={{ width: "200px" }}
             items={BOOLEAN}
             placeholder="False"
-            onChange={e => handleSelection('graduated', e)} /> */}
+            value={userInfo.graduated && { label: userInfo.graduated, value: userInfo.graduated }}
+            disabled={mode === 'View' || mode === 'Add'}
+            style={{ width: "200px" }}
+            onChange={e => handleSelection('graduated', e)} />
         </div>
 
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
