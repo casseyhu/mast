@@ -55,6 +55,7 @@ const Student = (props) => {
     <Container fluid="lg" className="container">
       <StudentInfo
         mode={mode}
+        user={props.user}
         errorMessage={errorMsg}
         student={props.location.state.student}
         onSubmit={(e) => modeHandler(e)} />

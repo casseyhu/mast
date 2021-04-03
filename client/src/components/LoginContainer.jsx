@@ -51,7 +51,7 @@ class LoginContainer extends Component {
     }).then(response => {
       localStorage.setItem('jwt-token', response.data[0])
       console.log("login response", response.data[1].sbuId);
-      this.props.setLoggedIn(true, user);
+      this.props.setLoggedIn(true, user, response.data[1]);
       if (user === 'gpd')
         this.props.history.push('/browse')
       else {

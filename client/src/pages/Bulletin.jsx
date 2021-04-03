@@ -1,24 +1,43 @@
 import React, { Component } from 'react';
 import Container from "react-bootstrap/Container";
 import Dropdown from '../components/Dropdown';
-import { DEPARTMENTS } from '../constants';
+import { SEMESTERS, YEARS } from '../constants';
 import axios from '../constants/axios';
 
 class Bulletin extends Component {
   state = {
-    user: this.props.user,
-    text: "",
+    type: this.props.type,
+    dept: this.props.user.department,
+    text: '',
     courses: [],
+    semester: '',
+    year: ''
   }
 
-  setDept = (e) => {
+  setSemester = (e) => {
     this.setState({
-      dept: e.value
+      semester: e.value
+    }, () => {
+      if (this.state.year) 
+        this.showCourses();
     })
+  }
 
+  setYear = (e) => {
+    this.setState({
+      year: e.value
+    }, () => {
+      if (this.state.semester) 
+        this.showCourses();
+    })
+  }
+  
+  showCourses = () => {
     axios.get('/course', {
       params: {
-        dept: e.value
+        dept: this.state.dept,
+        semester: this.state.semester,
+        year: Number(this.state.year)
       }
     }).then(response => {
       const foundCourses = response.data;
@@ -31,19 +50,26 @@ class Bulletin extends Component {
   }
 
   render() {
-    let { user } = this.state;
     return (
       <Container fluid="lg" className="container">
         <div className="flex-horizontal justify-content-between">
           <h1>Bulletin</h1>
-          {user === "gpd" && (
+          <div className="flex-horizontal" style={{width: 'fit-content'}}>
             <Dropdown
               variant="single"
-              items={DEPARTMENTS}
-              onChange={this.setDept}
+              items={SEMESTERS}
+              placeholder="Semester"
+              onChange={this.setSemester}
+              style={{ margin: '1rem 1rem 0 0' }}
+            />
+            <Dropdown
+              variant="single"
+              items={YEARS}
+              placeholder="Year"
+              onChange={this.setYear}
               style={{ margin: '1rem 0 0 0' }}
             />
-          )}
+          </div>
         </div>
         <div className="">
           {this.state.courses.map(course => {
