@@ -5,6 +5,10 @@ const moment = require('moment');
 const IncomingForm = require('formidable').IncomingForm;
 
 const CourseOffering = database.CourseOffering;
+const CoursePlan = database.CoursePlan;
+const CoursePlanItem = database.CoursePlanItem;
+const Student = database.Student;
+
 
 
 // Upload course offerings
@@ -15,7 +19,7 @@ exports.upload = (req, res) => {
       res.status(500).send('File must be *.csv')
     else {
       const f_in = fs.readFileSync(file.path, 'utf-8')
-      let isValid = true;
+      // let isValid = true;
       Papa.parse(f_in, {
         header: true,
         dynamicTyping: true,
@@ -27,30 +31,84 @@ exports.upload = (req, res) => {
               && header[3] !== 'semester'
               && header[4] !== 'year'
               && header[5] !== 'timeslot') {
-            isValid = false
+            // isValid = false
             console.log('invalid csv')
             res.status(500).send("Cannot parse CSV file - headers do not match specifications")
             return
           }
-          deleteSemestersFromDB(results)
-          uploadNewOfferings(results)
-
-          /* TODO: a student's course plan may contain courses in semesters for which course 
-          offering data has not yet been imported; until the data is imported, the system 
-          assumes that all courses will be offered and free of schedule conflicts. the course 
-          offerings for a semester may change when an updated file covering that semester is 
-          imported. in both cases, importing of course offerings may cause some planned course
-           to be unavailable (not offered). the system marks these invalid entries (so the GPD 
-            or student will know to fix them), displays a list of affected students and their 
-            invalid course plan entries, and notifies those students by email.  */ 
-            
+          uploadCourses(results, res)
         }
       })
-      if (isValid)
-        res.status(200).send("Success")
     }
   })
 };
+
+
+async function uploadCourses(results, res){
+  let semestersCovered = await deleteSemestersFromDB(results)
+  let coursesAdded = await uploadNewOfferings(results)
+  // Get all course plans. 
+  let coursePlans = await CoursePlan.findAll()
+  let affectedStudents = []
+  // For every semester covered by the csv, 
+  // ["Fall 2019", "Fall 2020"]
+  for(let i = 0; i < semestersCovered.length; i++) {
+    sem_year = semestersCovered[i].split(' ')
+    // For every coursePlan, query the CoursePlanItem table where:
+    // coursePlanId == this.coursePlanId, semester+year = current semester and
+    // year that we're looking at (outer loop). 
+    for(let j = 0; j < coursePlans.length; j++){
+      // CoursePlanItems == All course plan items for specific student 
+      // for sem+year
+      let coursePlanItems = await CoursePlanItem.findAll({
+        where: {
+          coursePlanId: coursePlans[j].coursePlanId,
+          semester: sem_year[0],
+          year: sem_year[1]
+        }
+      })
+      let toCheck = []
+      for(let k = 0; k < coursePlanItems.length; k++) {
+        for(let l = 0; l < coursesAdded.length; l++){
+          if(coursePlanItems[k].courseId == coursesAdded[l].identifier) 
+          toCheck.push(coursesAdded[l])
+        }
+      }
+      // [CSE500, CSE502, CSE503, CSE504, CSE505]
+      for(let k = 0; k < toCheck.length; k++) {
+        for(let l = k+1; l < toCheck.length; l++) {
+          let first = toCheck[k].days
+          let second = toCheck[l].days
+          if (!first || !second || !toCheck[k].startTime || 
+            !toCheck[l].startTime || !toCheck[k].endTime || !toCheck[l].endTime)
+            continue
+          if(first.includes('M') && second.includes('M')
+            || first.includes('TU') && second.includes('TU')
+            || first.includes('W') && second.includes('W')
+            || first.includes('TH') && second.includes('TH')
+            || first.includes('F') && second.includes('F')) {
+              // Check time conflict
+              let f_start = toCheck[k].startTime
+              let s_start = toCheck[l].startTime
+              let f_end = toCheck[k].endTime
+              let s_end = toCheck[l].endTime
+              if ((f_start >= s_start && f_start < s_end) 
+                || (f_end <= s_end && f_end > s_start) 
+                || (s_start >= f_start && s_start < f_end)
+                || (s_end <= f_end && s_end > f_start)) {
+                  affectedStudents.push(coursePlans[j].studentId)
+                }
+            }
+         }
+      }
+    }
+  }
+  console.log(affectedStudents)
+  res.status(200).send(affectedStudents)
+  return
+}
+
+
 
 
 // Notes: Changing the data type of the CourseOffering.section
@@ -59,7 +117,8 @@ exports.upload = (req, res) => {
 // Everyone will have to DORP TABLE courseofferings, then rerun the 
 // server to recreate the table through sequelize. 
 
-function uploadNewOfferings(csv_file) {
+async function uploadNewOfferings(csv_file) {
+  coursesAdded = []
   for (let i = 0; i < csv_file.data.length; i++) {
     course = csv_file.data[i]
     csv_timeslot = (course.timeslot ? course.timeslot.split(' ') : null)
@@ -67,7 +126,7 @@ function uploadNewOfferings(csv_file) {
     time_range = (csv_timeslot ? csv_timeslot[1].split('-') : null)
     start = (time_range ? moment(time_range[0], ['h:mmA']).format('HH:mm') : null)
     end = (time_range ? moment(time_range[1], ['h:mmA']).format('HH:mm') : null)
-    CourseOffering.create({
+    const newCourse = await CourseOffering.create({
       identifier: course.department + course.course_num,
       semester: course.semester,
       year: course.year,
@@ -76,9 +135,10 @@ function uploadNewOfferings(csv_file) {
       startTime: start,
       endTime: end
     })
+    coursesAdded.push(newCourse)
   }
   console.log("Done importing all courses from csv")
-  return true
+  return coursesAdded;
 }
 
 
@@ -88,7 +148,7 @@ function uploadNewOfferings(csv_file) {
 // where the semester+year(s) are covered by this new CSV.
 // Will return a promise after the await is done. Try to
 // catch it in the main loop and handle it in there. 
-function deleteSemestersFromDB(csv_file) {
+async function deleteSemestersFromDB(csv_file) {
   // scraped_semesters = 
   //     new Set(csv_file.data.map(course => course.semester + ' ' + course.year))
   sem_array = Array.from(new Set(csv_file.data.map(
@@ -97,7 +157,7 @@ function deleteSemestersFromDB(csv_file) {
     semyear = sem_array[i].split(' ')
     // Might have to CASCADE the deletes to the 
     // CoursePlans that reference these courses (?)
-    CourseOffering.destroy({
+    await CourseOffering.destroy({
       where: {
         semester: semyear[0],
         year: Number(semyear[1])
@@ -105,7 +165,7 @@ function deleteSemestersFromDB(csv_file) {
     })
   }
   console.log("Done deleting all scraped semesters from db")
-  return true
+  return sem_array
 }
 
 // https://stackoverflow.com/questions/16336367/what-is-the-difference-between-synchronous-and-asynchronous-programming-in-node
