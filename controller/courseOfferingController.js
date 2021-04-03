@@ -34,6 +34,16 @@ exports.upload = (req, res) => {
           }
           deleteSemestersFromDB(results)
           uploadNewOfferings(results)
+
+          /* TODO: a student's course plan may contain courses in semesters for which course 
+          offering data has not yet been imported; until the data is imported, the system 
+          assumes that all courses will be offered and free of schedule conflicts. the course 
+          offerings for a semester may change when an updated file covering that semester is 
+          imported. in both cases, importing of course offerings may cause some planned course
+           to be unavailable (not offered). the system marks these invalid entries (so the GPD 
+            or student will know to fix them), displays a list of affected students and their 
+            invalid course plan entries, and notifies those students by email.  */ 
+            
         }
       })
       if (isValid)
@@ -79,9 +89,10 @@ function uploadNewOfferings(csv_file) {
 // Will return a promise after the await is done. Try to
 // catch it in the main loop and handle it in there. 
 function deleteSemestersFromDB(csv_file) {
-  scraped_semesters = 
-      new Set(csv_file.data.map(course => course.semester + ' ' + course.year))
-  sem_array = Array.from(scraped_semesters)
+  // scraped_semesters = 
+  //     new Set(csv_file.data.map(course => course.semester + ' ' + course.year))
+  sem_array = Array.from(new Set(csv_file.data.map(
+    course => course.semester + ' ' + course.year)))
   for (let i = 0; i < sem_array.length; i++) {
     semyear = sem_array[i].split(' ')
     // Might have to CASCADE the deletes to the 

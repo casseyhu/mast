@@ -22,7 +22,8 @@ class Browse extends Component {
     filters: {},
     page: 1,
     numPerPage: Math.ceil((window.innerHeight - 350) / 30),
-    maxPage: 1
+    maxPage: 1,
+    ascending: {}
   }
 
   addStudent = () => {
@@ -59,8 +60,32 @@ class Browse extends Component {
     this.setState({ filters }, this.filter)
   }
 
-  setSortField = (field) => {
-    this.setState({ sortBy: field }, this.sortStudents)
+  setSortField = (field, value) => {
+    if (value == null) {
+      if (this.state.ascending[field] == null) {
+        this.setState({
+          ascending: {
+            [field]: true
+          }
+        })
+      }
+      else {
+        this.setState({
+          ascending: {
+            [field]: !this.state.ascending[field]
+          }
+        })
+      }
+    }
+    else {
+      console.log(value);
+      this.setState({
+          ascending: {
+            [field]: value
+          }
+      })
+    }
+    this.setState({ sortBy: field }, this.sortStudents);
   }
 
   filter = () => {
@@ -79,7 +104,7 @@ class Browse extends Component {
       }
     }).then(response => {
       this.setState({ students: response.data }, this.handleResize)
-      this.setSortField(this.state.sortBy)
+      this.setSortField(this.state.sortBy, this.state.ascending[this.state.sortBy])
     }).catch(err => {
       console.log(err)
     });
@@ -88,20 +113,21 @@ class Browse extends Component {
   sortStudents = () => {
     let sortBy = this.state.sortBy;
     let students = this.state.students;
+    let ascending = this.state.ascending[sortBy];
     students.sort(function (a, b) {
       if (sortBy === "gradSemYear") {
         let aGradSemYear = a.gradYear * 100 + (a.gradSem === "Fall" ? 8 : 2);
         let bGradSemYear = b.gradYear * 100 + (b.gradSem === "Fall" ? 8 : 2);
-        return aGradSemYear - bGradSemYear;
+        return ascending ? aGradSemYear - bGradSemYear : bGradSemYear - aGradSemYear;
       }
       if (typeof a[sortBy] === "string")
-        return a[sortBy].localeCompare(b[sortBy]);
+        return ascending ? a[sortBy].localeCompare(b[sortBy]) : b[sortBy].localeCompare(a[sortBy]);
       else if (typeof a[sortBy] === "number" || typeof a[sortBy] === "boolean")
         if (a === null)
-          return 1;
+          return ascending ? 1 : -1;
         else if (b === null)
-          return -1;
-      return a[sortBy] - b[sortBy];
+          return ascending ? -1 : 1;
+      return ascending ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
     });
     this.setState({ students })
   }
@@ -172,16 +198,16 @@ class Browse extends Component {
           <table >
             <thead>
               <tr style={{ cursor: "pointer" }}>
-                <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("lastName")}>Last Name</th>
-                <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("firstName")}>First Name</th>
-                <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("sbuId")}>Student ID</th>
-                <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("satisfied")}>S/P/U</th>
-                <th scope='col' style={{ width: '8%' }} onClick={() => this.setSortField("department")}>Degree</th>
-                <th scope='col' style={{ width: '20%' }} onClick={() => this.setSortField("department")}>Track</th>
-                <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField("gpa")}>GPA</th>
-                <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField("entrySemYear")}>Entry</th>
-                <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField("gradSemYear")}>Grad</th>
-                <th scope='col' style={{ width: '8%' }} onClick={() => this.setSortField("graduated")}>Graduated</th>
+                <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("lastName", null)}>Last Name</th>
+                <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("firstName", null)}>First Name</th>
+                <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("sbuId", null)}>Student ID</th>
+                <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("satisfied", null)}>S/P/U</th>
+                <th scope='col' style={{ width: '8%' }} onClick={() => this.setSortField("department", null)}>Degree</th>
+                <th scope='col' style={{ width: '20%' }} onClick={() => this.setSortField("track", null)}>Track</th>
+                <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField("gpa", null)}>GPA</th>
+                <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField("entrySemYear", null)}>Entry</th>
+                <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField("gradSemYear", null)}>Grad</th>
+                <th scope='col' style={{ width: '8%' }} onClick={() => this.setSortField("graduated", null)}>Graduated</th>
               </tr>
             </thead>
             <tbody>
@@ -193,7 +219,7 @@ class Browse extends Component {
                   <td className="center">{student.satisfied}/{student.pending}/{student.unsatisfied}</td>
                   <td className="center">{student.department}</td>
                   <td className="center">{student.track.substring(0, 22)}{student.track.length > 22 ? '...' : ''}</td>
-                  <td className="center">{(student.gpa === null) ? "N/A" : student.gpa}</td>
+                  <td className="center">{(student.gpa === null) ? "N/A" : Number(student.gpa).toFixed(2)}</td>
                   <td className="center">{student.entrySem.slice(0, 2)} {student.entryYear % 2000}</td>
                   <td className="center">{student.gradSem.slice(0, 2)} {student.gradYear % 2000}</td>
                   <td className="center">{student.graduated ? "Yes" : "No"}</td>

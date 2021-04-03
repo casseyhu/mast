@@ -3,12 +3,13 @@ import Button from './Button';
 import Dropdown from './Dropdown';
 import axios from '../constants/axios';
 import InputField from './InputField'
-import { SORT_FIELDS, BOOLEAN, DEPARTMENTS, SEMESTERS, YEARS } from '../constants';
+import { SORT_FIELDS, SORT_ORDER, BOOLEAN, DEPARTMENTS, SEMESTERS, YEARS } from '../constants';
 
 const BrowseSearchbar = (props) => {
 
   const [name, setName] = useState("");
   const [sortBy, setSort] = useState("");
+  const [ascending, setOrder] = useState("");
   const [sbuId, setSbuId] = useState("");
   const [entrySem, setEntrySem] = useState("");
   const [entryYear, setEntryYear] = useState("");
@@ -47,7 +48,7 @@ const BrowseSearchbar = (props) => {
     }
 
     props.filter(filteredConditions)
-    props.sortField(sortBy.value)
+    props.sortField(sortBy.value, ascending.value)
     console.log("Query DB with all filters (all states).")
   }
 
@@ -75,7 +76,8 @@ const BrowseSearchbar = (props) => {
         </div>
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
           <span className="filter-span-reg">Sort By</span>
-          <Dropdown items={SORT_FIELDS} onChange={setSort} disabled={false} style={{ width: '220px', marginRight: '1rem' }} />
+          <Dropdown items={SORT_FIELDS} onChange={setSort} disabled={false} style={{ width: '150px', marginRight: '1rem' }} />
+          <Dropdown items={SORT_ORDER} onChange={setOrder} disabled={false} style={{ width: '150px', marginRight: '1rem' }} />
           <Button variant="round" text="find" onClick={applyFilters} style={{ width: '70px' }} />
         </div>
       </div>

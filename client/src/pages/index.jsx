@@ -7,7 +7,7 @@ import { LANDING_OVAL } from '../constants/svgs';
 const MainPage = (props) => {
 
 	return (
-		<Container fluid="lg" style={{ height: "100vh" }}>
+		<Container fluid="lg" style={{ overflow:"hidden", height: "100vh" }}>
 			<div className="landing-background" />
 			<div className="landing-svg">{LANDING_OVAL}</div>
 			<div className="login-container">

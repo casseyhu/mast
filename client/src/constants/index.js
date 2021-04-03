@@ -53,7 +53,13 @@ export const SORT_FIELDS = [
   { value: 'gpa', label: 'GPA'},
   { value: 'entrySemYear', label: 'Entry'},
   { value: 'gradSemYear', label: 'Grad'},
-  { value: 'graduated', label: 'Graduated'}
+  { value: 'graduated', label: 'Graduated'},
+  { value: 'track', label: 'Track'}
+]
+
+export const SORT_ORDER = [
+  { value: true, label: 'Ascending'},
+  { value: false, label: 'Descending'},
 ]
 
 export const BOOLEAN = [
