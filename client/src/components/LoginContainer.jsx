@@ -58,7 +58,9 @@ class LoginContainer extends Component {
       else
         this.props.history.push('/student')
     }).catch(err => {
-      this.setState({ error: err.response.data });
+      console.log(err)
+      console.log(err.response)
+      this.setState({ error: err.response });
     })
   }
 

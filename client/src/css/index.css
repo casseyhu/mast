@@ -25,6 +25,9 @@
   font-size: 15px;
 }
 
+/* body {
+  overflow: hidden;
+} */
 
 /* Tag styling CSS */
 a {
@@ -199,5 +202,8 @@ i.fa {
   .navbar-dark .navbar-nav .nav-link {
     color: var(--primary) !important;
     margin-left: auto !important;
+  }
+  .container{
+    min-width: 100vw;
   }
 }

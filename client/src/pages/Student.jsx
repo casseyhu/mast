@@ -6,7 +6,7 @@ import Requirements from '../components/Requirements';
 import CoursePlan from '../components/CoursePlan';
 import axios from '../constants/axios';
 
-const AddEditStudent = (props) => {
+const Student = (props) => {
   const [requirements, setrequirements] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false)
@@ -75,4 +75,4 @@ const AddEditStudent = (props) => {
 
 }
 
-export default AddEditStudent;
+export default Student;

@@ -19,7 +19,7 @@ const MainPage = (props) => {
 	}, [props.history])
 
 	return (
-		<Container fluid="lg" style={{ height: "100vh" }}>
+		<Container fluid="lg" style={{ overflow:"hidden", height: "100vh" }}>
 			<div className="landing-background" />
 			<div className="landing-svg">{LANDING_OVAL}</div>
 			<div className="login-container">
