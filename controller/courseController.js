@@ -32,8 +32,14 @@ exports.upload = (req, res) => {
 }
 //find all courses based on the dept
 exports.findAll = (req, res) => {
-  const condition = req.query.dept;
-  Course.findAll({ where: { department: condition } })
+  Course
+    .findAll({
+      where: {
+        department: req.query.dept,
+        semester: req.query.semester,
+        year: req.query.year
+      }
+    })
     .then(foundCourses => {
       res.status(200).send(foundCourses)
     })

@@ -199,7 +199,8 @@ exports.login = (req, res) => {
         throw "Invalid password"
       let userData = {
         type: 'student',
-        id: student.sbuId
+        id: student.sbuId,
+        userInfo: student
       }
       let token = jwt.sign(userData, process.env.JWT_KEY, {
         algorithm: process.env.JWT_ALGO,

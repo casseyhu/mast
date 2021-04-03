@@ -48,7 +48,7 @@ const StudentInfo = (props) => {
       <div className="flex-horizontal justify-content-between">
         <h1>{mode} Student</h1>
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
-          {props.user === "gpd" && (
+          {props.user.facultyId && (
             <Button
               variant="round"
               text="Back"
@@ -211,14 +211,14 @@ const StudentInfo = (props) => {
           className="textarea resize-ta"
           placeholder="GPD Comments"
           value={userInfo.gpdComments}
-          disabled={mode === 'View' || props.user === "student"}
+          disabled={mode === 'View' || props.user.sbuId === "student"}
           onChange={e => handleSelection('gpdComments', e.target)}
           style={{ minWidth: "375px" }} />
         <textarea
           placeholder="Student Comments"
           className="textarea resize-ta"
           value={userInfo.studentComments}
-          disabled={mode === 'View' || props.user == "gpd"}
+          disabled={mode === 'View' || props.user.facultyId == "gpd"}
           onChange={e => handleSelection('studentComments', e.target)}
           style={{ minWidth: "375px" }} />
       </div>

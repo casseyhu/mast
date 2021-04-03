@@ -27,7 +27,6 @@ exports.uploadPlans = (req, res) => {
       res.status(500).send('File must be *.csv')
     else {
       const f_in = fs.readFileSync(file.path, 'utf-8')
-      let isValid = true;
       Papa.parse(f_in, {
         header: true,
         dynamicTyping: true,
@@ -40,29 +39,19 @@ exports.uploadPlans = (req, res) => {
             || header[4] !== 'semester'
             || header[5] !== 'year'
             || header[6] !== 'grade') {
-            isValid = false
             console.log('invalid csv')
             res.status(500).send('Cannot parse CSV file - headers do not match specifications')
             return
           }
-          Course
-            .findAll()
-            .then(courses => {
-              uploadCoursePlans(results, courses);
-            })
-            .catch(err => {
-              res.status(500).send("Error: " + err);
-            })
+          uploadCoursePlans(results, res);
         }
       })
-      if (isValid)
-        res.status(200).send("Success")
     }
   })
 }
 
 
-async function uploadCoursePlans(csv_file) {
+async function uploadCoursePlans(csv_file, res) {
   let students_planid = {}
   // Create/Update all the course plan items
   for (let i = 0; i < csv_file.data.length ; i++) {
@@ -101,7 +90,7 @@ async function uploadCoursePlans(csv_file) {
       let course_credit = {}
       for (let j = 0; j < courses.length; j++)
         course_credit[courses[j].courseId] = courses[j].credits
-      calculateGPA(students_planid, course_credit)
+      calculateGPA(students_planid, course_credit, res)
     })
     .catch(err => {
       console.log(err)
@@ -109,7 +98,7 @@ async function uploadCoursePlans(csv_file) {
 }
 
 // Calculate and update the GPA for each student that was imported
-async function calculateGPA(students_planid, course_credit) {
+async function calculateGPA(students_planid, course_credit, res) {
   let grades_point = { 'A': 4.0, 'A-': 3.67, 'B+': 3.3, 'B': 3, 'B-': 2.67, 'C+': 2.3, 'C': 2, 'C-': 1.67, 'D+': 1.3, 'D': 1 }
   for (let key in students_planid) {
     let condition = { coursePlanId: students_planid[key] }
@@ -131,6 +120,7 @@ async function calculateGPA(students_planid, course_credit) {
     else
       console.log("error getting course plan items")
   }
+  res.status(200).send("Success")
 }
 
 /* 
