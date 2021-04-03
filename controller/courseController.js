@@ -70,7 +70,7 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
       let page = pages[i].content
       for (let j = 2; j < page.length - 2; j++) {
         let s = page[j]
-        if (s.fontName == "Times" && s.str.length == 3) {
+        if (s.fontName == "Times" && s.str.length == 3 && isNaN(parseInt(s.str)) === true) {
           if (dept.includes(s.str)) {
             target = s.str;
             checkOthers = false
@@ -208,10 +208,11 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
             courseName += " " + s.str;
           }
           else if (s.fontName == "Times" && !s.str.includes("credits,")
-            && s.str.includes(0, 13) !== "Prerequisites"
-            && s.str.includes(0, 12) !== "Prerequisite"
+            && s.str.substring(0, 13) !== "Prerequisites"
+            && s.str.substring(0, 12) !== "Prerequisite"
             && !s.str.includes("S/U grading")
-            && !s.str.includes("credit,")) {
+            && !s.str.includes("credit,")
+            && !checkOthers) {
             //reaches description
             if (checkCourseName) {
               if (courses.includes(courseName) == false && courseName != "") {
@@ -230,10 +231,11 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
 
           else if (s.fontName === "g_d0_f1"
             || s.str.includes("credits")
-            || s.str.includes("Prerequisites:")
-            || s.str.includes('Prerequisite:')
+            || s.str.includes("Prerequisites")
+            || s.str.includes('Prerequisite')
             || s.str.includes("S/U grading")
-            || s.str.includes("credit,")) {
+            || s.str.includes("credit,")
+            || checkOthers) {
             if (desc === "") {
               chosenDept = courseName.substring(0, 3)
               courseNum = courseName.substring(5, 8)
