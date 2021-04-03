@@ -71,7 +71,7 @@ async function uploadCourses(results, res){
       for(let k = 0; k < coursePlanItems.length; k++) {
         for(let l = 0; l < coursesAdded.length; l++){
           if(coursePlanItems[k].courseId == coursesAdded[l].identifier) 
-          toCheck.push(coursesAdded[l])
+            toCheck.push(coursesAdded[l])
         }
       }
       // [CSE500, CSE502, CSE503, CSE504, CSE505]
