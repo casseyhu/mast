@@ -15,8 +15,8 @@ const Student = (props) => {
   useEffect(() => {
     axios.get('requirements', {
       params: {
-        department: 'CSE',
-        track: 'Advanced Project'
+        department: props.location.state.student.department,
+        track: props.location.state.student.track
       }
     }).then(results => {
       console.log(results.data)
@@ -60,7 +60,11 @@ const Student = (props) => {
         errorMessage={errorMsg}
         student={props.location.state.student}
         onSubmit={(e) => modeHandler(e)} />
-      <Requirements user={user} requirements={requirements} />
+      <Requirements 
+        user={user} 
+        requirements={requirements}
+        coursePlan={props.location.state.items}
+        student={props.location.state.student} />
       <CoursePlan
         items={props.location.state.items} />
       <CenteredModal

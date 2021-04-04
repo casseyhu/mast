@@ -15,8 +15,8 @@ const CoursePlan = database.CoursePlan;
 exports.create = (req, res) => {
   const student = req.body.params
   if (emptyFields(student)) {
-    let err_msg = "Error in adding student. Please check that all necessary student information are filled out."
-    res.status(500).send(err_msg);
+    let errMsg = "Error in adding student. Please check that all necessary student information are filled out."
+    res.status(500).send(errMsg);
     return
   }
   const semDict = {
@@ -42,21 +42,21 @@ exports.create = (req, res) => {
     let last = student.lastName.charAt(0).toLowerCase()
     let password = first + last + student.sbuId
     let salt = bcrypt.genSaltSync(10);
-    let hash_password = bcrypt.hashSync(password, salt);
+    let hashPassword = bcrypt.hashSync(password, salt);
 
     // Check for valid graduation date. If EntryDate == GradDate, it's valid for now.
-    let grad_date = Number(student.gradYear + semDict[student.gradSem])
-    let entry_date = Number(student.entryYear + semDict[student.entrySem])
-    let degree_version = Number(student.degreeYear + semDict[student.degreeSem])
-    if (grad_date < entry_date) {
+    let gradDate = Number(student.gradYear + semDict[student.gradSem])
+    let entryDate = Number(student.entryYear + semDict[student.entrySem])
+    let degreeVersion = Number(student.degreeYear + semDict[student.degreeSem])
+    if (gradDate < entryDate) {
       res.status(500).send("Graduation date cannot be earlier than entry date.");
       return
     }
-    if (degree_version < entry_date) {
+    if (degreeVersion < entryDate) {
       res.status(500).send("Degree version cannot be earlier than entry date.");
       return
     }
-    if (degree_version > grad_date) {
+    if (degreeVersion > gradDate) {
       res.status(500).send("Degree version cannot be later than graduation date.");
       return
     }
@@ -87,7 +87,7 @@ exports.create = (req, res) => {
         email: student.email,
         firstName: student.firstName,
         lastName: student.lastName,
-        password: hash_password,
+        password: hashPassword,
         gpa: null,
         entrySem: student.entrySem,
         entryYear: Number(student.entryYear),
@@ -118,16 +118,16 @@ exports.create = (req, res) => {
             res.status(200).send("Error creating student course plan.");
           })
       }).catch(err => {
-        err_msg = "Error in adding student. Please check student information type (i.e. SBUID must be numbers 0-9)."
+        errMsg = "Error in adding student. Please check student information type (i.e. SBUID must be numbers 0-9)."
         if (err.parent.code !== undefined && err.parent.code === "ER_DUP_ENTRY") {
-          err_msg = "Student with ID: " + student.sbuId + " exists already."
+          errMsg = "Student with ID: " + student.sbuId + " exists already."
         }
-        res.status(500).send(err_msg);
+        res.status(500).send(errMsg);
       })
   })
     .catch((err) => {
-      err_msg = "Error in adding student. Please check student information type (i.e. SBUID must be numbers 0-9)."
-      res.status(500).send(err_msg);
+      errMsg = "Error in adding student. Please check student information type (i.e. SBUID must be numbers 0-9)."
+      res.status(500).send(errMsg);
       return
     });
 }
@@ -155,8 +155,8 @@ exports.upload = (req, res) => {
     if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel')
       res.status(500).send('File must be *.csv')
     else {
-      const f_in = fs.readFileSync(file.path, 'utf-8')
-      Papa.parse(f_in, {
+      const fileIn = fs.readFileSync(file.path, 'utf-8')
+      Papa.parse(fileIn, {
         header: true,
         dynamicTyping: true,
         complete: (results) => {
@@ -286,38 +286,38 @@ exports.deleteAll = (req, res) => {
 
 
 
-async function uploadStudents(csv_file, res) {
+async function uploadStudents(csvFile, res) {
   const degrees = await Degree.findAll()
-  let degree_dict = {};
+  let degreeDict = {};
   const currentGradYear = 202101
   for (let i = 0; i < degrees.length; i++) {
-    degree_dict[degrees[i].dept + " " + degrees[i].track] = degrees[i].degreeId
+    degreeDict[degrees[i].dept + " " + degrees[i].track] = degrees[i].degreeId
   }
   let tot = 0;
-  for (let i = 0; i < csv_file.data.length ; i++) {
-    student_info = csv_file.data[i]
-    let sems_dict = { 'Spring': '02', 'Summer': '06', 'Fall': '08', 'Winter': '01' };
-    let semYear = Number(student_info.entry_year + sems_dict[student_info.entry_semester])
-    let graduated = Number(student_info.graduation_year + sems_dict[student_info.graduation_semester]) <= currentGradYear ? 1 : 0
-    let condition = { sbuId: student_info.sbu_id }
+  for (let i = 0; i < csvFile.data.length ; i++) {
+    studentInfo = csvFile.data[i]
+    let semsDict = { 'Spring': '02', 'Summer': '06', 'Fall': '08', 'Winter': '01' };
+    let semYear = Number(studentInfo.entry_year + semsDict[studentInfo.entry_semester])
+    let graduated = Number(studentInfo.graduation_year + semsDict[studentInfo.graduation_semester]) <= currentGradYear ? 1 : 0
+    let condition = { sbuId: studentInfo.sbu_id }
     let values = {
-      sbuId: student_info.sbu_id,
-      firstName: student_info.first_name,
-      lastName: student_info.last_name,
-      email: student_info.email,
-      password: student_info.password,
-      gpa: student_info.gpa,
-      entrySem: student_info.entry_semester,
-      entryYear: student_info.entry_year,
+      sbuId: studentInfo.sbu_id,
+      firstName: studentInfo.first_name,
+      lastName: studentInfo.last_name,
+      email: studentInfo.email,
+      password: studentInfo.password,
+      gpa: studentInfo.gpa,
+      entrySem: studentInfo.entry_semester,
+      entryYear: studentInfo.entry_year,
       entrySemYear: semYear,
-      gradSem: student_info.graduation_semester,
-      gradYear: student_info.graduation_year,
-      department: student_info.department,
-      track: student_info.track,
+      gradSem: studentInfo.graduation_semester,
+      gradYear: studentInfo.graduation_year,
+      department: studentInfo.department,
+      track: studentInfo.track,
       satisfied: 0,
       unsatisfied: 0,
       pending: 0,
-      degreeId: degree_dict[student_info.department + " " + student_info.track],
+      degreeId: degreeDict[studentInfo.department + " " + studentInfo.track],
       graduated: graduated,
       gpdComments: "",
       studentComments: ""
@@ -329,9 +329,9 @@ async function uploadStudents(csv_file, res) {
     else
       await Student.create(values)
     
-    condition = {studentId: student_info.sbu_id}
+    condition = {studentId: studentInfo.sbu_id}
     values = {
-      studentId: student_info.sbu_id,
+      studentId: studentInfo.sbu_id,
       coursePlanState: 0
     }
     found = await CoursePlan.findOne({ where: condition })

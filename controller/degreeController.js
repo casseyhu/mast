@@ -17,8 +17,8 @@ exports.upload = (req, res) => {
       res.status(500).send('File must be *.json')
     } else {
       fs.readFile(file.path, 'utf-8', (err, results) => {
-        const json_file = JSON.parse(results)
-        importDegree(json_file).then(result => {
+        const jsonFile = JSON.parse(results)
+        importDegree(jsonFile).then(result => {
           if (!result) {
             res.status(500).send("Cannot parse JSON file")
             return
@@ -71,14 +71,14 @@ async function findRequirements(degree, res) {
 }
 
 
-async function importDegree(json_file) {
-  for (let deg_and_track of Object.keys(json_file)) {
-    const degree = json_file[deg_and_track]
-    const [exists, record_found] = await degreeExists(degree)
+async function importDegree(jsonFile) {
+  for (let degAndTrack of Object.keys(jsonFile)) {
+    const degree = jsonFile[degAndTrack]
+    const [exists, recordFound] = await degreeExists(degree)
     if (exists) {
-      const update = await updateDegree(record_found[0], degree)
+      const update = await updateDegree(recordFound[0], degree)
     } else {
-      const new_degree = await createDegree(degree)
+      const newDegree = await createDegree(degree)
     }
   }
   return 1
@@ -97,58 +97,58 @@ async function degreeExists(degree) {
   return [query.length !== 0, query] 
 }
 
-async function updateDegree(old_degree, new_degree) {
+async function updateDegree(oldDegree, newDegree) {
   try{
     console.log("Updating degree")
     // Just delete all the course requirements for this current version and recreate new 
     // courserequirement records. Might end up using memory faster (overflowing autoincrement 
     // in mysql).
-    old_course_ids = old_degree.dataValues.courseRequirement.split('`')
-    for(let i = 0; i < old_course_ids.length; i++){
-      const delete_courseReq = await CourseRequirement.destroy({
+    oldCourseIds = oldDegree.dataValues.courseRequirement.split('`')
+    for(let i = 0; i < oldCourseIds.length; i++){
+      const deleteCourseReq = await CourseRequirement.destroy({
         where:{
-          requirementId: old_course_ids[i]
+          requirementId: oldCourseIds[i]
         }
       })
     }
     
     // Get the list of new course requirement IDs. 
-    const new_course_ids = await createCourseRequirements(new_degree)
+    const newCourseIds = await createCourseRequirements(newDegree)
 
-    // Find the gradereq record from the old_degree, then update.
-    const update_gradeReq = await GradeRequirement.findOne({where: {
-      requirementId: old_degree.dataValues.gradeRequirement
+    // Find the gradereq record from the oldDegree, then update.
+    const updateGradeReq = await GradeRequirement.findOne({where: {
+      requirementId: oldDegree.dataValues.gradeRequirement
     }}).then(async (result) => {
       const updt = await result.update({
-        atLeastCredits: new_degree.gradeRequirement === null
-          ? null : new_degree.gradeRequirement.atLeastCredits,
-        minGrade: new_degree.gradeRequirement === null
-          ? null : new_degree.gradeRequirement.minGrade,
+        atLeastCredits: newDegree.gradeRequirement === null
+          ? null : newDegree.gradeRequirement.atLeastCredits,
+        minGrade: newDegree.gradeRequirement === null
+          ? null : newDegree.gradeRequirement.minGrade,
       })
     })
 
-    // Find the gpareq record from the old_degree, then update.
-    const update_gpaReq = await GpaRequirement.findOne({where: {
-      requirementId: old_degree.dataValues.gpaRequirement
+    // Find the gpareq record from the oldDegree, then update.
+    const updateGpaReq = await GpaRequirement.findOne({where: {
+      requirementId: oldDegree.dataValues.gpaRequirement
     }}).then(async (result) => {
       const updt = await result.update({
-        cumulative: new_degree.gpaRequirements.cumulGpa,
-        department: new_degree.gpaRequirements.deptGpa,
-        core: new_degree.gpaRequirements.coreGpa
+        cumulative: newDegree.gpaRequirements.cumulGpa,
+        department: newDegree.gpaRequirements.deptGpa,
+        core: newDegree.gpaRequirements.coreGpa
       })
     })
 
-    // Find the creditreq record from the old_degree, then update.
-    const update_creditReq = await CreditRequirement.findOne({where: {
-      requirementId: old_degree.dataValues.creditRequirement
+    // Find the creditreq record from the oldDegree, then update.
+    const updateCreditReq = await CreditRequirement.findOne({where: {
+      requirementId: oldDegree.dataValues.creditRequirement
     }}).then(async (result) => {
       const updt = await result.update({
-        minCredit: new_degree.creditRequirement
+        minCredit: newDegree.creditRequirement
       })
     })
     
-    const update_courseReqId = await old_degree.update({
-      courseRequirement: new_course_ids
+    const updateCourseReqId = await oldDegree.update({
+      courseRequirement: newCourseIds
     })
   } catch(e) {
     console.log(e)
@@ -163,59 +163,59 @@ async function updateDegree(old_degree, new_degree) {
 // all the new requirementId's that were made for every entry into the db. 
 // Returns this list of the new requirement Ids. 
 async function createCourseRequirements(degree){
-  course_req_ids = []
+  courseReqIds = []
   for (let i = 0; i < degree.courseRequirements.length; i++) {
-    course_req = degree.courseRequirements[i]
-    req_str = course_req[0].split(':')
-    courses_range = req_str[1].slice(1, req_str[1].length - 1).split(',')
-    credits_range = req_str[2].slice(1, req_str[2].length - 1).split(',')
+    courseReq = degree.courseRequirements[i]
+    reqStr = courseReq[0].split(':')
+    coursesRange = reqStr[1].slice(1, reqStr[1].length - 1).split(',')
+    creditsRange = reqStr[2].slice(1, reqStr[2].length - 1).split(',')
     const course = await CourseRequirement.create({
-      type: Number(req_str[0]),
-      courseLower: courses_range[0] === "" ? null : Number(courses_range[0]),
-      courseUpper: courses_range[1] === "" ? null : Number(courses_range[1]),
-      creditLower: credits_range[0] === "" ? null : Number(credits_range[0]),
-      creditUpper: credits_range[1] === "" ? null : Number(credits_range[1]),
-      courses: course_req.slice(1)
+      type: Number(reqStr[0]),
+      courseLower: coursesRange[0] === "" ? null : Number(coursesRange[0]),
+      courseUpper: coursesRange[1] === "" ? null : Number(coursesRange[1]),
+      creditLower: creditsRange[0] === "" ? null : Number(creditsRange[0]),
+      creditUpper: creditsRange[1] === "" ? null : Number(creditsRange[1]),
+      courses: courseReq.slice(1)
     })
-    course_req_ids.push(course.requirementId)
+    courseReqIds.push(course.requirementId)
   }
-  return course_req_ids
+  return courseReqIds
 }
 
 
 
 async function createDegree(degree){
   try {
-    requirement_ids = {}
-    const course_req_ids = await createCourseRequirements(degree)
+    requirementIds = {}
+    const courseReqIds = await createCourseRequirements(degree)
 
     // Make the degree record first, since we have to satisfy the foreign key constraints.
     // of the grade/gpa/credit-requirements. Note, we do not set any values for the 
     // grade/gpa/credit requirements yet. They will be null. 
-    const new_degree = await Degree.create({
+    const newDegree = await Degree.create({
       dept: degree.dept,
       track: degree.track,
       requirementVersion: degree.requirementVersion,
     })
     
     // We now update this newly-created Degree entry and set the grade/gpa/credit
-    // requirement values to be == new_degree.degreeId. Every Degree+track we make 
+    // requirement values to be == newDegree.degreeId. Every Degree+track we make 
     // will have their own grade/gpa/credit requirement anyways-- we won't share
     // them with other degrees. So, the DegreeId and grade/gpa/creditReq
     // fields are 1:1. That is, every one degree you make, you also make
     // one grade/gpa/credit req entry, so the IDs should end up being the same.
-    const update_reqIds = await new_degree.update({
-      gradeRequirement: new_degree.degreeId,
-      gpaRequirement: new_degree.degreeId,
-      creditRequirement: new_degree.degreeId,
-      courseRequirement: course_req_ids
+    const updateReqIds = await newDegree.update({
+      gradeRequirement: newDegree.degreeId,
+      gpaRequirement: newDegree.degreeId,
+      creditRequirement: newDegree.degreeId,
+      courseRequirement: courseReqIds
     })
 
     // Create this degree's respective grade/credit/gpa requirements. -----------
-    // Note: We set the requirementId of each entry to be the new_degree.degreeId.
+    // Note: We set the requirementId of each entry to be the newDegree.degreeId.
 
     const grade = await GradeRequirement.create({
-      requirementId: new_degree.degreeId,
+      requirementId: newDegree.degreeId,
       atLeastCredits: degree.gradeRequirement === null
         ? null : degree.gradeRequirement.atLeastCredits,
       minGrade: degree.gradeRequirement === null
@@ -223,12 +223,12 @@ async function createDegree(degree){
     })
 
     const credit = await CreditRequirement.create({
-      requirementId: new_degree.degreeId,
+      requirementId: newDegree.degreeId,
       minCredit: degree.creditRequirement
     })
 
     const gpa = await GpaRequirement.create({
-      requirementId: new_degree.degreeId,
+      requirementId: newDegree.degreeId,
       cumulative: degree.gpaRequirements.cumulGpa,
       department: degree.gpaRequirements.deptGpa,
       core: degree.gpaRequirements.coreGpa

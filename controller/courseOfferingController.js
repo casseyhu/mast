@@ -14,9 +14,9 @@ exports.upload = (req, res) => {
     if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel')
       res.status(500).send('File must be *.csv')
     else {
-      const f_in = fs.readFileSync(file.path, 'utf-8')
+      const fileIn = fs.readFileSync(file.path, 'utf-8')
       let isValid = true;
-      Papa.parse(f_in, {
+      Papa.parse(fileIn, {
         header: true,
         dynamicTyping: true,
         complete: (results) => {
@@ -59,14 +59,14 @@ exports.upload = (req, res) => {
 // Everyone will have to DORP TABLE courseofferings, then rerun the 
 // server to recreate the table through sequelize. 
 
-function uploadNewOfferings(csv_file) {
-  for (let i = 0; i < csv_file.data.length; i++) {
-    course = csv_file.data[i]
-    csv_timeslot = (course.timeslot ? course.timeslot.split(' ') : null)
-    day = (csv_timeslot ? csv_timeslot[0] : null)
-    time_range = (csv_timeslot ? csv_timeslot[1].split('-') : null)
-    start = (time_range ? moment(time_range[0], ['h:mmA']).format('HH:mm') : null)
-    end = (time_range ? moment(time_range[1], ['h:mmA']).format('HH:mm') : null)
+function uploadNewOfferings(csvFile) {
+  for (let i = 0; i < csvFile.data.length; i++) {
+    course = csvFile.data[i]
+    csvTimeslot = (course.timeslot ? course.timeslot.split(' ') : null)
+    day = (csvTimeslot ? csvTimeslot[0] : null)
+    timeRange = (csvTimeslot ? csvTimeslot[1].split('-') : null)
+    start = (timeRange ? moment(timeRange[0], ['h:mmA']).format('HH:mm') : null)
+    end = (timeRange ? moment(timeRange[1], ['h:mmA']).format('HH:mm') : null)
     CourseOffering.create({
       identifier: course.department + course.course_num,
       semester: course.semester,
@@ -88,13 +88,11 @@ function uploadNewOfferings(csv_file) {
 // where the semester+year(s) are covered by this new CSV.
 // Will return a promise after the await is done. Try to
 // catch it in the main loop and handle it in there. 
-function deleteSemestersFromDB(csv_file) {
-  // scraped_semesters = 
-  //     new Set(csv_file.data.map(course => course.semester + ' ' + course.year))
-  sem_array = Array.from(new Set(csv_file.data.map(
+function deleteSemestersFromDB(csvFile) {
+  semArray = Array.from(new Set(csvFile.data.map(
     course => course.semester + ' ' + course.year)))
-  for (let i = 0; i < sem_array.length; i++) {
-    semyear = sem_array[i].split(' ')
+  for (let i = 0; i < semArray.length; i++) {
+    semyear = semArray[i].split(' ')
     // Might have to CASCADE the deletes to the 
     // CoursePlans that reference these courses (?)
     CourseOffering.destroy({
