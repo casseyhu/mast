@@ -24,21 +24,24 @@ const Student = (props) => {
       var decoded = jwt_decode(token)
       if (!decoded)
         return
-    // Get student sbuid from state
-    if (!student) {
-      console.log(decoded.id)
-      // get student data from db
-      axios.get(`student/${decoded.id}`).then(student => {
-        setStudent(student)
-      })
-    }
     // Set items
     axios.get('/courseplanitem/findItems', {
       params: {
         studentId: student.sbuId
       }
     }).then(res => {
-      setItems(res.data)
+      setItems(res.data);
+      axios.get('/requirements', {
+        params: {
+          department: student.department,
+          track: student.track
+        }
+      }).then(res => {
+        setRequirements(res.data);
+        console.log(res.data);
+      }).catch(err => {
+        console.log(err);
+      })
     }).catch(err => {
       console.log(err)
     });
@@ -83,10 +86,10 @@ const Student = (props) => {
         userType={props.type}
         student={student}
         onSubmit={(e) => modeHandler(e)} />
-      <Requirements user={user} 
+      <Requirements 
         requirements={requirements}
-        coursePlan={props.location.state.items}
-        student={props.location.state.student} />
+        coursePlan={items}
+        student={student} />
       <CoursePlan
         items={items} />
       <CenteredModal

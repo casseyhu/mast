@@ -146,7 +146,7 @@ async function uploadNewOfferings(csvFile) {
 // where the semester+year(s) are covered by this new CSV.
 // Will return a promise after the await is done. Try to
 // catch it in the main loop and handle it in there. 
-function deleteSemestersFromDB(csvFile) {
+async function deleteSemestersFromDB(csvFile) {
   semArray = Array.from(new Set(csvFile.data.map(
     course => course.semester + ' ' + course.year)))
   for (let i = 0; i < semArray.length; i++) {
