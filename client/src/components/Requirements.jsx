@@ -5,7 +5,7 @@ const Requirements = (props) => {
   const [credits, setCredits] = useState({});
   const [gpas, setGpas] = useState({});
   const [display, setDisplay] = useState(false);
-  const [totalCredits, setTotalCredits] = useState(0);
+  const [totalCredits, setTotalCredits] = useState(null);
 
 
   const GRADES = { 'A': 4, 'A-': 3.67, 'B+': 3.33, 'B': 3, 'B-': 2.67, 'C+': 2.33, 'C': 2, 'C-': 1.67, 'F': 0 }
@@ -51,8 +51,8 @@ const Requirements = (props) => {
     var student = props.student;
     var coursePlan = props.coursePlan.filter((course) => course.grade != null);
     var requirements = props.requirements;
-    var credits = {}
-    if (student && coursePlan && requirements[3]) {
+    var credits = {};
+    if (student && coursePlan.length && requirements[3]) {
       for (var i = 0; i < coursePlan.length; i++) {
         let foundCourse = await axios.get('/course/findOne/', {
           params: {
@@ -66,6 +66,7 @@ const Requirements = (props) => {
         console.log(credits);
       }
       setCredits(credits);
+      setTotalCredits(Object.values(credits).reduce((total, amount) => amount + total, 0));
 
       // Set department gpa
       var deptCourses = coursePlan.filter((course) => (
@@ -109,10 +110,17 @@ const Requirements = (props) => {
         "cumulative": student.gpa,
         "department": deptTotalPoints/deptTotalCredits,
         "core": coreTotalPoints/coreTotalCredits
-      });
-      setTotalCredits(Object.values(credits).reduce((total, amount) => amount + total));
-      setDisplay(true);
+      });      
     }
+    else {
+      setGpas({
+        "cumulative": null,
+        "department": null,
+        "core": null
+      });
+      setTotalCredits(0);  
+    }
+    setDisplay(true);
   }
 
   useEffect(() => {
@@ -141,13 +149,13 @@ const Requirements = (props) => {
               <div className={getGpaColor(key)} key={key}>
                 Minimum {key[0].toUpperCase() + key.slice(1)} GPA:
                 {" " + Number(value).toFixed(2)}
-                <b>&emsp;{Number(gpas[key]).toFixed(2)}</b>
+                <b>&emsp;{gpas[key] ? Number(gpas[key]).toFixed(2) : "N/A"}</b>
               </div>
             )
           }
           return
         })}
-        {totalCredits && requirements[2] && Object.keys(credits).length !== 0 &&
+        {totalCredits != null && requirements[2] &&
           <div className={getCreditsColor()}>
             Minimum Credits: {requirements[2].minCredit}
             <b>&emsp;{totalCredits}</b>
@@ -159,6 +167,17 @@ const Requirements = (props) => {
             {" " + getLetter(requirements[0].minGrade)} or above
           </div>
         }
+        {requirements[3] && requirements[3].map((req) => {
+          if (req.type === 1) {
+            return <div>Required: {req.courses}</div>
+          }
+          if (req.type === 2) {
+            return <div>Track Required: {req.courses}</div>
+          }
+          if (req.type === 0) {
+            return <div>Non-Required: {req.courses}</div>
+          }
+        })}
       </div>
       }
     </div>
