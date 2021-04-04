@@ -19,13 +19,18 @@ const Student = (props) => {
 
   useEffect(() => {
     console.log("student view type " + props.type)
-    console.log(student, "DINGSNG")
     if (mode === 'Add')
       return
     let token = localStorage.getItem('jwt-token')
     var decoded = jwt_decode(token)
     if (!decoded)
       return
+    //set value of student
+    axios.get('/student/'+student.sbuId, {
+      params : { sbuId: student.sbuId }
+    }).then(res => {
+      setStudent(res.data)
+    })
     // Set items
     axios.get('/courseplanitem/findItems', {
       params: {
@@ -33,7 +38,6 @@ const Student = (props) => {
       }
     }).then(res => {
       setItems(res.data);
-      console.log(student.degreeId)
       axios.get('/requirements', {
         params: {
           department: student.department,
@@ -42,7 +46,6 @@ const Student = (props) => {
         }
       }).then(res => {
         setRequirements(res.data);
-        console.log(res.data);
       }).catch(err => {
         console.log(err);
       })
@@ -51,13 +54,11 @@ const Student = (props) => {
     });
 
     // Get requirement states
-
-  }, [student])
+  }, [])
 
 
   const modeHandler = (studentInfo) => {
     console.log("Page mode: ", mode)
-    console.log(studentInfo)
     if (mode === 'Add') {
       /* Add new student into the db */
       axios.post('student/create', {
@@ -73,12 +74,10 @@ const Student = (props) => {
       setMode('Edit')
     } else {
       /* Saving student info, UPDATE student in the db*/
-      console.log(studentInfo)
       axios.post('/student/update', {
         params: studentInfo
       }).then((response) => {
         setStudent(response.data)
-        changeMode()
         setShowConfirmation(true)
       }).catch(function (err) {
         console.log(err.response.data)

@@ -52,10 +52,10 @@ exports.uploadPlans = (req, res) => {
 }
 
 
-async function uploadCoursePlans(csvFile) {
+async function uploadCoursePlans(csvFile, res) {
   let studentsPlanId = {}
   // Create/Update all the course plan items
-  for (let i = 0; i < csvFile.data.length ; i++) {
+  for (let i = 0; i < csvFile.data.length; i++) {
     if (!csvFile.data[i].sbu_id)
       continue
     let condition = { studentId: csvFile.data[i].sbu_id }
@@ -91,7 +91,7 @@ async function uploadCoursePlans(csvFile) {
       let courseCredit = {}
       for (let j = 0; j < courses.length; j++)
         courseCredit[courses[j].courseId] = courses[j].credits
-      calculateGPA(studentsPlanId, courseCredit)
+      calculateGPA(studentsPlanId, courseCredit, res)
     })
     .catch(err => {
       console.log(err)
@@ -100,7 +100,7 @@ async function uploadCoursePlans(csvFile) {
 
 
 // Calculate and update the GPA for each student that was imported
-async function calculateGPA(studentsPlanId, courseCredit) {
+async function calculateGPA(studentsPlanId, courseCredit, res) {
   let gradesPoint = { 'A': 4, 'A-': 3.67, 'B+': 3.33, 'B': 3, 'B-': 2.67, 'C+': 2.33, 'C': 2, 'C-': 1.67, 'F': 0 }
   for (let key in studentsPlanId) {
     let condition = { coursePlanId: studentsPlanId[key] }
@@ -132,9 +132,9 @@ async function calculateGPA(studentsPlanId, courseCredit) {
 
 exports.findItems = (req, res) => {
   let condition = req.query;
-  CoursePlan.findOne({ where : condition }).then(coursePlan => {
-    condition = { coursePlanId : coursePlan.coursePlanId}
-    CoursePlanItem.findAll({ where : condition}).then(coursePlanItems => {
+  CoursePlan.findOne({ where: condition }).then(coursePlan => {
+    condition = { coursePlanId: coursePlan.coursePlanId }
+    CoursePlanItem.findAll({ where: condition }).then(coursePlanItems => {
       res.status(200).send(coursePlanItems)
     }).catch(err => {
       console.log(err)

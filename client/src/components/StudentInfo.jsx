@@ -10,24 +10,7 @@ import axios from '../constants/axios';
 const StudentInfo = (props) => {
   const history = useHistory();
   const sems = {'01': 'Winter', '02': 'Spring', '05': 'Summer', '08': 'Fall'}
-  const [userInfo, setUserInfo] = useState({
-    firstName: props.student ? props.student.firstName : '',
-    lastName: props.student ? props.student.lastName : '',
-    sbuId: props.student ? props.student.sbuId : '',
-    email: props.student ? props.student.email : '',
-    gpa: props.student ? props.student.gpa : '',
-    graduated: props.student ? (props.student.graduated ? "True" : "False") : "",
-    dept: props.student ? props.student.department : null,
-    track: props.student ? props.student.track : null,
-    entrySem: props.student ? props.student.entrySem : null,
-    entryYear: props.student ? props.student.entryYear.toString() : null,
-    gradSem: props.student ? props.student.gradSem : null,
-    gradYear: props.student ? props.student.gradYear.toString() : null,
-    degreeSem: props.student ? sems[props.student.requirementVersion.toString().substring(4, 6)] : '',
-    degreeYear: props.student ? props.student.requirementVersion.toString().substring(0, 4) : '',
-    gpdComments: props.student ? props.student.gpdComments : '',
-    studentComments: props.student ? props.student.studentComments : ''
-  })
+  const [userInfo, setUserInfo] = useState({})
 
   const handleSelection = (name, e) => {
     setUserInfo(prevState => ({
@@ -38,12 +21,29 @@ const StudentInfo = (props) => {
 
   const modeButtonHandler = () => {
     console.log("Student info component")
-    // console.log(userInfo)
     props.onSubmit(userInfo)
   }
 
+
   useEffect(() => {
-    console.log("Show student information")
+    setUserInfo({
+      firstName: props.student ? props.student.firstName : '',
+      lastName: props.student ? props.student.lastName : '',
+      sbuId: props.student ? props.student.sbuId : '',
+      email: props.student ? props.student.email : '',
+      gpa: props.student ? props.student.gpa : '',
+      graduated: props.student ? (props.student.graduated ? "True" : "False") : "",
+      dept: props.student ? props.student.department : null,
+      track: props.student ? props.student.track : null,
+      entrySem: props.student ? props.student.entrySem : null,
+      entryYear: props.student ? props.student.entryYear.toString() : null,
+      gradSem: props.student ? props.student.gradSem : null,
+      gradYear: props.student ? props.student.gradYear.toString() : null,
+      degreeSem: props.student ? sems[props.student.requirementVersion.toString().substring(4, 6)] : '',
+      degreeYear: props.student ? props.student.requirementVersion.toString().substring(0, 4) : '',
+      gpdComments: props.student ? props.student.gpdComments : '',
+      studentComments: props.student ? props.student.studentComments : ''
+    })
   }, [props.student])
 
   let { mode, errorMessage } = props;

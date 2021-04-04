@@ -64,6 +64,7 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false
     },
     track: Sequelize.STRING,
+    requirementVersion: Sequelize.INTEGER,
     unsatisfied: Sequelize.INTEGER,
     pending: Sequelize.INTEGER,
     satisfied: Sequelize.INTEGER,

@@ -109,7 +109,7 @@ const Requirements = (props) => {
         "department": deptTotalPoints/deptTotalCredits,
         "core": coreTotalPoints/coreTotalCredits
       });
-      setTotalCredits(Object.values(credits).reduce((total, amount) => amount + total));
+      setTotalCredits(Object.values(credits).reduce((total, amount) => amount + total), 0);
       setDisplay(true);
     }
   }

@@ -35,7 +35,8 @@ exports.upload = (req, res) => {
 exports.findRequirements = (req, res) => {
   Degree.findOne({ where: {
     dept: req.query.department,
-    track: req.query.track
+    track: req.query.track,
+    degreeId: req.query.degreeId
   }}).then(degree => {
     // console.log(degree)
     findRequirements(degree, res)
@@ -72,7 +73,6 @@ async function importDegree(json_file) {
         requirementVersion: degree.requirementVersion
       }
     })
-    console.log(found)
     if (found) {
       await updateDegree(found, degree)
     } else {

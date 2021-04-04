@@ -133,6 +133,8 @@ exports.create = (req, res) => {
       return
     });
 }
+
+
 // Update a student
 exports.update = (req, res) => {
   const student = req.body.params
@@ -141,17 +143,15 @@ exports.update = (req, res) => {
     res.status(500).send(err_msg);
     return
   }
-
   const semDict = {
     "Fall": "08",
     "Spring": "02",
     "Winter": "01",
     "Summer": "05"
   }
-  let requirementVersion = Number(student.degreeYear + semDict[student.degreeSem])
-  console.log(student)
-  Degree
-    .findOne({
+  let requirementVersion = Number(student.degreeYear) * 100 + Number(semDict[student.degreeSem])
+  console.log(student.department, student.track, requirementVersion)
+  Degree.findOne({
       where: {
         dept: student.dept,
         track: student.track,
@@ -164,7 +164,6 @@ exports.update = (req, res) => {
         res.status(500).send("Degree requirement version does not exist.")
         return
       }
-      console.log(student.dept)
       // Check for valid graduation date. If EntryDate == GradDate, it's valid for now.
       let grad_date = Number(student.gradYear + semDict[student.gradSem])
       let entry_date = Number(student.entryYear + semDict[student.entrySem])
@@ -184,7 +183,6 @@ exports.update = (req, res) => {
 
       // Check for proper .edu email address
       regex = /^\w+@\w+\.edu$/;
-      console.log(student.email)
       if (!regex.test(student.email)) {
         res.status(500).send("Student must have a valid .edu email.");
         return
@@ -193,13 +191,13 @@ exports.update = (req, res) => {
       // Update student information based on student id
       const condition = { sbuId: student.sbuId}
       let graduated = student.graduated === 'False' ? 0 : 1
-      console.log(student)
       const value = {
         sbuId: student.sbuId,
         email: student.email,
         firstName: student.firstName,
         lastName: student.lastName,
-        gpa: null,
+        password: student.password,
+        gpa: student.gpa,
         entrySem: student.entrySem,
         entryYear: Number(student.entryYear),
         entrySemYear: Number(student.entryYear.concat(semDict[student.entrySem])),
@@ -216,7 +214,10 @@ exports.update = (req, res) => {
       }
       Student.update(value, {where : condition})
         .then(response => {
-          res.status(200).send(response.data)
+          //update retuned array [1]
+          Student.findOne({where : condition}).then(student => {
+            res.status(200).send(student)
+          })
         })
         .catch(err => {
           err_msg = "Error in updating student. Please check student information type (i.e. SBUID must be numbers 0-9)."
@@ -316,7 +317,6 @@ exports.login = (req, res) => {
 // Find a Student 
 exports.findById = (req, res) => {
   Student.findByPk(req.params.sbuId).then(student => {
-    console.log(student)
     res.send(student);
   }).catch(err => {
     res.status(500).send("Error: " + err);
