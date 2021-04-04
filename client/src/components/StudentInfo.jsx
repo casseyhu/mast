@@ -9,7 +9,7 @@ import axios from '../constants/axios';
 
 const StudentInfo = (props) => {
   const history = useHistory();
-
+  const sems = {'01': 'Winter', '02': 'Spring', '05': 'Summer', '08': 'Fall'}
   const [userInfo, setUserInfo] = useState({
     firstName: props.student ? props.student.firstName : '',
     lastName: props.student ? props.student.lastName : '',
@@ -23,8 +23,8 @@ const StudentInfo = (props) => {
     entryYear: props.student ? props.student.entryYear.toString() : null,
     gradSem: props.student ? props.student.gradSem : null,
     gradYear: props.student ? props.student.gradYear.toString() : null,
-    degreeSem: '',
-    degreeYear: '',
+    degreeSem: props.student ? sems[props.student.requirementVersion.toString().substring(4, 6)] : '',
+    degreeYear: props.student ? props.student.requirementVersion.toString().substring(0, 4) : '',
     gpdComments: props.student ? props.student.gpdComments : '',
     studentComments: props.student ? props.student.studentComments : ''
   })
@@ -42,6 +42,10 @@ const StudentInfo = (props) => {
     props.onSubmit(userInfo)
   }
 
+  useEffect(() => {
+    console.log("Show student information")
+  }, [props.student])
+
   let { mode, errorMessage } = props;
   return (
     <div className="flex-horizontal wrap">
@@ -52,14 +56,13 @@ const StudentInfo = (props) => {
             <Button
               variant="round"
               text="Back"
-              style={{ margin: '1rem 1rem 0 0' }}
+              style={{ margin: '0 1rem 0 0' }}
               onClick={() => history.goBack()}
             />
           )}
           <Button
             variant="round"
             text={mode === 'Add' ? 'Add Student' : (mode === 'Edit' ? 'Save Student' : 'Edit Student')}
-            style={{ marginTop: '1rem' }}
             onClick={modeButtonHandler}
           />
         </div>
@@ -69,8 +72,8 @@ const StudentInfo = (props) => {
           <span className="error"><strong>{errorMessage}</strong></span>
         </div>}
 
-      <div className="flex-vertical wrap" style={{ width: 'fit-content' }}>
-        <div className="flex-horizontal wrap" style={{ width: 'fit-content' }}>
+      <div className="flex-vertical wrap" style={{ maxWidth: '690px' }}>
+        <div className="flex-horizontal">
           <span className="filter-span">Name:</span>
           <InputField
             className="lr-padding"
@@ -79,7 +82,8 @@ const StudentInfo = (props) => {
             onChange={e => handleSelection('firstName', e.target)}
             value={userInfo.firstName}
             disabled={mode === 'View'}
-            style={{ width: "300px" }} />
+            style={{ width: "300px", flexShrink: '1' }}
+          />
           <InputField
             className="lr-padding"
             type="text"
@@ -87,10 +91,11 @@ const StudentInfo = (props) => {
             onChange={e => handleSelection('lastName', e.target)}
             value={userInfo.lastName}
             disabled={mode === 'View'}
-            style={{ width: "300px" }} />
+            style={{ width: "300px", flexShrink: '1' }}
+          />
         </div>
 
-        <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+        <div className="flex-horizontal">
           <span className="filter-span">SBU ID:</span>
           <InputField
             className="lr-padding"
@@ -99,7 +104,8 @@ const StudentInfo = (props) => {
             onChange={e => handleSelection('sbuId', e.target)}
             value={userInfo.sbuId}
             disabled={mode === 'View'}
-            style={{ width: "300px" }} />
+            style={{ width: "300px", flexShrink: '1'  }}
+          />
           <span className="filter-span" style={{ marginLeft: "0.6rem" }}>GPA:</span>
           <InputField
             className="lr-padding"
@@ -108,10 +114,11 @@ const StudentInfo = (props) => {
             onChange={e => handleSelection('gpa', e.target)}
             value={userInfo.gpa}
             disabled={mode === 'View' || mode === 'Add'}
-            style={{ width: "200px" }} />
+            style={{ width: "200px" }}
+          />
         </div>
 
-        <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+        <div className="flex-horizontal">
           <span className="filter-span">Email:</span>
           <InputField
             className="lr-padding"
@@ -120,15 +127,9 @@ const StudentInfo = (props) => {
             onChange={e => handleSelection('email', e.target)}
             value={userInfo.email}
             disabled={mode === 'View'}
-            style={{ width: "300px" }} />
-          <span className="filter-span" style={{ marginLeft: "0.6rem" }}>Graduated: </span>
-          {/* <span className="lr-padding" style={{width:"200px"}}>False</span> */}
-          {/* <InputField
-            className="lr-padding"
-            placeholder="False"
-            value={userInfo.graduated}
-            disabled={mode === 'View' || mode === 'Add'}
-            style={{ width: "200px" }} /> */}
+            style={{ width: "300px", flexShrink: '1'  }}
+          />
+          <span className="filter-span" style={{ marginLeft: "0.6rem", flexShrink: '1'  }}>Graduated: </span>
           <Dropdown
             className="lr-padding"
             items={BOOLEAN}
@@ -136,10 +137,11 @@ const StudentInfo = (props) => {
             value={userInfo.graduated && { label: userInfo.graduated, value: userInfo.graduated }}
             disabled={mode === 'View' || mode === 'Add'}
             style={{ width: "200px" }}
-            onChange={e => handleSelection('graduated', e)} />
+            onChange={e => handleSelection('graduated', e)} 
+            />
         </div>
 
-        <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+        <div className="flex-horizontal">
           <span className="filter-span">Entry Date:</span>
           <Dropdown
             className="all-padding"
@@ -147,17 +149,19 @@ const StudentInfo = (props) => {
             placeholder="Semester"
             value={userInfo.entrySem && { label: userInfo.entrySem, value: userInfo.entrySem }}
             disabled={mode === 'View'}
-            onChange={e => handleSelection('entrySem', e)} />
+            onChange={e => handleSelection('entrySem', e)} 
+            />
           <Dropdown
             className="all-padding"
             items={YEARS}
             placeholder="Year"
             value={userInfo.entryYear && { label: userInfo.entryYear, value: userInfo.entryYear }}
             disabled={mode === 'View'}
-            onChange={e => handleSelection('entryYear', e)} />
+            onChange={e => handleSelection('entryYear', e)} 
+            />
         </div>
 
-        <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+        <div className="flex-horizontal">
           <span className="filter-span">Grad Date:</span>
           <Dropdown
             className="all-padding"
@@ -175,7 +179,7 @@ const StudentInfo = (props) => {
             onChange={e => handleSelection('gradYear', e)} />
         </div>
 
-        <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+        <div className="flex-horizontal">
           <span className="filter-span">Degree:</span>
           <Dropdown
             className="all-padding"
@@ -196,12 +200,14 @@ const StudentInfo = (props) => {
             items={SEMESTERS}
             placeholder="Semester"
             disabled={mode === 'View'}
+            value={userInfo.degreeSem && { label: userInfo.degreeSem, value: userInfo.degreeSem }}
             onChange={e => handleSelection('degreeSem', e)} />
           <Dropdown
             className="all-padding"
             items={YEARS}
             placeholder="Year"
             disabled={mode === 'View'}
+            value={userInfo.degreeYear && { label: userInfo.degreeYear, value: userInfo.degreeYear }}
             onChange={e => handleSelection('degreeYear', e)} />
         </div>
       </div>

@@ -76,7 +76,7 @@ nav {
   /* padding-top: 1.2rem; */
   background-color: transparent;
   border: none;
-  width: fit-content;
+  margin-right: 3rem;
   font-size: 14px;
 }
 
@@ -94,7 +94,7 @@ nav {
   margin-right: 0.7rem;
 }
 .filter-span {
-  width: 90px;
+  width: 95px;
   /* font-size: 14px !important; */
 }
 .filter-component {

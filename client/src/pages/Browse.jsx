@@ -68,11 +68,10 @@ class Browse extends Component {
       }
     }
     else {
-      console.log(value);
       this.setState({
-          ascending: {
-            [field]: value
-          }
+        ascending: {
+          [field]: value
+        }
       })
     }
     this.setState({ sortBy: field }, this.sortStudents);
@@ -181,7 +180,7 @@ class Browse extends Component {
       <Container fluid className="container">
         <div className="flex-horizontal justify-content-between">
           <h1>Browse Student</h1>
-          <Button variant="round" text="+ new student" onClick={this.addStudent} style={{ marginTop: '1rem' }} />
+          <Button variant="round" text="Add student" onClick={this.addStudent} style={{ marginTop: '1rem' }} />
         </div>
         <BrowseSearchbar sortField={this.setSortField} filter={this.setFilter} />
         <div className="studentTable">

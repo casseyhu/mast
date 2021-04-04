@@ -26,8 +26,9 @@ exports.uploadPlans = (req, res) => {
     if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel')
       res.status(500).send('File must be *.csv')
     else {
-      const f_in = fs.readFileSync(file.path, 'utf-8')
-      Papa.parse(f_in, {
+      const fileIn = fs.readFileSync(file.path, 'utf-8')
+      let isValid = true;
+      Papa.parse(fileIn, {
         header: true,
         dynamicTyping: true,
         complete: (results) => {
@@ -51,32 +52,30 @@ exports.uploadPlans = (req, res) => {
 }
 
 
-async function uploadCoursePlans(csv_file, res) {
-  let students_planid = {}
+async function uploadCoursePlans(csvFile) {
+  let studentsPlanId = {}
   // Create/Update all the course plan items
-  for (let i = 0; i < csv_file.data.length ; i++) {
-    if (!csv_file.data[i].sbu_id)
+  for (let i = 0; i < csvFile.data.length ; i++) {
+    if (!csvFile.data[i].sbu_id)
       continue
-    let condition = { studentId: csv_file.data[i].sbu_id }
+    let condition = { studentId: csvFile.data[i].sbu_id }
     let found = await CoursePlan.findOne({ where: condition })
-    if (!found) {
-      console.log("student course plan doesnt exist: " + condition)
-      continue
-    }
-    students_planid[csv_file.data[i].sbu_id] = found.coursePlanId
+    if (!found)
+      console.log(condition)
+    studentsPlanId[csvFile.data[i].sbu_id] = found.coursePlanId
     condition = {
       coursePlanId: found.coursePlanId,
-      courseId: csv_file.data[i].department + csv_file.data[i].course_num,
-      semester: csv_file.data[i].semester,
-      year: csv_file.data[i].year
+      courseId: csvFile.data[i].department + csvFile.data[i].course_num,
+      semester: csvFile.data[i].semester,
+      year: csvFile.data[i].year
     }
     values = {
       coursePlanId: found.coursePlanId,
-      courseId: csv_file.data[i].department + csv_file.data[i].course_num,
-      semester: csv_file.data[i].semester,
-      year: csv_file.data[i].year,
-      section: csv_file.data[i].section,
-      grade: csv_file.data[i].grade,
+      courseId: csvFile.data[i].department + csvFile.data[i].course_num,
+      semester: csvFile.data[i].semester,
+      year: csvFile.data[i].year,
+      section: csvFile.data[i].section,
+      grade: csvFile.data[i].grade,
     }
     found = await CoursePlanItem.findOne({ where: condition })
     if (found)
@@ -89,31 +88,32 @@ async function uploadCoursePlans(csv_file, res) {
   Course
     .findAll()
     .then(courses => {
-      let course_credit = {}
+      let courseCredit = {}
       for (let j = 0; j < courses.length; j++)
-        course_credit[courses[j].courseId] = courses[j].credits
-      calculateGPA(students_planid, course_credit, res)
+        courseCredit[courses[j].courseId] = courses[j].credits
+      calculateGPA(studentsPlanId, courseCredit)
     })
     .catch(err => {
       console.log(err)
     })
 }
 
+
 // Calculate and update the GPA for each student that was imported
-async function calculateGPA(students_planid, course_credit, res) {
-  let grades_point = { 'A': 4.0, 'A-': 3.67, 'B+': 3.3, 'B': 3, 'B-': 2.67, 'C+': 2.3, 'C': 2, 'C-': 1.67, 'D+': 1.3, 'D': 1 }
-  for (let key in students_planid) {
-    let condition = { coursePlanId: students_planid[key] }
+async function calculateGPA(studentsPlanId, courseCredit) {
+  let gradesPoint = { 'A': 4, 'A-': 3.67, 'B+': 3.33, 'B': 3, 'B-': 2.67, 'C+': 2.33, 'C': 2, 'C-': 1.67, 'F': 0 }
+  for (let key in studentsPlanId) {
+    let condition = { coursePlanId: studentsPlanId[key] }
     let items = await CoursePlanItem.findAll({ where: condition })
     if (items) {
       const foundItems = items.filter(item => (item.grade !== null))
-      let earned_points = 0
-      let tot_points = 0
+      let earnedPoints = 0
+      let totPoints = 0
       for (let i = 0; i < foundItems.length; i++) {
-        earned_points += grades_point[foundItems[i].grade] * course_credit[foundItems[i].courseId]
-        tot_points += course_credit[foundItems[i].courseId]
+        earnedPoints += gradesPoint[foundItems[i].grade] * courseCredit[foundItems[i].courseId]
+        totPoints += courseCredit[foundItems[i].courseId]
       }
-      let GPA = (earned_points / tot_points)
+      let GPA = (earnedPoints / totPoints)
       if (key && !isNaN(GPA)) {
         GPA = GPA.toFixed(2)
         await Student.update({ gpa: GPA }, { where: { sbuId: key } })

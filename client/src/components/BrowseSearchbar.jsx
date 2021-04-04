@@ -3,48 +3,52 @@ import Button from './Button';
 import Dropdown from './Dropdown';
 import axios from '../constants/axios';
 import InputField from './InputField'
-import { SORT_FIELDS, SORT_ORDER, BOOLEAN, DEPARTMENTS, SEMESTERS, YEARS } from '../constants';
+import { SORT_FIELDS, SORT_ORDER, BOOLEAN, COMPLETENESS, SEMESTERS, YEARS } from '../constants';
 
 const BrowseSearchbar = (props) => {
 
-  const [name, setName] = useState("");
   const [sortBy, setSort] = useState("");
   const [ascending, setOrder] = useState("");
-  const [sbuId, setSbuId] = useState("");
-  const [entrySem, setEntrySem] = useState("");
-  const [entryYear, setEntryYear] = useState("");
   const [degree, setDegree] = useState("");
-  const [gradSem, setGradSem] = useState("");
-  const [gradYear, setGradYear] = useState("");
-  const [track, setTrack] = useState("");
-  const [graduated, setGraduated] = useState("");
   const [expanded, setExpanded] = useState(false);
   // const [advancedFields] = useState(["SBU ID", "Degree", "Track", "Entry Sem", 
   //   "Grad Sem", "Graduated", "Entry Year", "Grad Year"])
+
+  const [filters, setFilters] = useState({
+    nameId: '',
+    track: '',
+    entrySem: '',
+    entryYear: '',
+    gradSem: '',
+    gradYear: '',
+    graduated: '',
+    valid: '',
+    complete: ''
+  })
+
+  const handleSelection = (name, e) => {
+    setFilters(prevState => ({
+      ...prevState,
+      [name]: e.value
+    }))
+    console.log(filters)
+  }
 
   const applyFilters = (e) => {
     // Query goes here. 
     // After querying, send the results to the parent (Browse.jsx)
     // to set the table of students to view. 
-    
-    let fullName = name.split(' ')
-    let firstName = fullName[0]
-    let lastName = fullName.length === 1 ? '' : fullName[1]
-    let hasGraduated = graduated;
-    if(hasGraduated !== "")
-      hasGraduated === "true" ? hasGraduated = 1 : hasGraduated = 0;
-
     let filteredConditions = {
-      firstName: firstName + "%",
-      lastName: lastName + "%",
-      sbuId: sbuId + "%",
-      entrySem: entrySem + "%",
-      entryYear: entryYear + "%",
+      firstName: filters.nameId + "%",
+      lastName: filters.nameId + "%",
+      sbuId: filters.nameId + "%",
+      entrySem: filters.entrySem + "%",
+      entryYear: filters.entryYear + "%",
       degree: degree + "%",
-      gradSem: gradSem + "%",
-      gradYear: gradYear + "%",
-      track: track + "%",
-      graduated: hasGraduated + "%"
+      gradSem: filters.gradSem + "%",
+      gradYear: filters.gradYear + "%",
+      track: filters.track + "%",
+      graduated: (filters.graduated === 'true' ? 1 : 0) + "%"
     }
 
     props.filter(filteredConditions)
@@ -61,24 +65,39 @@ const BrowseSearchbar = (props) => {
   return (
     <div style={{ margin: '0.2rem 0 0.5rem 0' }}>
       {/* Main search bar fields */}
-      <div className="flex-horizontal wrap justify-content-between">
-        <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+      <div className="flex-horizontal wrap justify-content-between" style={{ width: '100%' }}>
+        <div className="flex-horizontal" style={{ width: 'fit-content', flexGrow: '1' }}>
           <span className="filter-span-reg">Search</span>
           <InputField
             type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            placeholder="Name or SBU ID"
+            value={filters.nameId}
+            onChange={e => handleSelection('nameId', e.target)}
             icon="fa fa-search"
-            style={{ minWidth: '300px', maxWidth: '400px', marginRight: '1rem' }}
+            style={{ flexGrow: '1', marginRight: '1rem' }}
           />
           <button className="advancedButton" onClick={expandFilters}>Advanced Options</button>
         </div>
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
           <span className="filter-span-reg">Sort By</span>
-          <Dropdown items={SORT_FIELDS} onChange={setSort} disabled={false} style={{ width: '150px', marginRight: '1rem' }} />
-          <Dropdown items={SORT_ORDER} onChange={setOrder} disabled={false} style={{ width: '150px', marginRight: '1rem' }} />
-          <Button variant="round" text="find" onClick={applyFilters} style={{ width: '70px' }} />
+          <Dropdown
+            items={SORT_FIELDS}
+            onChange={setSort}
+            placeholder="Field"
+            style={{ width: '140px', marginRight: '1rem' }}
+          />
+          <Dropdown
+            items={SORT_ORDER}
+            onChange={setOrder}
+            placeholder="Order"
+            style={{ width: '120px', marginRight: '1rem' }}
+          />
+          <Button
+            variant="round"
+            text="Apply"
+            onClick={applyFilters}
+            style={{ width: '70px' }}
+          />
         </div>
       </div>
       {/* Advanced dropdown filters */}
@@ -86,43 +105,21 @@ const BrowseSearchbar = (props) => {
         <div className="advancedFilters">
           <div className="flex-horizontal wrap" >
             <div className="flex-horizontal" style={{ width: 'fit-content' }}>
-              <span className="filter-span">SBU ID:</span>
-              <InputField
-                className="filter-component"
-                type="search"
-                placeholder="SBU ID"
-                value={sbuId}
-                onChange={(e) => setSbuId(e.target.value)}
-              />
-            </div>
-            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
-              <span className="filter-span">Degree:</span>
-              <Dropdown
-                className="filter-component"
-                variant="single"
-                items={DEPARTMENTS}
-                onChange={(e) => { setDegree(e.value) }}
-                disabled={false}
-              />
-            </div>
-            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
-              <span className="filter-span">Track:</span>
-              <InputField
-                className="filter-component"
-                type="search"
-                placeholder="Track"
-                value={track}
-                onChange={(e) => setTrack(e.target.value)}
-              />
-            </div>
-            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
               <span className="filter-span">Entry Sem:</span>
               <Dropdown
                 className="filter-component"
                 variant="single"
                 items={SEMESTERS}
-                onChange={(e) => { setEntrySem(e.value) }}
-                disabled={false}
+                onChange={e => handleSelection('entrySem', e)}
+              />
+            </div>
+            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+              <span className="filter-span">Entry Year:</span>
+              <Dropdown
+                className="filter-component"
+                variant="single"
+                items={YEARS}
+                onChange={e => handleSelection('entryYear', e)}
               />
             </div>
             <div className="flex-horizontal" style={{ width: 'fit-content' }}>
@@ -131,29 +128,7 @@ const BrowseSearchbar = (props) => {
                 className="filter-component"
                 variant="single"
                 items={SEMESTERS}
-                onChange={(e) => { setGradSem(e.value) }}
-                disabled={false}
-              />
-            </div>
-            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
-              <span className="filter-span">Graduated:</span>
-              <Dropdown
-                className="filter-component"
-                variant="single"
-                items={BOOLEAN}
-                onChange={(e) => { setGraduated(e.value) }}
-                disabled={false}
-              />
-            </div>
-
-            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
-              <span className="filter-span">Entry Year:</span>
-              <Dropdown
-                className="filter-component"
-                variant="single"
-                items={YEARS}
-                onChange={(e) => { setEntryYear(e.value) }}
-                disabled={false}
+                onChange={e => handleSelection('gradSem', e)}
               />
             </div>
             <div className="flex-horizontal" style={{ width: 'fit-content' }}>
@@ -162,8 +137,45 @@ const BrowseSearchbar = (props) => {
                 className="filter-component"
                 variant="single"
                 items={YEARS}
-                onChange={(e) => { setGradYear(e.value) }}
-                disabled={false}
+                onChange={e => handleSelection('gradYear', e)}
+              />
+            </div>
+
+            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+              <span className="filter-span">Track:</span>
+              <InputField
+                className="filter-component"
+                type="search"
+                placeholder="Track"
+                value={filters.track}
+                onChange={e => handleSelection('track', e.target)}
+              />
+            </div>
+            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+              <span className="filter-span">Graduated:</span>
+              <Dropdown
+                className="filter-component"
+                variant="single"
+                items={BOOLEAN}
+                onChange={e => handleSelection('graduated', e)}
+              />
+            </div>
+            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+              <span className="filter-span">CP Validity:</span>
+              <Dropdown
+                className="filter-component"
+                variant="single"
+                items={BOOLEAN}
+                onChange={e => handleSelection('valid', e)}
+              />
+            </div>
+            <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+              <span className="filter-span">CP Complete:</span>
+              <Dropdown
+                className="filter-component"
+                variant="single"
+                items={COMPLETENESS}
+                onChange={e => handleSelection('complete', e)}
               />
             </div>
           </div>

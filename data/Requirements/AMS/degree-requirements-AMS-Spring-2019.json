@@ -1,0 +1,145 @@
+{
+    "degree1": { 
+        "dept": "AMS",
+        "track": "Computational Applied Mathematics",
+        "requirementVersion": 201902, 
+        "gradeRequirement": {
+            "atLeastCredits": 18,
+            "minGrade": 3.0
+        },
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": 3.0
+        },
+        "courseRequirements": [ 
+            ["1:(1,1):(,)", "AMS501"],
+            ["1:(1,1):(,)", "AMS503"],
+            ["1:(1,1):(,)", "AMS510"],
+            ["1:(1,1):(,)", "AMS526"],
+            ["1:(1,1):(,)", "AMS527"],
+            ["1:(1,1):(,)", "AMS528"],
+            ["1:(1,1):(1,1)", "AMS595"],
+            ["1:(1,1):(3,3)", "AMS500", "AMS502", "AMS504", "AMS505", "AMS507", "AMS511", "AMS512", "AMS513", "AMS514", "AMS515", "AMS516", "AMS517", "AMS518", "AMS519", "AMS522", "AMS523", "AMS530", "AMS531", "AMS532", "AMS533", "AMS534", "AMS535", "AMS536", "AMS537", "AMS538", "AMS539", "AMS540", "AMS542", "AMS544", "AMS545", "AMS546", "AMS547", "AMS548", "AMS549", "AMS550", "AMS552", "AMS553", "AMS555", "AMS556", "AMS559", "AMS560", "AMS561", "AMS562", "AMS565", "AMS566", "AMS569", "AMS570", "AMS571", "AMS572", "AMS573", "AMS575", "AMS577", "AMS578", "AMS580", "AMS581", "AMS582", "AMS583", "AMS585", "AMS586", "AMS587", "AMS588", "AMS589", "AMS591", "AMS592", "AMS593", "AMS594", "AMS596", "AMS597", "AMS598", "AMS599", "AMS600", "AMS601", "AMS603", "AMS621", "AMS641", "AMS644", "AMS651", "AMS652", "AMS670", "AMS675", "AMS676", "AMS683", "AMS690", "AMS691", "AMS695", "AMS696", "AMS698", "AMS699", "AMS700", "AMS701", "AMS800"],
+            ["1:(1,1):(3,3)", "AMS500", "AMS502", "AMS504", "AMS505", "AMS507", "AMS511", "AMS512", "AMS513", "AMS514", "AMS515", "AMS516", "AMS517", "AMS518", "AMS519", "AMS522", "AMS523", "AMS530", "AMS531", "AMS532", "AMS533", "AMS534", "AMS535", "AMS536", "AMS537", "AMS538", "AMS539", "AMS540", "AMS542", "AMS544", "AMS545", "AMS546", "AMS547", "AMS548", "AMS549", "AMS550", "AMS552", "AMS553", "AMS555", "AMS556", "AMS559", "AMS560", "AMS561", "AMS562", "AMS565", "AMS566", "AMS569", "AMS570", "AMS571", "AMS572", "AMS573", "AMS575", "AMS577", "AMS578", "AMS580", "AMS581", "AMS582", "AMS583", "AMS585", "AMS586", "AMS587", "AMS588", "AMS589", "AMS591", "AMS592", "AMS593", "AMS594", "AMS596", "AMS597", "AMS598", "AMS599", "AMS600", "AMS601", "AMS603", "AMS621", "AMS641", "AMS644", "AMS651", "AMS652", "AMS670", "AMS675", "AMS676", "AMS683", "AMS690", "AMS691", "AMS695", "AMS696", "AMS698", "AMS699", "AMS700", "AMS701", "AMS800"],
+            ["1:(1,1):(3,3)", "AMS500", "AMS502", "AMS504", "AMS505", "AMS507", "AMS511", "AMS512", "AMS513", "AMS514", "AMS515", "AMS516", "AMS517", "AMS518", "AMS519", "AMS522", "AMS523", "AMS530", "AMS531", "AMS532", "AMS533", "AMS534", "AMS535", "AMS536", "AMS537", "AMS538", "AMS539", "AMS540", "AMS542", "AMS544", "AMS545", "AMS546", "AMS547", "AMS548", "AMS549", "AMS550", "AMS552", "AMS553", "AMS555", "AMS556", "AMS559", "AMS560", "AMS561", "AMS562", "AMS565", "AMS566", "AMS569", "AMS570", "AMS571", "AMS572", "AMS573", "AMS575", "AMS577", "AMS578", "AMS580", "AMS581", "AMS582", "AMS583", "AMS585", "AMS586", "AMS587", "AMS588", "AMS589", "AMS591", "AMS592", "AMS593", "AMS594", "AMS596", "AMS597", "AMS598", "AMS599", "AMS600", "AMS601", "AMS603", "AMS621", "AMS641", "AMS644", "AMS651", "AMS652", "AMS670", "AMS675", "AMS676", "AMS683", "AMS690", "AMS691", "AMS695", "AMS696", "AMS698", "AMS699", "AMS700", "AMS701", "AMS800"],
+            ["1:(1,1):(3,3)", "AMS500", "AMS502", "AMS504", "AMS505", "AMS507", "AMS511", "AMS512", "AMS513", "AMS514", "AMS515", "AMS516", "AMS517", "AMS518", "AMS519", "AMS522", "AMS523", "AMS530", "AMS531", "AMS532", "AMS533", "AMS534", "AMS535", "AMS536", "AMS537", "AMS538", "AMS539", "AMS540", "AMS542", "AMS544", "AMS545", "AMS546", "AMS547", "AMS548", "AMS549", "AMS550", "AMS552", "AMS553", "AMS555", "AMS556", "AMS559", "AMS560", "AMS561", "AMS562", "AMS565", "AMS566", "AMS569", "AMS570", "AMS571", "AMS572", "AMS573", "AMS575", "AMS577", "AMS578", "AMS580", "AMS581", "AMS582", "AMS583", "AMS585", "AMS586", "AMS587", "AMS588", "AMS589", "AMS591", "AMS592", "AMS593", "AMS594", "AMS596", "AMS597", "AMS598", "AMS599", "AMS600", "AMS601", "AMS603", "AMS621", "AMS641", "AMS644", "AMS651", "AMS652", "AMS670", "AMS675", "AMS676", "AMS683", "AMS690", "AMS691", "AMS695", "AMS696", "AMS698", "AMS699", "AMS700", "AMS701", "AMS800"]
+        ]   
+    },
+    "degree2": { 
+        "dept": "AMS",
+        "track": "Computational Biology",
+        "requirementVersion": 201902, 
+        "gradeRequirement": {
+            "atLeastCredits": 18,
+            "minGrade": 3.0
+        },
+        "creditRequirement": 30,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": 3.0
+        },
+        "courseRequirements": [ 
+            ["1:(1,1):(,)", "AMS507"],
+            ["1:(1,1):(,)", "AMS510"],
+            ["1:(1,1):(,)", "MCB520", "CHE541"],
+            ["1:(2,2):(0,0)", "AMS531"],
+            ["1:(2,2):(0,0)", "AMS532"],
+            ["1:(1,1):(,)", "AMS533"],
+            ["1:(1,1):(,)", "AMS535"],
+            ["1:(1,1):(,)", "AMS537"],
+            ["1:(1,1):(0,0)", "AMS539"],
+            ["1:(1,1):(,)", "CSE549"],
+            ["1:(1,1):(3,3)", "AMS500", "AMS501", "AMS502", "AMS503", "AMS504", "AMS505", "AMS511", "AMS512", "AMS513", "AMS514", "AMS515", "AMS516", "AMS517", "AMS518", "AMS519", "AMS522", "AMS523", "AMS526", "AMS527", "AMS528", "AMS530", "AMS534", "AMS535", "AMS536", "AMS538", "AMS540", "AMS542", "AMS544", "AMS545", "AMS546", "AMS547", "AMS548", "AMS549", "AMS550", "AMS552", "AMS553", "AMS555", "AMS556", "AMS559", "AMS560", "AMS561", "AMS562", "AMS565", "AMS566", "AMS569", "AMS570", "AMS571", "AMS572", "AMS573", "AMS575", "AMS577", "AMS578", "AMS580", "AMS581", "AMS582", "AMS583", "AMS585", "AMS586", "AMS587", "AMS588", "AMS589", "AMS591", "AMS592", "AMS593", "AMS594", "AMS595", "AMS596", "AMS597", "AMS598", "AMS599", "AMS600", "AMS601", "AMS603", "AMS621", "AMS641", "AMS644", "AMS651", "AMS652", "AMS670", "AMS675", "AMS676", "AMS683", "AMS690", "AMS691", "AMS695", "AMS696", "AMS698", "AMS699", "AMS700", "AMS701", "AMS800"],
+            ["1:(1,1):(3,3)", "AMS500", "AMS501", "AMS502", "AMS503", "AMS504", "AMS505", "AMS511", "AMS512", "AMS513", "AMS514", "AMS515", "AMS516", "AMS517", "AMS518", "AMS519", "AMS522", "AMS523", "AMS526", "AMS527", "AMS528", "AMS530", "AMS534", "AMS535", "AMS536", "AMS538", "AMS540", "AMS542", "AMS544", "AMS545", "AMS546", "AMS547", "AMS548", "AMS549", "AMS550", "AMS552", "AMS553", "AMS555", "AMS556", "AMS559", "AMS560", "AMS561", "AMS562", "AMS565", "AMS566", "AMS569", "AMS570", "AMS571", "AMS572", "AMS573", "AMS575", "AMS577", "AMS578", "AMS580", "AMS581", "AMS582", "AMS583", "AMS585", "AMS586", "AMS587", "AMS588", "AMS589", "AMS591", "AMS592", "AMS593", "AMS594", "AMS595", "AMS596", "AMS597", "AMS598", "AMS599", "AMS600", "AMS601", "AMS603", "AMS621", "AMS641", "AMS644", "AMS651", "AMS652", "AMS670", "AMS675", "AMS676", "AMS683", "AMS690", "AMS691", "AMS695", "AMS696", "AMS698", "AMS699", "AMS700", "AMS701", "AMS800"],
+            ["1:(1,1):(3,3)", "AMS500", "AMS501", "AMS502", "AMS503", "AMS504", "AMS505", "AMS511", "AMS512", "AMS513", "AMS514", "AMS515", "AMS516", "AMS517", "AMS518", "AMS519", "AMS522", "AMS523", "AMS526", "AMS527", "AMS528", "AMS530", "AMS534", "AMS535", "AMS536", "AMS538", "AMS540", "AMS542", "AMS544", "AMS545", "AMS546", "AMS547", "AMS548", "AMS549", "AMS550", "AMS552", "AMS553", "AMS555", "AMS556", "AMS559", "AMS560", "AMS561", "AMS562", "AMS565", "AMS566", "AMS569", "AMS570", "AMS571", "AMS572", "AMS573", "AMS575", "AMS577", "AMS578", "AMS580", "AMS581", "AMS582", "AMS583", "AMS585", "AMS586", "AMS587", "AMS588", "AMS589", "AMS591", "AMS592", "AMS593", "AMS594", "AMS595", "AMS596", "AMS597", "AMS598", "AMS599", "AMS600", "AMS601", "AMS603", "AMS621", "AMS641", "AMS644", "AMS651", "AMS652", "AMS670", "AMS675", "AMS676", "AMS683", "AMS690", "AMS691", "AMS695", "AMS696", "AMS698", "AMS699", "AMS700", "AMS701", "AMS800"]
+        ] 
+    },
+    "degree3": { 
+        "dept": "AMS",
+        "track": "Operations Research",
+        "requirementVersion": 201902, 
+        "gradeRequirement": {
+            "atLeastCredits": 18,
+            "minGrade": 3.0
+        },
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": 3.0
+        },
+        "courseRequirements": [ 
+            ["1:(1,1):(,)", "AMS507"],
+            ["1:(1,1):(,)", "AMS510"],
+            ["1:(1,1):(,)", "AMS540"],
+            ["1:(1,1):(,)", "AMS550"],
+            ["1:(1,1):(,)", "AMS553"],
+            ["1:(1,1):(,)", "AMS570", "AMS571", "AMS572", "AMS573", "AMS575", "AMS577", "AMS578", "AMS580", "AMS581", "AMS582", "AMS583","AMS585","AMS586"],
+            ["1:(1,1):(,)", "AMS595"],
+            ["1:(1,1):(3,3)", "AMS542", "AMS544", "AMS545", "AMS546", "AMS547", "AMS548", "AMS549", "AMS550", "AMS552", "AMS555", "AMS556"],
+            ["1:(1,1):(3,3)", "AMS542", "AMS544", "AMS545", "AMS546", "AMS547", "AMS548", "AMS549", "AMS550", "AMS552", "AMS555", "AMS556"],
+            ["1:(1,1):(3,3)", "AMS542", "AMS544", "AMS545", "AMS546", "AMS547", "AMS548", "AMS549", "AMS550", "AMS552", "AMS555", "AMS556", "AMS570", "AMS570", "AMS571", "AMS572", "AMS573", "AMS575", "AMS577", "AMS578", "AMS580", "AMS581", "AMS582", "AMS583","AMS585","AMS586"],
+            ["1:(1,1):(3,3)", "AMS542", "AMS544", "AMS545", "AMS546", "AMS547", "AMS548", "AMS549", "AMS550", "AMS552", "AMS555", "AMS556", "AMS511", "AMS512", "AMS513", "AMS514", "AMS515", "AMS516", "AMS517", "AMS518", "AMS519", "AMS522", "AMS523"]
+        ]   
+    },
+    "degree4": { 
+        "dept": "AMS",
+        "track": "Statistics",
+        "requirementVersion": 201902, 
+        "gradeRequirement": {
+            "atLeastCredits": 18,
+            "minGrade": 3.0
+        },
+        "creditRequirement": 30,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": 3.0
+        },
+        "courseRequirements": [ 
+            ["1:(1,1):(,)", "AMS510"],
+            ["1:(1,1):(,)", "AMS507"],
+            ["1:(1,1):(,)", "AMS570"],
+            ["1:(1,1):(,)", "AMS572"],
+            ["1:(1,1):(,)", "AMS573"],
+            ["1:(1,1):(,)", "AMS578"],
+            ["1:(1,1):(,)", "AMS582"],
+            ["1:(1,1):(,)", "AMS597"],
+            ["1:(1,1):(3,3)", "AMS500", "AMS501", "AMS502", "AMS503", "AMS504", "AMS505", "AMS511", "AMS512", "AMS513", "AMS514", "AMS515", "AMS516", "AMS517", "AMS518", "AMS519", "AMS522", "AMS523", "AMS526", "AMS527", "AMS528", "AMS530", "AMS531", "AMS532", "AMS533", "AMS534", "AMS535", "AMS536", "AMS537", "AMS538", "AMS539", "AMS540", "AMS542", "AMS544", "AMS545", "AMS546", "AMS547", "AMS548", "AMS549", "AMS550", "AMS552", "AMS553", "AMS555", "AMS556", "AMS559", "AMS560", "AMS561", "AMS562", "AMS565", "AMS566", "AMS569", "AMS571", "AMS575", "AMS577", "AMS580", "AMS581", "AMS582", "AMS583", "AMS585", "AMS586", "AMS587", "AMS588", "AMS589", "AMS591", "AMS592", "AMS593", "AMS594", "AMS595", "AMS596", "AMS598", "AMS599", "AMS600", "AMS601", "AMS603", "AMS621", "AMS641", "AMS644", "AMS651", "AMS652", "AMS670", "AMS675", "AMS676", "AMS683", "AMS690", "AMS691", "AMS695", "AMS696", "AMS698", "AMS699", "AMS700", "AMS701", "AMS800"],
+            ["1:(1,1):(3,3)", "AMS500", "AMS501", "AMS502", "AMS503", "AMS504", "AMS505", "AMS511", "AMS512", "AMS513", "AMS514", "AMS515", "AMS516", "AMS517", "AMS518", "AMS519", "AMS522", "AMS523", "AMS526", "AMS527", "AMS528", "AMS530", "AMS531", "AMS532", "AMS533", "AMS534", "AMS535", "AMS536", "AMS537", "AMS538", "AMS539", "AMS540", "AMS542", "AMS544", "AMS545", "AMS546", "AMS547", "AMS548", "AMS549", "AMS550", "AMS552", "AMS553", "AMS555", "AMS556", "AMS559", "AMS560", "AMS561", "AMS562", "AMS565", "AMS566", "AMS569", "AMS571", "AMS575", "AMS577", "AMS580", "AMS581", "AMS582", "AMS583", "AMS585", "AMS586", "AMS587", "AMS588", "AMS589", "AMS591", "AMS592", "AMS593", "AMS594", "AMS595", "AMS596", "AMS598", "AMS599", "AMS600", "AMS601", "AMS603", "AMS621", "AMS641", "AMS644", "AMS651", "AMS652", "AMS670", "AMS675", "AMS676", "AMS683", "AMS690", "AMS691", "AMS695", "AMS696", "AMS698", "AMS699", "AMS700", "AMS701", "AMS800"]
+        ]   
+    },
+    "degree5": { 
+        "dept": "AMS",
+        "track": "Quantitative Finance",
+        "requirementVersion": 201902, 
+        "gradeRequirement": {
+            "atLeastCredits": 18,
+            "minGrade": 3.0
+        },
+        "creditRequirement": 36,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": 3.0
+        },
+        "courseRequirements": [ 
+            ["1:(1,1):(,)", "AMS507"],
+            ["1:(1,1):(,)", "AMS510"],
+            ["1:(1,1):(,)", "AMS511"],
+            ["1:(1,1):(,)", "AMS512"],
+            ["1:(1,1):(,)", "AMS513"],
+            ["1:(1,1):(,)", "AMS514"],
+            ["1:(1,1):(,)", "AMS516"],
+            ["1:(1,1):(,)", "AMS517"],
+            ["1:(1,1):(,)", "AMS518"],
+            ["1:(1,1):(,)", "AMS572"],
+            ["1:(1,1):(,)", "FIN539"],
+            ["1:(1,1):(3,3)", "AMS500", "AMS501", "AMS502", "AMS503", "AMS504", "AMS505", "AMS515", "AMS519", "AMS522", "AMS523", "AMS526", "AMS527", "AMS528", "AMS530", "AMS531", "AMS532", "AMS533", "AMS534", "AMS535", "AMS536", "AMS537", "AMS538", "AMS539", "AMS540", "AMS542", "AMS544", "AMS545", "AMS546", "AMS547", "AMS548", "AMS549", "AMS550", "AMS552", "AMS553", "AMS555", "AMS556", "AMS559", "AMS560", "AMS561", "AMS562", "AMS565", "AMS566", "AMS569", "AMS570", "AMS571", "AMS573", "AMS575", "AMS577", "AMS578", "AMS580", "AMS581", "AMS582", "AMS583", "AMS585", "AMS586", "AMS587", "AMS588", "AMS589", "AMS591", "AMS592", "AMS593", "AMS594", "AMS595", "AMS596", "AMS597", "AMS598", "AMS599", "AMS600", "AMS601", "AMS603", "AMS621", "AMS641", "AMS644", "AMS651", "AMS652", "AMS670", "AMS675", "AMS676", "AMS683", "AMS690", "AMS691", "AMS695", "AMS696", "AMS698", "AMS699", "AMS700", "AMS701", "AMS800"],
+            ["1:(1,1):(3,3)", "AMS500", "AMS501", "AMS502", "AMS503", "AMS504", "AMS505", "AMS515", "AMS519", "AMS522", "AMS523", "AMS526", "AMS527", "AMS528", "AMS530", "AMS531", "AMS532", "AMS533", "AMS534", "AMS535", "AMS536", "AMS537", "AMS538", "AMS539", "AMS540", "AMS542", "AMS544", "AMS545", "AMS546", "AMS547", "AMS548", "AMS549", "AMS550", "AMS552", "AMS553", "AMS555", "AMS556", "AMS559", "AMS560", "AMS561", "AMS562", "AMS565", "AMS566", "AMS569", "AMS570", "AMS571", "AMS573", "AMS575", "AMS577", "AMS578", "AMS580", "AMS581", "AMS582", "AMS583", "AMS585", "AMS586", "AMS587", "AMS588", "AMS589", "AMS591", "AMS592", "AMS593", "AMS594", "AMS595", "AMS596", "AMS597", "AMS598", "AMS599", "AMS600", "AMS601", "AMS603", "AMS621", "AMS641", "AMS644", "AMS651", "AMS652", "AMS670", "AMS675", "AMS676", "AMS683", "AMS690", "AMS691", "AMS695", "AMS696", "AMS698", "AMS699", "AMS700", "AMS701", "AMS800"]
+        ]   
+    }
+}

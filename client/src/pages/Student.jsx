@@ -19,33 +19,40 @@ const Student = (props) => {
 
   useEffect(() => {
     console.log("student view type " + props.type)
-    console.log(student)
+    console.log(student, "DINGSNG")
+    if (mode === 'Add')
+      return
     let token = localStorage.getItem('jwt-token')
-      var decoded = jwt_decode(token)
-      if (!decoded)
-        return
-    // Get student sbuid from state
-    if (!student) {
-      console.log(decoded.id)
-      // get student data from db
-      axios.get(`student/${decoded.id}`).then(student => {
-        setStudent(student)
-      })
-    }
+    var decoded = jwt_decode(token)
+    if (!decoded)
+      return
     // Set items
     axios.get('/courseplanitem/findItems', {
       params: {
         studentId: student.sbuId
       }
     }).then(res => {
-      setItems(res.data)
+      setItems(res.data);
+      console.log(student.degreeId)
+      axios.get('/requirements', {
+        params: {
+          department: student.department,
+          track: student.track,
+          degreeId: student.degreeId
+        }
+      }).then(res => {
+        setRequirements(res.data);
+        console.log(res.data);
+      }).catch(err => {
+        console.log(err);
+      })
     }).catch(err => {
       console.log(err)
     });
 
     // Get requirement states
-    
-  }, [])
+
+  }, [student])
 
 
   const modeHandler = (studentInfo) => {
@@ -62,14 +69,16 @@ const Student = (props) => {
         console.log(err.response.data)
         setErrorMsg(err.response.data)
       })
-    }  else if (mode === 'View') {
+    } else if (mode === 'View') {
       setMode('Edit')
     } else {
       /* Saving student info, UPDATE student in the db*/
+      console.log(studentInfo)
       axios.post('/student/update', {
         params: studentInfo
       }).then((response) => {
         setStudent(response.data)
+        changeMode()
         setShowConfirmation(true)
       }).catch(function (err) {
         console.log(err.response.data)
@@ -90,8 +99,14 @@ const Student = (props) => {
         errorMessage={errorMsg}
         userType={props.type}
         student={student}
+        requirements={requirements}
         onSubmit={(e) => modeHandler(e)} />
-      <Requirements requirements={requirements} />
+      <hr />
+      <Requirements
+        requirements={requirements}
+        coursePlan={items}
+        student={student} />
+      <hr />
       <CoursePlan
         items={items} />
       <CenteredModal
