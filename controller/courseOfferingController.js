@@ -18,8 +18,8 @@ exports.upload = (req, res) => {
     if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel')
       res.status(500).send('File must be *.csv')
     else {
-      const f_in = fs.readFileSync(file.path, 'utf-8')
-      Papa.parse(f_in, {
+      const fileIn = fs.readFileSync(file.path, 'utf-8')
+      Papa.parse(fileIn, {
         header: true,
         dynamicTyping: true,
         complete: (results) => {
@@ -51,7 +51,7 @@ async function uploadCourses(results, res){
   // For every semester covered by the csv, 
   // ["Fall 2019", "Fall 2020"]
   for(let i = 0; i < semestersCovered.length; i++) {
-    sem_year = semestersCovered[i].split(' ')
+    semYear = semestersCovered[i].split(' ')
     // For every coursePlan, query the CoursePlanItem table where:
     // coursePlanId == this.coursePlanId, semester+year = current semester and
     // year that we're looking at (outer loop). 
@@ -61,8 +61,8 @@ async function uploadCourses(results, res){
       let coursePlanItems = await CoursePlanItem.findAll({
         where: {
           coursePlanId: coursePlans[j].coursePlanId,
-          semester: sem_year[0],
-          year: sem_year[1]
+          semester: semYear[0],
+          year: semYear[1]
         }
       })
       let toCheck = []
@@ -86,14 +86,14 @@ async function uploadCourses(results, res){
             || first.includes('TH') && second.includes('TH')
             || first.includes('F') && second.includes('F')) {
               // Check time conflict
-              let f_start = toCheck[k].startTime
-              let s_start = toCheck[l].startTime
-              let f_end = toCheck[k].endTime
-              let s_end = toCheck[l].endTime
-              if ((f_start >= s_start && f_start < s_end) 
-                || (f_end <= s_end && f_end > s_start) 
-                || (s_start >= f_start && s_start < f_end)
-                || (s_end <= f_end && s_end > f_start)) {
+              let fStart = toCheck[k].startTime
+              let sStart = toCheck[l].startTime
+              let fEnd = toCheck[k].endTime
+              let sEnd = toCheck[l].endTime
+              if ((fStart >= sStart && fStart < sEnd) 
+                || (fEnd <= sEnd && fEnd > sStart) 
+                || (sStart >= fStart && sStart < fEnd)
+                || (sEnd <= fEnd && sEnd > fStart)) {
                   affectedStudents.push(coursePlans[j].studentId)
                 }
             }
@@ -115,15 +115,15 @@ async function uploadCourses(results, res){
 // Everyone will have to DORP TABLE courseofferings, then rerun the 
 // server to recreate the table through sequelize. 
 
-async function uploadNewOfferings(csv_file) {
+async function uploadNewOfferings(csvFile) {
   coursesAdded = []
-  for (let i = 0; i < csv_file.data.length; i++) {
-    course = csv_file.data[i]
-    csv_timeslot = (course.timeslot ? course.timeslot.split(' ') : null)
-    day = (csv_timeslot ? csv_timeslot[0] : null)
-    time_range = (csv_timeslot ? csv_timeslot[1].split('-') : null)
-    start = (time_range ? moment(time_range[0], ['h:mmA']).format('HH:mm') : null)
-    end = (time_range ? moment(time_range[1], ['h:mmA']).format('HH:mm') : null)
+  for (let i = 0; i < csvFile.data.length; i++) {
+    course = csvFile.data[i]
+    csvTimeslot = (course.timeslot ? course.timeslot.split(' ') : null)
+    day = (csvTimeslot ? csvTimeslot[0] : null)
+    timeRange = (csvTimeslot ? csvTimeslot[1].split('-') : null)
+    start = (timeRange ? moment(timeRange[0], ['h:mmA']).format('HH:mm') : null)
+    end = (timeRange ? moment(timeRange[1], ['h:mmA']).format('HH:mm') : null)
     const newCourse = await CourseOffering.create({
       identifier: course.department + course.course_num,
       semester: course.semester,
@@ -146,13 +146,11 @@ async function uploadNewOfferings(csv_file) {
 // where the semester+year(s) are covered by this new CSV.
 // Will return a promise after the await is done. Try to
 // catch it in the main loop and handle it in there. 
-async function deleteSemestersFromDB(csv_file) {
-  // scraped_semesters = 
-  //     new Set(csv_file.data.map(course => course.semester + ' ' + course.year))
-  sem_array = Array.from(new Set(csv_file.data.map(
+async function deleteSemestersFromDB(csvFile) {
+  semArray = Array.from(new Set(csvFile.data.map(
     course => course.semester + ' ' + course.year)))
-  for (let i = 0; i < sem_array.length; i++) {
-    semyear = sem_array[i].split(' ')
+  for (let i = 0; i < semArray.length; i++) {
+    semyear = semArray[i].split(' ')
     // Might have to CASCADE the deletes to the 
     // CoursePlans that reference these courses (?)
     await CourseOffering.destroy({
@@ -163,7 +161,7 @@ async function deleteSemestersFromDB(csv_file) {
     })
   }
   console.log("Done deleting all scraped semesters from db")
-  return sem_array
+  return semArray
 }
 
 // https://stackoverflow.com/questions/16336367/what-is-the-difference-between-synchronous-and-asynchronous-programming-in-node

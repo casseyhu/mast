@@ -32,13 +32,24 @@ const Student = (props) => {
         studentId: student.sbuId
       }
     }).then(res => {
-      setItems(res.data)
+      setItems(res.data);
+      axios.get('/requirements', {
+        params: {
+          department: student.department,
+          track: student.track
+        }
+      }).then(res => {
+        setRequirements(res.data);
+        console.log(res.data);
+      }).catch(err => {
+        console.log(err);
+      })
     }).catch(err => {
       console.log(err)
     });
 
     // Get requirement states
-    
+
   }, [])
 
 
@@ -56,7 +67,7 @@ const Student = (props) => {
         console.log(err.response.data)
         setErrorMsg(err.response.data)
       })
-    }  else if (mode === 'View') {
+    } else if (mode === 'View') {
       setMode('Edit')
     } else {
       /* Saving student info, UPDATE student in the db*/
@@ -77,9 +88,12 @@ const Student = (props) => {
         userType={props.type}
         student={student}
         onSubmit={(e) => modeHandler(e)} />
-        <hr/>
-      <Requirements requirements={requirements} />
-      <hr/>
+      <hr />
+      <Requirements
+        requirements={requirements}
+        coursePlan={items}
+        student={student} />
+      <hr />
       <CoursePlan
         items={items} />
       <CenteredModal

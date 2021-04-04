@@ -30,6 +30,20 @@ exports.upload = (req, res) => {
     }
   })
 }
+
+//find a course based on courseId
+exports.findOne = (req, res) => {
+  Course.findOne({
+    where: {
+      courseId: req.query.courseId
+    }
+  }).then(course => {
+    res.status(200).send(course)
+  }).catch(err => {
+    console.log(err)
+  })
+}
+
 //find all courses based on the dept
 exports.findAll = (req, res) => {
   Course
@@ -120,22 +134,22 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
                 }
               }
               else if (desc.includes("Prerequisites: ")) {
-                let full_prereqs = desc.substring(desc.indexOf("Prerequisites: "))
-                if (full_prereqs.includes('and')) {
-                  if (full_prereqs.includes(' or')) {
-                    full_prereqs = full_prereqs.substring(0, full_prereqs.indexOf(' or'))
+                let fullPrereqs = desc.substring(desc.indexOf("Prerequisites: "))
+                if (fullPrereqs.includes('and')) {
+                  if (fullPrereqs.includes(' or')) {
+                    fullPrereqs = fullPrereqs.substring(0, fullPrereqs.indexOf(' or'))
                   }
-                  full_prereqs = full_prereqs.replace("Prerequisites: ", "")
-                  full_prereqs = full_prereqs.replace(" ", "")
-                  full_prereqs = full_prereqs.replace(" and", ",")
-                  prereqs = full_prereqs.split(', ')
+                  fullPrereqs = fullPrereqs.replace("Prerequisites: ", "")
+                  fullPrereqs = fullPrereqs.replace(" ", "")
+                  fullPrereqs = fullPrereqs.replace(" and", ",")
+                  prereqs = fullPrereqs.split(', ')
                 }
                 else {
-                  full_prereqs = full_prereqs.replace("Prerequisites: ", "")
-                  full_prereqs = full_prereqs.replace(" ", "")
-                  full_prereqs = full_prereqs.replace(".", "")
-                  if (isNaN(parseInt(full_prereqs.substring(3, 6))) === false)
-                    prereqs.push(full_prereqs)
+                  fullPrereqs = fullPrereqs.replace("Prerequisites: ", "")
+                  fullPrereqs = fullPrereqs.replace(" ", "")
+                  fullPrereqs = fullPrereqs.replace(".", "")
+                  if (isNaN(parseInt(fullPrereqs.substring(3, 6))) === false)
+                    prereqs.push(fullPrereqs)
                 }
               }
               others = others.replace("Prerequisite: ", "");

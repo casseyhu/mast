@@ -68,11 +68,10 @@ class Browse extends Component {
       }
     }
     else {
-      console.log(value);
       this.setState({
-          ascending: {
-            [field]: value
-          }
+        ascending: {
+          [field]: value
+        }
       })
     }
     this.setState({ sortBy: field }, this.sortStudents);

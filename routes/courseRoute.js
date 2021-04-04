@@ -4,6 +4,10 @@ module.exports = function (app) {
 
   // Upload course information
   app.post('/api/course/upload', Course.upload);
+  
+  app.get('/api/course/findOne', Course.findOne);
 
   app.get('/api/course', Course.findAll);
+  
+
 }
