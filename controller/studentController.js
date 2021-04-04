@@ -61,23 +61,23 @@ exports.create = (req, res) => {
       return
     }
 
-    // Check for proper 9-digit SBUID
-    let regex = /^\d{9}$/;
-    console.log(student.sbuId)
-    if (!regex.test(student.sbuId)) {
-      res.status(500).send("SBUID must be a 9-digit string of numbers 0-9.");
-      return
-    }
+      // Check for proper 9-digit SBUID
+      let regex = /^\d{9}$/;
+      console.log(student.sbuId)
+      if (!regex.test(student.sbuId)) {
+        res.status(500).send("SBUID must be a 9-digit string of numbers 0-9.");
+        return
+      }
 
-    // Check for proper .edu email address
-    regex = /^\w+@\w+\.edu$/;
-    console.log(student.email)
-    if (!regex.test(student.email)) {
-      res.status(500).send("Student must have a valid .edu email.");
-      return
-    }
+      // Check for proper .edu email address
+      regex = /^\w+@\w+\.edu$/;
+      console.log(student.email)
+      if (!regex.test(student.email)) {
+        res.status(500).send("Student must have a valid .edu email.");
+        return
+      }
 
-    // TODO: get number of degree requirements and set initial state of each requirement to unsatisfied
+      // TODO: get number of degree requirements and set initial state of each requirement to unsatisfied
 
 
     // Tries to create the student with all fields. 
@@ -196,13 +196,14 @@ exports.login = (req, res) => {
         throw "Invalid password"
       let userData = {
         type: 'student',
-        id: student.sbuId
+        id: student.sbuId,
+        userInfo: student
       }
       let token = jwt.sign(userData, process.env.JWT_KEY, {
         algorithm: process.env.JWT_ALGO,
         expiresIn: 1200 // Expires in 20 minutes
       });
-      res.send(token);
+      res.send([token, student]);
     }).catch(err => {
       res.status(500).send("Invalid login credentials");
     })
@@ -328,17 +329,14 @@ async function uploadStudents(csvFile, res) {
       await Student.update(values, { where: condition })
     else
       await Student.create(values)
-    
-    condition = {studentId: studentInfo.sbu_id}
-    values = {
-      studentId: studentInfo.sbu_id,
-      coursePlanState: 0
-    }
+
+    condition = { studentId: studentInfo.sbu_id }
     found = await CoursePlan.findOne({ where: condition })
-    if (found)
-      await CoursePlan.update(values, { where: condition })
-    else
-      await CoursePlan.create(values)
+    if (!found)
+      await CoursePlan.create({
+        studentId: studentInfo.sbu_id,
+        coursePlanState: 0
+      })
   }
   console.log("Done importing " + tot + " students from csv")
   res.status(200).send("Success")

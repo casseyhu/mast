@@ -5,27 +5,51 @@ import StudentInfo from '../components/StudentInfo';
 import Requirements from '../components/Requirements';
 import CoursePlan from '../components/CoursePlan';
 import axios from '../constants/axios';
+import jwt_decode from 'jwt-decode';
+
 
 const Student = (props) => {
-  const [requirements, setrequirements] = useState([]);
+  const [requirements, setRequirements] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false)
-  const [mode, setMode] = useState(props.location.state.mode)
+  const [mode, setMode] = useState(props.location.state ? props.location.state.mode : props.mode)
+  const [student, setStudent] = useState(props.student ? props.student : props.location.state.student)
+  const [items, setItems] = useState([])
+
 
   useEffect(() => {
-    axios.get('requirements', {
+    console.log("student view type " + props.type)
+    console.log(student)
+    let token = localStorage.getItem('jwt-token')
+      var decoded = jwt_decode(token)
+      if (!decoded)
+        return
+    // Get student sbuid from state
+    if (!student) {
+      console.log(decoded.id)
+      // get student data from db
+      axios.get(`student/${decoded.id}`).then(student => {
+        setStudent(student)
+      })
+    }
+    // Set items
+    axios.get('/courseplanitem/findItems', {
       params: {
-        department: props.location.state.student.department,
-        track: props.location.state.student.track
+        studentId: student.sbuId
       }
-    }).then(results => {
-      console.log(results.data)
-      setrequirements(results.data)
-    })
-  }, [props])
+    }).then(res => {
+      setItems(res.data)
+    }).catch(err => {
+      console.log(err)
+    });
+
+    // Get requirement states
+    
+  }, [])
+
 
   const modeHandler = (studentInfo) => {
-    console.log("Page mode: ", props.location.state.mode)
+    console.log("Page mode: ", mode)
     console.log(studentInfo)
     if (mode === 'Add') {
       /* Add new student into the db */
@@ -51,22 +75,20 @@ const Student = (props) => {
     setMode('View')
   }
 
-  let { user } = props
   return (
     <Container fluid="lg" className="container">
       <StudentInfo
         mode={mode}
-        user={user}
         errorMessage={errorMsg}
-        student={props.location.state.student}
+        userType={props.type}
+        student={student}
         onSubmit={(e) => modeHandler(e)} />
-      <Requirements 
-        user={user} 
+      <Requirements user={user} 
         requirements={requirements}
         coursePlan={props.location.state.items}
         student={props.location.state.student} />
       <CoursePlan
-        items={props.location.state.items} />
+        items={items} />
       <CenteredModal
         show={showConfirmation}
         onHide={() => setShowConfirmation(false)}
@@ -74,9 +96,7 @@ const Student = (props) => {
         body="Student successfully saved"
       />
     </Container>
-
   );
-
 }
 
 export default Student;

@@ -32,28 +32,18 @@ class Browse extends Component {
       state: { 
         mode: 'Add',
         student: '',
-        items: []
       }
     })
   }
 
   viewStudent = (student) => {
-    axios.get('/courseplanitem/findItems', {
-      params: {
-        studentId: student.sbuId
+    this.props.history.push({
+      pathname: '/student',
+      state: {
+        mode: 'View',
+        student: student
       }
-    }).then(response => {
-      this.props.history.push({
-        pathname: '/student',
-        state: {
-          mode: 'View',
-          student: student,
-          items: response.data
-        }
-      })
-    }).catch(err => {
-      console.log(err)
-    });
+    })
   }
 
   setFilter = (filters) => {
@@ -142,6 +132,7 @@ class Browse extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props)
     window.addEventListener('resize', this.handleResize)
     axios.get('student'
     ).then(response => {

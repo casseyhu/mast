@@ -23,13 +23,14 @@ exports.login = (req, res) => {
         throw "Invalid password"
       let userData = {
         type: 'gpd',
-        id: gpd.facultyId
+        id: gpd.facultyId,
+        userInfo: gpd
       }
       let token = jwt.sign(userData, process.env.JWT_KEY, {
         algorithm: process.env.JWT_ALGO,
         expiresIn: 1200 // Expires in 20 minutes.
       });
-      res.send(token);
+      res.send([token, gpd]);
     }).catch(err => {
       res.status(500).send("Invalid login credentials");
     })

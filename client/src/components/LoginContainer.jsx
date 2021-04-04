@@ -12,7 +12,6 @@ class LoginContainer extends Component {
   }
 
   setEmail = (e) => {
-    console.log(this.state.email)
     this.setState({
       email: e.target.value
     })
@@ -50,20 +49,15 @@ class LoginContainer extends Component {
         password: this.state.password
       }
     }).then(response => {
-      localStorage.setItem('jwt-token', response.data)
-      console.log(response.data);
-      this.props.setLoggedIn(true, user);
-      if (user === 'gpd')
-        this.props.history.push('/browse')
-      else
-        this.props.history.push('/student')
+      localStorage.setItem('jwt-token', response.data[0])
+      console.log("login response", response.data[1]);
+      this.props.setLoggedIn(true, user, response.data[1]);
     }).catch(err => {
       console.log(err)
-      console.log(err.response)
-      this.setState({ error: err.response });
+      this.setState({ error: err.response.data });
     })
+    return
   }
-
 
   render() {
     document.onkeyup = this.handleKeyUp;
@@ -88,12 +82,14 @@ class LoginContainer extends Component {
           className="login-item"
           type="email"
           placeholder="email"
+          required
           onChange={this.setEmail}
         />
         <InputField
           className="login-item"
           type="password"
           placeholder="password"
+          required
           onChange={this.setPassword} />
         <Button variant="round" text="login" onClick={this.login} />
         <span className="error center-span">{this.state.error}</span>

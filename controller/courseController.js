@@ -46,14 +46,21 @@ exports.findOne = (req, res) => {
 
 //find all courses based on the dept
 exports.findAll = (req, res) => {
-  const condition = req.query.dept;
-  Course.findAll({
-    where: { department: condition }
-  }).then(foundCourses => {
-    res.status(200).send(foundCourses)
-  }).catch(err => {
-    console.log(err)
-  })
+  Course
+    .findAll({
+      where: {
+        department: req.query.dept,
+        semester: req.query.semester,
+        year: req.query.year
+      }
+    })
+    .then(foundCourses => {
+      res.status(200).send(foundCourses)
+    })
+    .catch(err => {
+      res.status(500).send("Error in finding courses")
+      console.log(err)
+    })
 }
 
 // dept : list of departments to scrape from
@@ -78,13 +85,16 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
   dept = dept.split(',')
   dept.push('FIN', 'CHE')
   pdfExtract.extract(filePath, options, (err, data) => {
-    if (err) return console.log(err);
+    if (err) {
+      res.status(500).send('Error parsing pdf file')
+      return
+    }
     let pages = data.pages
     for (let i = 0; i < pages.length; i++) {
       let page = pages[i].content
       for (let j = 2; j < page.length - 2; j++) {
         let s = page[j]
-        if (s.fontName == "Times" && s.str.length == 3) {
+        if (s.fontName == "Times" && s.str.length == 3 && isNaN(parseInt(s.str)) === true) {
           if (dept.includes(s.str)) {
             target = s.str;
             checkOthers = false
@@ -209,7 +219,6 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
               // .then(res => {
               //   console.log(res.created + ':' + res.course)
               // })
-
             }
             desc = "";
             others = "";
@@ -217,15 +226,15 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
             courseName = s.str;
             checkCourseName = true;
           }
-          else if (checkCourseName && s.fontName == "Helvetica") {
-            //continues if course + course name exceeds more than one line
+          //continues if course + course name exceeds more than one line
+          else if (checkCourseName && s.fontName == "Helvetica")
             courseName += " " + s.str;
-          }
           else if (s.fontName == "Times" && !s.str.includes("credits,")
-            && s.str.includes(0, 13) !== "Prerequisites"
-            && s.str.includes(0, 12) !== "Prerequisite"
+            && s.str.substring(0, 13) !== "Prerequisites"
+            && s.str.substring(0, 12) !== "Prerequisite"
             && !s.str.includes("S/U grading")
-            && !s.str.includes("credit,")) {
+            && !s.str.includes("credit,")
+            && !checkOthers) {
             //reaches description
             if (checkCourseName) {
               if (courses.includes(courseName) == false && courseName != "") {
@@ -235,19 +244,17 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
                 name = courseName.substring(10, courseName.length)
                 // console.log(chosenDept + courseNum) //full course ([Dept] [CourseNum] + [CourseName])
               }
-              if (desc == "")
-                desc += s.str
-              else
-                desc += " " + s.str;
+              desc += (desc == "") ? s.str : " " + s.str;
             }
           }
 
           else if (s.fontName === "g_d0_f1"
             || s.str.includes("credits")
-            || s.str.includes("Prerequisites:")
-            || s.str.includes('Prerequisite:')
+            || s.str.includes("Prerequisites")
+            || s.str.includes('Prerequisite')
             || s.str.includes("S/U grading")
-            || s.str.includes("credit,")) {
+            || s.str.includes("credit,")
+            || checkOthers) {
             if (desc === "") {
               chosenDept = courseName.substring(0, 3)
               courseNum = courseName.substring(5, 8)
@@ -256,9 +263,8 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
             checkCourseName = false;
             checkOthers = true
 
-            if (others == "" && checkOthers) {
+            if (others == "" && checkOthers)
               others = s.str
-            }
             else if (checkOthers) {
               if (s.str.substring(0, 1) != ","
                 || others.substring(others.length - 1) != ",") {
@@ -294,7 +300,6 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
 insertUpdate = async (values, condition) => {
   const found = await Course.findOne({ where: condition })
   if (found) {
-    //console.log(condition)
     const course = await Course.update(values, { where: condition })
     return { course, created: false }
   }

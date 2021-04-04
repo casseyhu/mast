@@ -31,17 +31,7 @@ exports.upload = (req, res) => {
 }
 
 
-//Find all degrees
-exports.findAll = (req, res) => {
-  Degree.findAll().then(degrees => {
-    res.send(degrees);
-  }).catch(err => {
-    res.status(500).send("Error: " + err);
-  })
-}
-
-
-//Find all requirements for a degree by department and track
+// Find all requirements for a degree by department and track
 exports.findRequirements = (req, res) => {
   Degree.findOne({ where: {
     dept: req.query.department,
@@ -70,32 +60,28 @@ async function findRequirements(degree, res) {
   res.status(200).send([gradeReq, gpaReq, creditReq, courseReq])
 }
 
-
-async function importDegree(jsonFile) {
-  for (let degAndTrack of Object.keys(jsonFile)) {
-    const degree = jsonFile[degAndTrack]
-    const [exists, recordFound] = await degreeExists(degree)
-    if (exists) {
-      const update = await updateDegree(recordFound[0], degree)
+// Import the degrees from the json file
+async function importDegree(json_file) {
+  for (let degAndTrack of Object.keys(json_file)) {
+    const degree = json_file[degAndTrack]
+    // Query to find if a degree with dept, track, and version exists
+    const found = await Degree.findOne({
+      where: {
+        dept: degree.dept,
+        track: degree.track,
+        requirementVersion: degree.requirementVersion
+      }
+    })
+    console.log(found)
+    if (found) {
+      await updateDegree(found, degree)
     } else {
-      const newDegree = await createDegree(degree)
+      await createDegree(degree)
     }
   }
   return 1
 }
 
-async function degreeExists(degree) {
-  let query = await Degree.findAll({
-    where: {
-      dept: degree.dept,
-      track: degree.track,
-      requirementVersion: degree.requirementVersion
-    }
-  })
-  // If query.length !== 0, degree was found. This would return true.
-  // Else, query.length === 0 (degree not found). This would return false. 
-  return [query.length !== 0, query] 
-}
 
 async function updateDegree(oldDegree, newDegree) {
   try{
