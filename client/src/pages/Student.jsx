@@ -66,7 +66,15 @@ const Student = (props) => {
       setMode('Edit')
     } else {
       /* Saving student info, UPDATE student in the db*/
-      setShowConfirmation(true)
+      axios.post('/student/update', {
+        params: studentInfo
+      }).then((response) => {
+        setStudent(response.data)
+        setShowConfirmation(true)
+      }).catch(function (err) {
+        console.log(err.response.data)
+        setErrorMsg(err.response.data)
+      })
     }
   }
 

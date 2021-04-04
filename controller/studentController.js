@@ -134,6 +134,132 @@ exports.create = (req, res) => {
       return
     });
 }
+// Update a student
+exports.update = (req, res) => {
+  const student = req.body.params
+  if (emptyFields(student)) {
+    let err_msg = "Error in updating student. Please check that all necessary student information are filled out."
+    res.status(500).send(err_msg);
+    return
+  }
+
+  const semDict = {
+    "Fall": "08",
+    "Spring": "02",
+    "Winter": "01",
+    "Summer": "05"
+  }
+
+  Degree
+    .findOne({
+      where: {
+        dept: student.dept,
+        track: student.track,
+        requirementVersion: Number(student.degreeYear + semDict[student.degreeSem]),
+      }
+    })
+    .then((degree) => {
+      console.log("SHEESH") 
+      if (!degree) {
+        // No degree + track + requirement version was found in the DB. 
+        res.status(500).send("Degree requirement version does not exist.")
+        return
+      }
+      // Hash the password for the student. (first init + last init + sbuid)
+      let first = student.firstName.charAt(0).toLowerCase()
+      let last = student.lastName.charAt(0).toLowerCase()
+      let password = first + last + student.sbuId
+      let salt = bcrypt.genSaltSync(10);
+      let hash_password = bcrypt.hashSync(password, salt);
+
+      // Check for valid graduation date. If EntryDate == GradDate, it's valid for now.
+      let grad_date = Number(student.gradYear + semDict[student.gradSem])
+      let entry_date = Number(student.entryYear + semDict[student.entrySem])
+      let degree_version = Number(student.degreeYear + semDict[student.degreeSem])
+      if (grad_date < entry_date) {
+        res.status(500).send("Graduation date cannot be earlier than entry date.");
+        return
+      }
+      if (degree_version < entry_date) {
+        res.status(500).send("Degree version cannot be earlier than entry date.");
+        return
+      }
+      if (degree_version > grad_date) {
+        res.status(500).send("Degree version cannot be later than graduation date.");
+        return
+      }
+
+      // Check for proper 9-digit SBUID
+      let regex = /^\d{9}$/;
+      console.log(student.sbuId)
+      if (!regex.test(student.sbuId)) {
+        res.status(500).send("SBUID must be a 9-digit string of numbers 0-9.");
+        return
+      }
+
+      // Check for proper .edu email address
+      regex = /^\w+@\w+\.edu$/;
+      console.log(student.email)
+      if (!regex.test(student.email)) {
+        res.status(500).send("Student must have a valid .edu email.");
+        return
+      }
+
+      // Tries to create the student with all fields.
+      console.log(req.body.params) 
+      const condition = { sbuId: req.body.params.sbuId}
+      Student
+        .update({
+          sbuId: student.sbuId,
+          email: student.email,
+          firstName: student.firstName,
+          lastName: student.lastName,
+          password: hash_password,
+          gpa: null,
+          entrySem: student.entrySem,
+          entryYear: Number(student.entryYear),
+          entrySemYear: Number(student.entryYear.concat(semDict[student.entrySem])),
+          gradSem: student.gradSem,
+          gradYear: Number(student.gradYear),
+          department: student.dept,
+          track: student.track,
+          // set # unsatisfied, pending, satisfied
+          satisfied: 0,
+          unsatisfied: 0,
+          pending: 0,
+          degreeId: degree.degreeId,
+          graduated: 0,
+          gpdComments: student.gpdComments,
+          studentComments: student.studentComments
+        }, {where : condition})
+        .then(response => {
+          res.status(200).send(response.data)
+          // CoursePlan
+          //   .create({
+          //     studentId: student.sbuId,
+          //     coursePlanState: 0
+          //   })
+          //   .then(coursePlan => {
+          //     res.status(200).send("Successfully added new student.");
+          //   })
+          //   .catch(err => {
+          //     res.status(200).send("Error creating student course plan.");
+          //   })
+        })
+        .catch(err => {
+          err_msg = "Error in updating student. Please check student information type (i.e. SBUID must be numbers 0-9)."
+          if (err.parent.code !== undefined && err.parent.code === "ER_DUP_ENTRY") {
+            err_msg = "Student with ID: " + student.sbuId + " exists already."
+          }
+          res.status(500).send(err_msg);
+        })
+    })
+    .catch((err) => {
+      err_msg = "Error in adding student. Please check student information type (i.e. SBUID must be numbers 0-9)."
+      res.status(500).send(err_msg);
+      return
+    });
+}
 
 // Checks if any of the AddStudent fields were empty. All fields, except for
 // GPA, GPD comments, Student comments CANNOT be empty. 
@@ -142,11 +268,14 @@ function emptyFields(student) {
     if (fields === "studentComments"
       || fields === "gpdComments"
       || fields === "gpa"
-      || fields === "graduated") {
+      || fields === "graduated"
+      || fields === "degreeSem"
+      || fields === "degreeYear") {
       continue
     }
-    if (student[fields] === "")
+    if (student[fields] === ""){
       return true
+    }
   }
   return false
 }
@@ -214,7 +343,7 @@ exports.login = (req, res) => {
 
 // Find a Student 
 exports.findById = (req, res) => {
-  Student.findById(req.params.sbuId).then(student => {
+  Student.findOne(req.params.sbuId).then(student => {
     res.send(student);
   }).catch(err => {
     res.status(500).send("Error: " + err);

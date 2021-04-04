@@ -80,6 +80,10 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
       let page = pages[i].content
       for (let j = 2; j < page.length - 2; j++) {
         let s = page[j]
+        if(s.str.includes("GRADUATE  COURSE  DESCRIPTIONS")){
+          j+=1
+          continue
+        }
         if (s.fontName == "Times" && s.str.length == 3 && isNaN(parseInt(s.str)) === true) {
           if (dept.includes(s.str)) {
             target = s.str;

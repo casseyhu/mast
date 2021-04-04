@@ -5,6 +5,9 @@ module.exports = function (app) {
   // Create a Student from Add Student 
   app.post('/api/student/create', Student.create);
 
+  //Update student's field based on id
+  app.post('/api/student/update', Student.update)
+
   // Upload all students from CSV file
   app.post('/api/student/upload', Student.upload);
 
