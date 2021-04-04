@@ -11,7 +11,7 @@ const fs = require('fs');
 const Papa = require('papaparse');
 
 
-// Upload course offerings
+
 exports.createPlan = (req, res) => {
   // CoursePlan.create({
   //     ...CoursePlan
@@ -19,7 +19,7 @@ exports.createPlan = (req, res) => {
   res.send(req);
 }
 
-// Upload course offerings
+// Upload course plans CSV
 exports.uploadPlans = (req, res) => {
   let form = new IncomingForm();
   form.parse(req).on('file', (field, file) => {
@@ -40,7 +40,7 @@ exports.uploadPlans = (req, res) => {
             || header[5] !== 'year'
             || header[6] !== 'grade') {
             console.log('invalid csv')
-            res.status(500).send('Cannot parse CSV file - headers do not match specifications')
+            res.status(500).send('Cannot parse course plan CSV file - headers do not match specifications')
             return
           }
           uploadCoursePlans(results, res);
@@ -59,8 +59,10 @@ async function uploadCoursePlans(csv_file, res) {
       continue
     let condition = { studentId: csv_file.data[i].sbu_id }
     let found = await CoursePlan.findOne({ where: condition })
-    if (!found)
-      console.log(condition)
+    if (!found) {
+      console.log("student course plan doesnt exist: " + condition)
+      continue
+    }
     students_planid[csv_file.data[i].sbu_id] = found.coursePlanId
     condition = {
       coursePlanId: found.coursePlanId,
@@ -83,7 +85,7 @@ async function uploadCoursePlans(csv_file, res) {
       course = await CoursePlanItem.create(values)
   }
 
-  // Create mapping of all courses to credits and calculate GPA for each student
+  // Create mapping of all courses to credits to calculate GPA for each student
   Course
     .findAll()
     .then(courses => {
@@ -120,6 +122,7 @@ async function calculateGPA(students_planid, course_credit, res) {
     else
       console.log("error getting course plan items")
   }
+  console.log("Done calculating GPAs")
   res.status(200).send("Success")
 }
 
@@ -136,7 +139,6 @@ exports.findItems = (req, res) => {
     }).catch(err => {
       console.log(err)
     })
-
   })
   // CoursePlanItem
   //   .findAll({ where: { grade: { [Op.not]: req.query.grade } } })

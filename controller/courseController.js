@@ -44,6 +44,7 @@ exports.findAll = (req, res) => {
       res.status(200).send(foundCourses)
     })
     .catch(err => {
+      res.status(500).send("Error in finding courses")
       console.log(err)
     })
 }
@@ -70,7 +71,10 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
   dept = dept.split(',')
   dept.push('FIN', 'CHE')
   pdfExtract.extract(filePath, options, (err, data) => {
-    if (err) return console.log(err);
+    if (err) {
+      res.status(500).send('Error parsing pdf file')
+      return
+    }
     let pages = data.pages
     for (let i = 0; i < pages.length; i++) {
       let page = pages[i].content
@@ -201,7 +205,6 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
               // .then(res => {
               //   console.log(res.created + ':' + res.course)
               // })
-
             }
             desc = "";
             others = "";
@@ -209,10 +212,9 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
             courseName = s.str;
             checkCourseName = true;
           }
-          else if (checkCourseName && s.fontName == "Helvetica") {
-            //continues if course + course name exceeds more than one line
+          //continues if course + course name exceeds more than one line
+          else if (checkCourseName && s.fontName == "Helvetica")
             courseName += " " + s.str;
-          }
           else if (s.fontName == "Times" && !s.str.includes("credits,")
             && s.str.substring(0, 13) !== "Prerequisites"
             && s.str.substring(0, 12) !== "Prerequisite"
@@ -228,10 +230,7 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
                 name = courseName.substring(10, courseName.length)
                 // console.log(chosenDept + courseNum) //full course ([Dept] [CourseNum] + [CourseName])
               }
-              if (desc == "")
-                desc += s.str
-              else
-                desc += " " + s.str;
+              desc += (desc == "") ? s.str : " " + s.str;
             }
           }
 
@@ -250,9 +249,8 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
             checkCourseName = false;
             checkOthers = true
 
-            if (others == "" && checkOthers) {
+            if (others == "" && checkOthers)
               others = s.str
-            }
             else if (checkOthers) {
               if (s.str.substring(0, 1) != ","
                 || others.substring(others.length - 1) != ",") {
@@ -288,7 +286,6 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
 insertUpdate = async (values, condition) => {
   const found = await Course.findOne({ where: condition })
   if (found) {
-    //console.log(condition)
     const course = await Course.update(values, { where: condition })
     return { course, created: false }
   }

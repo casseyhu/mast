@@ -50,36 +50,14 @@ class LoginContainer extends Component {
       }
     }).then(response => {
       localStorage.setItem('jwt-token', response.data[0])
-      console.log("login response", response.data[1].sbuId);
+      console.log("login response", response.data[1]);
       this.props.setLoggedIn(true, user, response.data[1]);
-      if (user === 'gpd')
-        this.props.history.push('/browse')
-      else {
-        axios.get('/courseplanitem/findItems', {
-          params: {
-            studentId: response.data[1].sbuId
-          }
-        }).then(res => {
-          console.log(res.data)
-          console.log(response.data[1])
-          this.props.history.push({
-            pathname: '/student',
-            state: {
-              mode: 'View',
-              student: response.data[1],
-              items: res.data
-            }
-          })
-        }).catch(err => {
-          console.log(err)
-        });
-      }
     }).catch(err => {
       console.log(err)
       this.setState({ error: err.response.data });
     })
+    return
   }
-
 
   render() {
     document.onkeyup = this.handleKeyUp;
@@ -104,12 +82,14 @@ class LoginContainer extends Component {
           className="login-item"
           type="email"
           placeholder="email"
+          required
           onChange={this.setEmail}
         />
         <InputField
           className="login-item"
           type="password"
           placeholder="password"
+          required
           onChange={this.setPassword} />
         <Button variant="round" text="login" onClick={this.login} />
         <span className="error center-span">{this.state.error}</span>

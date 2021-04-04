@@ -19,7 +19,6 @@ exports.upload = (req, res) => {
       res.status(500).send('File must be *.csv')
     else {
       const f_in = fs.readFileSync(file.path, 'utf-8')
-      // let isValid = true;
       Papa.parse(f_in, {
         header: true,
         dynamicTyping: true,
@@ -31,7 +30,6 @@ exports.upload = (req, res) => {
               && header[3] !== 'semester'
               && header[4] !== 'year'
               && header[5] !== 'timeslot') {
-            // isValid = false
             console.log('invalid csv')
             res.status(500).send("Cannot parse CSV file - headers do not match specifications")
             return
@@ -71,7 +69,7 @@ async function uploadCourses(results, res){
       for(let k = 0; k < coursePlanItems.length; k++) {
         for(let l = 0; l < coursesAdded.length; l++){
           if(coursePlanItems[k].courseId == coursesAdded[l].identifier) 
-          toCheck.push(coursesAdded[l])
+            toCheck.push(coursesAdded[l])
         }
       }
       // [CSE500, CSE502, CSE503, CSE504, CSE505]
