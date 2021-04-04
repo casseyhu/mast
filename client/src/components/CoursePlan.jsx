@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from '../components/Button';
 
 const CoursePlan = (props) => {
 
@@ -10,7 +11,10 @@ const CoursePlan = (props) => {
 
   return (
     <div >
-      <h4>Course Plan</h4>
+      <div className="flex-horizontal justify-content-between" style={{ width: '100%' }}>
+        <h3>Course Plan</h3>
+        <Button variant="round" text="Edit Course Plan" />
+      </div>
       <table style={{ width: '100%' }}>
         <thead style={{ width: '100%' }}>
           <tr style={{ width: '100%', cursor: "pointer" }}>
@@ -22,10 +26,10 @@ const CoursePlan = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.items.sort((a,b) => sortBySem(a,b)).map((course, i) => {
+          {props.items.sort((a, b) => sortBySem(a, b)).map((course, i) => {
             return <tr key={i} style={{ cursor: 'pointer' }}>
-              <td className="center">{course.courseId.substring(0,3)}</td>
-              <td className="center">{course.courseId.substring(3,6)}</td>
+              <td className="center">{course.courseId.substring(0, 3)}</td>
+              <td className="center">{course.courseId.substring(3, 6)}</td>
               <td className="center">{course.semester}</td>
               <td className="center">{course.year}</td>
               <td className="center">{course.grade ? course.grade : 'N/A'}</td>

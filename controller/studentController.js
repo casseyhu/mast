@@ -214,7 +214,8 @@ exports.login = (req, res) => {
 
 // Find a Student 
 exports.findById = (req, res) => {
-  Student.findById(req.params.sbuId).then(student => {
+  Student.findByPk(req.params.sbuId).then(student => {
+    console.log(student)
     res.send(student);
   }).catch(err => {
     res.status(500).send("Error: " + err);

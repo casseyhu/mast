@@ -39,17 +39,18 @@ ul {
 }
 
 h1 {
-  margin-top: 1.5rem;
   font-size: 32px;
 }
 
 h3 {
   font-size: 24px;
-  border-bottom: 2px solid var(--dark-blue-70o);
+  /* border-bottom: 1px solid var(--dark-blue-70o); */
 }
 
 h4 {
-  border-bottom: 2px solid var(--grey);
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.7rem;
+  border-bottom: 0.5px solid lightgrey;
   width: 100%;
 }
 
@@ -149,7 +150,7 @@ i.fa {
 .container {
   background-color: #fffffe;
   min-height: calc(100vh - 4rem);
-  padding: 0 2rem;
+  padding: 1.5rem 2rem 2rem 2rem;
 }
 
 .inputContainer i {
@@ -173,7 +174,6 @@ i.fa {
   vertical-align: middle;
   display: table-cell;
   padding-left: 0.5rem;
-  padding-right: 3rem;
 }
 .color-box {
   width: 30px;
@@ -205,5 +205,16 @@ i.fa {
   }
   .container{
     min-width: 100vw;
+  }
+  .textarea {
+    width: calc(100vw - 6rem);
+  }
+}
+@media (min-width: 1000px) and (max-width: 1200px) {
+  .container{
+    min-width: 1000px;
+  }
+  .textarea {
+    width: 910px;
   }
 }

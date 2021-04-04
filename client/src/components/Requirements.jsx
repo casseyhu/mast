@@ -6,9 +6,9 @@ const Requirements = (props) => {
 
 	return (
 		<div className="flex-vertical" style={{ width: '100%' }}>
-			<div className="flex-horizontal underline">
-				<h3 style={{ marginTop: '1.5rem' }}>Degree Requirements</h3>
-				<div style={{ display: 'table', margin: '1.5rem 0 0 5rem' }}>
+			<div className="flex-horizontal wrap justify-content-between">
+				<h3>Degree Requirements</h3>
+				<div className="flex-horizontal" style={{ display: 'table', maxWidth: '500px' }}>
 					<div className="green color-box" />
 					<p className="req-state">Satisfied</p>
 					<div className="yellow color-box" />

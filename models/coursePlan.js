@@ -22,7 +22,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
       allowNull: false
     },
-    coursePlanState: Sequelize.BOOLEAN,
+    coursePlanState: Sequelize.INTEGER(4),
   }, {
     timestamps: false
   })

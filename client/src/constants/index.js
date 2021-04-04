@@ -31,18 +31,6 @@ export const DEPARTMENTS_REQ = [
   { value: 'ESE', label: 'ESE' }
 ];
 
-export const TESTING = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla2', label: 'Vanilla2' },
-  { value: 'chocolate2', label: 'Chocolate2' },
-  { value: 'strawberry2', label: 'Strawberry2' },
-  { value: 'vanilla3', label: 'Vanilla3' },
-  { value: 'chocolate3', label: 'Chocolate3' },
-  { value: 'strawberry3', label: 'Strawberry3' },
-  { value: 'vanilla4', label: 'Vanilla4' },
-];
-
 export const SORT_FIELDS = [
   { value: 'lastName', label: 'Last Name'},
   { value: 'firstName', label: 'First Name'},
@@ -65,6 +53,11 @@ export const SORT_ORDER = [
 export const BOOLEAN = [
   { value: 'true', label: 'True'},
   { value: 'false', label: 'False'},
+]
+
+export const COMPLETENESS = [
+  { value: 'true', label: 'Complete'},
+  { value: 'false', label: 'Incomplete'}
 ]
 
 export const TRACKS = {

@@ -20,18 +20,12 @@ const Student = (props) => {
   useEffect(() => {
     console.log("student view type " + props.type)
     console.log(student)
+    if (mode === 'Add')
+      return
     let token = localStorage.getItem('jwt-token')
-      var decoded = jwt_decode(token)
-      if (!decoded)
-        return
-    // Get student sbuid from state
-    if (!student) {
-      console.log(decoded.id)
-      // get student data from db
-      axios.get(`student/${decoded.id}`).then(student => {
-        setStudent(student)
-      })
-    }
+    var decoded = jwt_decode(token)
+    if (!decoded)
+      return
     // Set items
     axios.get('/courseplanitem/findItems', {
       params: {
@@ -83,7 +77,9 @@ const Student = (props) => {
         userType={props.type}
         student={student}
         onSubmit={(e) => modeHandler(e)} />
+        <hr/>
       <Requirements requirements={requirements} />
+      <hr/>
       <CoursePlan
         items={items} />
       <CenteredModal
