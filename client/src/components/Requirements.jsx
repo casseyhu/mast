@@ -52,6 +52,7 @@ const Requirements = (props) => {
     var coursePlan = props.coursePlan.filter((course) => course.grade != null);
     var requirements = props.requirements;
     var credits = {};
+    console.log(requirements[3])
     if (student && coursePlan.length && requirements[3]) {
       for (var i = 0; i < coursePlan.length; i++) {
         let foundCourse = await axios.get('/course/findOne/', {
@@ -63,7 +64,7 @@ const Requirements = (props) => {
         if (foundCourse && foundCourse.credits) {
           credits[foundCourse.courseId] = foundCourse.credits;
         }
-        console.log(credits);
+        // console.log(credits);
       }
       setCredits(credits);
       setTotalCredits(Object.values(credits).reduce((total, amount) => amount + total, 0));

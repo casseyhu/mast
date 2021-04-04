@@ -17,7 +17,7 @@ const Button = (props) => {
   };
 
   return (
-    <div style={props.style}>
+    <div className={props.divclassName} style={props.style}>
     <button className={`${props.variant}-button ${props.className}`} onClick={handleClick}>
       {props.text}
       {(props.variant === "square")

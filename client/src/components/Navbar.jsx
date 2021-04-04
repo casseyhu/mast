@@ -13,7 +13,6 @@ const NavigationBar = (props) => {
     if (!token)
       return
     var decoded = jwt_decode(token)
-    console.log(decoded)
     setUserType(decoded.type)
     setUserId(decoded.id)
   }, [props.loggedIn])
