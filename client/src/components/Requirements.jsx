@@ -14,24 +14,12 @@ const Requirements = (props) => {
   let coursePlan = props.coursePlan;
 
   const getGpaColor = (type) => {
-    // var gpa = student.gpa;
-    // if (type === "department")
-    //   gpa = <gpas type=""></gpas>
-    // else if (type === "core")
-    //   gpa = coreGpa;
     if (display && gpas[type] && requirements[1][type]) {
       if (gpas[type] >= requirements[1][type])
         return "green";
       return "red"
     }
     return;
-  }
-
-  const getGpa = (type) => {
-    if (type == "cumulative")
-      return student.gpa;
-
-    return
   }
 
   const getCreditsColor = () => {
@@ -48,77 +36,87 @@ const Requirements = (props) => {
     return Object.keys(GRADES).find(key => GRADES[key] === points)
   }
 
+  const getGradeColor = (minGrade, atLeastCredits) => {
+    if (coursePlan) {
+      const courses = coursePlan.filter((course) => GRADES[course.grade] >= minGrade);
+      var sum = courses.reduce((a, b) => a + credits[b.courseId], 0);
+      if (sum >= atLeastCredits)
+        return "green";
+      return "red";
+    }
+    return
+  }
 
-  useEffect(() => {
+  const getCreds = async () => {
     var student = props.student;
     var coursePlan = props.coursePlan.filter((course) => course.grade != null);
     var requirements = props.requirements;
     var credits = {}
     if (student && coursePlan && requirements[3]) {
       for (var i = 0; i < coursePlan.length; i++) {
-        axios.get('/course/findOne/', {
+        let foundCourse = await axios.get('/course/findOne/', {
           params: {
             courseId: coursePlan[i].courseId
           }
-        }).then(response => {
-          const foundCourse = response.data;
-
-          // Set credits
-          if (foundCourse.credits)
-            credits[foundCourse.courseId] = foundCourse.credits;
-
-          // Set department gpa
-          var deptCourses = coursePlan.filter((course) => (
-            course.courseId.slice(0, 3) === student.department
-          ));
-          var deptTotalPoints = 0;
-          var deptTotalCredits = 0;
-          for (var deptCourse of deptCourses) {
-            for (const [course, credit] of Object.entries(credits)) {
-              if (course === deptCourse.courseId) {
-                deptTotalCredits += credit
-                deptTotalPoints += credit * GRADES[deptCourse.grade]
-              }
-            }
-          }
-
-          // Set department gpa
-          var coreReqs = requirements[3].filter((req) => (
-            req.creditLower !== 3 && req.creditUpper !== 3
-          ));
-          var coreCourses = [];
-          for (var req of coreReqs) {
-            for (var course of req.courses) {
-              coreCourses.push(course);
-            }
-          }
-          var takenCourses = coursePlan.filter((course) => (
-            coreCourses.includes(course.courseId)
-          ));
-          var coreTotalPoints = 0;
-          var coreTotalCredits = 0;
-          for (var takenCourse of takenCourses) {
-            for (const [course, credit] of Object.entries(credits)) {
-              if (course === takenCourse.courseId) {
-                coreTotalCredits += credit
-                coreTotalPoints += credit * GRADES[takenCourse.grade]
-              }
-            }
-          }
-          setCredits(credits);
-          setGpas({
-            "cumulative": student.gpa,
-            "department": deptTotalPoints / deptTotalCredits,
-            "core": coreTotalPoints / coreTotalCredits
-          });
-          setTotalCredits(Object.values(credits).reduce((total, amount) => amount + total));
-          setDisplay(true);
-        }).catch(err => {
-          console.log(err);
-        });
+        })
+        foundCourse = foundCourse.data;
+        if (foundCourse && foundCourse.credits) {
+          credits[foundCourse.courseId] = foundCourse.credits;
+        }
+        console.log(credits);
       }
+      setCredits(credits);
 
+      // Set department gpa
+      var deptCourses = coursePlan.filter((course) => (
+        course.courseId.slice(0,3) === student.department
+      ));
+      var deptTotalPoints = 0;
+      var deptTotalCredits = 0;
+      for (var deptCourse of deptCourses) {
+        for (const [course, credit] of Object.entries(credits)) {
+          if (course === deptCourse.courseId) {
+            deptTotalCredits += credit
+            deptTotalPoints += credit * GRADES[deptCourse.grade]
+          }
+        }
+      }
+      
+      // Set core gpa
+      var coreReqs = requirements[3].filter((req) => (
+        req.creditLower !== 3 && req.creditUpper !== 3
+      ));
+      var coreCourses = [];
+      for (var req of coreReqs) {
+        for (var course of req.courses) {
+          coreCourses.push(course);
+        }
+      }
+      var takenCourses = coursePlan.filter((course) => (
+        coreCourses.includes(course.courseId)
+      ));
+      var coreTotalPoints = 0;
+      var coreTotalCredits = 0;
+      for (var takenCourse of takenCourses) {
+        for (const [course, credit] of Object.entries(credits)) {
+          if (course === takenCourse.courseId) {
+            coreTotalCredits += credit
+            coreTotalPoints += credit * GRADES[takenCourse.grade]
+          }
+        }
+      }
+      setGpas({
+        "cumulative": student.gpa,
+        "department": deptTotalPoints/deptTotalCredits,
+        "core": coreTotalPoints/coreTotalCredits
+      });
+      setTotalCredits(Object.values(credits).reduce((total, amount) => amount + total));
+      setDisplay(true);
     }
+  }
+
+  useEffect(() => {
+    getCreds()
   }, [props])
 
 
@@ -143,7 +141,6 @@ const Requirements = (props) => {
               <div className={getGpaColor(key)} key={key}>
                 Minimum {key[0].toUpperCase() + key.slice(1)} GPA:
                 {" " + Number(value).toFixed(2)}
-                {console.log(gpas)}
                 <b>&emsp;{Number(gpas[key]).toFixed(2)}</b>
               </div>
             )
@@ -157,7 +154,7 @@ const Requirements = (props) => {
           </div>
         }
         {requirements[0] && requirements[0].atLeastCredits && requirements[0].minGrade &&
-          <div>
+          <div className={getGradeColor(requirements[0].minGrade, requirements[0].atLeastCredits)}>
             At least {requirements[0].atLeastCredits} credits must be
             {" " + getLetter(requirements[0].minGrade)} or above
           </div>
