@@ -184,12 +184,15 @@ i.fa {
 }
 .green {
   background-color: #80FFC2;
+  margin-top: 2px;
 }
 .yellow {
   background-color: #FFF0A4;
+  margin-top: 2px;
 }
 .red {
   background-color: #FFAAAA;
+  margin-top: 2px;
 }
 
 

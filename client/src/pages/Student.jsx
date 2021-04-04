@@ -18,7 +18,8 @@ const Student = (props) => {
 
 
   useEffect(() => {
-    console.log("student view type " + props.type)
+    console.log("user: " + props.type)
+    console.log(student)
     if (mode === 'Add')
       return
     let token = localStorage.getItem('jwt-token')
@@ -98,13 +99,14 @@ const Student = (props) => {
         errorMessage={errorMsg}
         userType={props.type}
         student={student}
-        requirements={requirements}
-        onSubmit={(e) => modeHandler(e)} />
+        onSubmit={(e) => modeHandler(e)}
+      />
       <hr />
       <Requirements
         requirements={requirements}
         coursePlan={items}
-        student={student} />
+        student={student}
+      />
       <hr />
       <CoursePlan
         items={items} />

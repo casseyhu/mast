@@ -174,6 +174,10 @@ class Browse extends Component {
 
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+  }
+
   render() {
     let { students, page, numPerPage, maxPage } = this.state;
     return (

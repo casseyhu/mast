@@ -4,7 +4,6 @@ import Dropdown from './Dropdown';
 import Button from '../components/Button';
 import { BOOLEAN, DEPARTMENTS_REQ, SEMESTERS, YEARS, TRACKS } from '../constants';
 import { useHistory } from "react-router-dom";
-import axios from '../constants/axios';
 
 
 const StudentInfo = (props) => {

@@ -23,109 +23,118 @@
   z-index: -1;
 }
 
+hr.login-title {
+  overflow: visible; /* For IE */
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: #333;
+  text-align: center;
+  margin: 2rem 0;
+}
+hr.login-title:after {
+  content: "login";
+  display: inline-block;
+  position: relative;
+  top: -0.7em;
+  font-size: 2em;
+  padding: 0 1rem;
+  background: white;
+}
 /* Login box */
 
 .login-box-top {
-  height: 250px;
-  width: calc(100% + 6rem);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transform: translate(-3rem, -4rem);
-  border-top-right-radius: 1rem;
-  border-top-left-radius: 1rem;
-  margin-bottom: -2.5rem;
+  position: relative;
+  border-radius: 0.5rem;
   background: rgba(0, 0, 0, .1) url(https://theaeac.org/wp-content/uploads/2019/09/stony-brook-1024x405.jpg) no-repeat;
   background-position: center;
+  overflow: hidden;
+  background-size: 150%;
+  padding-bottom: 15%;
+  margin-bottom: 1.25rem;
   opacity: 0.8;
-  /* background-size: cover;
-  background-blend-mode: darken; */
 }
 
-.welcome, .landing-title {
-  color: var(--white);
-  text-align: center;
+.login-heading {
+  margin-left: 7%;
+  margin-top: 7%;
+  line-height: 1.5;
+  font-size: 3rem;
+  color: white
 }
-
-.welcome {
-  font-size: 35pt;
-  font-weight: 900;
-}
-
-.landing-title {
-  font-size: 20pt;
-  font-weight: 400;
+.login-heading small {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-top: .5rem;
 }
 
 .login-box {
-  min-width: 50%;
-  max-width: 750px;
-  /* height: 40%; */
-  background-color: var(--white);
-  border-radius: 1rem;
-  padding: 4rem 3rem 3rem 3rem;
-  /* border: 2px solid var(--dark) */
-}
-
-.user-slider {
-  height: 3rem;
-  background-color: var(--secondary);
-  color: var(--white);
-  font: 18pt bold;
-  border-radius: 1.5rem;
   width: 100%;
-  cursor: pointer;
-  margin: 1rem 0;
+  max-width: 500px;
+  background-color: var(--white);
+  border-radius: .7rem;
+  box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  padding: 1rem 1rem 2rem 1rem;
 }
 
 .login-item {
-  margin-top: 0;
-  margin-bottom: 0.5rem !important;
+  margin: 0 1.5rem .5rem 1.5rem;
   text-align: center;
   font-weight: 800;
 }
 
 .users {
-  width: 100%;
-  z-index: 1;
-  font-weight: 500;
-  height: 3rem;
+  width: 50%;
+  border: 3px solid var(--primary);
+  display: inline-block;
+  padding: 10px;
+  position: relative;
+  text-align: center;
   cursor: pointer;
-  display: flex;
-  align-items: center;
+  transition: background 600ms ease, color 600ms ease;
+  font-size: 13pt;
+  font-weight: 550;
+}
+.toggle {
+  display: none;
+}
+.toggle + .users:hover {
+  background: none;
+  color: var(--primary);
+}
+.toggle + .users:after {
+  background: #1a1a1a;
+  content: "";
+  height: 100%;
+  position: absolute;
+  top: 0;
+  /* transition: left 5s cubic-bezier(0.77, 0, 0.175, 1); */
+}
+.toggle-left + .users {
+  border-right: 0;
+}
+.toggle-left:after + .users {
+  left: 100%
+}
+.toggle-right:after + .users {
+  left: -100%;
+}
+
+.toggle:checked + .users {
+  cursor: default;
+  color: #fff;
+  transition: color 200ms;
+  background: var(--primary);
+}
+.toggle:checked:after .users {
+  left: 0;
 }
 
 .gpd {
-  margin-left: 20%;
-  font-size: 16pt;
-  transform: translate(0, -3rem);
+  border-top-left-radius: .5rem;
+  border-bottom-left-radius: .5rem;
 }
-
 .student {
-  margin-left: 35%;
-  font-size: 16pt;
-  transform: translate(0, -3rem);
-}
-
-.gpd-selected {
-  background-color: var(--primary);
-  width: calc((750px /2) - 4rem);
-  width: 50%;
-  height: 3rem;
-  border-radius: 1.5rem;
-  cursor: pointer;
-  text-align: center;
-  line-height: 3rem;
-}
-
-.student-selected {
-  background-color: var(--primary);
-  width: 50%;
-  height: 3rem;
-  border-radius: 1.5rem;
-  cursor: pointer;
-  text-align: center;
-  line-height: 3rem;
-  transform: translateX(100%);
+  border-top-right-radius: .5rem;
+  border-bottom-right-radius: .5rem;
 }

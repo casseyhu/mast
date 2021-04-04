@@ -44,9 +44,8 @@ for i in range(1, len(TRACKS['AMS']) + 1):
     requirements = []
     if track == "Quantitative Finance":
         requirements.append(["AMS586"])
-        requirements.append(["AMS511"])
         for i in range(len(reqs)):
-            if i != 2 and i != 11:
+            if i != 11:
                 requirements.append(reqs[i][1:])
     else:
         for req in reqs:
@@ -101,8 +100,7 @@ prereq_df = prereq_df[prereq_df['prereqs'].notna()]
 # Get all students and their relevant information from student_profile_file.csv
 students = []
 profile_df = pd.read_csv(path + '/student_profile_file.csv')
-# df = profile_df.loc[200:]
-df = profile_df
+df = profile_df[profile_df['track'] == "Quantitative Finance"]
 for ind in df.index:
     track = df['track'][ind]
     if df['department'][ind] == 'CSE':
@@ -268,7 +266,7 @@ course_plans = ""
 for student in students:
     requirements = course_req[student['track']]
     print(student['track'])
-    if student['track'] == "Quantitative Finance":
+    if student['track'] == "Quantitative Finance" and student['entry_sem'] == "Fall":
         continue
     while True:
         semester = student['entry_sem']
@@ -303,13 +301,6 @@ for student in students:
                     student['num_courses'][semester + " " + str(year)] = 3
                 else:
                     student['num_courses'][semester + " " + str(year)] = 2
-            elif student['track'] == "Quantitative Finance":
-                if semester == "Fall":
-                    student['num_courses'][semester + " " + str(year)] = 4
-                elif i >= 3:
-                    student['num_courses'][semester + " " + str(year)] = 2
-                else:
-                    student['num_courses'][semester + " " + str(year)] = 3
             else:
                 student['num_courses'][semester +" " + str(year)] = num_courses[-1]
                 num_courses.pop()
@@ -323,6 +314,8 @@ for student in students:
                 semester = "Fall"
         semester = student['entry_sem']
         year = student['entry_year']
+        print(sum, student['num_courses'])
+
         for i in range(len(requirements)):
             courses = requirements[i]
             random.shuffle(courses)

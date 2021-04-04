@@ -64,19 +64,34 @@ class LoginContainer extends Component {
     return (
       <div className='login-box'>
         <div className="login-box-top">
-          <p className="welcome">WELCOME</p>
-          <p className="landing-title">
-            Stony Brook University <br />Masters Student Tracking System
-          </p>
+          <h2 className="login-heading">
+            Welcome.
+            <small>Stony Brook University <br />
+            Masters Student Tracking System</small>
+          </h2>
         </div>
-        <h2 className="login-item">USER LOGIN</h2>
-        <div className="user-slider " onClick={this.switchUser}>
-          <div className={`gpd${this.state.user === "gpd" ? '-selected' : ''}`} />
-          <div className={`student${this.state.user === "student" ? '-selected' : ''}`} />
-          <div className="users">
-            <span className="gpd"> GPD </span>
-            <span className="student"> Student </span>
-          </div>
+        <hr className="login-title" />
+        <div className="login-item">
+          <input
+            id="toggle-gpd"
+            className="toggle toggle-left"
+            name="toggle"
+            value="gpd"
+            type="radio"
+            onChange={this.switchUser}
+            checked={this.state.user === 'gpd'}
+          />
+          <label for="toggle-gpd" className="users gpd">GPD</label>
+          <input
+            id="toggle-student"
+            className="toggle toggle-right"
+            name="toggle"
+            value="student"
+            type="radio"
+            onChange={this.switchUser}
+            checked={this.state.user === 'student'}
+          />
+          <label for="toggle-student" className="users student">Student</label>
         </div>
         <InputField
           className="login-item"
@@ -91,7 +106,7 @@ class LoginContainer extends Component {
           placeholder="password"
           required
           onChange={this.setPassword} />
-        <Button variant="round" text="login" onClick={this.login} />
+        <Button divclassName="login-item" variant="round" text="login" onClick={this.login} />
         <span className="error center-span">{this.state.error}</span>
       </div>
     )

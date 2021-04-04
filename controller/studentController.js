@@ -150,7 +150,6 @@ exports.update = (req, res) => {
     "Summer": "05"
   }
   let requirementVersion = Number(student.degreeYear) * 100 + Number(semDict[student.degreeSem])
-  console.log(student.department, student.track, requirementVersion)
   Degree.findOne({
       where: {
         dept: student.dept,
