@@ -58,8 +58,8 @@ export const SORT_ORDER = [
 ]
 
 export const BOOLEAN = [
-  { value: 'true', label: 'True' },
-  { value: 'false', label: 'False' },
+  { value: 'True', label: 'True' },
+  { value: 'False', label: 'False' },
 ]
 
 export const COMPLETENESS = [
