@@ -55,14 +55,11 @@ h4 {
 }
 
 footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 50px;
-  padding: 10px;
+  height: 20vh;
+  padding: 15vh 0 0 0;
   text-align: center;
   color: var(--primary);
+  background-color: white;
 }
 
 

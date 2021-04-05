@@ -33,30 +33,45 @@ exports.upload = (req, res) => {
 
 // Find all requirements for a degree by department and track
 exports.findRequirements = (req, res) => {
-  Degree.findOne({ where: {
-    dept: req.query.department,
-    track: req.query.track,
-    degreeId: req.query.degreeId
-  }}).then(degree => {
-    // console.log(degree)
-    findRequirements(degree, res)
-  })
+  Degree
+    .findOne({
+      where: {
+        dept: req.query.department,
+        track: req.query.track,
+        degreeId: req.query.degreeId
+      }
+    })
+    .then(degree => {
+      // console.log(degree)
+      findRequirements(degree, res)
+    })
+    .catch(err => {
+      res.status(500).send("Could not find degree requirement version.")
+    })
 }
 
 
 async function findRequirements(degree, res) {
-  let gradeReq = await GradeRequirement.findOne({ where: {
-    requirementId: degree.gradeRequirement
-  }})
-  let gpaReq = await GpaRequirement.findOne({ where: {
-    requirementId: degree.gpaRequirement
-  }})
-  let creditReq = await CreditRequirement.findOne({ where: {
-    requirementId: degree.creditRequirement
-  }})
-  let courseReq = await CourseRequirement.findAll({ where: {
-    requirementId: degree.courseRequirement
-  }})
+  let gradeReq = await GradeRequirement.findOne({
+    where: {
+      requirementId: degree.gradeRequirement
+    }
+  })
+  let gpaReq = await GpaRequirement.findOne({
+    where: {
+      requirementId: degree.gpaRequirement
+    }
+  })
+  let creditReq = await CreditRequirement.findOne({
+    where: {
+      requirementId: degree.creditRequirement
+    }
+  })
+  let courseReq = await CourseRequirement.findAll({
+    where: {
+      requirementId: degree.courseRequirement
+    }
+  })
   // console.log(courseReq)
   res.status(200).send([gradeReq, gpaReq, creditReq, courseReq])
 }
@@ -84,27 +99,29 @@ async function importDegree(json_file) {
 
 
 async function updateDegree(oldDegree, newDegree) {
-  try{
+  try {
     console.log("Updating degree")
     // Just delete all the course requirements for this current version and recreate new 
     // courserequirement records. Might end up using memory faster (overflowing autoincrement 
     // in mysql).
     oldCourseIds = oldDegree.dataValues.courseRequirement.split('`')
-    for(let i = 0; i < oldCourseIds.length; i++){
-      const deleteCourseReq = await CourseRequirement.destroy({
-        where:{
+    for (let i = 0; i < oldCourseIds.length; i++) {
+      await CourseRequirement.destroy({
+        where: {
           requirementId: oldCourseIds[i]
         }
       })
     }
-    
+
     // Get the list of new course requirement IDs. 
     const newCourseIds = await createCourseRequirements(newDegree)
 
     // Find the gradereq record from the oldDegree, then update.
-    const updateGradeReq = await GradeRequirement.findOne({where: {
-      requirementId: oldDegree.dataValues.gradeRequirement
-    }}).then(async (result) => {
+    await GradeRequirement.findOne({
+      where: {
+        requirementId: oldDegree.dataValues.gradeRequirement
+      }
+    }).then(async (result) => {
       const updt = await result.update({
         atLeastCredits: newDegree.gradeRequirement === null
           ? null : newDegree.gradeRequirement.atLeastCredits,
@@ -114,10 +131,12 @@ async function updateDegree(oldDegree, newDegree) {
     })
 
     // Find the gpareq record from the oldDegree, then update.
-    const updateGpaReq = await GpaRequirement.findOne({where: {
-      requirementId: oldDegree.dataValues.gpaRequirement
-    }}).then(async (result) => {
-      const updt = await result.update({
+    await GpaRequirement.findOne({
+      where: {
+        requirementId: oldDegree.dataValues.gpaRequirement
+      }
+    }).then(async (result) => {
+      await result.update({
         cumulative: newDegree.gpaRequirements.cumulGpa,
         department: newDegree.gpaRequirements.deptGpa,
         core: newDegree.gpaRequirements.coreGpa
@@ -125,18 +144,20 @@ async function updateDegree(oldDegree, newDegree) {
     })
 
     // Find the creditreq record from the oldDegree, then update.
-    const updateCreditReq = await CreditRequirement.findOne({where: {
-      requirementId: oldDegree.dataValues.creditRequirement
-    }}).then(async (result) => {
-      const updt = await result.update({
+    await CreditRequirement.findOne({
+      where: {
+        requirementId: oldDegree.dataValues.creditRequirement
+      }
+    }).then(async (result) => {
+      await result.update({
         minCredit: newDegree.creditRequirement
       })
     })
-    
-    const updateCourseReqId = await oldDegree.update({
+
+    await oldDegree.update({
       courseRequirement: newCourseIds
     })
-  } catch(e) {
+  } catch (e) {
     console.log(e)
     return 0
   }
@@ -148,7 +169,7 @@ async function updateDegree(oldDegree, newDegree) {
 // (["1:(1,1):(3,3)", "AMS500", "AMS502", "AMS504", ...]) then gathers
 // all the new requirementId's that were made for every entry into the db. 
 // Returns this list of the new requirement Ids. 
-async function createCourseRequirements(degree){
+async function createCourseRequirements(degree) {
   courseReqIds = []
   for (let i = 0; i < degree.courseRequirements.length; i++) {
     courseReq = degree.courseRequirements[i]
@@ -170,7 +191,7 @@ async function createCourseRequirements(degree){
 
 
 
-async function createDegree(degree){
+async function createDegree(degree) {
   try {
     requirementIds = {}
     const courseReqIds = await createCourseRequirements(degree)
@@ -183,7 +204,7 @@ async function createDegree(degree){
       track: degree.track,
       requirementVersion: degree.requirementVersion,
     })
-    
+
     // We now update this newly-created Degree entry and set the grade/gpa/credit
     // requirement values to be == newDegree.degreeId. Every Degree+track we make 
     // will have their own grade/gpa/credit requirement anyways-- we won't share
