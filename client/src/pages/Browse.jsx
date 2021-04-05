@@ -80,12 +80,10 @@ class Browse extends Component {
   filter = () => {
     axios.get('/student/filter', {
       params: {
-        firstName: this.state.filters['firstName'],
-        lastName: this.state.filters['lastName'],
-        sbuId: this.state.filters['sbuId'],
+        nameId: this.state.filters['nameId'],
+        department: this.state.filters['department'],
         entrySem: this.state.filters['entrySem'],
         entryYear: this.state.filters['entryYear'],
-        degree: this.state.filters['degree'],
         gradSem: this.state.filters['gradSem'],
         gradYear: this.state.filters['gradYear'],
         track: this.state.filters['track'],
@@ -132,10 +130,10 @@ class Browse extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props)
     window.addEventListener('resize', this.handleResize)
-    axios.get('student'
-    ).then(response => {
+    axios.get('student', {
+      params: {department : this.props.user.department }
+    }).then(response => {
       this.setState({
         students: response.data,
         numPerPage: Math.ceil((window.innerHeight - 350) / 30),
@@ -186,7 +184,7 @@ class Browse extends Component {
           <h1>Browse Student</h1>
           <Button variant="round" text="Add student" onClick={this.addStudent} style={{ marginTop: '1rem' }} />
         </div>
-        <BrowseSearchbar sortField={this.setSortField} filter={this.setFilter} />
+        <BrowseSearchbar user={this.props.user} sortField={this.setSortField} filter={this.setFilter} />
         <div className="studentTable">
           <table >
             <thead>

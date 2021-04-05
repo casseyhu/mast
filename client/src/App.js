@@ -59,7 +59,7 @@ class App extends Component {
         <NavigationBar loggedIn={this.state.loggedIn} />
         <Switch>
           {!type && <Route exact path="/" component={(props) => <MainPage {...props} setLoggedIn={this.setLoggedIn} />} />}
-          {type === 'gpd' && <Route exact path="/" component={Browse} />}
+          {type === 'gpd' && <Route exact path="/" component={(props) => <Browse {...props} user={user}/>} />}
 
           {type === 'student' && <Route exact path="/" component={(props) => <Student {...props} mode="View" type={type} student={user}/>} />}
           {type === 'gpd' && <Route path="/student" component={(props) => <Student {...props} mode="View" type={type}/>} />}

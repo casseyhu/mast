@@ -62,23 +62,23 @@ exports.create = (req, res) => {
       return
     }
 
-      // Check for proper 9-digit SBUID
-      let regex = /^\d{9}$/;
-      console.log(student.sbuId)
-      if (!regex.test(student.sbuId)) {
-        res.status(500).send("SBUID must be a 9-digit string of numbers 0-9.");
-        return
-      }
+    // Check for proper 9-digit SBUID
+    let regex = /^\d{9}$/;
+    console.log(student.sbuId)
+    if (!regex.test(student.sbuId)) {
+      res.status(500).send("SBUID must be a 9-digit string of numbers 0-9.");
+      return
+    }
 
-      // Check for proper .edu email address
-      regex = /^\w+@\w+\.edu$/;
-      console.log(student.email)
-      if (!regex.test(student.email)) {
-        res.status(500).send("Student must have a valid .edu email.");
-        return
-      }
+    // Check for proper .edu email address
+    regex = /^\w+@\w+\.edu$/;
+    console.log(student.email)
+    if (!regex.test(student.email)) {
+      res.status(500).send("Student must have a valid .edu email.");
+      return
+    }
 
-      // TODO: get number of degree requirements and set initial state of each requirement to unsatisfied
+    // TODO: get number of degree requirements and set initial state of each requirement to unsatisfied
 
 
     // Tries to create the student with all fields. 
@@ -151,12 +151,12 @@ exports.update = (req, res) => {
   }
   let requirementVersion = Number(student.degreeYear) * 100 + Number(semDict[student.degreeSem])
   Degree.findOne({
-      where: {
-        dept: student.dept,
-        track: student.track,
-        requirementVersion: requirementVersion,
-      }
-    })
+    where: {
+      dept: student.dept,
+      track: student.track,
+      requirementVersion: requirementVersion,
+    }
+  })
     .then((degree) => {
       if (!degree) {
         // No degree + track + requirement version was found in the DB. 
@@ -188,7 +188,7 @@ exports.update = (req, res) => {
       }
 
       // Update student information based on student id
-      const condition = { sbuId: student.sbuId}
+      const condition = { sbuId: student.sbuId }
       let graduated = student.graduated === 'False' ? 0 : 1
       const value = {
         sbuId: student.sbuId,
@@ -211,10 +211,10 @@ exports.update = (req, res) => {
         gpdComments: student.gpdComments,
         studentComments: student.studentComments
       }
-      Student.update(value, {where : condition})
+      Student.update(value, { where: condition })
         .then(response => {
           //update retuned array [1]
-          Student.findOne({where : condition}).then(student => {
+          Student.findOne({ where: condition }).then(student => {
             res.status(200).send(student)
           })
         })
@@ -245,7 +245,7 @@ function emptyFields(student) {
       || fields === "degreeYear") {
       continue
     }
-    if (student[fields] === ""){
+    if (student[fields] === "") {
       return true
     }
   }
@@ -324,18 +324,56 @@ exports.findById = (req, res) => {
 
 // Filter all students by filters
 exports.filter = (req, res) => {
+  let info = req.query.nameId.replace(/\s+/g,' ').trim().split(' ')
+  let firstName = []
+  let lastName = []
+  let sbuId = []
+  for (let i = 0; i < info.length; i++) {
+    let first = { firstName: { [Op.like]: info[i] + "%" } }
+    let last = { lastName: { [Op.like]: info[i] + "%" } }
+    let id = { sbuId: { [Op.like]: info[i] + "%" } }
+    firstName.push(first)
+    lastName.push(last)
+    sbuId.push(id)
+  }
+  let filters = null
+  if (info.length == 1) {
+    filters = {
+      [Op.or]: [
+        { [Op.or]: firstName },
+        { [Op.or]: lastName },
+        { [Op.or]: sbuId }]
+    }
+  }
+  else if (info.length == 2) {
+    filters = {
+      [Op.and]: [
+        { [Op.or]: firstName },
+        { [Op.or]: lastName },
+      ]
+    }
+  }
+  else {
+    filters = {
+      [Op.and]: [
+        { [Op.or]: firstName },
+        { [Op.or]: lastName },
+        { [Op.or]: sbuId }]
+    }
+  }
   Student
     .findAll({
       where: {
-        firstName: { [Op.like]: req.query.firstName },
-        lastName: { [Op.like]: req.query.lastName },
-        sbuId: { [Op.like]: req.query.sbuId },
+        [Op.and]: filters,
+
+        // lastName: { [Op.like]: 1req.query.lastName },
+        // sbuId: { [Op.like]: {[Op.in] :req.query.sbuId }},
+        department: { [Op.like]: req.query.department },
         entrySem: { [Op.like]: req.query.entrySem },
         entryYear: { [Op.like]: req.query.entryYear },
-        department: { [Op.like]: req.query.degree },
+        track: { [Op.like]: req.query.track },
         gradSem: { [Op.like]: req.query.gradSem },
         gradYear: { [Op.like]: req.query.gradYear },
-        graduated: { [Op.like]: req.query.graduated }
       }
     })
     .then(students => {
@@ -348,8 +386,10 @@ exports.filter = (req, res) => {
 
 // Find all Students 
 exports.findAll = (req, res) => {
+  const condition = { department: req.query.department }
+
   Student
-    .findAll()
+    .findAll({ where: condition })
     .then(students => {
       res.send(students);
     })
@@ -409,7 +449,7 @@ async function uploadStudents(csvFile, res) {
     degreeDict[degrees[i].dept + " " + degrees[i].track + " " + requirementSem + " " + requirementYear] = degrees[i].degreeId
   }
   let tot = 0;
-  for (let i = 0; i < csvFile.data.length ; i++) {
+  for (let i = 0; i < csvFile.data.length; i++) {
     studentInfo = csvFile.data[i]
     let semsDict = { 'Spring': '02', 'Summer': '06', 'Fall': '08', 'Winter': '01' };
     let semYear = Number(studentInfo.entry_year + semsDict[studentInfo.entry_semester])
@@ -430,12 +470,12 @@ async function uploadStudents(csvFile, res) {
       gradYear: studentInfo.graduation_year,
       department: studentInfo.department,
       track: studentInfo.track,
-      requirementVersion: requirementVersion, 
+      requirementVersion: requirementVersion,
       satisfied: 0,
       unsatisfied: 0,
       pending: 0,
-      degreeId: degreeDict[studentInfo.department + " " + 
-                  studentInfo.track + " " + studentInfo.requirement_version_semester + " " + studentInfo.requirement_version_year],
+      degreeId: degreeDict[studentInfo.department + " " +
+        studentInfo.track + " " + studentInfo.requirement_version_semester + " " + studentInfo.requirement_version_year],
       graduated: graduated,
       gpdComments: "",
       studentComments: ""
