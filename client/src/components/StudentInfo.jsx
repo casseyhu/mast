@@ -18,10 +18,8 @@ const StudentInfo = (props) => {
   }
 
   const modeButtonHandler = () => {
-    console.log("Student info component")
     props.onSubmit(userInfo)
   }
-
 
   useEffect(() => {
     setUserInfo(prevState => ({
@@ -41,7 +39,8 @@ const StudentInfo = (props) => {
       degreeSem: props.student ? MONTH_SEMESTER[props.student.requirementVersion.toString().substring(4, 6)] : '',
       degreeYear: props.student ? props.student.requirementVersion.toString().substring(0, 4) : '',
       gpdComments: props.student ? props.student.gpdComments : '',
-      studentComments: props.student ? props.student.studentComments : ''
+      studentComments: props.student ? props.student.studentComments : '',
+      updatedAt: props.student ? new Date(props.student.updatedAt).toLocaleString() : ''
     }))
   }, [props.student])
 
@@ -50,6 +49,7 @@ const StudentInfo = (props) => {
     <div className="flex-horizontal wrap">
       <div className="flex-horizontal justify-content-between">
         <h1>{mode} Student</h1>
+        <small>Last Updated: {userInfo.updatedAt}</small>
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
           {props.userType == 'gpd' && (
             <Button
@@ -212,6 +212,7 @@ const StudentInfo = (props) => {
       </div>
 
       <div className="flex-vertical wrap" style={{ width: 'fit-content', marginLeft: '0.7rem' }}>
+        <small>GPD Comments:</small>
         <textarea
           className="textarea resize-ta"
           placeholder="GPD Comments"
@@ -219,6 +220,7 @@ const StudentInfo = (props) => {
           disabled={mode === 'View' || props.userType === "student"}
           onChange={e => handleSelection('gpdComments', e.target)}
           style={{ minWidth: "375px" }} />
+        <small>Student Comments:</small>
         <textarea
           placeholder="Student Comments"
           className="textarea resize-ta"

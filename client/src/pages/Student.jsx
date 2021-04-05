@@ -9,22 +9,20 @@ import jwt_decode from 'jwt-decode';
 
 
 const Student = (props) => {
-  // const [requirements, setRequirements] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [mode, setMode] = useState(props.location.state ? props.location.state.mode : props.mode)
-  const [student, setStudent] = useState(props.student ? props.student : props.location.state.student)
-  // const [items, setItems] = useState([])
   const [studentInfoParams, setStudentInfoParams] = useState({})
 
   const setStudentInfo = async () => {
-    let studentRes = await axios.get('/student/' + student.sbuId, {
-      params: { sbuId: student.sbuId }
+    let currStudent = props.student ? props.student : props.location.state.student
+    let studentRes = await axios.get('/student/' + currStudent.sbuId, {
+      params: { sbuId: currStudent.sbuId }
     })
     console.log(studentRes.data)
     let coursePlanItems = await axios.get('/courseplanitem/findItems', {
       params: {
-        studentId: student.sbuId
+        studentId: studentRes.data.sbuId
       }
     })
     let requirements = await axios.get('/requirements', {
@@ -39,7 +37,6 @@ const Student = (props) => {
       coursePlan: coursePlanItems.data,
       requirements: requirements.data
     })
-    setStudent(studentRes.data)
   }
 
 
@@ -65,7 +62,6 @@ const Student = (props) => {
         setErrorMsg("")
         setShowConfirmation(true)
       }).catch(function (err) {
-        console.log(err.response.data)
         setErrorMsg(err.response.data)
       })
     } else if (mode === 'View') {
@@ -75,7 +71,10 @@ const Student = (props) => {
       axios.post('/student/update', {
         params: studentInfo
       }).then((response) => {
-        setStudent(response.data)
+        setStudentInfoParams((prevState) => ({
+          ...prevState,
+          student: response.data
+        }))
         setShowConfirmation(true)
       }).catch(function (err) {
         console.log(err.response.data)
@@ -89,23 +88,23 @@ const Student = (props) => {
     setMode('View')
   }
 
-  if (!studentInfoParams.requirements || !studentInfoParams.coursePlan || !studentInfoParams.student)
-    return <>BAD!!</>
-  else
+  // if (mode !== 'Add' && (!studentInfoParams.requirements || !studentInfoParams.coursePlan || !studentInfoParams.student))
+  //   return <>BAD!!</>
+  // else
     return (
       <Container fluid="lg" className="container">
         <StudentInfo
           mode={mode}
           errorMessage={errorMsg}
           userType={props.type}
-          student={student}
+          student={studentInfoParams.student}
           onSubmit={(e) => modeHandler(e)}
         />
         <hr />
         <Requirements studentInfo={studentInfoParams} />
         <hr />
         <CoursePlan
-          items={studentInfoParams.coursePlan} />
+          coursePlan={studentInfoParams.coursePlan} />
         <CenteredModal
           show={showConfirmation}
           onHide={() => setShowConfirmation(false)}
