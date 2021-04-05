@@ -175,7 +175,7 @@ const Requirements = (props) => {
   }
 
   useEffect(() => {
-    if (props.studentInfo.student)
+    if (student && requirements && coursePlan)
       getCreds()
   }, [props.studentInfo])
 

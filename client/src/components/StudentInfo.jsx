@@ -19,6 +19,7 @@ const StudentInfo = (props) => {
 
   const modeButtonHandler = () => {
     props.onSubmit(userInfo)
+    props.setError("")
   }
 
   useEffect(() => {

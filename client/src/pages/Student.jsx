@@ -61,6 +61,11 @@ const Student = (props) => {
       }).then((response) => {
         setErrorMsg("")
         setShowConfirmation(true)
+        setStudentInfoParams((prevState) => ({
+          ...prevState,
+          student: response.data
+        }))
+        setStudentInfo()
       }).catch(function (err) {
         setErrorMsg(err.response.data)
       })
@@ -96,6 +101,7 @@ const Student = (props) => {
         <StudentInfo
           mode={mode}
           errorMessage={errorMsg}
+          setError={setErrorMsg}
           userType={props.type}
           student={studentInfoParams.student}
           onSubmit={(e) => modeHandler(e)}
