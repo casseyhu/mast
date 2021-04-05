@@ -48,6 +48,57 @@ const Requirements = (props) => {
     return "red"
   }
 
+  const getText = (req) => {
+    var text = "";
+    var hasCreditBounds = false;
+    if (req.type === 1)
+      var text = "[Required] ";
+    else if (req.type === 2)
+      var text = "[Track Required] ";
+    else if (req.type === 0)
+      return "[Non Required] ";
+    if (req.creditUpper || req.creditLower) {
+      if (req.creditUpper && req.creditLower) {
+        if (req.creditUpper === req.creditLower)
+          text += req.creditLower + " credit(s)";
+        else
+          text += req.creditLower + "-" + req.creditUpper + " credit(s)";
+      }
+      else if (req.creditUpper)
+        text += " up to " + req.creditUpper + " credit(s)";
+      else
+        text += " at least " + req.creditUpper + " credit(s)";
+      hasCreditBounds = true;
+    }
+    if (req.courseUpper || req.courseUpper) {
+      if (hasCreditBounds)
+        text += " and "
+      if (req.courseUpper && req.courseUpper) {
+        if (req.courseUpper === req.courseUpper)
+          text += req.courseLower + " course(s)";
+        else
+          text += req.courseLower + " to " + req.courseUpper + " course(s)";
+      }
+      else if (req.courseUpper)
+        text += " up to " + req.courseUpper + " course(s)";
+      else
+        text += " at least " + req.courseLower + " course(s)";
+    }
+    return text + " in: "
+  }
+
+  const isTaken = (course) => {
+    if (coursePlan) {
+      var takenCourses = coursePlan.filter((c) =>
+      (c.courseId === course
+        && (c.year < 2021 || (c.year === 2021 && c.semester == "Spring")))
+      );
+      if (takenCourses.length)
+        return true;
+    }
+    return false;
+  }
+
   const getCreds = async () => {
     var courses = coursePlan.filter((course) => course.grade != null);
     var credits = {};
@@ -124,7 +175,7 @@ const Requirements = (props) => {
   }
 
   useEffect(() => {
-    if (props.studentInfo.student)
+    if (student && requirements && coursePlan)
       getCreds()
   }, [props.studentInfo])
 
@@ -168,16 +219,16 @@ const Requirements = (props) => {
             {" " + getLetter(requirements[0].minGrade)} or above
           </div>
         }
-        {requirements[3] && requirements[3].map(( req, key) => {
-          if (req.type === 1) {
-            return <div key={key}>Required: {req.courses.join(', ')}</div>
-          }
-          if (req.type === 2) {
-            return <div key={key}>Track Required: {req.courses.join(', ')}</div>
-          }
-          if (req.type === 0) {
-            return <div key={key}>Non-Required: {req.courses.join(', ')}</div>
-          }
+        {requirements[3] && requirements[3].map((req, key) => {
+          // non required non electives (e.g. "cannot take cse538 twice")
+          if (!req.type && req.creditLower && req.creditUpper && req.courseLower && req.courseUpper)
+            return
+          return (
+            <div key={key}>
+              {getText(req)}
+              {req.courses.map((course) => isTaken(course) ? <b>{course} </b> : course + " ")}
+            </div>
+          )
         })}
       </div>
       }
