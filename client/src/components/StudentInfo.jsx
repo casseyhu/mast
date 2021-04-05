@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 
 const StudentInfo = (props) => {
   const history = useHistory();
-  const sems = {'01': 'Winter', '02': 'Spring', '05': 'Summer', '08': 'Fall'}
+  const sems = { '01': 'Winter', '02': 'Spring', '05': 'Summer', '08': 'Fall' }
   const [userInfo, setUserInfo] = useState({})
 
   const handleSelection = (name, e) => {
@@ -19,10 +19,8 @@ const StudentInfo = (props) => {
   }
 
   const modeButtonHandler = () => {
-    console.log("Student info component")
     props.onSubmit(userInfo)
   }
-
 
   useEffect(() => {
     setUserInfo(prevState => ({
@@ -42,7 +40,8 @@ const StudentInfo = (props) => {
       degreeSem: props.student ? sems[props.student.requirementVersion.toString().substring(4, 6)] : '',
       degreeYear: props.student ? props.student.requirementVersion.toString().substring(0, 4) : '',
       gpdComments: props.student ? props.student.gpdComments : '',
-      studentComments: props.student ? props.student.studentComments : ''
+      studentComments: props.student ? props.student.studentComments : '',
+      updatedAt: props.student ? new Date(props.student.updatedAt).toLocaleString() : ''
     }))
   }, [props.student])
 
@@ -51,6 +50,7 @@ const StudentInfo = (props) => {
     <div className="flex-horizontal wrap">
       <div className="flex-horizontal justify-content-between">
         <h1>{mode} Student</h1>
+        <small>Last Updated: {userInfo.updatedAt}</small>
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
           {props.userType == 'gpd' && (
             <Button
@@ -104,7 +104,7 @@ const StudentInfo = (props) => {
             onChange={e => handleSelection('sbuId', e.target)}
             value={userInfo.sbuId}
             disabled={mode === 'View'}
-            style={{ width: "300px", flexShrink: '1'  }}
+            style={{ width: "300px", flexShrink: '1' }}
           />
           <span className="filter-span" style={{ marginLeft: "0.6rem" }}>GPA:</span>
           <InputField
@@ -127,9 +127,9 @@ const StudentInfo = (props) => {
             onChange={e => handleSelection('email', e.target)}
             value={userInfo.email}
             disabled={mode === 'View'}
-            style={{ width: "300px", flexShrink: '1'  }}
+            style={{ width: "300px", flexShrink: '1' }}
           />
-          <span className="filter-span" style={{ marginLeft: "0.6rem", flexShrink: '1'  }}>Graduated: </span>
+          <span className="filter-span" style={{ marginLeft: "0.6rem", flexShrink: '1' }}>Graduated: </span>
           <Dropdown
             className="lr-padding"
             items={BOOLEAN}
@@ -137,8 +137,8 @@ const StudentInfo = (props) => {
             value={userInfo.graduated && { label: userInfo.graduated, value: userInfo.graduated }}
             disabled={mode === 'View' || mode === 'Add'}
             style={{ width: "200px" }}
-            onChange={e => handleSelection('graduated', e)} 
-            />
+            onChange={e => handleSelection('graduated', e)}
+          />
         </div>
 
         <div className="flex-horizontal">
@@ -149,16 +149,16 @@ const StudentInfo = (props) => {
             placeholder="Semester"
             value={userInfo.entrySem && { label: userInfo.entrySem, value: userInfo.entrySem }}
             disabled={mode === 'View'}
-            onChange={e => handleSelection('entrySem', e)} 
-            />
+            onChange={e => handleSelection('entrySem', e)}
+          />
           <Dropdown
             className="all-padding"
             items={YEARS}
             placeholder="Year"
             value={userInfo.entryYear && { label: userInfo.entryYear, value: userInfo.entryYear }}
             disabled={mode === 'View'}
-            onChange={e => handleSelection('entryYear', e)} 
-            />
+            onChange={e => handleSelection('entryYear', e)}
+          />
         </div>
 
         <div className="flex-horizontal">
@@ -213,6 +213,7 @@ const StudentInfo = (props) => {
       </div>
 
       <div className="flex-vertical wrap" style={{ width: 'fit-content', marginLeft: '0.7rem' }}>
+        <small>GPD Comments:</small>
         <textarea
           className="textarea resize-ta"
           placeholder="GPD Comments"
@@ -220,6 +221,7 @@ const StudentInfo = (props) => {
           disabled={mode === 'View' || props.userType === "student"}
           onChange={e => handleSelection('gpdComments', e.target)}
           style={{ minWidth: "375px" }} />
+        <small>Student Comments:</small>
         <textarea
           placeholder="Student Comments"
           className="textarea resize-ta"

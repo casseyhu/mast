@@ -72,8 +72,6 @@ module.exports = (sequelize, Sequelize) => {
     graduated: Sequelize.BOOLEAN,
     studentComments: Sequelize.TEXT('long'),
     gpdComments: Sequelize.TEXT('long')
-  }, {
-    timestamps: false
   })
 
   return Student;

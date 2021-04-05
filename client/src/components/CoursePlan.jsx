@@ -26,7 +26,7 @@ const CoursePlan = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.items.sort((a, b) => sortBySem(a, b)).map((course, i) => {
+          {props.coursePlan && props.coursePlan.sort((a, b) => sortBySem(a, b)).map((course, i) => {
             return <tr key={i} style={{ cursor: 'pointer' }}>
               <td className="center">{course.courseId.substring(0, 3)}</td>
               <td className="center">{course.courseId.substring(3, 6)}</td>

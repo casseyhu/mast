@@ -242,7 +242,8 @@ function emptyFields(student) {
       || fields === "gpa"
       || fields === "graduated"
       || fields === "degreeSem"
-      || fields === "degreeYear") {
+      || fields === "degreeYear"
+      || fields === "updatedAt") {
       continue
     }
     if (student[fields] === "") {

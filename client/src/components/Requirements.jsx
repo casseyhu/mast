@@ -124,7 +124,8 @@ const Requirements = (props) => {
   }
 
   useEffect(() => {
-    getCreds()
+    if (props.studentInfo.student)
+      getCreds()
   }, [props.studentInfo])
 
 
@@ -142,7 +143,7 @@ const Requirements = (props) => {
         </div>
       </div>
 
-      {<div className="flex-vertical" style={{ width: '100%' }}>
+      {display && <div className="flex-vertical" style={{ width: '100%' }}>
         {requirements[1] && Object.entries(requirements[1]).map(([key, value]) => {
           if (key != "requirementId" && value != null) {
             return (
