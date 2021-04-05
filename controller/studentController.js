@@ -434,7 +434,7 @@ exports.deleteAll = (req, res) => {
 async function uploadStudents(csvFile, res) {
   const degrees = await Degree.findAll()
   let degreeDict = {};
-  let m
+  
   const currentGradYear = 202101
   const semDict = {
     '01': 'Winter',

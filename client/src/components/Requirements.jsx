@@ -9,9 +9,10 @@ const Requirements = (props) => {
 
 
   const GRADES = { 'A': 4, 'A-': 3.67, 'B+': 3.33, 'B': 3, 'B-': 2.67, 'C+': 2.33, 'C': 2, 'C-': 1.67, 'F': 0 }
-  let requirements = props.requirements;
-  let student = props.student;
-  let coursePlan = props.coursePlan;
+  // let requirements = props.studentInfo.requirements;
+  // let student = props.studentInfo.student;
+  // let coursePlan = props.studentInfo.items;
+  let { student, requirements, coursePlan } = props.studentInfo
 
   const getGpaColor = (type) => {
     if (display && gpas[type] && requirements[1][type]) {
@@ -19,7 +20,7 @@ const Requirements = (props) => {
         return "green";
       return "red"
     }
-    return;
+    return "red";
   }
 
   const getCreditsColor = () => {
@@ -29,7 +30,7 @@ const Requirements = (props) => {
         return "green";
       return "red";
     }
-    return;
+    return "red";
   }
 
   const getLetter = (points) => {
@@ -44,20 +45,18 @@ const Requirements = (props) => {
         return "green";
       return "red";
     }
-    return
+    return "red"
   }
 
   const getCreds = async () => {
-    var student = props.student;
-    var coursePlan = props.coursePlan.filter((course) => course.grade != null);
-    var requirements = props.requirements;
+    var courses = coursePlan.filter((course) => course.grade != null);
     var credits = {};
     console.log(requirements[3])
-    if (student && coursePlan.length && requirements[3]) {
-      for (var i = 0; i < coursePlan.length; i++) {
+    if (student && courses.length && requirements[3]) {
+      for (var i = 0; i < courses.length; i++) {
         let foundCourse = await axios.get('/course/findOne/', {
           params: {
-            courseId: coursePlan[i].courseId
+            courseId: courses[i].courseId
           }
         })
         foundCourse = foundCourse.data;
@@ -71,7 +70,7 @@ const Requirements = (props) => {
 
       // Set department gpa
       var deptCourses = coursePlan.filter((course) => (
-        course.courseId.slice(0,3) === student.department
+        course.courseId.slice(0, 3) === student.department
       ));
       var deptTotalPoints = 0;
       var deptTotalCredits = 0;
@@ -83,7 +82,7 @@ const Requirements = (props) => {
           }
         }
       }
-      
+
       // Set core gpa
       var coreReqs = requirements[3].filter((req) => (
         req.creditLower !== 3 && req.creditUpper !== 3
@@ -109,9 +108,9 @@ const Requirements = (props) => {
       }
       setGpas({
         "cumulative": student.gpa,
-        "department": deptTotalPoints/deptTotalCredits,
-        "core": coreTotalPoints/coreTotalCredits
-      });      
+        "department": deptTotalPoints / deptTotalCredits,
+        "core": coreTotalPoints / coreTotalCredits
+      });
     }
     else {
       setGpas({
@@ -119,14 +118,14 @@ const Requirements = (props) => {
         "department": null,
         "core": null
       });
-      setTotalCredits(0);  
+      setTotalCredits(0);
     }
     setDisplay(true);
   }
 
   useEffect(() => {
     getCreds()
-  }, [props])
+  }, [props.studentInfo])
 
 
   return (
@@ -143,7 +142,7 @@ const Requirements = (props) => {
         </div>
       </div>
 
-      {display && <div className="flex-vertical" style={{ width: '100%' }}>
+      {<div className="flex-vertical" style={{ width: '100%' }}>
         {requirements[1] && Object.entries(requirements[1]).map(([key, value]) => {
           if (key != "requirementId" && value != null) {
             return (
@@ -168,15 +167,15 @@ const Requirements = (props) => {
             {" " + getLetter(requirements[0].minGrade)} or above
           </div>
         }
-        {requirements[3] && requirements[3].map((req) => {
+        {requirements[3] && requirements[3].map(( req, key) => {
           if (req.type === 1) {
-            return <div>Required: {req.courses}</div>
+            return <div key={key}>Required: {req.courses.join(', ')}</div>
           }
           if (req.type === 2) {
-            return <div>Track Required: {req.courses}</div>
+            return <div key={key}>Track Required: {req.courses.join(', ')}</div>
           }
           if (req.type === 0) {
-            return <div>Non-Required: {req.courses}</div>
+            return <div key={key}>Non-Required: {req.courses.join(', ')}</div>
           }
         })}
       </div>

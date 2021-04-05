@@ -9,53 +9,50 @@ import jwt_decode from 'jwt-decode';
 
 
 const Student = (props) => {
-  const [requirements, setRequirements] = useState([]);
+  // const [requirements, setRequirements] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [mode, setMode] = useState(props.location.state ? props.location.state.mode : props.mode)
   const [student, setStudent] = useState(props.student ? props.student : props.location.state.student)
-  const [items, setItems] = useState([])
+  // const [items, setItems] = useState([])
+  const [studentInfoParams, setStudentInfoParams] = useState({})
+
+  const setStudentInfo = async () => {
+    let studentRes = await axios.get('/student/' + student.sbuId, {
+      params: { sbuId: student.sbuId }
+    })
+    console.log(studentRes.data)
+    let coursePlanItems = await axios.get('/courseplanitem/findItems', {
+      params: {
+        studentId: student.sbuId
+      }
+    })
+    let requirements = await axios.get('/requirements', {
+      params: {
+        department: studentRes.data.department,
+        track: studentRes.data.track,
+        degreeId: studentRes.data.degreeId
+      }
+    })
+    setStudentInfoParams({
+      student: studentRes.data,
+      coursePlan: coursePlanItems.data,
+      requirements: requirements.data
+    })
+    setStudent(studentRes.data)
+  }
 
 
   useEffect(() => {
     console.log("user: " + props.type)
-    console.log(student)
     if (mode === 'Add')
       return
     let token = localStorage.getItem('jwt-token')
     var decoded = jwt_decode(token)
     if (!decoded)
       return
-    //set value of student
-    axios.get('/student/'+student.sbuId, {
-      params : { sbuId: student.sbuId }
-    }).then(res => {
-      setStudent(res.data)
-    })
-    // Set items
-    axios.get('/courseplanitem/findItems', {
-      params: {
-        studentId: student.sbuId
-      }
-    }).then(res => {
-      setItems(res.data);
-      axios.get('/requirements', {
-        params: {
-          department: student.department,
-          track: student.track,
-          degreeId: student.degreeId
-        }
-      }).then(res => {
-        setRequirements(res.data);
-      }).catch(err => {
-        console.log(err);
-      })
-    }).catch(err => {
-      console.log(err)
-    });
-
-    // Get requirement states
-  }, [])
+    setStudentInfo()
+  }, [props])
 
 
   const modeHandler = (studentInfo) => {
@@ -92,32 +89,31 @@ const Student = (props) => {
     setMode('View')
   }
 
-  return (
-    <Container fluid="lg" className="container">
-      <StudentInfo
-        mode={mode}
-        errorMessage={errorMsg}
-        userType={props.type}
-        student={student}
-        onSubmit={(e) => modeHandler(e)}
-      />
-      <hr />
-      <Requirements
-        requirements={requirements}
-        coursePlan={items}
-        student={student}
-      />
-      <hr />
-      <CoursePlan
-        items={items} />
-      <CenteredModal
-        show={showConfirmation}
-        onHide={() => setShowConfirmation(false)}
-        onConfirm={changeMode}
-        body="Student successfully saved"
-      />
-    </Container>
-  );
+  if (!studentInfoParams.requirements || !studentInfoParams.coursePlan || !studentInfoParams.student)
+    return <>BAD!!</>
+  else
+    return (
+      <Container fluid="lg" className="container">
+        <StudentInfo
+          mode={mode}
+          errorMessage={errorMsg}
+          userType={props.type}
+          student={student}
+          onSubmit={(e) => modeHandler(e)}
+        />
+        <hr />
+        <Requirements studentInfo={studentInfoParams} />
+        <hr />
+        <CoursePlan
+          items={studentInfoParams.coursePlan} />
+        <CenteredModal
+          show={showConfirmation}
+          onHide={() => setShowConfirmation(false)}
+          onConfirm={changeMode}
+          body="Student successfully saved"
+        />
+      </Container>
+    );
 }
 
 export default Student;

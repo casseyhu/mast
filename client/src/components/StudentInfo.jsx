@@ -25,7 +25,8 @@ const StudentInfo = (props) => {
 
 
   useEffect(() => {
-    setUserInfo({
+    setUserInfo(prevState => ({
+      ...prevState,
       firstName: props.student ? props.student.firstName : '',
       lastName: props.student ? props.student.lastName : '',
       sbuId: props.student ? props.student.sbuId : '',
@@ -42,7 +43,7 @@ const StudentInfo = (props) => {
       degreeYear: props.student ? props.student.requirementVersion.toString().substring(0, 4) : '',
       gpdComments: props.student ? props.student.gpdComments : '',
       studentComments: props.student ? props.student.studentComments : ''
-    })
+    }))
   }, [props.student])
 
   let { mode, errorMessage } = props;

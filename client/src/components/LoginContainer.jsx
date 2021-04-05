@@ -81,7 +81,7 @@ class LoginContainer extends Component {
             onChange={this.switchUser}
             checked={this.state.user === 'gpd'}
           />
-          <label for="toggle-gpd" className="users gpd">GPD</label>
+          <label htmlFor="toggle-gpd" className="users gpd">GPD</label>
           <input
             id="toggle-student"
             className="toggle toggle-right"
@@ -91,7 +91,7 @@ class LoginContainer extends Component {
             onChange={this.switchUser}
             checked={this.state.user === 'student'}
           />
-          <label for="toggle-student" className="users student">Student</label>
+          <label htmlFor="toggle-student" className="users student">Student</label>
         </div>
         <InputField
           className="login-item"
