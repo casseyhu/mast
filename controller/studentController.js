@@ -325,56 +325,52 @@ exports.findById = (req, res) => {
 
 // Filter all students by filters
 exports.filter = (req, res) => {
-  let info = req.query.nameId.replace(/\s+/g,' ').trim().split(' ')
-  let firstName = []
-  let lastName = []
-  let sbuId = []
-  for (let i = 0; i < info.length; i++) {
-    let first = { firstName: { [Op.like]: info[i] + "%" } }
-    let last = { lastName: { [Op.like]: info[i] + "%" } }
-    let id = { sbuId: { [Op.like]: info[i] + "%" } }
-    firstName.push(first)
-    lastName.push(last)
-    sbuId.push(id)
-  }
+  let info = req.query.nameId.replace(/\s+/g, ' ').trim().split(' ')
   let filters = null
   if (info.length == 1) {
     filters = {
       [Op.or]: [
-        { [Op.or]: firstName },
-        { [Op.or]: lastName },
-        { [Op.or]: sbuId }]
+        { firstName: { [Op.like]: info[0] + "%" } },
+        { lastName: { [Op.like]: info[0] + "%" } },
+        { sbuId: { [Op.like]: info[0] + "%" } }
+      ]
     }
   }
   else if (info.length == 2) {
     filters = {
-      [Op.and]: [
-        { [Op.or]: firstName },
-        { [Op.or]: lastName },
+      [Op.or]: [
+        { [Op.and]: [{ firstName: { [Op.like]: info[0] + "%" } }, { lastName: { [Op.like]: info[1] + "%" } }] },
+        { [Op.and]: [{ lastName: { [Op.like]: info[0] + "%" } }, { firstName: { [Op.like]: info[1] + "%" } }] },
+        { [Op.and]: [{ firstName: { [Op.like]: info[0] + "%" } }, { sbuId: { [Op.like]: info[1] + "%" } }] },
+        { [Op.and]: [{ sbuId: { [Op.like]: info[0] + "%" } }, { firstName: { [Op.like]: info[1] + "%" } }] },
+        { [Op.and]: [{ lastName: { [Op.like]: info[0] + "%" } }, { sbuId: { [Op.like]: info[1] + "%" } }] },
+        { [Op.and]: [{ sbuId: { [Op.like]: info[0] + "%" } }, { lastName: { [Op.like]: info[1] + "%" } }] },
       ]
     }
   }
   else {
     filters = {
-      [Op.and]: [
-        { [Op.or]: firstName },
-        { [Op.or]: lastName },
-        { [Op.or]: sbuId }]
+      [Op.or]: [
+        { [Op.and]: [{ firstName: { [Op.like]: info[0] + "%" } }, { lastName: { [Op.like]: info[1] + "%" } }, { sbuId: { [Op.like]: info[2] + "%" } }] },
+        { [Op.and]: [{ firstName: { [Op.like]: info[0] + "%" } }, { sbuId: { [Op.like]: info[1] + "%" } }, { lastName: { [Op.like]: info[2] + "%" } }] },
+        { [Op.and]: [{ lastName: { [Op.like]: info[0] + "%" } }, { firstName: { [Op.like]: info[1] + "%" } }, { sbuId: { [Op.like]: info[2] + "%" } }] },
+        { [Op.and]: [{ lastName: { [Op.like]: info[0] + "%" } }, { sbuId: { [Op.like]: info[1] + "%" } }, { firstName: { [Op.like]: info[2] + "%" } }] },
+        { [Op.and]: [{ sbuId: { [Op.like]: info[0] + "%" } }, { firstName: { [Op.like]: info[1] + "%" } }, { lastName: { [Op.like]: info[2] + "%" } }] },
+        { [Op.and]: [{ sbuId: { [Op.like]: info[0] + "%" } }, { lastName: { [Op.like]: info[1] + "%" } }, { firstName: { [Op.like]: info[1] + "%" } }] },
+      ]
     }
   }
   Student
     .findAll({
       where: {
         [Op.and]: filters,
-
-        // lastName: { [Op.like]: 1req.query.lastName },
-        // sbuId: { [Op.like]: {[Op.in] :req.query.sbuId }},
         department: { [Op.like]: req.query.department },
         entrySem: { [Op.like]: req.query.entrySem },
         entryYear: { [Op.like]: req.query.entryYear },
         track: { [Op.like]: req.query.track },
         gradSem: { [Op.like]: req.query.gradSem },
         gradYear: { [Op.like]: req.query.gradYear },
+        graduated: { [Op.like]: req.query.graduated }
       }
     })
     .then(students => {
@@ -435,7 +431,7 @@ exports.deleteAll = (req, res) => {
 async function uploadStudents(csvFile, res) {
   const degrees = await Degree.findAll()
   let degreeDict = {};
-  
+
   const currentGradYear = 202101
   const semDict = {
     '01': 'Winter',
