@@ -102,15 +102,13 @@ async function uploadCourses(results, res){
       }
     }
   }
-  var emails = [];
-  for (var i = 0; i < affectedStudents.length; i++) {
-    var student = await Student.findOne({
-      where: {
-        sbuId: affectedStudents[i]
-      }
-    })
-    emails.push(student.email);
-  }
+  var emails = []
+  var students = await Student.findAll({
+    where: {
+      sbuId: affectedStudents
+    }
+  })
+  students.map((student) => {emails.push(student.email)});
   console.log(emails);
 
   var nodemailer = require('nodemailer');
