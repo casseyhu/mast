@@ -14,7 +14,7 @@ const Requirements = (props) => {
   // let requirements = props.studentInfo.requirements;
   // let student = props.studentInfo.student;
   // let coursePlan = props.studentInfo.items;
-  let { student, requirements, coursePlan } = props.studentInfo
+  let { student, requirements, coursePlan, requirementStates} = props.studentInfo
 
   const getGpaColor = (type) => {
     if (display && gpas[type] && requirements[1][type]) {
@@ -48,6 +48,27 @@ const Requirements = (props) => {
       return "red";
     }
     return "red"
+  }
+
+  const getCourseColor = (courseRequirement) => {
+    // Check if this course is in their schedule right now. 
+    // If the course was already taken (has a grade) or if the course
+    // is being taken right now (currSem,currYear), then it's pending. 
+    // let reqState = await RequirementState.findOne({
+    //   where: {
+    //     sbuID: student.sbuId,
+    //     requirementId: 'C'+courseRequirement.requirementId
+    //   }
+    // })
+
+    let reqState = requirementStates['C'+courseRequirement.requirementId]
+    if(reqState === "satisfied")
+      return 'green'
+    else if(reqState === "unsatisfied")
+      return 'red'
+    else
+      return 'yellow'
+    
   }
 
   const getText = (req) => {
@@ -177,6 +198,7 @@ const Requirements = (props) => {
   useEffect(() => {
     if (student && requirements && coursePlan)
       getCreds()
+    console.log(coursePlan)
   }, [props.studentInfo])
 
 
@@ -224,9 +246,11 @@ const Requirements = (props) => {
           if (!req.type && req.creditLower && req.creditUpper && req.courseLower && req.courseUpper)
             return
           return (
-            <div key={key}>
-              {getText(req)}
-              {req.courses.map((course) => isTaken(course) ? <b>{course} </b> : course + " ")}
+            <div className={getCourseColor(req)}>
+              <div key={key}>
+                {getText(req)}
+                {req.courses.map((course) => isTaken(course) ? <b>{course} </b> : course + " ")}
+              </div>
             </div>
           )
         })}

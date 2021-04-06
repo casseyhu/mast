@@ -17,6 +17,9 @@ module.exports = function (app) {
   // Get all students by filtered conditions
   app.get('/api/student/filter', Student.filter);
 
+  // Get student requirement states
+  app.get('/api/student/requirementStates', Student.getStates)
+
   // Get a Student
   app.get('/api/student/:sbuId', Student.findById);
 
@@ -29,6 +32,4 @@ module.exports = function (app) {
   // Delete all students
   app.post('/api/student/deleteall', Student.deleteAll)
 
-  // Calculate student completion
-  // app.post('/api/student/calculate', Student.calculate)
 }
