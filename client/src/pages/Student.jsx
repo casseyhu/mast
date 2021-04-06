@@ -32,7 +32,6 @@ const Student = (props) => {
         degreeId: studentRes.data.degreeId
       }
     })
-    console.log(requirements)
     setStudentInfoParams({
       student: studentRes.data,
       coursePlan: coursePlanItems.data,

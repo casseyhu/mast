@@ -323,21 +323,23 @@ async function uploadStudents(csvFile, res) {
   const degrees = await Degree.findAll()
   let degreeDict = {};
 
+  let  semsDict = { '02': 'Spring', '06': 'Summer', '08': 'Fall', '01': 'Winter' };
   const currentGradYear = 202101
   for (let i = 0; i < degrees.length; i++) {
     let requirementVersion = degrees[i].requirementVersion.toString()
-    let requirementSem = semDict[requirementVersion.substring(4, 6)]
+    let requirementSem = semsDict[requirementVersion.substring(4, 6)]
     let requirementYear = requirementVersion.substring(0, 4)
     degreeDict[degrees[i].dept + ' ' + degrees[i].track + ' ' + requirementSem + ' ' + requirementYear] = degrees[i].degreeId
   }
   let tot = 0;
-  let semsDict = { 'Spring': '02', 'Summer': '06', 'Fall': '08', 'Winter': '01' };
+
+  // let semsDict = { 'Spring': '02', 'Summer': '06', 'Fall': '08', 'Winter': '01' };
   for (let i = 0; i < csvFile.data.length; i++) {
     studentInfo = csvFile.data[i]
     let condition = { sbuId: studentInfo.sbu_id }
-    let semYear = Number(studentInfo.entry_year + semsDict[studentInfo.entry_semester])
-    let graduated = Number(studentInfo.graduation_year + semsDict[studentInfo.graduation_semester]) <= currentGradYear ? 1 : 0
-    let requirementVersion = Number(studentInfo.requirement_version_year) * 100 + Number(semsDict[studentInfo.requirement_version_semester])
+    let semYear = Number(studentInfo.entry_year + semDict[studentInfo.entry_semester])
+    let graduated = Number(studentInfo.graduation_year + semDict[studentInfo.graduation_semester]) <= currentGradYear ? 1 : 0
+    let requirementVersion = Number(studentInfo.requirement_version_year) * 100 + Number(semDict[studentInfo.requirement_version_semester])
     let values = {
       sbuId: studentInfo.sbu_id,
       firstName: studentInfo.first_name,
