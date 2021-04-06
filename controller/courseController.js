@@ -41,6 +41,7 @@ exports.findOne = (req, res) => {
     res.status(200).send(course)
   }).catch(err => {
     console.log(err)
+    res.status(500).send("Error finding course")
   })
 }
 

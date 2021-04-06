@@ -209,7 +209,7 @@ exports.login = (req, res) => {
 // Find a Student 
 exports.findById = (req, res) => {
   Student.findByPk(req.params.sbuId).then(student => {
-    res.send(student);
+    res.status(200).send(student);
   }).catch(err => {
     res.status(500).send('Error: ' + err);
   })
@@ -276,7 +276,6 @@ exports.filter = (req, res) => {
 // Find all Students 
 exports.findAll = (req, res) => {
   const condition = { department: req.query.department }
-
   Student
     .findAll({ where: condition })
     .then(students => {
@@ -307,9 +306,9 @@ exports.deleteAll = (req, res) => {
   Student
     .drop()
     .then(() => {
-      res.status(200).send('Deleted student data.');
       database.sequelize.sync({ force: false }).then(() => {
         console.log('Synced database');
+        res.status(200).send('Deleted student data.');
       })
     })
     .catch(err => {
@@ -324,21 +323,22 @@ async function uploadStudents(students, res) {
   const degrees = await Degree.findAll()
   let degreeDict = {};
 
+  let  semsDict = { '02': 'Spring', '05': 'Summer', '08': 'Fall', '01': 'Winter' };
   const currentGradYear = 202101
   for (let i = 0; i < degrees.length; i++) {
     let requirementVersion = degrees[i].requirementVersion.toString()
-    let requirementSem = semDict[requirementVersion.substring(4, 6)]
+    let requirementSem = semsDict[requirementVersion.substring(4, 6)]
     let requirementYear = requirementVersion.substring(0, 4)
     degreeDict[degrees[i].dept + ' ' + degrees[i].track + ' ' + requirementSem + ' ' + requirementYear] = degrees[i].degreeId
   }
   let tot = 0;
+
   for (let i = 0; i < students.length; i++) {
     studentInfo = students[i]
-    let semsDict = { 'Spring': '02', 'Summer': '06', 'Fall': '08', 'Winter': '01' };
-    let semYear = Number(studentInfo.entry_year + semsDict[studentInfo.entry_semester])
-    let graduated = Number(studentInfo.graduation_year + semsDict[studentInfo.graduation_semester]) <= currentGradYear ? 1 : 0
     let condition = { sbuId: studentInfo.sbu_id }
-    let requirementVersion = Number(studentInfo.requirement_version_year) * 100 + Number(semsDict[studentInfo.requirement_version_semester])
+    let semYear = Number(studentInfo.entry_year + semDict[studentInfo.entry_semester])
+    let graduated = Number(studentInfo.graduation_year + semDict[studentInfo.graduation_semester]) <= currentGradYear ? 1 : 0
+    let requirementVersion = Number(studentInfo.requirement_version_year) * 100 + Number(semDict[studentInfo.requirement_version_semester])
     let values = {
       sbuId: studentInfo.sbu_id,
       firstName: studentInfo.first_name,

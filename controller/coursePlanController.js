@@ -42,14 +42,18 @@ exports.uploadPlans = (req, res) => {
           return
         }
         let coursePlans = results.data
-        uploadCoursePlans(coursePlans, res)
+        uploadCoursePlans(coursePlans, dept, res)
       }
     })
   })
 }
 
 
-async function uploadCoursePlans(coursePlans, res) {
+async function uploadCoursePlans(coursePlans, dept, res) {
+  let students = await Student.findAll({ where: { department: dept }})
+  students = new Set(students.map(student => student.sbuId))
+  coursePlans = coursePlans.filter(coursePlan => students.has(coursePlan.sbu_id))
+  // console.log(coursePlans)
   let studentsPlanId = {}
   // Create/Update all the course plan items
   for (let i = 0; i < coursePlans.length; i++) {
@@ -57,8 +61,10 @@ async function uploadCoursePlans(coursePlans, res) {
       continue
     let condition = { studentId: coursePlans[i].sbu_id }
     let found = await CoursePlan.findOne({ where: condition })
-    if (!found)
+    if (!found) {
+      console.log(condition)
       continue
+    }
     studentsPlanId[coursePlans[i].sbu_id] = found.coursePlanId
     condition = {
       coursePlanId: found.coursePlanId,
