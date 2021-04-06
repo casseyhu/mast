@@ -22,8 +22,16 @@ const RequirementState = database.RequirementState;
 const { IncomingForm } = require('formidable');
 const fs = require('fs');
 const Papa = require('papaparse');
+const student = require('../models/student.js');
 
-
+const semDict = {
+  'Fall': 8,
+  'Spring': 2,
+  'Winter': 1,
+  'Summer': 5
+}
+const currSem = 'Spring'
+const currYear = 2021
 
 // Upload course plans/grades CSV
 exports.uploadPlans = (req, res) => {
@@ -63,7 +71,7 @@ exports.uploadPlans = (req, res) => {
 
 
 async function uploadCoursePlans(coursePlans, dept, res) {
-  let students = await Student.findAll({ where: { department: dept }})
+  let students = await Student.findAll({ where: { department: dept } })
   students = new Set(students.map(student => student.sbuId))
   coursePlans = coursePlans.filter(coursePlan => students.has(coursePlan.sbu_id))
   // console.log(coursePlans)
@@ -143,48 +151,66 @@ async function calculateGPA(studentsPlanId, courseCredit, res) {
 async function calculateCompletion(studentsPlanId, res) {
   console.log("Calculating student CoursePlan completion...")
   let tot = 0
-  for(let key in studentsPlanId) {
-    let student = await Student.findOne({ where: { sbuId:key }})
+  for (let key in studentsPlanId) {
+    let unsatisfied = 0
+    let satisfied = 0
+    let pending = 0
+
+    let student = await Student.findOne({ where: { sbuId: key } })
     let creditState = 'unsatisfied'
-    let gpaState = 'unsatisfied'
-    let gradeState = 'unsatisfied'
-    let courseState = 'unsatisfied'
     // For each students, look at their degree+track+reqVersion.
     // Get all the requirements to this student's specific Degree.
-    let degree = await Degree.findOne({ where: { degreeId: student.degreeId }})
-    let creditReq = await CreditRequirement.findOne({ where: { requirementId: degree.creditRequirement }})
-    let gpaReq = await GpaRequirement.findOne({ where: { requirementId: degree.gpaRequirement }})
-    let gradeReq = await GradeRequirement.findOne({ where: { requirementId: degree.gradeRequirement }})
-    // List of all the course requirements for this degree
-    let courseReq = await CourseRequirement.findAll({ where: { requirementId: degree.courseRequirement }})
-
+    let degree = await Degree.findOne({ where: { degreeId: student.degreeId } })
+    let creditReq = await CreditRequirement.findOne({ where: { requirementId: degree.creditRequirement } })
+    let gpaReq = await GpaRequirement.findOne({ where: { requirementId: degree.gpaRequirement } })
+    let gradeReq = await GradeRequirement.findOne({ where: { requirementId: degree.gradeRequirement } })
+    let courseReq = await CourseRequirement.findAll({ where: { requirementId: degree.courseRequirement } })
     // Get this student's coursePlan to see what courses they've taken/currently taken/are going to take.
-    // let coursePlan = await CoursePlan.findOne({ where: { studentId: student.sbuId }})
-    let coursePlanItems = await CoursePlanItem.findAll({ where: { coursePlanId: studentsPlanId[key] }})
-  
+    let coursePlanItems = await CoursePlanItem.findAll({ where: { coursePlanId: studentsPlanId[key] } })
+
     // -----------------  Check credit requirement -----------------
+    // List of courses with grades
+    let takenCourses = coursePlanItems.filter((course) => (
+      course.grade !== null
+    ));
+    // List of courses currently taking
+    let currentCourses = coursePlanItems.filter((course) => (
+      course.year === currYear && semDict[course.semester] === semDict[currSem]
+    ));
+
+    // CREDIT REQUIREMENT: Create the course credits mapping and get total credits taken
     let totalCredits = 0
     let credits = {}
-    for(let j = 0; j < coursePlanItems.length; j++) {
+    for (let j = 0; j < takenCourses.length; j++) {
       // Add up all course credits they have in their current course plan.
-      let course = await Course.findOne({ where: { courseId: coursePlanItems[j].courseId }})
+      let course = await Course.findOne({ where: { courseId: takenCourses[j].courseId } })
       if (course && course.credits) {
         credits[course.courseId] = course.credits;
         totalCredits += course.credits
       }
-      // totalCredits += course.credits
-    } 
-    if(totalCredits >= creditReq.minCredit) 
-      creditState = 'satisfied'
-    else
+    }
+    for (let j = 0; j < currentCourses.length; j++) {
+      let course = await Course.findOne({ where: { courseId: currentCourses[j].courseId } })
+      if (course && course.credits) {
+        credits[course.courseId] = course.credits;
+        totalCredits += course.credits
+      }
+    }
+    if (totalCredits == 0) {
       creditState = 'unsatisfied'
-    
-    // console.log("Credit state: ", creditState)
+      unsatisfied++
+    } else if (totalCredits >= creditReq.minCredit) {
+      creditState = 'satisfied'
+      satisfied++
+    } else {
+      creditState = 'pending'
+      pending++
+    }
 
-    // -----------  Check gpaReqs (coreGpa, cumulGpa, deptGpa) ------------
+    // GPA REQUIREMENT: (coreGpa, cumulGpa, deptGpa) 
     const GRADES = { 'A': 4, 'A-': 3.67, 'B+': 3.33, 'B': 3, 'B-': 2.67, 'C+': 2.33, 'C': 2, 'C-': 1.67, 'F': 0 }
     // Calculate student's achieved departmental gpa
-    var deptCourses = coursePlanItems.filter((course) => (
+    var deptCourses = takenCourses.filter((course) => (
       course.courseId.slice(0, 3) === student.department
     ));
     var deptTotalPoints = 0;
@@ -196,22 +222,20 @@ async function calculateCompletion(studentsPlanId, res) {
           deptTotalPoints += credit * GRADES[deptCourse.grade]
         }
       }
-    } 
-    let studentDeptGpa = deptTotalPoints/deptTotalCredits
-
-    // console.log("Student dept gpa: ", studentDeptGpa)
+    }
+    let studentDeptGpa = deptTotalPoints / deptTotalCredits
 
     // Calculate student's achieved core gpa
-    var coreReqs = courseReq.filter((req) => {
+    var coreReqs = courseReq.filter((req) => (
       req.type === 1
-    })
+    ))
     var coreCourses = [];
     for (var req of coreReqs) {
       for (var course of req.courses) {
         coreCourses.push(course);
       }
     }
-    var takenCourses = coursePlanItems.filter((course) => (
+    takenCourses = takenCourses.filter((course) => (
       coreCourses.includes(course.courseId)
     ));
     var coreTotalPoints = 0;
@@ -224,26 +248,47 @@ async function calculateCompletion(studentsPlanId, res) {
         }
       }
     }
-    let studentCoreGpa = coreTotalPoints/coreTotalCredits
+    let studentCoreGpa = coreTotalPoints / coreTotalCredits
 
-    // console.log("Student core gpa: ", studentCoreGpa)
+
+    if (student.sbuId === 731468826)
+      console.log(studentCoreGpa, gpaReq.core)
 
     // Set the state of the GPA requirement. 
-    let satisfiedDept  = gpaReq.department ? studentDeptGpa >= gpaReq.department : true
-    let satisfiedCore  = gpaReq.core ? studentCoreGpa >= gpaReq.core : true
-    let satisfiedCumul =  gpaReq.cumulative ? student.gpa >= gpaReq.cumulative: true
-    gpaState = (satisfiedDept && satisfiedCore && satisfiedCumul) ? 'satisfied' : 'unsatisfied'
-    
-    // ------------------- Check student's GradeRequirement ------------------
-    const courses = coursePlanItems.filter((course) => GRADES[course.grade] >= gradeReq.minGrade);
-    var sum = courses.reduce((a, b) => a + credits[b.courseId], 0);
-    gradeState = (sum >= gradeReq.atLeastCredits) ?  'satisfied' : 'unsatisfied'
+    let satisfiedDept = gpaReq.department ? studentDeptGpa >= gpaReq.department : true
+    let satisfiedCore = gpaReq.core ? studentCoreGpa >= gpaReq.core : true
+    let satisfiedCumul = gpaReq.cumulative ? student.gpa >= gpaReq.cumulative : true
+    let gpaState = (satisfiedDept && satisfiedCore && satisfiedCumul) ? 'satisfied' : 'pending'
+    if (student.gpa == null) {
+      gpaState = 'unsatisfied'
+      unsatisfied++
+    } else if (gpaState == 'satisfied') {
+      satisfied++
+    } else {
+      pending++
+    }
+
+    if (student.sbuId === 731468826)
+      console.log(student.gpa, satisfiedDept, satisfiedCore, satisfiedCumul, takenCourses)
 
     // console.log("Grade state: ", gradeState)
     // console.log("Gpa state: " , gpaState)
 
     // Update or create the Grade, GPA, and CreditRequirements
-    await updateOrCreate(student, 'Grade', gradeReq.requirementId, gradeState)
+    if (gradeReq) {
+      // ------------------- Check student's GradeRequirement ------------------
+      const courses = coursePlanItems.filter((course) => GRADES[course.grade] >= gradeReq.minGrade);
+      var sum = courses.reduce((a, b) => a + credits[b.courseId], 0);
+      let gradeState = (sum >= gradeReq.atLeastCredits) ? 'satisfied' : 'pending'
+      await updateOrCreate(student, 'Grade', gradeReq.requirementId, gradeState)
+      if (sum === 0) {
+        gradeState = 'unsatisfied'
+        unsatisfied++
+      } else if (gradeState == 'satisfied')
+        satisfied++
+      else
+        pending++
+    }
     await updateOrCreate(student, 'Gpa', gpaReq.requirementId, gpaState)
     await updateOrCreate(student, 'Credit', creditReq.requirementId, creditState)
 
@@ -252,44 +297,56 @@ async function calculateCompletion(studentsPlanId, res) {
     // Create a dictionary of courseId to number of times it occurs in the CoursePlan
     // (i.e) {  'AMS501' : 2 } --> Course AMS501 occured 2 times in this student's CoursePlan.
     let coursePlanItemMap = {}
+    coursePlanItems = coursePlanItems.filter((course) => course.year <= 2020 || (course.year === currYear && semDict[course.semester] === semDict[currSem]))
     coursePlanItems.map((course) => {
-      if(coursePlanItemMap[course.courseId] !== undefined) 
+      if (coursePlanItemMap[course.courseId])
         coursePlanItemMap[course.courseId] += 1
       else
         coursePlanItemMap[course.courseId] = 1
     })
 
-    for(let courseRequirement of courseReq) {
-      if(courseRequirement.type === 0) // Not required for the degree (electives)
+    for (let courseRequirement of courseReq) {
+      if (courseRequirement.type === 0) // Not required for the degree (electives)
         continue
-      let courseLower = (courseRequirement.courseLower) ? courseRequirement.courseLower : 0
-      let creditLower = (courseRequirement.creditLower) ? courseRequirement.creditLower : 0
-      for(let course of courseRequirement.courses){
+      let courseLower = (courseRequirement.courseLower) ? courseRequirement.courseLower : 99999
+      let creditLower = (courseRequirement.creditLower) ? courseRequirement.creditLower : 99999
+      let courseLowerCopy = courseLower
+      let creditLowerCopy = creditLower
+      for (let course of courseRequirement.courses) {
         // course = "AMS527", for example. 
-        if(coursePlanItemMap[course] !== undefined) {
+        if (coursePlanItemMap[course]) {
           courseLower -= coursePlanItemMap[course]
           creditLower -= credits[course] * coursePlanItemMap[course]
         }
       }
-
-      // console.log(coursePlanItemMap)
-      // res.status(200).send("s")
-
-      if(courseLower <= 0)
-        await updateOrCreate(student, 'Course', courseRequirement.requirementId, 'satisfied')
-      else
+      if (courseLower === courseLowerCopy || creditLower === creditLowerCopy) {
         await updateOrCreate(student, 'Course', courseRequirement.requirementId, 'unsatisfied')
+        unsatisfied++
+      } else if (courseLower <= 0 || creditLower <= 0) {
+        await updateOrCreate(student, 'Course', courseRequirement.requirementId, 'satisfied')
+        satisfied++
+      } else {
+        await updateOrCreate(student, 'Course', courseRequirement.requirementId, 'pending')
+        pending++
+      }
     }
     tot += 1
+    await student.update({
+      unsatisfied: unsatisfied,
+      satisfied: satisfied,
+      pending: pending
+    })
+
+
   }
-  console.log("Done calculating "+tot+" students' course plan completion")
+  console.log("Done calculating " + tot + " students' course plan completion")
   res.status(200).send("Success")
 }
 
 async function updateOrCreate(student, requirementType, requirementId, state) {
   // console.log("Update/creating for "+student.sbuId+" for requirement type: ", requirementType)
   let reqStr = ''
-  switch(requirementType) {
+  switch (requirementType) {
     case 'Grade':
       reqStr = 'GR'
       break;
@@ -303,29 +360,23 @@ async function updateOrCreate(student, requirementType, requirementId, state) {
       reqStr = 'C'
       break;
   }
-  // console.log(reqStr)
-  
   let found = await RequirementState.findOne({
     where: {
       sbuID: student.sbuId,
       requirementId: reqStr + requirementId
     }
   })
-
-  // console.log("here: ", found)
-  if(found) {
+  if (found) {
     await found.update({
       state: state
     })
   } else {
-    // console.log("here")
-    // console.log(typeof(student.sbuId))
     await RequirementState.create({
       sbuID: student.sbuId,
       requirementId: reqStr + requirementId,
       state: state
     })
-  } 
+  }
 }
 
 
