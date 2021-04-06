@@ -123,7 +123,7 @@ async function uploadCourses(results, res, dept) {
               || (sStart >= fStart && sStart < fEnd)
               || (sEnd <= fEnd && sEnd > fStart)) {
               const values = {
-                validity: 0
+                validity: false
               }
               // invalid course plan item = 0
               let firstCheck = await CoursePlanItem.update(values, {
@@ -160,23 +160,30 @@ async function uploadCourses(results, res, dept) {
       /* 
         **TODO**
         - Sets the course plan items to invalid if course offering doesn't include those courses
-        but exist in a student's course plan
-        - Save course plan id for later reference to get student id and to push to affectedStudents
+        but exist in a student's course plan (DONE)
+        - Save course plan id for later reference to get student id and to push to affectedStudents (DONE)
       */
-      let invalidCoursePlans = []
+      let invalidCoursePlanIds = []
       for(let j = 0; j < coursesNotOffered.length; j++){
         let items = await CoursePlanItem.findAll({where: {
           courseId: coursesNotOffered[j].dataValues.department + coursesNotOffered[j].dataValues.courseNum,
           semester: semYear[0],
           year: Number(semYear[1])
         }})
+        // update the validity such that the items are invalid
+        for(let k = 0; k < items.length; k++){
+          await items[k].update({validity: false})
+        }
         if(items)
-          items.map(item => !invalidCoursePlans.includes(item.coursePlanId) ? invalidCoursePlans.push(item.coursePlanId) : '')
+          items.map(item => !invalidCoursePlanIds.includes(item.coursePlanId) ? invalidCoursePlanIds.push(item.coursePlanId) : '')
+      }
+      let invalidCoursePlans = await CoursePlan.findAll({where : {coursePlanId : invalidCoursePlanIds}})
+      for(let j = 0; j < invalidCoursePlans.length; j++){
+        if(!affectedStudents.includes(invalidCoursePlans[j].dataValues.studentId))
+          affectedStudents.push(invalidCoursePlans[j].dataValues.studentId)
       }
     }
-  } 
-  let filteredCourses = await Course.findAll({ where: { department: dept, semestersOffered: semestersCovered } })
-  //course is not offered that semester
+  }
   var emails = []
   var students = await Student.findAll({
     where: {
