@@ -7,27 +7,27 @@ const Course = database.Course;
 // Upload a course info to the database 
 exports.upload = (req, res) => {
   let form = new IncomingForm();
-  let depts = [];
+  let dept = "";
   let semester = "";
   let year = "";
   form.parse(req).on('field', (name, field) => {
-    if (name === 'depts')
-      depts = field;
+    if (name === 'dept')
+      dept = field;
     if (name === 'semester')
       semester = field;
     if (name === 'year')
       year = field;
   }).on('file', (field, file) => {
-    if (file.type != 'application/pdf')
+    if (file.type != 'application/pdf') {
       res.status(500).send('File must be *.pdf')
-    else {
-      if (semester === "" || year === "" || depts === "") {
-        res.status(500).send("Must specify semester and departments to scrape for.");
-        return
-      }
-      console.log(depts, semester, year)
-      scrapeCourses(file.path, depts, semester, year, res)
+      return
     }
+    if (semester === "" || year === "" || dept === "") {
+      res.status(500).send("Must specify semester and departments to scrape for.");
+      return
+    }
+    console.log(dept, semester, year)
+    scrapeCourses(file.path, dept, semester, year, res)
   })
 }
 
@@ -41,6 +41,7 @@ exports.findOne = (req, res) => {
     res.status(200).send(course)
   }).catch(err => {
     console.log(err)
+    res.status(500).send("Error finding course")
   })
 }
 
@@ -75,15 +76,16 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
   let name = ""
   let courseName = ""
   let checkCourseName = false;
-  /*temporary way to store description of course */
+  /* temporary way to store description of course */
   let desc = ""
   /* add all courses to array that are in the dept variables */
   let courses = []
   /* other requirements i.e prerequisites, credits */
   let checkOthers = false
   let others = ""
-  dept = dept.split(',')
-  dept.push('FIN', 'CHE')
+  depts = [dept]
+  if (dept == 'AMS')
+    depts.push('FIN', 'CHE')
   pdfExtract.extract(filePath, options, (err, data) => {
     if (err) {
       res.status(500).send('Error parsing pdf file')
@@ -94,12 +96,12 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
       let page = pages[i].content
       for (let j = 2; j < page.length - 2; j++) {
         let s = page[j]
-        if(s.str.includes("GRADUATE  COURSE  DESCRIPTIONS")){
-          j+=1
+        if (s.str.includes("GRADUATE  COURSE  DESCRIPTIONS")) {
+          j += 1
           continue
         }
         if (s.fontName == "Times" && s.str.length == 3 && isNaN(parseInt(s.str)) === true) {
-          if (dept.includes(s.str)) {
+          if (depts.includes(s.str)) {
             target = s.str;
             checkOthers = false
           }

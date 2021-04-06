@@ -25,71 +25,73 @@ const Papa = require('papaparse');
 
 
 
-exports.createPlan = (req, res) => {
-  // CoursePlan.create({
-  //     ...CoursePlan
-  // })
-  res.send(req);
-}
-
-// Upload course plans CSV
+// Upload course plans/grades CSV
 exports.uploadPlans = (req, res) => {
   let form = new IncomingForm();
-  form.parse(req).on('file', (field, file) => {
-    if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel')
+  let dept = ''
+  form.parse(req).on('field', (name, field) => {
+    if (name === 'dept')
+      dept = field;
+  }).on('file', (field, file) => {
+    if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel') {
       res.status(500).send('File must be *.csv')
-    else {
-      const fileIn = fs.readFileSync(file.path, 'utf-8')
-      let isValid = true;
-      Papa.parse(fileIn, {
-        header: true,
-        dynamicTyping: true,
-        complete: (results) => {
-          var header = results.meta['fields']
-          if (header[0] !== 'sbu_id'
-            || header[1] !== 'department'
-            || header[2] !== 'course_num'
-            || header[3] !== 'section'
-            || header[4] !== 'semester'
-            || header[5] !== 'year'
-            || header[6] !== 'grade') {
-            console.log('invalid csv')
-            res.status(500).send('Cannot parse course plan CSV file - headers do not match specifications')
-            return
-          }
-          uploadCoursePlans(results, res);
-        }
-      })
+      return
     }
+    const fileIn = fs.readFileSync(file.path, 'utf-8')
+    Papa.parse(fileIn, {
+      header: true,
+      dynamicTyping: true,
+      complete: (results) => {
+        var header = results.meta['fields']
+        if (header[0] !== 'sbu_id'
+          || header[1] !== 'department'
+          || header[2] !== 'course_num'
+          || header[3] !== 'section'
+          || header[4] !== 'semester'
+          || header[5] !== 'year'
+          || header[6] !== 'grade') {
+          console.log('invalid csv')
+          res.status(500).send('Cannot parse course plan CSV file - headers do not match specifications')
+          return
+        }
+        let coursePlans = results.data
+        uploadCoursePlans(coursePlans, dept, res)
+      }
+    })
   })
 }
 
 
-async function uploadCoursePlans(csvFile, res) {
-  // Maps SBU id to course plan id
+async function uploadCoursePlans(coursePlans, dept, res) {
+  let students = await Student.findAll({ where: { department: dept }})
+  students = new Set(students.map(student => student.sbuId))
+  coursePlans = coursePlans.filter(coursePlan => students.has(coursePlan.sbu_id))
+  // console.log(coursePlans)
   let studentsPlanId = {}
   // Create/Update all the course plan items
-  for (let i = 0; i < csvFile.data.length; i++) {
-    if (!csvFile.data[i].sbu_id)
+  for (let i = 0; i < coursePlans.length; i++) {
+    if (!coursePlans[i].sbu_id)
       continue
-    let condition = { studentId: csvFile.data[i].sbu_id }
+    let condition = { studentId: coursePlans[i].sbu_id }
     let found = await CoursePlan.findOne({ where: condition })
-    if (!found)
+    if (!found) {
       console.log(condition)
-    studentsPlanId[csvFile.data[i].sbu_id] = found.coursePlanId
+      continue
+    }
+    studentsPlanId[coursePlans[i].sbu_id] = found.coursePlanId
     condition = {
       coursePlanId: found.coursePlanId,
-      courseId: csvFile.data[i].department + csvFile.data[i].course_num,
-      semester: csvFile.data[i].semester,
-      year: csvFile.data[i].year
+      courseId: coursePlans[i].department + coursePlans[i].course_num,
+      semester: coursePlans[i].semester,
+      year: coursePlans[i].year
     }
     values = {
       coursePlanId: found.coursePlanId,
-      courseId: csvFile.data[i].department + csvFile.data[i].course_num,
-      semester: csvFile.data[i].semester,
-      year: csvFile.data[i].year,
-      section: csvFile.data[i].section,
-      grade: csvFile.data[i].grade,
+      courseId: coursePlans[i].department + coursePlans[i].course_num,
+      semester: coursePlans[i].semester,
+      year: coursePlans[i].year,
+      section: coursePlans[i].section,
+      grade: coursePlans[i].grade,
     }
     found = await CoursePlanItem.findOne({ where: condition })
     if (found)

@@ -103,7 +103,7 @@ const StudentInfo = (props) => {
             placeholder="SBU ID"
             onChange={e => handleSelection('sbuId', e.target)}
             value={userInfo.sbuId}
-            disabled={mode === 'View'}
+            disabled={mode !== 'Add'}
             style={{ width: "300px", flexShrink: '1' }}
           />
           <span className="filter-span" style={{ marginLeft: "0.6rem" }}>GPA:</span>

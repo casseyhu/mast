@@ -42,7 +42,6 @@ exports.findRequirements = (req, res) => {
       }
     })
     .then(degree => {
-      // console.log(degree)
       findRequirements(degree, res)
     })
     .catch(err => {

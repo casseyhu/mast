@@ -9,7 +9,6 @@ const ImportItem = (props) => {
 
   const [file, setFile] = useState("");
   const [firstfile, setFirstFile] = useState("");
-  const [depts, setDepts] = useState([]);
   const [semester, setSem] = useState("");
   const [year, setYear] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,7 +24,7 @@ const ImportItem = (props) => {
   }, [uploading])
 
 
-  const uploadFile = (e) => {
+  const uploadFile = async () => {
     if (props.header === "Student Data" && (firstfile === "" || file === "")) {
       setError("Must have both student profile and course plan files to upload.")
       return;
@@ -34,7 +33,6 @@ const ImportItem = (props) => {
       setError("Must choose a file to upload.")
       return;
     }
-
     var firstFormData = new FormData();
     firstFormData.append("file", firstfile);
     var formData = new FormData();
@@ -43,7 +41,7 @@ const ImportItem = (props) => {
     let upload_path = '';
     if (props.header === "Course Information") {
       upload_path = 'course/upload';
-      formData.append("depts", depts);
+      formData.append("dept", props.dept);
       formData.append("semester", semester);
       formData.append("year", year);
     }
@@ -53,65 +51,50 @@ const ImportItem = (props) => {
       upload_path = 'courseoffering/upload';
     else if (props.header === "Student Data") {
       setLoading(true)
-      axios.post('student/upload', firstFormData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(function () {
-        console.log('Successfully uploaded profile');
-        axios.post('courseplan/upload', formData, {
+      firstFormData.append("dept", props.dept);
+      console.log(props.dept)
+      formData.append("dept", props.dept);
+      try {
+        await axios.post('student/upload', firstFormData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
-        }).then(res => {
-          console.log('Successfully uploaded course plans');
-          setLoading(false)
-          setUploading(true)
-          setFile("")
-        }).catch(err => {
-          setLoading(false)
-          setFile("")
-          setError(err.response.data)
         })
+        console.log('Successfully uploaded profile');
         setFirstFile("")
-      }).catch(function (err) {
+      } catch (err) {
         console.log(err.response.data)
         setLoading(false)
         setFirstFile("")
+        setFile("")
         setError(err.response.data)
-      });
-      return
-    }
-    else // Uploading grades. 
-      upload_path = 'courseplan/upload';
-
-    setLoading(true)
-    axiosPost(upload_path, formData);
-  }
-
-  function axiosPost(path, formData) {
-    axios.post(path, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
+        return
       }
-    }).then(function () {
+      upload_path = 'courseplan/upload'
+    }
+    else { // Uploading grades. 
+      upload_path = 'courseplan/upload';
+      formData.append("dept", props.dept);
+    }
+
+    if (!loading)
+      setLoading(true)
+
+    try {
+      await axios.post(upload_path, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
       console.log('Successfully uploaded file');
       setLoading(false)
       setUploading(true)
       setFile("")
-    }).catch(function (err) {
-      console.log(err.response.data)
+    } catch (err) {
       setLoading(false)
       setFile("")
       setError(err.response.data)
-    });
-    return
-  }
-
-
-  const selectionHandler = (e) => {
-    let value = Array.from(e, option => option.value);
-    setDepts(value);
+    }
   }
 
   return (
@@ -130,7 +113,7 @@ const ImportItem = (props) => {
             {firstfile && <small style={{ marginLeft: "1.5rem" }}>{firstfile.name}</small>}
           </div>
         )}
-      {props.depts && props.sems && props.years
+      {props.sems && props.years
         && (
           <div className="flex-horizontal wrap justify-content-start">
             <span className="filter-span" style={{ width: "150px" }}>Semesters</span>
@@ -139,24 +122,15 @@ const ImportItem = (props) => {
               items={props.sems}
               placeholder="Semester"
               onChange={(e) => setSem(e.value)}
-              style={{ margin: '0 1rem 0.5rem 0' }}
+              style={{ width: '150px', margin: '0 1rem 0.5rem 0' }}
             />
             <Dropdown
               variant="single"
               items={props.years}
               placeholder="Year"
               onChange={(e) => setYear(e.value)}
-              style={{ margin: '0 4rem 0.5rem 0' }}
+              style={{ width: '150px', margin: '0 4rem 0.5rem 0' }}
             />
-            <div className="flex-horizontal" style={{ width: '540px' }}>
-              <span style={{ width: '150px' }}>Departments</span>
-              <Dropdown
-                variant="multi"
-                items={props.depts}
-                onChange={selectionHandler}
-                style={{ margin: '0 1rem 0.5rem 0' }}
-              />
-            </div>
           </div>
         )}
       <div className="flex-horizontal parent">

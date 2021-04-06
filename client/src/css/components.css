@@ -102,6 +102,10 @@ nav {
   margin-right: 1.5rem;
 }
 
+.trends-span-reg {
+  margin-right: 0.01rem;
+}
+
 /* Pagination CSS */
 .page-link {
   color: var(--primary);
