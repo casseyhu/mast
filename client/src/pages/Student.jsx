@@ -59,6 +59,10 @@ const Student = (props) => {
       axios.post('student/create', {
         params: studentInfo
       }).then((response) => {
+        setStudentInfoParams((prevState) => ({
+          ...prevState,
+          student: response.data
+        }))
         setErrorMsg("")
         setShowConfirmation(true)
         setStudentInfoParams((prevState) => ({

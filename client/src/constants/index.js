@@ -12,6 +12,13 @@ export const MONTH_SEMESTER = {
   '08': 'Fall'
 }
 
+export const SEMESTER_MONTH = {
+  'Winter': '01',
+  'Spring': '02',
+  'Summer': '05',
+  'Fall': '08'
+}
+
 export const YEARS = [
   { value: '2018', label: '2018' },
   { value: '2019', label: '2019' },
@@ -58,8 +65,8 @@ export const SORT_ORDER = [
 ]
 
 export const BOOLEAN = [
-  { value: 'true', label: 'True' },
-  { value: 'false', label: 'False' },
+  { value: 'True', label: 'True' },
+  { value: 'False', label: 'False' },
 ]
 
 export const COMPLETENESS = [
