@@ -3,10 +3,10 @@ const bcrypt = require('bcrypt');
 const { IncomingForm } = require('formidable');
 const fs = require('fs');
 const Papa = require('papaparse');
-
 const database = require('../config/database.js');
 const course = require('../models/course.js');
 const Op = database.Sequelize.Op;
+
 
 const Student = database.Student;
 const Degree = database.Degree;
@@ -320,11 +320,11 @@ exports.deleteAll = (req, res) => {
 async function uploadStudents(csvFile, res) {
   const degrees = await Degree.findAll()
   let degreeDict = {};
-
+  const monthsDict = {  '01': 'Winter', '02': 'Spring', '05': 'Summer', '08': 'Fall'}
   const currentGradYear = 202101
   for (let i = 0; i < degrees.length; i++) {
     let requirementVersion = degrees[i].requirementVersion.toString()
-    let requirementSem = semDict[requirementVersion.substring(4, 6)]
+    let requirementSem = monthsDict[requirementVersion.substring(4, 6)]
     let requirementYear = requirementVersion.substring(0, 4)
     degreeDict[degrees[i].dept + ' ' + degrees[i].track + ' ' + requirementSem + ' ' + requirementYear] = degrees[i].degreeId
   }
