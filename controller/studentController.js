@@ -316,6 +316,17 @@ exports.deleteAll = (req, res) => {
     })
 }
 
+exports.getStates = (req, res) => {
+  RequirementState.findAll({
+    where: {
+      sbuID : req.query.sbuId
+    }
+  }).then(reqStates => {
+    res.status(200).send(reqStates);
+  }).catch(err => {
+    res.status(500).send('Error ' + err)
+  })
+}
 
 
 async function uploadStudents(students, res) {

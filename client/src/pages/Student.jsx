@@ -34,11 +34,28 @@ const Student = (props) => {
         degreeId: studentRes.data.degreeId
       }
     })
+    let requirementStates = await axios.get('/student/requirementStates', {
+      params: { sbuId: currStudent.sbuId }
+    })
+    let reqStateMap = await initStateMap(requirementStates.data)
     setStudentInfoParams({
       student: studentRes.data,
       coursePlan: coursePlanItems.data,
-      requirements: requirements.data
+      requirements: requirements.data,
+      requirementStates: reqStateMap
     })
+  }
+
+  // Creates a mapping of requirementId ('C401') to it's state.
+  // If they have no course plan (no courseplanitems thus no reqStates), 
+  // the map to return is empty.
+  async function initStateMap(requirementStates) {
+    let cpMap = {}
+    for(let req of requirementStates) {
+      cpMap[req.requirementId] = req.state
+    }
+    console.log("ReqState map: ", cpMap)
+    return cpMap
   }
 
 
