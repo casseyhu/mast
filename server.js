@@ -33,6 +33,8 @@ require('./routes/courseRoute.js')(app);
 require('./routes/courseOfferingRoute.js')(app);
 require('./routes/coursePlanRoute.js')(app);
 require('./routes/degreeRoute.js')(app);
+require('./routes/emailRoute.js')(app);
+
 
 const PORT = process.env.PORT || 5000;
 

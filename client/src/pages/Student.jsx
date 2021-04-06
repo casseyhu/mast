@@ -11,6 +11,8 @@ import jwt_decode from 'jwt-decode';
 const Student = (props) => {
   const [errorMsg, setErrorMsg] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false)
+  const [showEmailBox, setShowEmailBox] = useState(false)
+  const [showEmailConf, setShowEmailConf] = useState(false)
   const [mode, setMode] = useState(props.location.state ? props.location.state.mode : props.mode)
   const [studentInfoParams, setStudentInfoParams] = useState({})
 
@@ -72,6 +74,8 @@ const Student = (props) => {
     } else if (mode === 'View') {
       setMode('Edit')
     } else {
+      var commentBefore = studentInfoParams.student.gpdComments
+      var commentAfter = studentInfo.gpdComments
       /* Saving student info, UPDATE student in the db*/
       axios.post('/student/update', {
         params: studentInfo
@@ -80,7 +84,10 @@ const Student = (props) => {
           ...prevState,
           student: response.data
         }))
-        setShowConfirmation(true)
+        if (commentBefore !== commentAfter)
+          setShowEmailBox(true)
+        else
+          setShowConfirmation(true)
       }).catch(function (err) {
         console.log(err.response.data)
         setErrorMsg(err.response.data)
@@ -91,6 +98,21 @@ const Student = (props) => {
   const changeMode = () => {
     setShowConfirmation(false)
     setMode('View')
+  }
+
+  const notify = () => {
+    setShowEmailBox(false)
+    axios.post('/email/send', {
+      params: {
+        // email: studentInfoParams.student.email,
+        email: "sooyeon.kim.2@stonybrook.edu",
+        subject: "GPD updated comments"
+      }
+    }).then((response) => {
+      setShowEmailConf(true)
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
   // if (mode !== 'Add' && (!studentInfoParams.requirements || !studentInfoParams.coursePlan || !studentInfoParams.student))
@@ -116,6 +138,19 @@ const Student = (props) => {
           onHide={() => setShowConfirmation(false)}
           onConfirm={changeMode}
           body="Student successfully saved"
+        />
+        <CenteredModal
+          show={showEmailBox}
+          onHide={() => setShowEmailBox(false)}
+          onConfirm={notify}
+          variant="multi"
+          body="[Comments Changed] SEND an emial notificATion TO STUDNET! takes a few sec to send so wait"
+        />
+        <CenteredModal
+          show={showEmailConf}
+          onHide={() => setShowEmailConf(false)}
+          onConfirm={() => {setShowEmailConf(false); setShowConfirmation(true)}}
+          body="Sent email successfully "
         />
       </Container>
     );
