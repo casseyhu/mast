@@ -3,6 +3,7 @@ const Papa = require('papaparse');
 const fs = require('fs');
 const moment = require('moment');
 const IncomingForm = require('formidable').IncomingForm;
+const { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } = require('constants');
 
 const CourseOffering = database.CourseOffering;
 const CoursePlan = database.CoursePlan;
@@ -101,7 +102,44 @@ async function uploadCourses(results, res){
       }
     }
   }
-  console.log(affectedStudents)
+  var emails = [];
+  for (var i = 0; i < affectedStudents.length; i++) {
+    var student = await Student.findOne({
+      where: {
+        sbuId: affectedStudents[i]
+      }
+    })
+    emails.push(student.email);
+  }
+  console.log(emails);
+
+  var nodemailer = require('nodemailer');
+
+  var transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "mastgrassjelly@gmail.com",
+      pass: "cse416@stoller"
+    }
+  });
+  // emails set to our emails
+  emails = ["sooyeon.kim.2@stonybrook.edu", "andrew.kong@stonybrook.edu", "eddie.xu@stonybrook.edu", "cassey.hu@stonybrook.edu"]
+  // comment ^ if you don't want it to spam our emails and uncomment v
+  // emails = [];
+  for (var i = 0; i < emails.length; i++) {
+    var emailOptions = {
+      from: "mastgrassjelly@gmail.com",
+      to: emails[i],
+      subject: "[ACTION REQUIRED] YOU FAILED CSE 416!!!",
+      text: "jk"
+    }
+    transporter.sendMail(emailOptions, function(err, info) {
+      if (err)
+        console.log(err);
+      else
+        console.log("Email sent " + info.response);
+    })
+  }
   res.status(200).send(affectedStudents)
   return
 }
@@ -168,3 +206,4 @@ async function deleteSemestersFromDB(csvFile) {
 // https://hackernoon.com/understanding-async-await-in-javascript-1d81bb079b2c
 // https://hackernoon.com/understanding-promises-in-javascript-13d99df067c1
 // https://stackoverflow.com/questions/26783080/convert-12-hour-am-pm-string-to-24-date-object-using-moment-js
+// https://www.w3schools.com/nodejs/nodejs_email.asp
