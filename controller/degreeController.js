@@ -42,7 +42,6 @@ exports.findRequirements = (req, res) => {
       }
     })
     .then(degree => {
-      // console.log(degree)
       findRequirements(degree, res)
     })
     .catch(err => {
@@ -221,13 +220,15 @@ async function createDegree(degree) {
     // Create this degree's respective grade/credit/gpa requirements. -----------
     // Note: We set the requirementId of each entry to be the newDegree.degreeId.
 
-    const grade = await GradeRequirement.create({
-      requirementId: newDegree.degreeId,
-      atLeastCredits: degree.gradeRequirement === null
-        ? null : degree.gradeRequirement.atLeastCredits,
-      minGrade: degree.gradeRequirement === null
-        ? null : degree.gradeRequirement.minGrade,
-    })
+    if (degree.gradeRequirement) {
+      const grade = await GradeRequirement.create({
+        requirementId: newDegree.degreeId,
+        atLeastCredits: degree.gradeRequirement === null
+          ? null : degree.gradeRequirement.atLeastCredits,
+        minGrade: degree.gradeRequirement === null
+          ? null : degree.gradeRequirement.minGrade,
+      })
+    }
 
     const credit = await CreditRequirement.create({
       requirementId: newDegree.degreeId,

@@ -3,9 +3,7 @@ const bcrypt = require('bcrypt');
 const { IncomingForm } = require('formidable');
 const fs = require('fs');
 const Papa = require('papaparse');
-
 const database = require('../config/database.js');
-const course = require('../models/course.js');
 const Op = database.Sequelize.Op;
 
 const Student = database.Student;
@@ -145,38 +143,42 @@ function emptyFields(student) {
 // Create Students from uploading file
 exports.upload = (req, res) => {
   let form = new IncomingForm();
-  form.parse(req).on('file', (field, file) => {
-    if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel')
+  let dept = ''
+  form.parse(req).on('field', (name, field) => {
+    if (name === 'dept')
+      dept = field;
+  }).on('file', (field, file) => {
+    if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel') {
       res.status(500).send('File must be *.csv')
-    else {
-      const fileIn = fs.readFileSync(file.path, 'utf-8')
-      Papa.parse(fileIn, {
-        header: true,
-        dynamicTyping: true,
-        complete: (results) => {
-          var header = results.meta['fields']
-          if (header[0] !== 'sbu_id'
-            || header[1] !== 'first_name'
-            || header[2] !== 'last_name'
-            || header[3] !== 'email'
-            || header[4] !== 'department'
-            || header[5] !== 'track'
-            || header[6] !== 'entry_semester'
-            || header[7] !== 'entry_year'
-            || header[8] !== 'requirement_version_semester'
-            || header[9] !== 'requirement_version_year'
-            || header[10] !== 'graduation_semester'
-            || header[11] !== 'graduation_year'
-            || header[12] !== 'password') {
-            console.log('invalid csv')
-            res.status(500).send('Cannot parse CSV file - headers do not match specifications')
-            return
-          }
-          else
-            uploadStudents(results, res)
-        }
-      })
+      return
     }
+    const fileIn = fs.readFileSync(file.path, 'utf-8')
+    Papa.parse(fileIn, {
+      header: true,
+      dynamicTyping: true,
+      complete: (results) => {
+        var header = results.meta['fields']
+        if (header[0] !== 'sbu_id'
+          || header[1] !== 'first_name'
+          || header[2] !== 'last_name'
+          || header[3] !== 'email'
+          || header[4] !== 'department'
+          || header[5] !== 'track'
+          || header[6] !== 'entry_semester'
+          || header[7] !== 'entry_year'
+          || header[8] !== 'requirement_version_semester'
+          || header[9] !== 'requirement_version_year'
+          || header[10] !== 'graduation_semester'
+          || header[11] !== 'graduation_year'
+          || header[12] !== 'password') {
+          console.log('invalid csv')
+          res.status(500).send('Cannot parse CSV file - headers do not match specifications')
+          return
+        }
+        let students = results.data.filter(student => student.department === dept)
+        uploadStudents(students, res)
+      }
+    })
   })
 }
 
@@ -206,7 +208,7 @@ exports.login = (req, res) => {
 // Find a Student 
 exports.findById = (req, res) => {
   Student.findByPk(req.params.sbuId).then(student => {
-    res.send(student);
+    res.status(200).send(student);
   }).catch(err => {
     res.status(500).send('Error: ' + err);
   })
@@ -273,7 +275,6 @@ exports.filter = (req, res) => {
 // Find all Students 
 exports.findAll = (req, res) => {
   const condition = { department: req.query.department }
-
   Student
     .findAll({ where: condition })
     .then(students => {
@@ -304,9 +305,9 @@ exports.deleteAll = (req, res) => {
   Student
     .drop()
     .then(() => {
-      res.status(200).send('Deleted student data.');
       database.sequelize.sync({ force: false }).then(() => {
         console.log('Synced database');
+        res.status(200).send('Deleted student data.');
       })
     })
     .catch(err => {
@@ -317,25 +318,25 @@ exports.deleteAll = (req, res) => {
 
 
 
-async function uploadStudents(csvFile, res) {
+async function uploadStudents(students, res) {
   const degrees = await Degree.findAll()
   let degreeDict = {};
-
+  const monthsDict = {  '01': 'Winter', '02': 'Spring', '05': 'Summer', '08': 'Fall'}
   const currentGradYear = 202101
   for (let i = 0; i < degrees.length; i++) {
     let requirementVersion = degrees[i].requirementVersion.toString()
-    let requirementSem = semDict[requirementVersion.substring(4, 6)]
+    let requirementSem = monthsDict[requirementVersion.substring(4, 6)]
     let requirementYear = requirementVersion.substring(0, 4)
     degreeDict[degrees[i].dept + ' ' + degrees[i].track + ' ' + requirementSem + ' ' + requirementYear] = degrees[i].degreeId
   }
   let tot = 0;
-  for (let i = 0; i < csvFile.data.length; i++) {
-    studentInfo = csvFile.data[i]
-    let semsDict = { 'Spring': '02', 'Summer': '06', 'Fall': '08', 'Winter': '01' };
-    let semYear = Number(studentInfo.entry_year + semsDict[studentInfo.entry_semester])
-    let graduated = Number(studentInfo.graduation_year + semsDict[studentInfo.graduation_semester]) <= currentGradYear ? 1 : 0
+
+  for (let i = 0; i < students.length; i++) {
+    studentInfo = students[i]
     let condition = { sbuId: studentInfo.sbu_id }
-    let requirementVersion = Number(studentInfo.requirement_version_year) * 100 + Number(semsDict[studentInfo.requirement_version_semester])
+    let semYear = Number(studentInfo.entry_year + semDict[studentInfo.entry_semester])
+    let graduated = Number(studentInfo.graduation_year + semDict[studentInfo.graduation_semester]) <= currentGradYear ? 1 : 0
+    let requirementVersion = Number(studentInfo.requirement_version_year) * 100 + Number(semDict[studentInfo.requirement_version_semester])
     let values = {
       sbuId: studentInfo.sbu_id,
       firstName: studentInfo.first_name,
@@ -363,10 +364,9 @@ async function uploadStudents(csvFile, res) {
     tot += 1
     let found = await Student.findOne({ where: condition })
     if (found)
-      await Student.update(values, { where: condition })
-    else
+      await found.update(values)
+    else 
       await Student.create(values)
-
     condition = { studentId: studentInfo.sbu_id }
     found = await CoursePlan.findOne({ where: condition })
     if (!found)

@@ -95,12 +95,15 @@ nav {
 }
 .filter-span {
   width: 95px;
-  /* font-size: 14px !important; */
+}
+.trends-span {
+  padding-right: 0.2rem;
 }
 .filter-component {
   width: 150px;
   margin-right: 1.5rem;
 }
+
 
 /* Pagination CSS */
 .page-link {

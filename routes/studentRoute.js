@@ -28,4 +28,7 @@ module.exports = function (app) {
 
   // Delete all students
   app.post('/api/student/deleteall', Student.deleteAll)
+
+  // Calculate student completion
+  // app.post('/api/student/calculate', Student.calculate)
 }
