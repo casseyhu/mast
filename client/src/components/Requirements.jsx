@@ -7,8 +7,10 @@ const Requirements = (props) => {
   const [display, setDisplay] = useState(false);
   const [totalCredits, setTotalCredits] = useState(null);
 
-
-  const GRADES = { 'A': 4, 'A-': 3.67, 'B+': 3.33, 'B': 3, 'B-': 2.67, 'C+': 2.33, 'C': 2, 'C-': 1.67, 'F': 0 }
+  const semDict = {'Fall': 8, 'Spring': 2, 'Winter': 1, 'Summer': 5}
+  const currSem = 'Spring'
+  const currYear = 2021
+  const grades = { 'A': 4, 'A-': 3.67, 'B+': 3.33, 'B': 3, 'B-': 2.67, 'C+': 2.33, 'C': 2, 'C-': 1.67, 'F': 0 }
   // let requirements = props.studentInfo.requirements;
   // let student = props.studentInfo.student;
   // let coursePlan = props.studentInfo.items;
@@ -34,12 +36,12 @@ const Requirements = (props) => {
   }
 
   const getLetter = (points) => {
-    return Object.keys(GRADES).find(key => GRADES[key] === points)
+    return Object.keys(grades).find(key => grades[key] === points)
   }
 
   const getGradeColor = (minGrade, atLeastCredits) => {
     if (coursePlan) {
-      const courses = coursePlan.filter((course) => GRADES[course.grade] >= minGrade);
+      const courses = coursePlan.filter((course) => grades[course.grade] >= minGrade);
       var sum = courses.reduce((a, b) => a + credits[b.courseId], 0);
       if (sum >= atLeastCredits)
         return "green";
@@ -90,9 +92,9 @@ const Requirements = (props) => {
   const isTaken = (course) => {
     if (coursePlan) {
       var takenCourses = coursePlan.filter((c) =>
-      (c.courseId === course
-        && (c.year < 2021 || (c.year === 2021 && c.semester == "Spring")))
-      );
+        (c.year * 100 + semDict[c.semester] <= currYear * 100 + semDict[currSem])
+        && (c.courseId === course)
+      )
       if (takenCourses.length)
         return true;
     }
@@ -129,15 +131,13 @@ const Requirements = (props) => {
         for (const [course, credit] of Object.entries(credits)) {
           if (course === deptCourse.courseId) {
             deptTotalCredits += credit
-            deptTotalPoints += credit * GRADES[deptCourse.grade]
+            deptTotalPoints += credit * grades[deptCourse.grade]
           }
         }
       }
 
       // Set core gpa
-      var coreReqs = requirements[3].filter((req) => (
-        req.creditLower !== 3 && req.creditUpper !== 3
-      ));
+      var coreReqs = requirements[3].filter((req) => req.type === 1);
       var coreCourses = [];
       for (var req of coreReqs) {
         for (var course of req.courses) {
@@ -153,7 +153,7 @@ const Requirements = (props) => {
         for (const [course, credit] of Object.entries(credits)) {
           if (course === takenCourse.courseId) {
             coreTotalCredits += credit
-            coreTotalPoints += credit * GRADES[takenCourse.grade]
+            coreTotalPoints += credit * grades[takenCourse.grade]
           }
         }
       }

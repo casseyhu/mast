@@ -297,7 +297,8 @@ async function calculateCompletion(studentsPlanId, res) {
     // Create a dictionary of courseId to number of times it occurs in the CoursePlan
     // (i.e) {  'AMS501' : 2 } --> Course AMS501 occured 2 times in this student's CoursePlan.
     let coursePlanItemMap = {}
-    coursePlanItems = coursePlanItems.filter((course) => course.year <= 2020 || (course.year === currYear && semDict[course.semester] === semDict[currSem]))
+    coursePlanItems = coursePlanItems.filter((course) => 
+      course.year * 100 + semDict[course.semester] <= currYear * 100 + semDict[currSem])
     coursePlanItems.map((course) => {
       if (coursePlanItemMap[course.courseId])
         coursePlanItemMap[course.courseId] += 1
