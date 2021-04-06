@@ -53,6 +53,7 @@ exports.uploadPlans = (req, res) => {
 
 
 async function uploadCoursePlans(csvFile, res) {
+  // Maps SBU id to course plan id
   let studentsPlanId = {}
   // Create/Update all the course plan items
   for (let i = 0; i < csvFile.data.length; i++) {
@@ -85,17 +86,12 @@ async function uploadCoursePlans(csvFile, res) {
   }
 
   // Create mapping of all courses to credits to calculate GPA for each student
-  Course
-    .findAll()
-    .then(courses => {
-      let courseCredit = {}
-      for (let j = 0; j < courses.length; j++)
-        courseCredit[courses[j].courseId] = courses[j].credits
-      calculateGPA(studentsPlanId, courseCredit, res)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+  let courses = await Course.findAll()
+  let courseCredit = {}
+  for (let j = 0; j < courses.length; j++)
+    courseCredit[courses[j].courseId] = courses[j].credits
+  await calculateGPA(studentsPlanId, courseCredit, res)
+  await calculateCompletion(studentsPlanId, res)
 }
 
 
@@ -125,8 +121,81 @@ async function calculateGPA(studentsPlanId, courseCredit, res) {
       console.log("error getting course plan items")
   }
   console.log("Done calculating GPAs")
-  res.status(200).send("Success")
+  // res.status(200).send("Success")
 }
+
+
+async function calculateCompletion(studentsPlanId, res) {
+
+  for(let key in studentsPlanId) {
+    let student = await Student.find({ where: { sbuId:key }})
+    let creditState = 'Unsatisfied'
+    let gpaState = 'Unsatisfied'
+    let gradeState = 'Unsatisfied'
+    let courseState = 'Unsatisfied'
+    // For each students, look at their degree+track+reqVersion.
+    // Get all the requirements to this student's degreeId
+    let degree = await Degree.findOne({ where: { degreeId: student.degreeId }})
+    let coursePlan = await CoursePlan.findOne({ where: { studentId: student.sbuId }})
+    let coursePlanItems = await CoursePlanItem.findAll({ where: { coursePlanId: coursePlan.coursePlanId }})
+    let creditReq = await CreditRequirement.findOne({ where: { requirementId: student.degreeId }})
+    let gpaReq = await GpaRequirement.findOne({ where: { requirementId: student.degreeId }})
+    let gradeReq = await GradeRequirement.findOne({ where: { requirementId: student.degreeId }})
+    // To get course requirements, need to get Degree.courseRequirement (which is a list of course req ids.)
+    // For every id in the Degree.courseRequirement, query the CourseRequirement table
+    // for this record and .push() it to courseReqs.
+    let courseReqs = []
+    console.log(degree.courseRequirement)
+    degree.courseRequirement.forEach(async id => {
+      courseReqs.push(await CourseRequirement.findOne({ where: { requirementId: id } }))
+    })
+  
+    
+    // Total credit requirement 
+    let totalCredits = 0
+    let credits = {}
+    for(let j = 0; j < coursePlanItems; j++) {
+      // Add up the amount of credits they have in their course plan
+      let course = await Course.findOne({ where: { courseId: coursePlanItems[j].courseId }})
+      if (course && course.credits) {
+        credits[course.courseId] = course.credits;
+        totalCredits += course.credits
+      }
+      // totalCredits += course.credits
+    } 
+    if(totalCredits >= creditReq.minCredit) {
+      creditState = 'Satisfied'
+    } else if (totalCredits < creditReq.minCredit) {
+      creditState = 'Pending'
+    }
+
+    const GRADES = { 'A': 4, 'A-': 3.67, 'B+': 3.33, 'B': 3, 'B-': 2.67, 'C+': 2.33, 'C': 2, 'C-': 1.67, 'F': 0 }
+    // Check gpaReqs (coreGpa, cumulGpa, deptGpa)
+    // Department gpa
+    var deptCourses = coursePlanItems.filter((course) => (
+      course.courseId.slice(0, 3) === student.department
+    ));
+    var deptTotalPoints = 0;
+    var deptTotalCredits = 0;
+    for (var deptCourse of deptCourses) {
+      for (const [course, credit] of Object.entries(credits)) {
+        if (course === deptCourse.courseId) {
+          deptTotalCredits += credit
+          deptTotalPoints += credit * GRADES[deptCourse.grade]
+        }
+      }
+    }
+    // Dept gpa is deptTotalpts/depttoalcredis
+    // @TODO: department && cumulative. This would take care of GpaRequirement.
+    // @TODO: GradeRequirement and CourseRequirement(s).
+
+
+
+
+    
+  }
+}
+
 
 /* 
   Course Plan Items

@@ -5,8 +5,10 @@ const fs = require('fs');
 const Papa = require('papaparse');
 
 const database = require('../config/database.js');
+// const { Course } = require('../config/database.js');
 const Op = database.Sequelize.Op;
 
+const Course = database.Course;
 const Student = database.Student;
 const Degree = database.Degree;
 const CoursePlan = database.CoursePlan;
@@ -282,8 +284,9 @@ exports.upload = (req, res) => {
             res.status(500).send("Cannot parse CSV file - headers do not match specifications")
             return
           }
-          else
+          else{
             uploadStudents(results, res)
+          }
         }
       })
     }
@@ -449,12 +452,12 @@ async function uploadStudents(csvFile, res) {
     degreeDict[degrees[i].dept + " " + degrees[i].track + " " + requirementSem + " " + requirementYear] = degrees[i].degreeId
   }
   let tot = 0;
+  let semsDict = { 'Spring': '02', 'Summer': '06', 'Fall': '08', 'Winter': '01' };
   for (let i = 0; i < csvFile.data.length; i++) {
     studentInfo = csvFile.data[i]
-    let semsDict = { 'Spring': '02', 'Summer': '06', 'Fall': '08', 'Winter': '01' };
+    let condition = { sbuId: studentInfo.sbu_id }
     let semYear = Number(studentInfo.entry_year + semsDict[studentInfo.entry_semester])
     let graduated = Number(studentInfo.graduation_year + semsDict[studentInfo.graduation_semester]) <= currentGradYear ? 1 : 0
-    let condition = { sbuId: studentInfo.sbu_id }
     let requirementVersion = Number(studentInfo.requirement_version_year) * 100 + Number(semsDict[studentInfo.requirement_version_semester])
     let values = {
       sbuId: studentInfo.sbu_id,
@@ -483,10 +486,9 @@ async function uploadStudents(csvFile, res) {
     tot += 1
     let found = await Student.findOne({ where: condition })
     if (found)
-      await Student.update(values, { where: condition })
-    else
+      await found.update(values)
+    else 
       await Student.create(values)
-
     condition = { studentId: studentInfo.sbu_id }
     found = await CoursePlan.findOne({ where: condition })
     if (!found)
@@ -496,5 +498,5 @@ async function uploadStudents(csvFile, res) {
       })
   }
   console.log("Done importing " + tot + " students from csv")
-  res.status(200).send("Success")
+  res.status(200).send(listofstudents)
 }
