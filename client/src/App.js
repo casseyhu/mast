@@ -64,7 +64,7 @@ class App extends Component {
           {type === 'gpd' && <Route path="/student" component={(props) => <Student {...props} mode="View" type={type}/>} />}
 
           {type === 'gpd' && <Route path="/trends" component={Trends} />}
-          {type === 'gpd' && <Route path="/import" component={Import} />}
+          {type === 'gpd' && <Route path="/import" component={(props) => <Import {...props} dept={user.department} />} />}
           {type && <Route path="/bulletin" component={(props) => <Bulletin {...props} type={type} user={user} />} />}
           {type && <Route path="/suggest" component={Suggest} />}
           {type && <Route path="/courseplan" component={CoursePlan} />}

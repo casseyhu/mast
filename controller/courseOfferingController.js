@@ -16,34 +16,34 @@ const Student = database.Student;
 exports.upload = (req, res) => {
   var form = new IncomingForm()
   form.parse(req).on('file', (field, file) => {
-    if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel')
+    if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel') {
       res.status(500).send('File must be *.csv')
-    else {
-      const fileIn = fs.readFileSync(file.path, 'utf-8')
-      Papa.parse(fileIn, {
-        header: true,
-        dynamicTyping: true,
-        complete: (results) => {
-          var header = results.meta['fields']
-          if (header[0] !== 'department' 
-              && header[1] !== 'course_num'
-              && header[2] !== 'section'
-              && header[3] !== 'semester'
-              && header[4] !== 'year'
-              && header[5] !== 'timeslot') {
-            console.log('invalid csv')
-            res.status(500).send("Cannot parse CSV file - headers do not match specifications")
-            return
-          }
-          uploadCourses(results, res)
-        }
-      })
+      return
     }
+    const fileIn = fs.readFileSync(file.path, 'utf-8')
+    Papa.parse(fileIn, {
+      header: true,
+      dynamicTyping: true,
+      complete: (results) => {
+        var header = results.meta['fields']
+        if (header[0] !== 'department'
+          && header[1] !== 'course_num'
+          && header[2] !== 'section'
+          && header[3] !== 'semester'
+          && header[4] !== 'year'
+          && header[5] !== 'timeslot') {
+          console.log('invalid csv')
+          res.status(500).send("Cannot parse CSV file - headers do not match specifications")
+          return
+        }
+        uploadCourses(results, res)
+      }
+    })
   })
 };
 
 
-async function uploadCourses(results, res){
+async function uploadCourses(results, res) {
   let semestersCovered = await deleteSemestersFromDB(results)
   let coursesAdded = await uploadNewOfferings(results)
   // Get all course plans. 
@@ -51,12 +51,12 @@ async function uploadCourses(results, res){
   let affectedStudents = []
   // For every semester covered by the csv, 
   // ["Fall 2019", "Fall 2020"]
-  for(let i = 0; i < semestersCovered.length; i++) {
+  for (let i = 0; i < semestersCovered.length; i++) {
     semYear = semestersCovered[i].split(' ')
     // For every coursePlan, query the CoursePlanItem table where:
     // coursePlanId == this.coursePlanId, semester+year = current semester and
     // year that we're looking at (outer loop). 
-    for(let j = 0; j < coursePlans.length; j++){
+    for (let j = 0; j < coursePlans.length; j++) {
       // CoursePlanItems == All course plan items for specific student 
       // for sem+year
       let coursePlanItems = await CoursePlanItem.findAll({
@@ -67,38 +67,38 @@ async function uploadCourses(results, res){
         }
       })
       let toCheck = []
-      for(let k = 0; k < coursePlanItems.length; k++) {
-        for(let l = 0; l < coursesAdded.length; l++){
-          if(coursePlanItems[k].courseId == coursesAdded[l].identifier) 
+      for (let k = 0; k < coursePlanItems.length; k++) {
+        for (let l = 0; l < coursesAdded.length; l++) {
+          if (coursePlanItems[k].courseId == coursesAdded[l].identifier)
             toCheck.push(coursesAdded[l])
         }
       }
       // [CSE500, CSE502, CSE503, CSE504, CSE505]
-      for(let k = 0; k < toCheck.length; k++) {
-        for(let l = k+1; l < toCheck.length; l++) {
+      for (let k = 0; k < toCheck.length; k++) {
+        for (let l = k + 1; l < toCheck.length; l++) {
           let first = toCheck[k].days
           let second = toCheck[l].days
-          if (!first || !second || !toCheck[k].startTime || 
+          if (!first || !second || !toCheck[k].startTime ||
             !toCheck[l].startTime || !toCheck[k].endTime || !toCheck[l].endTime)
             continue
-          if(first.includes('M') && second.includes('M')
+          if (first.includes('M') && second.includes('M')
             || first.includes('TU') && second.includes('TU')
             || first.includes('W') && second.includes('W')
             || first.includes('TH') && second.includes('TH')
             || first.includes('F') && second.includes('F')) {
-              // Check time conflict
-              let fStart = toCheck[k].startTime
-              let sStart = toCheck[l].startTime
-              let fEnd = toCheck[k].endTime
-              let sEnd = toCheck[l].endTime
-              if ((fStart >= sStart && fStart < sEnd) 
-                || (fEnd <= sEnd && fEnd > sStart) 
-                || (sStart >= fStart && sStart < fEnd)
-                || (sEnd <= fEnd && sEnd > fStart)) {
-                  affectedStudents.push(coursePlans[j].studentId)
-                }
+            // Check time conflict
+            let fStart = toCheck[k].startTime
+            let sStart = toCheck[l].startTime
+            let fEnd = toCheck[k].endTime
+            let sEnd = toCheck[l].endTime
+            if ((fStart >= sStart && fStart < sEnd)
+              || (fEnd <= sEnd && fEnd > sStart)
+              || (sStart >= fStart && sStart < fEnd)
+              || (sEnd <= fEnd && sEnd > fStart)) {
+              affectedStudents.push(coursePlans[j].studentId)
             }
-         }
+          }
+        }
       }
     }
   }
@@ -108,7 +108,7 @@ async function uploadCourses(results, res){
       sbuId: affectedStudents
     }
   })
-  students.map((student) => {emails.push(student.email)});
+  students.map((student) => { emails.push(student.email) });
   console.log(emails);
 
   var nodemailer = require('nodemailer');
@@ -121,9 +121,9 @@ async function uploadCourses(results, res){
     }
   });
   // emails set to our emails
-  emails = ["sooyeon.kim.2@stonybrook.edu", "andrew.kong@stonybrook.edu", "eddie.xu@stonybrook.edu", "cassey.hu@stonybrook.edu"]
+  // emails = ["sooyeon.kim.2@stonybrook.edu", "andrew.kong@stonybrook.edu", "eddie.xu@stonybrook.edu", "cassey.hu@stonybrook.edu"]
   // comment ^ if you don't want it to spam our emails and uncomment v
-  // emails = [];
+  emails = [];
   for (var i = 0; i < emails.length; i++) {
     var emailOptions = {
       from: "mastgrassjelly@gmail.com",
@@ -131,7 +131,7 @@ async function uploadCourses(results, res){
       subject: "[ACTION REQUIRED] YOU FAILED CSE 416!!!",
       text: "jk"
     }
-    transporter.sendMail(emailOptions, function(err, info) {
+    transporter.sendMail(emailOptions, function (err, info) {
       if (err)
         console.log(err);
       else
@@ -199,9 +199,3 @@ async function deleteSemestersFromDB(csvFile) {
   console.log("Done deleting all scraped semesters from db")
   return semArray
 }
-
-// https://stackoverflow.com/questions/16336367/what-is-the-difference-between-synchronous-and-asynchronous-programming-in-node
-// https://hackernoon.com/understanding-async-await-in-javascript-1d81bb079b2c
-// https://hackernoon.com/understanding-promises-in-javascript-13d99df067c1
-// https://stackoverflow.com/questions/26783080/convert-12-hour-am-pm-string-to-24-date-object-using-moment-js
-// https://www.w3schools.com/nodejs/nodejs_email.asp
