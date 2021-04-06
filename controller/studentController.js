@@ -4,7 +4,6 @@ const { IncomingForm } = require('formidable');
 const fs = require('fs');
 const Papa = require('papaparse');
 const database = require('../config/database.js');
-const course = require('../models/course.js');
 const Op = database.Sequelize.Op;
 
 
@@ -145,38 +144,42 @@ function emptyFields(student) {
 // Create Students from uploading file
 exports.upload = (req, res) => {
   let form = new IncomingForm();
-  form.parse(req).on('file', (field, file) => {
-    if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel')
+  let dept = ''
+  form.parse(req).on('field', (name, field) => {
+    if (name === 'dept')
+      dept = field;
+  }).on('file', (field, file) => {
+    if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel') {
       res.status(500).send('File must be *.csv')
-    else {
-      const fileIn = fs.readFileSync(file.path, 'utf-8')
-      Papa.parse(fileIn, {
-        header: true,
-        dynamicTyping: true,
-        complete: (results) => {
-          var header = results.meta['fields']
-          if (header[0] !== 'sbu_id'
-            || header[1] !== 'first_name'
-            || header[2] !== 'last_name'
-            || header[3] !== 'email'
-            || header[4] !== 'department'
-            || header[5] !== 'track'
-            || header[6] !== 'entry_semester'
-            || header[7] !== 'entry_year'
-            || header[8] !== 'requirement_version_semester'
-            || header[9] !== 'requirement_version_year'
-            || header[10] !== 'graduation_semester'
-            || header[11] !== 'graduation_year'
-            || header[12] !== 'password') {
-            console.log('invalid csv')
-            res.status(500).send('Cannot parse CSV file - headers do not match specifications')
-            return
-          }
-          else
-            uploadStudents(results, res)
-        }
-      })
+      return
     }
+    const fileIn = fs.readFileSync(file.path, 'utf-8')
+    Papa.parse(fileIn, {
+      header: true,
+      dynamicTyping: true,
+      complete: (results) => {
+        var header = results.meta['fields']
+        if (header[0] !== 'sbu_id'
+          || header[1] !== 'first_name'
+          || header[2] !== 'last_name'
+          || header[3] !== 'email'
+          || header[4] !== 'department'
+          || header[5] !== 'track'
+          || header[6] !== 'entry_semester'
+          || header[7] !== 'entry_year'
+          || header[8] !== 'requirement_version_semester'
+          || header[9] !== 'requirement_version_year'
+          || header[10] !== 'graduation_semester'
+          || header[11] !== 'graduation_year'
+          || header[12] !== 'password') {
+          console.log('invalid csv')
+          res.status(500).send('Cannot parse CSV file - headers do not match specifications')
+          return
+        }
+        let students = results.data.filter(student => student.department === dept)
+        uploadStudents(students, res)
+      }
+    })
   })
 }
 
@@ -317,7 +320,7 @@ exports.deleteAll = (req, res) => {
 
 
 
-async function uploadStudents(csvFile, res) {
+async function uploadStudents(students, res) {
   const degrees = await Degree.findAll()
   let degreeDict = {};
   const monthsDict = {  '01': 'Winter', '02': 'Spring', '05': 'Summer', '08': 'Fall'}
@@ -329,8 +332,8 @@ async function uploadStudents(csvFile, res) {
     degreeDict[degrees[i].dept + ' ' + degrees[i].track + ' ' + requirementSem + ' ' + requirementYear] = degrees[i].degreeId
   }
   let tot = 0;
-  for (let i = 0; i < csvFile.data.length; i++) {
-    studentInfo = csvFile.data[i]
+  for (let i = 0; i < students.length; i++) {
+    studentInfo = students[i]
     let semsDict = { 'Spring': '02', 'Summer': '06', 'Fall': '08', 'Winter': '01' };
     let semYear = Number(studentInfo.entry_year + semsDict[studentInfo.entry_semester])
     let graduated = Number(studentInfo.graduation_year + semsDict[studentInfo.graduation_semester]) <= currentGradYear ? 1 : 0
