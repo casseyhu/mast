@@ -72,8 +72,10 @@ const ImportItem = (props) => {
       }
       upload_path = 'courseplan/upload'
     }
-    else // Uploading grades. 
+    else { // Uploading grades. 
       upload_path = 'courseplan/upload';
+      formData.append("dept", props.dept);
+    }
 
     if (!loading)
       setLoading(true)

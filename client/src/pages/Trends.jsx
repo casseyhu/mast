@@ -4,6 +4,8 @@ import InputField from '../components/InputField'
 import Dropdown from '../components/Dropdown';
 import Button from '../components/Button';
 import { SEMESTERS, YEARS, SEMESTER_MONTH, MONTH_SEMESTER } from '../constants'
+
+
 class Trends extends Component {
   state = {
     courses: '',
@@ -52,54 +54,64 @@ class Trends extends Component {
   render() {
     return (
       <Container fluid="lg" className="container">
-        <div style={{ margin: '0.2rem 0 0.5rem 0' }}>
-          <div className="flex-horizontal justify-content-between">
-            <h1>Enrollment Trends</h1>
+        <div className="flex-horizontal">
+          <h1>Enrollment Trends</h1>
+        </div>
+        <div className="flex-horizontal wrap justify-content-between" style={{ width: '100%' }}>
+          <div className="flex-horizontal" style={{ width: 'fit-content', flexGrow: '1' }}>
+            <span style={{ width: '65px' }}>Courses</span>
+            <InputField
+              className="lr-padding rm-r-small"
+              type="text"
+              placeholder="Courses"
+              onChange={e => this.setState({ courses: e.target.value })}
+              style={{ flexGrow: '1' }}
+            />
           </div>
-          <div className="flex-horizontal wrap justify-content-between" style={{ width: '100%' }}>
-            <div className="flex-horizontal" style={{ width: 'fit-content', flexGrow: '1.5' }}>
-              <span className="filter-span-reg">Courses</span>
-              <InputField
-                type="text"
-                placeholder="Courses"
-                onChange={e => this.setState({ courses: e.target.value })}
-                style={{ flexGrow: '0.8', marginRight: '1rem' }}
-              />
-              <span className="trends-span-reg">From</span>
+          <div className="flex-horizontal wrap" style={{ width: 'fit-content', flexGrow: '1' }}>
+            <div className="flex-horizontal" style={{ width: 'fit-content', flexGrow: '1' }}>
+              <span className="trends-span">From:</span>
               <Dropdown
-                className="filter-component"
+                className="lr-padding"
                 variant="single"
                 items={SEMESTERS}
+                placeholder="Semester"
                 onChange={e => this.setState({ fromSem: e.value })}
-                style={{ marginRight: '0.1rem', width: '10%' }}
+                style={{ width: '140px', flexGrow: '1' }}
               />
               <Dropdown
-                className="filter-component"
+                className="lr-padding rm-r-small"
                 variant="single"
                 items={YEARS}
+                placeholder="Year"
                 onChange={e => this.setState({ fromYear: e.value })}
-                style={{ marginRight: '0.7rem', width: '10%' }}
+                style={{ width: '120px', flexGrow: '1' }}
               />
-              <span className="trends-span-reg">To</span>
+            </div>
+            <div className="flex-horizontal" style={{ width: 'fit-content', flexGrow: '1' }}>
+              <span className="trends-span">To:</span>
               <Dropdown
-                className="filter-component"
+                className="lr-padding"
                 variant="single"
                 items={SEMESTERS}
+                placeholder="Semester"
                 onChange={e => this.setState({ toSem: e.value })}
-                style={{ marginRight: '0.1rem', width: '10%' }}
+                style={{ width: '140px', flexGrow: '1' }}
               />
               <Dropdown
-                className="filter-component"
+                className="lr-padding"
                 variant="single"
                 items={YEARS}
+                placeholder="Year"
                 onChange={e => this.setState({ toYear: e.value })}
-                style={{ marginRight: '1rem', width: '10%' }}
+                style={{ width: '120px', flexGrow: '1' }}
               />
               <Button
+                divclassName="lr-padding"
                 variant="round"
                 text="go"
                 onClick={(e) => this.createGraph(e)}
-                style={{ width: '70px' }}
+                style={{ width: '70px', flexGrow: '1', paddingLeft: '0.5rem' }}
               />
             </div>
           </div>
