@@ -121,7 +121,7 @@ async function calculateGPA(studentsPlanId, courseCredit, res) {
       let earnedPoints = 0
       let totPoints = 0
       for (let i = 0; i < foundItems.length; i++) {
-        if (!courseCredit[foundItems[i].courseId])
+        if (!courseCredit[foundItems[i].courseId] || !gradesPoint[foundItems[i].grade])
           continue
         earnedPoints += gradesPoint[foundItems[i].grade] * courseCredit[foundItems[i].courseId]
         totPoints += courseCredit[foundItems[i].courseId]
