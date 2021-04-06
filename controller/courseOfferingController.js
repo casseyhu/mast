@@ -1,9 +1,11 @@
 const database = require('../config/database.js');
+const Op = database.Sequelize.Op;
 const Papa = require('papaparse');
 const fs = require('fs');
 const moment = require('moment');
 const IncomingForm = require('formidable').IncomingForm;
 const { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } = require('constants');
+const Course = database.Course;
 
 const CourseOffering = database.CourseOffering;
 const CoursePlan = database.CoursePlan;
@@ -15,7 +17,12 @@ const Student = database.Student;
 // Upload course offerings
 exports.upload = (req, res) => {
   var form = new IncomingForm()
-  form.parse(req).on('file', (field, file) => {
+  let dept = ''
+  form.parse(req).on('field', (name, field) => {
+    console.log(name, field)
+    if (name === 'dept')
+      dept = field;
+  }).on('file', (field, file) => {
     if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel') {
       res.status(500).send('File must be *.csv')
       return
@@ -36,14 +43,15 @@ exports.upload = (req, res) => {
           res.status(500).send("Cannot parse CSV file - headers do not match specifications")
           return
         }
-        uploadCourses(results, res)
+        let courses = results.data.filter(course => course.department === dept)
+        uploadCourses(courses, res, dept)
       }
     })
   })
 };
 
 
-async function uploadCourses(results, res) {
+async function uploadCourses(results, res, dept) {
   let semestersCovered = await deleteSemestersFromDB(results)
   let coursesAdded = await uploadNewOfferings(results)
   // Get all course plans. 
@@ -53,24 +61,40 @@ async function uploadCourses(results, res) {
   // ["Fall 2019", "Fall 2020"]
   for (let i = 0; i < semestersCovered.length; i++) {
     semYear = semestersCovered[i].split(' ')
+    console.log(semYear)
+    let coursesOffered = []
     // For every coursePlan, query the CoursePlanItem table where:
     // coursePlanId == this.coursePlanId, semester+year = current semester and
     // year that we're looking at (outer loop). 
     for (let j = 0; j < coursePlans.length; j++) {
       // CoursePlanItems == All course plan items for specific student 
-      // for sem+year
+      // for sem+year that don't have grades
       let coursePlanItems = await CoursePlanItem.findAll({
         where: {
           coursePlanId: coursePlans[j].coursePlanId,
           semester: semYear[0],
-          year: semYear[1]
+          year: semYear[1],
+          grade: null //moved this from update
         }
       })
+      /* Courses with the same identifiers as those in course plan items are added toCheck
+         for further inspection
+      */
       let toCheck = []
+      let uniqueCourses = []
       for (let k = 0; k < coursePlanItems.length; k++) {
+        // checks for students that have time conflicts for that semester + year
         for (let l = 0; l < coursesAdded.length; l++) {
-          if (coursePlanItems[k].courseId == coursesAdded[l].identifier)
+          // push all courses found for that semester
+          if(!coursesOffered.includes(coursesAdded[l].identifier) && coursesAdded[l].semester === semYear[0] && coursesAdded[l].year === Number(semYear[1])){
+            coursesOffered.push(coursesAdded[l].identifier)
+          }
+          // include the semester and year to compare
+          if (coursePlanItems[k].courseId == coursesAdded[l].identifier && coursesAdded[l].semester === coursePlanItems[k].semester
+            && coursesAdded[l].year === coursePlanItems[k].year && !uniqueCourses.includes(coursesAdded[l].identifier)) {
+            uniqueCourses.push(coursesAdded[l].identifier)
             toCheck.push(coursesAdded[l])
+          }
         }
       }
       // [CSE500, CSE502, CSE503, CSE504, CSE505]
@@ -78,14 +102,17 @@ async function uploadCourses(results, res) {
         for (let l = k + 1; l < toCheck.length; l++) {
           let first = toCheck[k].days
           let second = toCheck[l].days
+          // if(uniqueCourses.length !== 0){
+          //   console.log(toCheck[k].identifier, toCheck[l].identifier,first, second, toCheck[k].startTime, toCheck[k].endTime,toCheck[l].startTime, toCheck[l].endTime)
+          // }
           if (!first || !second || !toCheck[k].startTime ||
             !toCheck[l].startTime || !toCheck[k].endTime || !toCheck[l].endTime)
             continue
-          if (first.includes('M') && second.includes('M')
-            || first.includes('TU') && second.includes('TU')
-            || first.includes('W') && second.includes('W')
-            || first.includes('TH') && second.includes('TH')
-            || first.includes('F') && second.includes('F')) {
+          if ((first.includes('M') && second.includes('M'))
+            || (first.includes('TU') && second.includes('TU'))
+            || (first.includes('W') && second.includes('W'))
+            || (first.includes('TH') && second.includes('TH'))
+            || (first.includes('F') && second.includes('F'))) {
             // Check time conflict
             let fStart = toCheck[k].startTime
             let sStart = toCheck[l].startTime
@@ -95,17 +122,65 @@ async function uploadCourses(results, res) {
               || (fEnd <= sEnd && fEnd > sStart)
               || (sStart >= fStart && sStart < fEnd)
               || (sEnd <= fEnd && sEnd > fStart)) {
-              affectedStudents.push(coursePlans[j].studentId)
+              const values = {
+                validity: 0
+              }
+              // invalid course plan item = 0
+              let firstCheck = await CoursePlanItem.update(values, {
+                where: {
+                  coursePlanId: coursePlans[j].coursePlanId,
+                  courseId: toCheck[k].identifier,
+                  //grade: null
+                }
+              })
+              let secondCheck = await CoursePlanItem.update(values, {
+                where: {
+                  coursePlanId: coursePlans[j].coursePlanId,
+                  courseId: toCheck[l].identifier,
+                }
+              })
+              // only pushes to affected students if either item is affected
+              if (firstCheck[0] === 1 || secondCheck[0] === 1) {
+                affectedStudents.push(coursePlans[j].studentId)
+              }
             }
           }
         }
       }
     }
-  }
+    if(coursesOffered.length > 0){
+
+      // finds all course plans not offered that semester
+      let coursesNotOffered = await Course.findAll({where : {
+        department: dept, 
+        courseId: {[Op.notIn]: coursesOffered},
+        semester: semYear[0],
+        year: Number(semYear[1])
+      }})
+      /* 
+        **TODO**
+        - Sets the course plan items to invalid if course offering doesn't include those courses
+        but exist in a student's course plan
+        - Save course plan id for later reference to get student id and to push to affectedStudents
+      */
+      let invalidCoursePlans = []
+      for(let j = 0; j < coursesNotOffered.length; j++){
+        let items = await CoursePlanItem.findAll({where: {
+          courseId: coursesNotOffered[j].dataValues.department + coursesNotOffered[j].dataValues.courseNum,
+          semester: semYear[0],
+          year: Number(semYear[1])
+        }})
+        if(items)
+          items.map(item => !invalidCoursePlans.includes(item.coursePlanId) ? invalidCoursePlans.push(item.coursePlanId) : '')
+      }
+    }
+  } 
+  let filteredCourses = await Course.findAll({ where: { department: dept, semestersOffered: semestersCovered } })
+  //course is not offered that semester
   var emails = []
   var students = await Student.findAll({
     where: {
-      sbuId: affectedStudents
+      sbuId: affectedStudents,
     }
   })
   students.map((student) => { emails.push(student.email) });
@@ -153,8 +228,8 @@ async function uploadCourses(results, res) {
 
 async function uploadNewOfferings(csvFile) {
   coursesAdded = []
-  for (let i = 0; i < csvFile.data.length; i++) {
-    course = csvFile.data[i]
+  for (let i = 0; i < csvFile.length; i++) {
+    course = csvFile[i]
     csvTimeslot = (course.timeslot ? course.timeslot.split(' ') : null)
     day = (csvTimeslot ? csvTimeslot[0] : null)
     timeRange = (csvTimeslot ? csvTimeslot[1].split('-') : null)
@@ -183,7 +258,7 @@ async function uploadNewOfferings(csvFile) {
 // Will return a promise after the await is done. Try to
 // catch it in the main loop and handle it in there. 
 async function deleteSemestersFromDB(csvFile) {
-  semArray = Array.from(new Set(csvFile.data.map(
+  semArray = Array.from(new Set(csvFile.map(
     course => course.semester + ' ' + course.year)))
   for (let i = 0; i < semArray.length; i++) {
     semyear = semArray[i].split(' ')

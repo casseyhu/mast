@@ -73,6 +73,7 @@ async function uploadCoursePlans(coursePlans, res) {
       year: coursePlans[i].year,
       section: coursePlans[i].section,
       grade: coursePlans[i].grade,
+      validity: 1
     }
     found = await CoursePlanItem.findOne({ where: condition })
     if (found)

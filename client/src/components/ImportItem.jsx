@@ -23,7 +23,6 @@ const ImportItem = (props) => {
     }
   }, [uploading])
 
-
   const uploadFile = async () => {
     if (props.header === "Student Data" && (firstfile === "" || file === "")) {
       setError("Must have both student profile and course plan files to upload.")
@@ -47,12 +46,13 @@ const ImportItem = (props) => {
     }
     else if (props.header === "Degree Requirements")
       upload_path = 'degree/upload';
-    else if (props.header === "Course Offerings")
+    else if (props.header === "Course Offerings"){
       upload_path = 'courseoffering/upload';
+      formData.append("dept", props.dept);
+    }
     else if (props.header === "Student Data") {
       setLoading(true)
       firstFormData.append("dept", props.dept);
-      console.log(props.dept)
       formData.append("dept", props.dept);
       try {
         await axios.post('student/upload', firstFormData, {
@@ -77,7 +77,7 @@ const ImportItem = (props) => {
 
     if (!loading)
       setLoading(true)
-
+    console.log(props)
     try {
       await axios.post(upload_path, formData, {
         headers: {
