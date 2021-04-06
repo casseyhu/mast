@@ -91,7 +91,7 @@ async function uploadCoursePlans(csvFile, res) {
   for (let j = 0; j < courses.length; j++)
     courseCredit[courses[j].courseId] = courses[j].credits
   await calculateGPA(studentsPlanId, courseCredit, res)
-  await calculateCompletion(studentsPlanId, res)
+  // await calculateCompletion(studentsPlanId, res)
 }
 
 
@@ -121,7 +121,7 @@ async function calculateGPA(studentsPlanId, courseCredit, res) {
       console.log("error getting course plan items")
   }
   console.log("Done calculating GPAs")
-  // res.status(200).send("Success")
+  res.status(200).send("Success")
 }
 
 
@@ -185,8 +185,31 @@ async function calculateCompletion(studentsPlanId, res) {
         }
       }
     }
-    // Dept gpa is deptTotalpts/depttoalcredis
-    // @TODO: department && cumulative. This would take care of GpaRequirement.
+    let deptGpa = deptTotalPoints/deptTotalCredits
+    // @TODO: core && cumulative. This would take care of GpaRequirement.
+    // Set core gpa
+    // var coreReqs = requirements[3].filter((req) => (
+    //   req.creditLower !== 3 && req.creditUpper !== 3
+    // ));
+    // var coreCourses = [];
+    // for (var req of coreReqs) {
+    //   for (var course of req.courses) {
+    //     coreCourses.push(course);
+    //   }
+    // }
+    // var takenCourses = coursePlan.filter((course) => (
+    //   coreCourses.includes(course.courseId)
+    // ));
+    // var coreTotalPoints = 0;
+    // var coreTotalCredits = 0;
+    // for (var takenCourse of takenCourses) {
+    //   for (const [course, credit] of Object.entries(credits)) {
+    //     if (course === takenCourse.courseId) {
+    //       coreTotalCredits += credit
+    //       coreTotalPoints += credit * GRADES[takenCourse.grade]
+    //     }
+    //   }
+    // }
     // @TODO: GradeRequirement and CourseRequirement(s).
 
 

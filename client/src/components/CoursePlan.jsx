@@ -1,7 +1,10 @@
 import React from 'react';
 import Button from '../components/Button';
+import { useHistory } from "react-router-dom";
+
 
 const CoursePlan = (props) => {
+  const history = useHistory();
 
   const sortBySem = (a, b) => {
     let aSemYear = a.year * 100 + (a.semester === "Fall" ? 8 : 2);
@@ -9,11 +12,20 @@ const CoursePlan = (props) => {
     return aSemYear - bSemYear;
   }
 
+  const editCoursePlan = () => {
+    history.push({
+      pathname: '/courseplan',
+      state: {
+        coursePlan: props.coursePlan
+      }
+    })
+  }
+
   return (
     <div >
       <div className="flex-horizontal justify-content-between" style={{ width: '100%' }}>
         <h3>Course Plan</h3>
-        <Button variant="round" text="Edit Course Plan" />
+        <Button variant="round" text="Edit Course Plan" onClick={editCoursePlan}/>
       </div>
       <table style={{ width: '100%' }}>
         <thead style={{ width: '100%' }}>
@@ -26,7 +38,7 @@ const CoursePlan = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.items.sort((a, b) => sortBySem(a, b)).map((course, i) => {
+          {props.coursePlan && props.coursePlan.sort((a, b) => sortBySem(a, b)).map((course, i) => {
             return <tr key={i} style={{ cursor: 'pointer' }}>
               <td className="center">{course.courseId.substring(0, 3)}</td>
               <td className="center">{course.courseId.substring(3, 6)}</td>

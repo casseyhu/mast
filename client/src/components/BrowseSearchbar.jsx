@@ -6,9 +6,6 @@ import InputField from './InputField'
 import { SORT_FIELDS, SORT_ORDER, BOOLEAN, COMPLETENESS, SEMESTERS, YEARS } from '../constants';
 
 const BrowseSearchbar = (props) => {
-
-  const [sortBy, setSort] = useState("");
-  const [ascending, setOrder] = useState("");
   const [degree, setDegree] = useState("");
   const [expanded, setExpanded] = useState(false);
   // const [advancedFields] = useState(["SBU ID", "Degree", "Track", "Entry Sem", 
@@ -54,7 +51,7 @@ const BrowseSearchbar = (props) => {
     }
 
     props.filter(filteredConditions)
-    props.sortField(sortBy.value, ascending.value)
+    // props.sortField(sortBy.value, ascending.value)
     console.log("Query DB with all filters (all states).")
   }
 
@@ -81,19 +78,6 @@ const BrowseSearchbar = (props) => {
           <button className="advancedButton" onClick={expandFilters}>Advanced Options</button>
         </div>
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
-          <span className="filter-span-reg">Sort By</span>
-          <Dropdown
-            items={SORT_FIELDS}
-            onChange={setSort}
-            placeholder="Field"
-            style={{ width: '140px', marginRight: '1rem' }}
-          />
-          <Dropdown
-            items={SORT_ORDER}
-            onChange={setOrder}
-            placeholder="Order"
-            style={{ width: '120px', marginRight: '1rem' }}
-          />
           <Button
             variant="round"
             text="Apply"
