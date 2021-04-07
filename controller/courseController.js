@@ -86,7 +86,7 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
   depts = [dept]
   if (dept == 'AMS')
     depts.push('FIN', 'CHE')
-  pdfExtract.extract(filePath, options, (err, data) => {
+  pdfExtract.extract(filePath, options, async (err, data) => {
     if (err) {
       res.status(500).send('Error parsing pdf file')
       return
@@ -205,7 +205,7 @@ scrapeCourses = (filePath, dept, semester, year, res) => {
                 }
               }
               totCourses += 1
-              insertUpdate({
+              await insertUpdate({
                 courseId: chosenDept + courseNum,
                 department: chosenDept,
                 courseNum: Number(courseNum),

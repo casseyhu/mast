@@ -123,8 +123,9 @@ const Requirements = (props) => {
   }
 
   const getCreds = async () => {
+    // Courses with grades
     var courses = coursePlan.filter((course) => course.grade != null);
-    var credits = {};
+    var credits = {}; // Credit mapping for each course
     console.log(requirements[3])
     if (student && courses.length && requirements[3]) {
       for (var i = 0; i < courses.length; i++) {

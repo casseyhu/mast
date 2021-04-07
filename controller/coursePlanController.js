@@ -1,12 +1,4 @@
 const database = require('../config/database.js');
-const Op = database.Sequelize.Op;
-
-
-
-
-// const degreecontrollerpi = require('./degreeController.js')
-
-// degreecontrollerapi.findrequirements()
 
 const Student = database.Student;
 const Course = database.Course;
@@ -22,7 +14,6 @@ const RequirementState = database.RequirementState;
 const { IncomingForm } = require('formidable');
 const fs = require('fs');
 const Papa = require('papaparse');
-const student = require('../models/student.js');
 
 const semDict = {
   'Fall': 8,

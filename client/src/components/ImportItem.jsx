@@ -4,6 +4,7 @@ import Dropdown from './Dropdown';
 import axios from '../constants/axios';
 import { Checkmark } from 'react-checkmark'
 import { Ring } from 'react-spinners-css';
+import PulseLoader from "react-spinners/PulseLoader";
 
 const ImportItem = (props) => {
 
@@ -152,8 +153,12 @@ const ImportItem = (props) => {
       <small className={error ? "error" : ""} style={{ marginLeft: '150px' }}>
         {(!error && file) ? file.name : error}
       </small>
-      {loading && <Ring size={120} color="rgb(30, 61, 107)" className="loading" />}
-      {uploading && <Checkmark size='xxLarge' color="rgb(30, 61, 107)" className="checkmark" />}
+      {/* {loading && <Ring size={120} color="rgb(30, 61, 107)" className="loading" />} */}
+      {loading && (
+      <div className="loading">
+      <PulseLoader size="20" margin="10" color={"#094067"} loading={loading} />
+      </div>)}
+      {uploading && <Checkmark size='xxLarge' color="#094067" className="checkmark" />}
     </div>
   )
 }
