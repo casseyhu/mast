@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import ReactApexChart from 'react-apexcharts'
 import Container from "react-bootstrap/Container";
 import InputField from '../components/InputField'
 import Dropdown from '../components/Dropdown';
 import Button from '../components/Button';
-import { SEMESTERS, YEARS, SEMESTER_MONTH, MONTH_SEMESTER } from '../constants'
+import axios from '../constants/axios';
+import { SEMESTERS, YEARS, SEMESTER_MONTH } from '../constants'
 
 
 class Trends extends Component {
@@ -13,27 +15,31 @@ class Trends extends Component {
     fromYear: '',
     toSem: '',
     toYear: '',
-    errorMsg: ''
+    errorMsg: '',
+    series: [],
+    options: {}
   }
 
-  createGraph = (e) => {
+  createGraph = async (e) => {
     let startYear = Number(this.state.fromYear)
     let endYear = Number(this.state.toYear)
     if (this.state.courses === '' || this.state.fromSem === '' || this.state.fromYear === '' || this.state.toSem === '' || this.state.toYear === '') {
       this.setState({
-        errorMsg: ''
+        errorMsg: 'Must enter all required fields.'
       })
       return
     }
     else if (startYear > endYear || (startYear === endYear && Number(SEMESTER_MONTH[this.state.fromSem]) > Number(SEMESTER_MONTH[this.state.toSem]))) {
       this.setState({
-        errorMsg: 'Start semester and year must happen before end semester and year'
+        errorMsg: 'Start semester and year must happen before end semester and year.'
       })
       return
     }
     /* Find the range of semesters from start to end */
-    let sems = ['Winter', 'Spring', 'Summer', 'Fall']
+    let sems = ['Spring', 'Fall']
     let rangeSems = []
+    let dashedArray = []
+    let width = []
     let currentYear = Number(this.state.fromYear)
     let index = sems.indexOf(this.state.fromSem)
     let goal = this.state.toSem + " " + this.state.toYear
@@ -47,8 +53,95 @@ class Trends extends Component {
         index += 1
     }
     rangeSems.push(goal)
-    console.log(rangeSems)
+    let series = []
+    let courses = [... new Set(this.state.courses.replace(/\s+/g, ' ').trim().split(' '))]
+    console.log(courses)
+    for (let i = 0; i < courses.length; i++) {
+      let data = []
+      for (let j = 0; j < rangeSems.length; j++) {
+        let semYear = rangeSems[j].split(' ')
+        console.log(courses[i], semYear[0], semYear[1])
+        let students = await axios.get('/courseplanitem/count', {
+          params: {
+            courseId: courses[i],
+            semester: semYear[0],
+            year: Number(semYear[1])
+          }
+        })
+        data.push(students.data.length)
+      }
+      series.push({ name: courses[i], data: data })
+      dashedArray.push(1) // dashed lines for graph
+      width.push(5) //stroke size of lines
+    }
 
+    //Setting the options
+    let options = {
+      chart: {
+        height: 500,
+        type: 'line',
+        zoom: {
+          enabled: true
+        },
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        show: true,
+        width: width,
+        curve: 'smooth',
+        dashArray: dashedArray
+      },
+      title: {
+        text: 'Enrollment Trends',
+        align: 'center',
+        style: {
+          fontFamily: "Montserrat",
+        },
+      },
+      legend: {
+        tooltipHoverFormatter: function (val, opts) {
+          return val + ' - ' + opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] + ''
+        }
+      },
+      markers: {
+        size: 0,
+        hover: {
+          sizeOffset: 6
+        }
+      },
+      xaxis: {
+        categories: rangeSems,
+        title: {
+          text: "Semester",
+          style: {
+            fontFamily: "Montserrat",
+          },
+        }
+      },
+      yaxis: {
+        show: true,
+        labels: {
+          show: true,
+          align: 'right',
+          minWidth: 0,
+          maxWidth: 160,
+        },
+        title: {
+          text: "Students",
+          style: {
+            fontFamily: "Montserrat",
+          },
+        }
+      },
+      grid: {
+        borderColor: '#f1f1f1',
+      }
+    }
+
+    this.setState({ series, options })
+    console.log(series)
   }
 
   render() {
@@ -116,6 +209,9 @@ class Trends extends Component {
             </div>
           </div>
         </div>
+        <br/>
+        <ReactApexChart options={this.state.options} series={this.state.series} type="line" /*height={550}*/ />
+
       </Container >
     );
   }

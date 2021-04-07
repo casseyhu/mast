@@ -125,7 +125,7 @@ class Browse extends Component {
     this.setState({
       numPerPage: numPerPage,
       maxPage: maxPage,
-      page: Math.min(this.state.page, maxPage)
+      page: Math.min(this.state.page , maxPage)
     })
   }
 
