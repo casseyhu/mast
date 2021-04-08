@@ -6,4 +6,6 @@ module.exports = function (app) {
   app.post('/api/courseplan/upload', CoursePlan.uploadPlans);
 
   app.get('/api/courseplanitem/findItems', CoursePlan.findItems);
+
+  app.get('/api/courseplanitem/count', CoursePlan.count);
 }

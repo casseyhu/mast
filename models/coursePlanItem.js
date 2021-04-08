@@ -41,6 +41,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     section: Sequelize.STRING,
     grade: Sequelize.STRING,
+    validity: Sequelize.BOOLEAN
   }, {
     timestamps: false
   })

@@ -13,10 +13,10 @@ export const MONTH_SEMESTER = {
 }
 
 export const SEMESTER_MONTH = {
-  'Winter': '01',
-  'Spring': '02',
-  'Summer': '05',
-  'Fall': '08'
+  'Winter': 1,
+  'Spring': 2,
+  'Summer': 5,
+  'Fall': 8
 }
 
 export const YEARS = [

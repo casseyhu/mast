@@ -27,7 +27,7 @@ const Import = (props) => {
       <div className="flex-vertical">
         <ImportItem header="Course Information" type="PDF" sems={SEMESTERS} years={YEARS} dept={props.dept}/>
         <ImportItem header="Degree Requirements" type="JSON" />
-        <ImportItem header="Course Offerings" type="CSV" />
+        <ImportItem header="Course Offerings" type="CSV" dept={props.dept}/>
         <ImportItem header="Student Data" first="Profile CSV" type="Course Plan CSV" dept={props.dept}/>
         <ImportItem header="Grades" type="CSV" dept={props.dept}/>
         <h4 style={{ margin: "1rem 0" }}>Other</h4>

@@ -25,7 +25,16 @@ module.exports = (sequelize, Sequelize) => {
     state: {
       type: Sequelize.STRING,
       defaultValue: 'unsatisfied'
-    }
+    },
+    metaData: {
+      type: Sequelize.TEXT('long'),
+      get() {
+        return this.getDataValue('metaData').split('`')
+      },
+      set(val) {
+        this.setDataValue('metaData', val.join('`'));
+      },
+    },
   }, {
     timestamps: false
   });
