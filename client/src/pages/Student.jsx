@@ -58,7 +58,7 @@ const Student = (props) => {
 
 
   useEffect(() => {
-    console.log("user: " + props.type)
+    // console.log("user: " + props.type)
     if (mode === 'Add')
       return
     let token = localStorage.getItem('jwt-token')
@@ -66,7 +66,7 @@ const Student = (props) => {
     if (!decoded)
       return
     setStudentInfo()
-  }, [props])
+  }, [mode])
 
 
   const modeHandler = (studentInfo) => {

@@ -54,7 +54,7 @@ class Trends extends Component {
     }
     rangeSems.push(goal)
     let series = []
-    let courses = [... new Set(this.state.courses.replace(/\s+/g, ' ').trim().split(' '))]
+    let courses = [...new Set(this.state.courses.replace(/\s+/g, ' ').trim().split(' '))]
     console.log(courses)
     for (let i = 0; i < courses.length; i++) {
       let data = []

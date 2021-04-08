@@ -52,7 +52,7 @@ const StudentInfo = (props) => {
         <h1>{mode} Student</h1>
         <small>Last Updated: {userInfo.updatedAt}</small>
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
-          {props.userType == 'gpd' && (
+          {props.userType === 'gpd' && (
             <Button
               variant="round"
               text="Back"
@@ -226,7 +226,7 @@ const StudentInfo = (props) => {
           placeholder="Student Comments"
           className="textarea resize-ta"
           value={userInfo.studentComments}
-          disabled={mode === 'View' || props.userType == "gpd"}
+          disabled={mode === 'View' || props.userType === "gpd"}
           onChange={e => handleSelection('studentComments', e.target)}
           style={{ minWidth: "375px" }} />
       </div>

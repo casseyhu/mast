@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Button from './Button';
 import Dropdown from './Dropdown';
-import axios from '../constants/axios';
 import InputField from './InputField'
-import { SORT_FIELDS, SORT_ORDER, BOOLEAN, COMPLETENESS, SEMESTERS, YEARS } from '../constants';
+import { BOOLEAN, COMPLETENESS, SEMESTERS, YEARS } from '../constants';
 
 const BrowseSearchbar = (props) => {
-  const [degree, setDegree] = useState("");
+  // const [degree, setDegree] = useState("");
   const [expanded, setExpanded] = useState(false);
   // const [advancedFields] = useState(["SBU ID", "Degree", "Track", "Entry Sem", 
   //   "Grad Sem", "Graduated", "Entry Year", "Grad Year"])

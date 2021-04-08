@@ -878,7 +878,7 @@
     "degree37": {
         "dept": "BMI",
         "track": "Imaging Informatics With Thesis",
-        "requirementVersion": 202202, 
+        "requirementVersion": 201902, 
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -903,7 +903,7 @@
     "degree38": {
         "dept": "BMI",
         "track": "Imaging Informatics With Project",
-        "requirementVersion": 202202, 
+        "requirementVersion": 201902, 
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -928,7 +928,7 @@
     "degree39": {
         "dept": "BMI",
         "track": "Clinical Informatics With Thesis",
-        "requirementVersion": 202202, 
+        "requirementVersion": 201902, 
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -952,7 +952,7 @@
     "degree40": {
         "dept": "BMI",
         "track": "Clinical Informatics With Project",
-        "requirementVersion": 202202, 
+        "requirementVersion": 201902, 
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -976,7 +976,7 @@
     "degre41": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Thesis",
-        "requirementVersion": 202202, 
+        "requirementVersion": 201902, 
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -1000,7 +1000,7 @@
     "degree42": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Project",
-        "requirementVersion": 202202, 
+        "requirementVersion": 201902, 
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {

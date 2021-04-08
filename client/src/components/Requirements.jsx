@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from '../constants/axios';
 
 const Requirements = (props) => {
   // const [credits, setCredits] = useState({});
@@ -7,9 +6,9 @@ const Requirements = (props) => {
   const [display, setDisplay] = useState(false);
   const [totalCredits, setTotalCredits] = useState(null);
 
-  const semDict = { 'Fall': 8, 'Spring': 2, 'Winter': 1, 'Summer': 5 }
-  const currSem = 'Spring'
-  const currYear = 2021
+  // const semDict = { 'Fall': 8, 'Spring': 2, 'Winter': 1, 'Summer': 5 }
+  // const currSem = 'Spring'
+  // const currYear = 2021
   const grades = { 'A': 4, 'A-': 3.67, 'B+': 3.33, 'B': 3, 'B-': 2.67, 'C+': 2.33, 'C': 2, 'C-': 1.67, 'F': 0 }
 
   let { student, requirements, coursePlan, requirementStates } = props.studentInfo
@@ -29,12 +28,12 @@ const Requirements = (props) => {
   }
 
   const getText = (req) => {
-    var text = "";
-    var hasCreditBounds = false;
+    let text = "";
+    let hasCreditBounds = false;
     if (req.type === 1)
-      var text = "[Required] ";
+      text = "[Required] ";
     else if (req.type === 2)
-      var text = "[Track Required] ";
+      text = "[Track Required] ";
     else if (req.type === 0)
       return "[Non Required] ";
     if (req.creditUpper || req.creditLower) {
@@ -50,11 +49,11 @@ const Requirements = (props) => {
         text += " at least " + req.creditUpper + " credit(s)";
       hasCreditBounds = true;
     }
-    if (req.courseUpper || req.courseUpper) {
+    if (req.courseUpper || req.courseLower) {
       if (hasCreditBounds)
         text += " and "
-      if (req.courseUpper && req.courseUpper) {
-        if (req.courseUpper === req.courseUpper)
+      if (req.courseUpper && req.courseLower) {
+        if (req.courseUpper === req.courseLower)
           text += req.courseLower + " course(s)";
         else
           text += req.courseLower + " to " + req.courseUpper + " course(s)";
@@ -70,37 +69,27 @@ const Requirements = (props) => {
   const isTaken = (courseRequirement, course) => {
     let coursesUsed = requirementStates['C' + courseRequirement.requirementId][1]
     return coursesUsed.includes(course)
-    // if (coursePlan) {
-    //   var takenCourses = coursePlan.filter((c) =>
-    //     (c.year * 100 + semDict[c.semester] <= currYear * 100 + semDict[currSem])
-    //     && (c.courseId === course)
-    //   )
-    //   if (takenCourses.length)
-    //     return true;
-    // }
-    // return false;
-  }
-
-  const getCreds = async () => {
-    console.log(requirements)
-    console.log(requirementStates)
-    let gpas = requirementStates['G' + requirements[1].requirementId][1]
-    setGpas({
-      "cumulative": gpas[0],
-      "department": gpas[2],
-      "core": gpas[1]
-    });
-    console.log('gpas: ' + gpas)
-    let credits = requirementStates['CR' + requirements[2].requirementId][1]
-    setTotalCredits(credits)
-    console.log('credits: ' + credits)
-    setDisplay(true);
   }
 
   useEffect(() => {
+    const getCreds = async () => {
+      console.log(requirements)
+      console.log(requirementStates)
+      let gpas = requirementStates['G' + requirements[1].requirementId][1]
+      setGpas({
+        "cumulative": gpas[0],
+        "department": gpas[2],
+        "core": gpas[1]
+      });
+      // console.log('gpas: ' + gpas)
+      let credits = requirementStates['CR' + requirements[2].requirementId][1]
+      setTotalCredits(credits)
+      // console.log('credits: ' + credits)
+      setDisplay(true);
+    }
     if (student && requirements && coursePlan)
       getCreds()
-  }, [props.studentInfo])
+  }, [student, requirements, coursePlan, requirementStates])
 
 
   return (
@@ -152,14 +141,14 @@ const Requirements = (props) => {
         }
         {requirements[3] && requirements[3].map((req, key) => {
           // non required non electives (e.g. "cannot take cse538 twice")
-          if (!req.type && req.creditLower && req.creditUpper && req.courseLower && req.courseUpper)
-            return
-          return (
-            <div className={getReqColor('C', req)}>
-              <div key={key}>
-                {getText(req)}
-                {req.courses.map((course) => isTaken(req, course) ? <b>{course} </b> : course + " ")}
-              </div>
+          if (req.type === 0)
+            return <div key={key}></div>
+          else return (
+            <div className={getReqColor('C', req)} key={key}>
+              {getText(req)}
+              {req.courses.map((course, ckey) => isTaken(req, course)
+                ? <span key={ckey}><b>{course} </b></span>
+                : <span key={ckey}>{course + " "}</span>)}
             </div>
           )
         })}
