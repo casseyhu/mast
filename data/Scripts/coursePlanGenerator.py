@@ -22,13 +22,13 @@ GRADES = ["A", "A-", "B+", "B", "B-", "C+", "C"]
 path = str(Path(__file__).parent.parent.absolute())
 
 # Opens degree requirements json for AMS, BMI, CSE, and ESE
-with open(path + "/Requirements/degree-requirements-AMS.json", "r") as read_file:
+with open(path + "/Requirements/AMS/degree-requirements-AMS-Fall-2019.json", "r") as read_file:
     AMS_dreq = json.load(read_file)
-with open(path + "/Requirements/degree-requirements-BMI.json", "r") as read_file:
+with open(path + "/Requirements/BMI/degree-requirements-BMI-Fall-2019.json", "r") as read_file:
     BMI_dreq = json.load(read_file)
-with open(path + "/Requirements/degree-requirements-CSE.json", "r") as read_file:
+with open(path + "/Requirements/CSE/degree-requirements-CSE-Fall-2019.json", "r") as read_file:
     CSE_dreq = json.load(read_file)
-with open(path + "/Requirements/degree-requirements-ESE.json", "r") as read_file:
+with open(path + "/Requirements/ESE/degree-requirements-ESE-Fall-2019.json", "r") as read_file:
     ESE_dreq = json.load(read_file)
 
 # Creates dictionary where the key is track and value is its requirements
@@ -43,9 +43,16 @@ for i in range(1, len(TRACKS['AMS']) + 1):
     track = AMS_dreq['degree' + str(i)]['track']
     requirements = []
     if track == "Quantitative Finance":
-        requirements.append(["AMS586"])
         for i in range(len(reqs)):
             if i != 11:
+                requirements.append(reqs[i][1:])
+    elif track == "Computational Biology":
+        for req in reqs:
+            if req[0] != "1:(3,3):(0,0)":
+                requirements.append(req[1:])
+    elif track == "Statistics":
+        for i in range(len(reqs)):
+            if i < 2 or i > 7:
                 requirements.append(reqs[i][1:])
     else:
         for req in reqs:
@@ -100,7 +107,7 @@ prereq_df = prereq_df[prereq_df['prereqs'].notna()]
 # Get all students and their relevant information from student_profile_file.csv
 students = []
 profile_df = pd.read_csv(path + '/student_profile_file.csv')
-df = profile_df[profile_df['track'] == "Quantitative Finance"]
+df = profile_df[profile_df['department'] == "AMS"]
 for ind in df.index:
     track = df['track'][ind]
     if df['department'][ind] == 'CSE':
@@ -131,10 +138,7 @@ def get_section_time(course, semester, year, course_df):
     if year == 2018:
         year = 2019
     if year >= 2021:
-        if semester == "Fall":
-            year = 2020
-        else:
-            year = 2021
+        year = 2021
     df2 = df1[(df1['semester'] == semester) & (df1['year'] == year)]
     if len(df2) == 0:
         return (-1, "")
@@ -241,7 +245,7 @@ def add_course_plan_item(requirement, student, semester, year, course_df, GRADES
         course = requirement[i]
         count += 1
         # Skip duplicates
-        if course != "BMI592" and course in student['courses']:
+        if course != "BMI592" and course != "AMS532" and course in student['courses']:
             continue
         # Skip if prereqs are not already in course plan
         if not prereq_satisfied(course, student, prereq_df, semester, year):
@@ -265,15 +269,17 @@ course_plans = ""
 # Add course plan items for each student to student_course_plan_file.csv
 for student in students:
     requirements = course_req[student['track']]
-    print(student['track'])
-    if student['track'] == "Quantitative Finance" and student['entry_sem'] == "Fall":
+    if student['degree'] != 'AMS':
         continue
     while True:
         semester = student['entry_sem']
         year = student['entry_year']
-        num_courses = list(np.random.multinomial(len(requirements), [1/4.] * 4))
+        length = len(requirements)
+        if student['track'] == "Computational Biology" or "Quantitative Finance":
+            length = len(requirements) - 1
+        num_courses = list(np.random.multinomial(length, [1/4.] * 4))
         while 0 in num_courses:
-            num_courses = list(np.random.multinomial(len(requirements), [1/4.] * 4))
+            num_courses = list(np.random.multinomial(length, [1/4.] * 4))
         for i in range(4):
             student['schedule'][semester + " " + str(year)] = {
                 "M": [],
@@ -294,19 +300,20 @@ for student in students:
                     student['num_courses'][semester + " " + str(year)] = 4
                 else:
                     student['num_courses'][semester + " " + str(year)] = 2
-            elif student['track'] == "Operations Research":
-                if semester == "Fall":
-                    student['num_courses'][semester + " " + str(year)] = 3
-                elif i >= 3:
-                    student['num_courses'][semester + " " + str(year)] = 3
-                else:
-                    student['num_courses'][semester + " " + str(year)] = 2
+            # elif student['track'] == "Operations Research":
+            #     if semester == "Fall":
+            #         student['num_courses'][semester + " " + str(year)] = 3
+            #     else:
+            #         student['num_courses'][semester + " " + str(year)] = 2
             else:
                 student['num_courses'][semester +" " + str(year)] = num_courses[-1]
                 num_courses.pop()
             if student['degree'] == "BMI":
                 student['num_courses'][semester + " " + str(year)] += 1
                 add_course_plan_item(["BMI592"], student, semester, year, course_df, GRADES, prereq_df)
+            if student['track'] == "Computational Biology" and i != 0:
+                student['num_courses'][semester + " " + str(year)] += 1
+                add_course_plan_item(["AMS532"], student, semester, year, course_df, GRADES, prereq_df)
             if semester == "Fall":
                 semester = "Spring"
                 year += 1
@@ -314,9 +321,33 @@ for student in students:
                 semester = "Fall"
         semester = student['entry_sem']
         year = student['entry_year']
-        print(sum, student['num_courses'])
+        if student['track'] == "Statistics" and student['entry_sem'] == "Spring":
+            add_course_plan_item(["AMS570"], student, "Spring", student['entry_year'], course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS572"], student, "Fall", student['entry_year'], course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS571"], student, "Fall", student['entry_year'], course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS573"], student, "Spring", student['entry_year']+1, course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS578"], student, "Spring", student['entry_year']+1, course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS582"], student, "Fall", student['entry_year']+1, course_df, GRADES, prereq_df)
+        if student['track'] == "Statistics" and student['entry_sem'] == "Fall":
+            add_course_plan_item(["AMS570"], student, "Spring", student['entry_year']+1, course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS572"], student, "Fall", student['entry_year'], course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS571"], student, "Fall", student['entry_year'], course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS573"], student, "Spring", student['entry_year']+2, course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS578"], student, "Spring", student['entry_year']+2, course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS582"], student, "Fall", student['entry_year']+1, course_df, GRADES, prereq_df)
+        if student['track'] == "Quantitative Finance" and student['entry_sem'] == "Spring":
+            add_course_plan_item(["AMS586"], student, "Spring", student['entry_year'], course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS511"], student, "Fall", student['entry_year'], course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS513"], student, "Spring", student['entry_year']+1, course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS516"], student, "Fall", student['entry_year']+1, course_df, GRADES, prereq_df)
+        if student['track'] == "Quantitative Finance" and student['entry_sem'] == "Fall":
+            add_course_plan_item(["AMS586"], student, "Spring", student['entry_year']+1, course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS511"], student, "Fall", student['entry_year'], course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS513"], student, "Spring", student['entry_year']+1, course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS516"], student, "Fall", student['entry_year']+1, course_df, GRADES, prereq_df)
 
-        for i in range(len(requirements)):
+        random.shuffle(requirements)
+        for i in range(length):
             courses = requirements[i]
             random.shuffle(courses)
             # no courses can be added because no courses are offered in current sem
@@ -346,14 +377,16 @@ for student in students:
         sum = 0
         for sem_year in student['num_courses']:
             sum += student['num_courses'][sem_year]
-        print(sum, student['num_courses'])
-        if sum == 0:
+        print(student['course_plan'])
+        print(student['track'], sum, student['num_courses'])
+        if sum <= 0:
             break
         student['course_plan'] = ""
         student['courses'] = []
     course_plans += student['course_plan']
+    print(student['course_plan'])
 
-with open(path + '/student_course_plan_file.csv', 'a') as fd:
+with open(path + '/student_course_plan_file1.csv', 'a') as fd:
     fd.write(course_plans)
     
     # for cpi in student['course_plan']:
