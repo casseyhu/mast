@@ -21,7 +21,6 @@ const Student = (props) => {
     let studentRes = await axios.get('/student/' + currStudent.sbuId, {
       params: { sbuId: currStudent.sbuId }
     })
-    console.log(studentRes.data)
     let coursePlanItems = await axios.get('/courseplanitem/findItems', {
       params: {
         studentId: studentRes.data.sbuId
@@ -52,9 +51,8 @@ const Student = (props) => {
   async function initStateMap(requirementStates) {
     let cpMap = {}
     for(let req of requirementStates) {
-      cpMap[req.requirementId] = req.state
+      cpMap[req.requirementId] = [req.state, req.metaData]
     }
-    console.log("ReqState map: ", cpMap)
     return cpMap
   }
 

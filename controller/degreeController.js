@@ -116,18 +116,18 @@ async function updateDegree(oldDegree, newDegree) {
     const newCourseIds = await createCourseRequirements(newDegree)
 
     // Find the gradereq record from the oldDegree, then update.
-    await GradeRequirement.findOne({
-      where: {
-        requirementId: oldDegree.dataValues.gradeRequirement
-      }
-    }).then(async (result) => {
-      const updt = await result.update({
-        atLeastCredits: newDegree.gradeRequirement === null
-          ? null : newDegree.gradeRequirement.atLeastCredits,
-        minGrade: newDegree.gradeRequirement === null
-          ? null : newDegree.gradeRequirement.minGrade,
+    if (newDegree.gradeRequirement) {
+      await GradeRequirement.findOne({
+        where: {
+          requirementId: oldDegree.dataValues.gradeRequirement
+        }
+      }).then(async (result) => {
+        await result.update({
+          atLeastCredits: newDegree.gradeRequirement.atLeastCredits,
+          minGrade: newDegree.gradeRequirement.minGrade,
+        })
       })
-    })
+    }
 
     // Find the gpareq record from the oldDegree, then update.
     await GpaRequirement.findOne({

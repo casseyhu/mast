@@ -39,7 +39,6 @@ const CoursePlan = (props) => {
         </thead>
         <tbody>
           {props.coursePlan && props.coursePlan.sort((a, b) => sortBySem(a, b)).map((course, i) => {
-            console.log(course.validity)
             return <tr key={i} style={{ cursor: 'pointer', backgroundColor: course.validity === false ? "#FFAAAA": "" }}>
               <td className="center">{course.courseId.substring(0, 3)}</td>
               <td className="center">{course.courseId.substring(3, 6)}</td>

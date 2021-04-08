@@ -29,7 +29,7 @@ class Trends extends Component {
       })
       return
     }
-    else if (startYear > endYear || (startYear === endYear && Number(SEMESTER_MONTH[this.state.fromSem]) > Number(SEMESTER_MONTH[this.state.toSem]))) {
+    else if (startYear > endYear || (startYear === endYear && SEMESTER_MONTH[this.state.fromSem] > SEMESTER_MONTH[this.state.toSem])) {
       this.setState({
         errorMsg: 'Start semester and year must happen before end semester and year.'
       })
@@ -129,7 +129,7 @@ class Trends extends Component {
           maxWidth: 160,
         },
         title: {
-          text: "Students",
+          text: "Enrollment Count",
           style: {
             fontFamily: "Montserrat",
           },
@@ -209,7 +209,7 @@ class Trends extends Component {
             </div>
           </div>
         </div>
-        <br/>
+        <br />
         <ReactApexChart options={this.state.options} series={this.state.series} type="line" /*height={550}*/ />
 
       </Container >
