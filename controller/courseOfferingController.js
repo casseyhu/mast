@@ -16,6 +16,7 @@ const Student = database.Student;
 
 // Upload course offerings
 exports.upload = (req, res) => {
+  // console.log(req.query.department)
   var form = new IncomingForm()
   let dept = ''
   form.parse(req).on('field', (name, field) => {
@@ -43,7 +44,17 @@ exports.upload = (req, res) => {
           res.status(500).send("Cannot parse CSV file - headers do not match specifications")
           return
         }
-        let courses = results.data.filter(course => course.department === dept)
+        let courses = []
+        let exceptionDepts = ['CHE', 'JRN', 'MEC', 'MCB', 'PHY']
+        if(dept === "AMS") {
+          courses = results.data.filter(course => course.department === dept || exceptionDepts.includes(course.department))
+          dept = [dept].concat(exceptionDepts)
+        }
+        else {
+          courses = results.data.filter(course => course.department === dept)
+          dept = [dept]
+        }
+
         uploadCourses(courses, res, dept)
       }
     })
@@ -86,12 +97,16 @@ async function uploadCourses(results, res, dept) {
         // checks for students that have time conflicts for that semester + year
         for (let l = 0; l < coursesAdded.length; l++) {
           // push all courses found for that semester
-          if(!coursesOffered.includes(coursesAdded[l].identifier) && coursesAdded[l].semester === semYear[0] && coursesAdded[l].year === Number(semYear[1])){
+          if(!coursesOffered.includes(coursesAdded[l].identifier) 
+            && coursesAdded[l].semester === semYear[0] 
+            && coursesAdded[l].year === Number(semYear[1])){
             coursesOffered.push(coursesAdded[l].identifier)
           }
           // include the semester and year to compare
-          if (coursePlanItems[k].courseId == coursesAdded[l].identifier && coursesAdded[l].semester === coursePlanItems[k].semester
-            && coursesAdded[l].year === coursePlanItems[k].year && !uniqueCourses.includes(coursesAdded[l].identifier)) {
+          if (coursePlanItems[k].courseId == coursesAdded[l].identifier 
+            && coursesAdded[l].semester === coursePlanItems[k].semester
+            && coursesAdded[l].year === coursePlanItems[k].year 
+            && !uniqueCourses.includes(coursesAdded[l].identifier)) {
             uniqueCourses.push(coursesAdded[l].identifier)
             toCheck.push(coursesAdded[l])
           }
@@ -151,18 +166,14 @@ async function uploadCourses(results, res, dept) {
     if(coursesOffered.length > 0){
 
       // finds all course plans not offered that semester
+      console.log("here@@@@@")
       let coursesNotOffered = await Course.findAll({where : {
         department: dept, 
         courseId: {[Op.notIn]: coursesOffered},
         semester: semYear[0],
         year: Number(semYear[1])
       }})
-      /* 
-        **TODO**
-        - Sets the course plan items to invalid if course offering doesn't include those courses
-        but exist in a student's course plan (DONE)
-        - Save course plan id for later reference to get student id and to push to affectedStudents (DONE)
-      */
+      console.log("%%%%%%%%%")
       let invalidCoursePlanIds = []
       for(let j = 0; j < coursesNotOffered.length; j++){
         let items = await CoursePlanItem.findAll({where: {
@@ -224,14 +235,6 @@ async function uploadCourses(results, res, dept) {
   return
 }
 
-
-
-
-// Notes: Changing the data type of the CourseOffering.section
-//  to be a INTEGER instead of a String (since we have sections like):
-//  S01, V02, R04, etc. from the scrapes. 
-// Everyone will have to DORP TABLE courseofferings, then rerun the 
-// server to recreate the table through sequelize. 
 
 async function uploadNewOfferings(csvFile) {
   coursesAdded = []

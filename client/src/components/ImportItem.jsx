@@ -79,7 +79,6 @@ const ImportItem = (props) => {
 
     if (!loading)
       setLoading(true)
-    console.log(props)
     try {
       await axios.post(upload_path, formData, {
         headers: {
@@ -154,7 +153,7 @@ const ImportItem = (props) => {
       </small>
       {loading && (
         <div className="loading">
-          <PulseLoader size="20" margin="10" color={"#094067"} loading={loading} />
+          <PulseLoader size="20px" margin="10px" color={"#094067"} loading={loading} />
         </div>)}
       {uploading && <Checkmark size='xxLarge' color="#094067" className="checkmark" />}
     </div>
