@@ -218,7 +218,7 @@ async function calculateCompletion(studentsPlanId, res) {
             // year: coursePlanItem.year
           }
         })
-        if (course && course.credits)
+        if (course && course.credits != null)
           credits[coursePlanItemCSY] = course.credits;
         else {
           // should not get to here...
