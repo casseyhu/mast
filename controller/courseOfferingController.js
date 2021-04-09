@@ -63,7 +63,7 @@ exports.upload = (req, res) => {
 
 
 async function uploadCourses(results, res, dept) {
-  let semestersCovered = await deleteSemestersFromDB(results)
+  let semestersCovered = await deleteSemestersFromDB(results, dept)
   let coursesAdded = await uploadNewOfferings(results)
   // Get all course plans. 
   let coursePlans = await CoursePlan.findAll()
@@ -166,14 +166,12 @@ async function uploadCourses(results, res, dept) {
     if(coursesOffered.length > 0){
 
       // finds all course plans not offered that semester
-      console.log("here@@@@@")
       let coursesNotOffered = await Course.findAll({where : {
         department: dept, 
         courseId: {[Op.notIn]: coursesOffered},
         semester: semYear[0],
         year: Number(semYear[1])
       }})
-      console.log("%%%%%%%%%")
       let invalidCoursePlanIds = []
       for(let j = 0; j < coursesNotOffered.length; j++){
         let items = await CoursePlanItem.findAll({where: {
@@ -267,19 +265,23 @@ async function uploadNewOfferings(csvFile) {
 // where the semester+year(s) are covered by this new CSV.
 // Will return a promise after the await is done. Try to
 // catch it in the main loop and handle it in there. 
-async function deleteSemestersFromDB(csvFile) {
+async function deleteSemestersFromDB(csvFile, departments) {
+  console.log(departments)
   semArray = Array.from(new Set(csvFile.map(
     course => course.semester + ' ' + course.year)))
   for (let i = 0; i < semArray.length; i++) {
     semyear = semArray[i].split(' ')
     // Might have to CASCADE the deletes to the 
     // CoursePlans that reference these courses (?)
-    await CourseOffering.destroy({
-      where: {
-        semester: semyear[0],
-        year: Number(semyear[1])
-      }
-    })
+    for(let dept of departments) {
+      await CourseOffering.destroy({
+        where: {
+          identifier: {[Op.startsWith] : dept},
+          semester: semyear[0],
+          year: Number(semyear[1])
+        }
+      })
+    }
   }
   console.log("Done deleting all scraped semesters from db")
   return semArray
