@@ -170,9 +170,11 @@ async function calculateCompletion(studentsPlanId, res) {
   // Loop through each student (key = sbu ID)
   for (let key in studentsPlanId) {
     // Keep track of total number of satisfied/pending/unsatisfied requirements
-    let unsatisfied = 0
-    let satisfied = 0
-    let pending = 0
+    let states = {
+      'satisfied': 0,
+      'unsatisfied': 0,
+      'pending': 0
+    }
     // Initialize the credit/gpa/grade requirement states
     let creditState = ''
     let gradeState = ''
@@ -226,22 +228,15 @@ async function calculateCompletion(studentsPlanId, res) {
       }
       totalCredits += credits[coursePlanItemCSY]
     }
-    let actualCredits = takenAndCurrent.reduce((a, b) => (
-      a + credits[b.courseId]
-    ), 0)
+    let actualCredits = takenAndCurrent.reduce((a, b) => a + credits[b.courseId], 0)
     // Students entire course plan will not satify the requirement
     if (totalCredits < creditReq.minCredit) {
       creditState = 'unsatisfied'
-      unsatisfied++
+      states[creditState]++
     } else {
       // Actual number of credits for courses the student has taken or curently taking
       creditState = getReqState(actualCredits, creditReq.minCredit)
-      if (creditState === 'unsatisfied')
-        unsatisfied++
-      else if (creditState === 'satisfied')
-        satisfied++
-      else
-        pending++
+      states[creditState]++
     }
     await updateOrCreate(student, 'Credit', creditReq.requirementId, creditState, [actualCredits])
 
@@ -251,12 +246,7 @@ async function calculateCompletion(studentsPlanId, res) {
         .filter((course) => GRADES[course.grade] >= gradeReq.minGrade)
         .reduce((a, b) => a + credits[b.courseId], 0);
       gradeState = getReqState(numCredits, gradeReq.atLeastCredits)
-      if (gradeState === 'unsatisfied')
-        unsatisfied++
-      else if (gradeState === 'satisfied')
-        satisfied++
-      else
-        pending++
+      states[gradeState]++
       await updateOrCreate(student, 'Grade', gradeReq.requirementId, gradeState, [])
     }
 
@@ -287,16 +277,13 @@ async function calculateCompletion(studentsPlanId, res) {
     studentCumGpa = calculateGPA(gradedCoursePlan, credits)
     cumGpaState = getReqState(studentCumGpa, gpaReq.cumulative)
     // Set the state of the GPA requirement. 
-    if ((deptGpaState === 'unsatisfied') || (coreGpaState === 'unsatisfied') || (cumGpaState === 'unsatisfied')) {
+    if ((deptGpaState === 'unsatisfied') || (coreGpaState === 'unsatisfied') || (cumGpaState === 'unsatisfied'))
       gpaState = 'unsatisfied'
-      unsatisfied++
-    } else if ((deptGpaState === 'pending') || (coreGpaState === 'pending') || (cumGpaState === 'pending')) {
+    else if ((deptGpaState === 'pending') || (coreGpaState === 'pending') || (cumGpaState === 'pending'))
       gpaState = 'pending'
-      pending++
-    } else {
+    else
       gpaState = 'satisfied'
-      satisfied++
-    }
+    states[gpaState]++
     await updateOrCreate(student, 'Gpa', gpaReq.requirementId, gpaState,
       [studentCumGpa.toFixed(2), studentCoreGpa.toFixed(2), studentDeptGpa.toFixed(2)])
     // if (student.sbuId === 125318430) {
@@ -329,8 +316,6 @@ async function calculateCompletion(studentsPlanId, res) {
       else
         coursesCount[course.courseId] = 1
     }
-
-
     let usedCourses = new Set()   // course cant be used for multiple requirements
     for (let requirement of courseReq) {  // each course requirement
       if (requirement.type === 0) // Not required for the degree 
@@ -393,20 +378,15 @@ async function calculateCompletion(studentsPlanId, res) {
         else
           courseReqState = 'pending'
       }
-      if (courseReqState === 'unsatisfied')
-        unsatisfied++
-      else if (courseReqState === 'satisfied')
-        satisfied++
-      else
-        pending++
+      states[courseReqState]++
       // console.log(coursesUsedForReq)
       await updateOrCreate(student, 'Course', requirement.requirementId, courseReqState, coursesUsedForReq)
     }
     tot += 1
     await student.update({
-      unsatisfied: unsatisfied,
-      satisfied: satisfied,
-      pending: pending,
+      unsatisfied: states['unsatisfied'],
+      satisfied: states['satisfied'],
+      pending: states['pending'],
       gpa: studentCumGpa ? studentCumGpa.toFixed(2) : 0
     })
   }
