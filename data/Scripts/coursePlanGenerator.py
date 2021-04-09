@@ -44,7 +44,7 @@ for i in range(1, len(TRACKS['AMS']) + 1):
     requirements = []
     if track == "Quantitative Finance":
         for i in range(len(reqs)):
-            if i != 11:
+            if i != 2 and i != 4 and i != 6:
                 requirements.append(reqs[i][1:])
     elif track == "Computational Biology":
         for req in reqs:
@@ -169,7 +169,10 @@ def add_course(course, section, student, semester, year, GRADES):
         cp += str(section)
     cp += "," + semester + "," + str(year) + ","
     if year < 2021:
-        cp += random.choice(GRADES)
+        if student['grad_year'] < 2021:
+            cp += random.choice(GRADES[:-3])
+        else:
+            cp += random.choice(GRADES)
     student['course_plan'] += cp
     student['courses'].append(course)
     student['num_courses'][semester + " " + str(year)] -= 1
@@ -228,7 +231,7 @@ def prereq_satisfied(course, student, prereq_df, semester, year):
             course_plan.remove('')
             for cp in course_plan:
                 item = cp.split(",")
-                sem_yr = int(item[5]) * 100 + (2 if item[5] == "Spring" else 8)
+                sem_yr = int(item[5]) * 100 + (2 if item[4] == "Spring" else 8)
                 if prereq[:3]==item[1] and str(prereq[3:])==item[2] and sem_yr < semester_year:
                     count += 1
         if ex == 'or' and count >= 1:
@@ -275,8 +278,13 @@ for student in students:
         semester = student['entry_sem']
         year = student['entry_year']
         length = len(requirements)
-        if student['track'] == "Computational Biology" or "Quantitative Finance":
-            length = len(requirements) - 1
+        print(length)
+        if student['track'] == "Statistics":
+            length = len(requirements) + 6
+        if student['track'] == "Quantitative Finance":
+            length = len(requirements) + 4
+        # if student['track'] == "Computational Biology" or student['track'] == "Quantitative Finance":
+        #     length = len(requirements) - 1
         num_courses = list(np.random.multinomial(length, [1/4.] * 4))
         while 0 in num_courses:
             num_courses = list(np.random.multinomial(length, [1/4.] * 4))
@@ -300,11 +308,6 @@ for student in students:
                     student['num_courses'][semester + " " + str(year)] = 4
                 else:
                     student['num_courses'][semester + " " + str(year)] = 2
-            # elif student['track'] == "Operations Research":
-            #     if semester == "Fall":
-            #         student['num_courses'][semester + " " + str(year)] = 3
-            #     else:
-            #         student['num_courses'][semester + " " + str(year)] = 2
             else:
                 student['num_courses'][semester +" " + str(year)] = num_courses[-1]
                 num_courses.pop()
@@ -324,14 +327,14 @@ for student in students:
         if student['track'] == "Statistics" and student['entry_sem'] == "Spring":
             add_course_plan_item(["AMS570"], student, "Spring", student['entry_year'], course_df, GRADES, prereq_df)
             add_course_plan_item(["AMS572"], student, "Fall", student['entry_year'], course_df, GRADES, prereq_df)
-            add_course_plan_item(["AMS571"], student, "Fall", student['entry_year'], course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS571"], student, "Fall", student['entry_year']+1, course_df, GRADES, prereq_df)
             add_course_plan_item(["AMS573"], student, "Spring", student['entry_year']+1, course_df, GRADES, prereq_df)
             add_course_plan_item(["AMS578"], student, "Spring", student['entry_year']+1, course_df, GRADES, prereq_df)
             add_course_plan_item(["AMS582"], student, "Fall", student['entry_year']+1, course_df, GRADES, prereq_df)
         if student['track'] == "Statistics" and student['entry_sem'] == "Fall":
             add_course_plan_item(["AMS570"], student, "Spring", student['entry_year']+1, course_df, GRADES, prereq_df)
             add_course_plan_item(["AMS572"], student, "Fall", student['entry_year'], course_df, GRADES, prereq_df)
-            add_course_plan_item(["AMS571"], student, "Fall", student['entry_year'], course_df, GRADES, prereq_df)
+            add_course_plan_item(["AMS571"], student, "Fall", student['entry_year']+1, course_df, GRADES, prereq_df)
             add_course_plan_item(["AMS573"], student, "Spring", student['entry_year']+2, course_df, GRADES, prereq_df)
             add_course_plan_item(["AMS578"], student, "Spring", student['entry_year']+2, course_df, GRADES, prereq_df)
             add_course_plan_item(["AMS582"], student, "Fall", student['entry_year']+1, course_df, GRADES, prereq_df)
@@ -347,8 +350,8 @@ for student in students:
             add_course_plan_item(["AMS516"], student, "Fall", student['entry_year']+1, course_df, GRADES, prereq_df)
 
         random.shuffle(requirements)
-        for i in range(length):
-            courses = requirements[i]
+        for courses in requirements:
+            # courses = requirements[i]
             random.shuffle(courses)
             # no courses can be added because no courses are offered in current sem
             if add_course_plan_item(courses, student, semester, year, course_df, GRADES, prereq_df) == -1:
@@ -379,7 +382,7 @@ for student in students:
             sum += student['num_courses'][sem_year]
         print(student['course_plan'])
         print(student['track'], sum, student['num_courses'])
-        if sum <= 0:
+        if sum == 0:
             break
         student['course_plan'] = ""
         student['courses'] = []
