@@ -75,7 +75,7 @@ async function uploadCoursePlans(coursePlans, dept, res) {
     let condition = { studentId: coursePlans[i].sbu_id }
     let found = await CoursePlan.findOne({ where: condition })
     if (!found) {
-      console.log(condition)
+      console.log("Error: Course plan not found for student: " + condition)
       continue
     }
     studentsPlanId[coursePlans[i].sbu_id] = found.coursePlanId
@@ -101,43 +101,14 @@ async function uploadCoursePlans(coursePlans, dept, res) {
       course = await CoursePlanItem.create(values)
   }
 
-  // Create mapping of all courses to credits to calculate GPA for each student
-  let courses = await Course.findAll()
-  let courseCredit = {}
+  // Credits mapping for each course in the department
+  let courses = await Course.findAll({ where: { department: dept } })
+  let credits = {}
   for (let j = 0; j < courses.length; j++)
-    courseCredit[courses[j].courseId] = courses[j].credits
-  // await calculateGPA(studentsPlanId, courseCredit, res)
-  await calculateCompletion(studentsPlanId, res)
+    credits[courses[j].courseId] = courses[j].credits
+  calculateCompletion(studentsPlanId, credits, res)
 }
 
-
-// // Calculate and update the GPA for each student that was imported
-// async function calculateGPA(studentsPlanId, courseCredit, res) {
-//   for (let key in studentsPlanId) {
-//     let condition = { coursePlanId: studentsPlanId[key] }
-//     let items = await CoursePlanItem.findAll({ where: condition })
-//     if (items) {
-//       const foundItems = items.filter(item => (item.grade !== null))
-//       let earnedPoints = 0
-//       let totPoints = 0
-//       for (let i = 0; i < foundItems.length; i++) {
-//         if (!courseCredit[foundItems[i].courseId] || !GRADES[foundItems[i].grade])
-//           continue
-//         earnedPoints += GRADES[foundItems[i].grade] * courseCredit[foundItems[i].courseId]
-//         totPoints += courseCredit[foundItems[i].courseId]
-//       }
-//       let GPA = (earnedPoints / totPoints)
-//       if (key && !isNaN(GPA)) {
-//         GPA = GPA.toFixed(2)
-//         await Student.update({ gpas: GPA }, { where: { sbuId: key } })
-//       }
-//     }
-//     else
-//       console.log("error getting course plan items")
-//   }
-//   console.log("Done calculating GPAs")
-//   // res.status(200).send("Success")
-// }
 
 function calculateGPA(coursePlanItems, credits) {
   let totalPoints = 0;
@@ -150,6 +121,7 @@ function calculateGPA(coursePlanItems, credits) {
   return totalPoints / totalCredits
 }
 
+
 function getReqState(value, minimum) {
   if (value === 0)
     return 'unsatisfied'
@@ -161,11 +133,9 @@ function getReqState(value, minimum) {
 
 
 // Calculate course plan and requirements completion by setting states
-async function calculateCompletion(studentsPlanId, res) {
+async function calculateCompletion(studentsPlanId, credits, res) {
   console.log("Calculating student CoursePlan completion...")
   let tot = 0
-  // Credits mapping for each course in a given semester and year
-  let credits = {}
 
   // Loop through each student (key = sbu ID)
   for (let key in studentsPlanId) {
@@ -207,28 +177,19 @@ async function calculateCompletion(studentsPlanId, res) {
     let totalCredits = 0
     for (let j = 0; j < coursePlanItems.length; j++) {
       // Create the course credits mapping and get total credits for their entire course plan
-      let coursePlanItem = coursePlanItems[j]
-      let coursePlanItemCSY = coursePlanItem.courseId
-      if (!credits[coursePlanItemCSY]) {
-        let course = await Course.findOne({
-          where: {
-            courseId: coursePlanItem.courseId
-            // ,
-            // semester: coursePlanItem.semester,
-            // year: coursePlanItem.year
-          }
-        })
+      let courseName = coursePlanItems[j].courseId
+      if (!credits[courseName]) {
+        let course = await Course.findOne({ where: { courseId: courseName } })
         if (course && course.credits != null)
-          credits[coursePlanItemCSY] = course.credits;
-        else {
-          // should not get to here...
-          console.log("course doesnt exist: " + coursePlanItemCSY)
-          credits[coursePlanItemCSY] = 3
+          credits[courseName] = course.credits;
+        else { // should not get to here...
+          console.log("course doesnt exist: " + courseName)
+          credits[courseName] = 3
         }
       }
-      totalCredits += credits[coursePlanItemCSY]
+      totalCredits += credits[courseName]
     }
-    let actualCredits = takenAndCurrent.reduce((a, b) => a + credits[b.courseId], 0)
+    const actualCredits = takenAndCurrent.reduce((a, b) => a + credits[b.courseId], 0)
     // Students entire course plan will not satify the requirement
     if (totalCredits < creditReq.minCredit) {
       creditState = 'unsatisfied'
@@ -247,7 +208,7 @@ async function calculateCompletion(studentsPlanId, res) {
         .reduce((a, b) => a + credits[b.courseId], 0);
       gradeState = getReqState(numCredits, gradeReq.atLeastCredits)
       states[gradeState]++
-      await updateOrCreate(student, 'Grade', gradeReq.requirementId, gradeState, [])
+      await updateOrCreate(student, 'Grade', gradeReq.requirementId, gradeState, [numCredits])
     }
 
     // GPA REQUIREMENT: Create and calculate GPA requirement 
@@ -327,47 +288,48 @@ async function calculateCompletion(studentsPlanId, res) {
       let courseLowerCopy = courseLower
       let creditLowerCopy = creditLower
       let repeatFlag = false
+      const courselen = requirement.courses.length
       for (let course of requirement.courses) {
-        // If course was not used for another requirement and student passed the course, 
+        if (!coursesCount[course])
+          continue
+        // course plan contains the course
         let courseCredits = credits[course]
-        let coRepeat = (requirement.courseLower) ? (requirement.courseLower > requirement.courses.length) : false
-        let crRepeat = (requirement.creditLower) ? (requirement.creditLower / courseCredits > requirement.courses.length) : false
-        if (coursesCount[course]) {  // course plan contains the course
-          // Course can be counted multiple times for the requirement
-          if (coRepeat || crRepeat) {
-            repeatFlag = true
-            if ((coursesCount[course] >= courseLower) || (coursesCount[course] >= creditLower / courseCredits)) {
-              // Check courses taken and currently taking
-              let passed = passedCourses[course]
-              if (passed && ((passed >= courseLower) || (passed >= creditLower / courseCredits)))
-                courseReqState = 'satisfied'
-              else
-                courseReqState = 'pending'
-            } else
-              courseReqState = 'unsatisfied'
-            usedCourses.add(course)
-            coursesUsedForReq.push(course)
-            break
-          }
-          // Course was not used for another requirement: only count if passed or not taken yet
-          else if (!usedCourses.has(course) && (passedCourses[course] || notTakenCourses[course])) {
-            usedCourses.add(course)
-            coursesUsedForReq.push(course)
-            if (passedCourses[course]) {
-              passedCourses[course] -= 1
-              if (passedCourses[course] === 0)
-                delete passedCourses[course]
-            } else if (notTakenCourses[course]) {
+        let coRepeat = requirement.courseLower ? (requirement.courseLower > courselen) : false
+        let crRepeat = requirement.creditLower ? (requirement.creditLower / courseCredits > courselen) : false
+        // Course can be counted multiple times for the requirement
+        if (coRepeat || crRepeat) {
+          repeatFlag = true
+          if ((coursesCount[course] >= courseLower) || (coursesCount[course] >= creditLower / courseCredits)) {
+            // Check courses taken and currently taking
+            let passed = passedCourses[course]
+            if (passed && ((passed >= courseLower) || (passed >= creditLower / courseCredits)))
+              courseReqState = 'satisfied'
+            else
               courseReqState = 'pending'
-              notTakenCourses[course] -= 1
-              if (notTakenCourses[course] === 0)
-                delete notTakenCourses[course]
-            }
-            courseLower -= 1
-            creditLower -= courseCredits
-            if (courseLower <= 0 || creditLower <= 0)
-              break
+          } else
+            courseReqState = 'unsatisfied'
+          usedCourses.add(course)
+          coursesUsedForReq.push(course)
+          break
+        }
+        // Course was not used for another requirement: only count if passed or not taken yet
+        else if (!usedCourses.has(course) && (passedCourses[course] || notTakenCourses[course])) {
+          usedCourses.add(course)
+          coursesUsedForReq.push(course)
+          if (passedCourses[course]) {
+            passedCourses[course] -= 1
+            if (passedCourses[course] === 0)
+              delete passedCourses[course]
+          } else if (notTakenCourses[course]) {
+            courseReqState = 'pending'
+            notTakenCourses[course] -= 1
+            if (notTakenCourses[course] === 0)
+              delete notTakenCourses[course]
           }
+          courseLower -= 1
+          creditLower -= courseCredits
+          if (courseLower <= 0 || creditLower <= 0)
+            break
         }
       }
       if (!repeatFlag) {
@@ -449,14 +411,6 @@ exports.findItems = (req, res) => {
       console.log(err)
     })
   })
-  // CoursePlanItem
-  //   .findAll({ where: { grade: { [Op.not]: req.query.grade } } })
-  //   .then(foundGrades => {
-  //     res.status(200).send(foundGrades)
-  //   })
-  //   .catch(err => {
-  //     console.log(err)
-  //   })
 }
 
 exports.count = (req, res) => {

@@ -53,7 +53,7 @@ nav {
 }
 
 .input:focus, textarea:focus {
-  outline: none;
+  outline-width: 1px;
 }
 
 /* Dropdown CSS */

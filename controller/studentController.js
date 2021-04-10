@@ -319,7 +319,7 @@ exports.deleteAll = (req, res) => {
 exports.getStates = (req, res) => {
   RequirementState.findAll({
     where: {
-      sbuID : req.query.sbuId
+      sbuID: req.query.sbuId
     }
   }).then(reqStates => {
     res.status(200).send(reqStates);
@@ -332,7 +332,7 @@ exports.getStates = (req, res) => {
 async function uploadStudents(students, res) {
   const degrees = await Degree.findAll()
   let degreeDict = {};
-  const monthsDict = {  '01': 'Winter', '02': 'Spring', '05': 'Summer', '08': 'Fall'}
+  const monthsDict = { '01': 'Winter', '02': 'Spring', '05': 'Summer', '08': 'Fall' }
   const currentGradYear = 202101
   for (let i = 0; i < degrees.length; i++) {
     let requirementVersion = degrees[i].requirementVersion.toString()
@@ -376,7 +376,7 @@ async function uploadStudents(students, res) {
     let found = await Student.findOne({ where: condition })
     if (found)
       await found.update(values)
-    else 
+    else
       await Student.create(values)
     condition = { studentId: studentInfo.sbu_id }
     found = await CoursePlan.findOne({ where: condition })

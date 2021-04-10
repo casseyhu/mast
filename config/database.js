@@ -3,15 +3,15 @@ const Sequelize = require('sequelize')
 let sequelize;
 // Creating new Object of Sequelize 
 if (process.env.NODE_ENV === 'production') {
-  sequelize = new Sequelize( 
-    'cashu', 
-    'cashu', 
-    process.env.SBU_DB_PASSWORD, { 
-      dialect: 'mysql',         
-      host: 'mysql3.cs.stonybrook.edu',
-      logging: false
-    }
-  ); 
+  sequelize = new Sequelize(
+    'cashu',
+    'cashu',
+    process.env.SBU_DB_PASSWORD, {
+    dialect: 'mysql',
+    host: 'mysql3.cs.stonybrook.edu',
+    logging: false
+  }
+  );
 } else {
   sequelize = new Sequelize(
     'mast',
@@ -57,27 +57,27 @@ db.CoursePlanItem.belongsTo(db.CoursePlan, { foreignKey: 'coursePlanId' })
 
 
 db.Degree.hasOne(db.GradeRequirement, {
-  sourceKey: 'gradeRequirement', 
+  sourceKey: 'gradeRequirement',
   foreignKey: 'requirementId',
 })
 db.Degree.hasOne(db.GpaRequirement, {
-  sourceKey: 'gpaRequirement', 
+  sourceKey: 'gpaRequirement',
   foreignKey: 'requirementId',
 })
 db.Degree.hasOne(db.CreditRequirement, {
-  sourceKey: 'creditRequirement', 
+  sourceKey: 'creditRequirement',
   foreignKey: 'requirementId',
 })
 db.GradeRequirement.belongsTo(db.Degree, {
   targetKey: 'gradeRequirement',
-   foreignKey: 'requirementId',
-  })
+  foreignKey: 'requirementId',
+})
 db.GpaRequirement.belongsTo(db.Degree, {
-  targetKey: 'gpaRequirement', 
+  targetKey: 'gpaRequirement',
   foreignKey: 'requirementId',
 })
 db.CreditRequirement.belongsTo(db.Degree, {
-  targetKey: 'creditRequirement', 
+  targetKey: 'creditRequirement',
   foreignKey: 'requirementId',
 })
 

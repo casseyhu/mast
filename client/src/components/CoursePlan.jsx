@@ -25,7 +25,7 @@ const CoursePlan = (props) => {
     <div >
       <div className="flex-horizontal justify-content-between" style={{ width: '100%' }}>
         <h3>Course Plan</h3>
-        <Button variant="round" text="Edit Course Plan" onClick={editCoursePlan}/>
+        <Button variant="round" text="Edit Course Plan" onClick={editCoursePlan} />
       </div>
       <table style={{ width: '100%' }}>
         <thead style={{ width: '100%' }}>
@@ -39,7 +39,7 @@ const CoursePlan = (props) => {
         </thead>
         <tbody>
           {props.coursePlan && props.coursePlan.sort((a, b) => sortBySem(a, b)).map((course, i) => {
-            return <tr key={i} style={{ cursor: 'pointer', backgroundColor: course.validity === false ? "#FFAAAA": "" }}>
+            return <tr key={i} style={{ cursor: 'pointer', backgroundColor: course.validity === false ? "#FFAAAA" : "" }}>
               <td className="center">{course.courseId.substring(0, 3)}</td>
               <td className="center">{course.courseId.substring(3, 6)}</td>
               <td className="center">{course.semester}</td>

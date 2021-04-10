@@ -83,8 +83,8 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
   /* other requirements i.e prerequisites, credits */
   let checkOthers = false
   let others = ""
-  let exceptionDepts = ['CHE', 'JRN', 'MEC', 'MCB', 'PHY']
-  let exceptions = ["CHE541", "JRN565", "MEC539", "MCB520", "PHY558"]
+  let exceptionDepts = ['CHE', 'JRN', 'MEC', 'MCB', 'PHY', 'CSE', 'ESE']
+  let exceptions = ["CHE541", "JRN565", "MEC539", "MCB520", "PHY558", "ESE533", "CSE529"]
   pdfExtract.extract(filePath, options, async (err, data) => {
     if (err) {
       res.status(500).send('Error parsing pdf file')
@@ -210,25 +210,25 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
                   index--;
                 }
               }
-                totCourses += 1
-                await insertUpdate({
-                  courseId: chosenDept + courseNum,
-                  department: chosenDept,
-                  courseNum: Number(courseNum),
-                  semester: semester,
-                  year: Number(year),
-                  semestersOffered: foundSem,
-                  name: name,
-                  description: desc,
-                  credits: Number(creds),
-                  prereqs: prereqs,
-                  repeat: 0
-                }, {
-                  courseId: chosenDept + courseNum,
-                  semester: semester,
-                  year: Number(year)
-                })
-              
+              totCourses += 1
+              await insertUpdate({
+                courseId: chosenDept + courseNum,
+                department: chosenDept,
+                courseNum: Number(courseNum),
+                semester: semester,
+                year: Number(year),
+                semestersOffered: foundSem,
+                name: name,
+                description: desc,
+                credits: Number(creds),
+                prereqs: prereqs,
+                repeat: 0
+              }, {
+                courseId: chosenDept + courseNum,
+                semester: semester,
+                year: Number(year)
+              })
+
 
               // .then(res => {
               //   console.log(res.created + ':' + res.course)
@@ -283,12 +283,12 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
             if (desc === "") {
               chosenDept = courseName.substring(0, 3)
               courseNum = courseName.substring(5, 8)
-              if (exceptionDepts.includes(chosenDept) && !exceptions.includes(chosenDept+courseNum)) {
+              if (exceptionDepts.includes(chosenDept) && !exceptions.includes(chosenDept + courseNum)) {
                 skip = true
-              //   checkOthers = false;
-              //   courseNum = ''
-              //   others = ''
-              //   desc = ''
+                //   checkOthers = false;
+                //   courseNum = ''
+                //   others = ''
+                //   desc = ''
               }
               name = courseName.substring(10, courseName.length)
             }

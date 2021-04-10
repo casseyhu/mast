@@ -34,7 +34,7 @@ const BrowseSearchbar = (props) => {
     // After querying, send the results to the parent (Browse.jsx)
     // to set the table of students to view. 
     let graduated = "%"
-    if(filters.graduated !== ''){
+    if (filters.graduated !== '') {
       let num = filters.graduated === 'true' ? 1 : 0
       graduated = num + graduated
     }

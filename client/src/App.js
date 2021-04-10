@@ -10,7 +10,6 @@ import Bulletin from './pages/Bulletin';
 import Suggest from './pages/Suggest';
 import Student from './pages/Student';
 import CoursePlan from './pages/CoursePlan';
-import NotFound404 from './pages/NotFound404';
 import jwt_decode from 'jwt-decode';
 
 class App extends Component {
@@ -58,10 +57,10 @@ class App extends Component {
         <NavigationBar loggedIn={this.state.loggedIn} />
         <Switch>
           {!type && <Route exact path="/" component={(props) => <MainPage {...props} setLoggedIn={this.setLoggedIn} />} />}
-          {type === 'gpd' && <Route exact path="/" component={(props) => <Browse {...props} user={user}/>} />}
+          {type === 'gpd' && <Route exact path="/" component={(props) => <Browse {...props} user={user} />} />}
 
-          {type === 'student' && <Route exact path="/" component={(props) => <Student {...props} mode="View" type={type} student={user}/>} />}
-          {type === 'gpd' && <Route path="/student" component={(props) => <Student {...props} mode="View" type={type}/>} />}
+          {type === 'student' && <Route exact path="/" component={(props) => <Student {...props} mode="View" type={type} student={user} />} />}
+          {type === 'gpd' && <Route path="/student" component={(props) => <Student {...props} mode="View" type={type} />} />}
 
           {type === 'gpd' && <Route path="/trends" component={Trends} />}
           {type === 'gpd' && <Route path="/import" component={(props) => <Import {...props} dept={user.department} />} />}
@@ -73,6 +72,14 @@ class App extends Component {
       </BrowserRouter>
     )
   }
+}
+
+const NotFound404 = () => {
+  return (
+    <h3>
+      404 Page Not Found
+    </h3>
+  )
 }
 
 export default App;

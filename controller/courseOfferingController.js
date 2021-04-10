@@ -46,7 +46,7 @@ exports.upload = (req, res) => {
         }
         let courses = []
         let exceptionDepts = ['CHE', 'JRN', 'MEC', 'MCB', 'PHY']
-        if(dept === "AMS") {
+        if (dept === "AMS") {
           courses = results.data.filter(course => course.department === dept || exceptionDepts.includes(course.department))
           dept = [dept].concat(exceptionDepts)
         }
@@ -97,15 +97,15 @@ async function uploadCourses(results, res, dept) {
         // checks for students that have time conflicts for that semester + year
         for (let l = 0; l < coursesAdded.length; l++) {
           // push all courses found for that semester
-          if(!coursesOffered.includes(coursesAdded[l].identifier) 
-            && coursesAdded[l].semester === semYear[0] 
-            && coursesAdded[l].year === Number(semYear[1])){
+          if (!coursesOffered.includes(coursesAdded[l].identifier)
+            && coursesAdded[l].semester === semYear[0]
+            && coursesAdded[l].year === Number(semYear[1])) {
             coursesOffered.push(coursesAdded[l].identifier)
           }
           // include the semester and year to compare
-          if (coursePlanItems[k].courseId == coursesAdded[l].identifier 
+          if (coursePlanItems[k].courseId == coursesAdded[l].identifier
             && coursesAdded[l].semester === coursePlanItems[k].semester
-            && coursesAdded[l].year === coursePlanItems[k].year 
+            && coursesAdded[l].year === coursePlanItems[k].year
             && !uniqueCourses.includes(coursesAdded[l].identifier)) {
             uniqueCourses.push(coursesAdded[l].identifier)
             toCheck.push(coursesAdded[l])
@@ -163,32 +163,36 @@ async function uploadCourses(results, res, dept) {
         }
       }
     }
-    if(coursesOffered.length > 0){
+    if (coursesOffered.length > 0) {
 
       // finds all course plans not offered that semester
-      let coursesNotOffered = await Course.findAll({where : {
-        department: dept, 
-        courseId: {[Op.notIn]: coursesOffered},
-        semester: semYear[0],
-        year: Number(semYear[1])
-      }})
-      let invalidCoursePlanIds = []
-      for(let j = 0; j < coursesNotOffered.length; j++){
-        let items = await CoursePlanItem.findAll({where: {
-          courseId: coursesNotOffered[j].dataValues.department + coursesNotOffered[j].dataValues.courseNum,
+      let coursesNotOffered = await Course.findAll({
+        where: {
+          department: dept,
+          courseId: { [Op.notIn]: coursesOffered },
           semester: semYear[0],
           year: Number(semYear[1])
-        }})
-        // update the validity such that the items are invalid
-        for(let k = 0; k < items.length; k++){
-          await items[k].update({validity: false})
         }
-        if(items)
+      })
+      let invalidCoursePlanIds = []
+      for (let j = 0; j < coursesNotOffered.length; j++) {
+        let items = await CoursePlanItem.findAll({
+          where: {
+            courseId: coursesNotOffered[j].dataValues.department + coursesNotOffered[j].dataValues.courseNum,
+            semester: semYear[0],
+            year: Number(semYear[1])
+          }
+        })
+        // update the validity such that the items are invalid
+        for (let k = 0; k < items.length; k++) {
+          await items[k].update({ validity: false })
+        }
+        if (items)
           items.map(item => !invalidCoursePlanIds.includes(item.coursePlanId) ? invalidCoursePlanIds.push(item.coursePlanId) : '')
       }
-      let invalidCoursePlans = await CoursePlan.findAll({where : {coursePlanId : invalidCoursePlanIds}})
-      for(let j = 0; j < invalidCoursePlans.length; j++){
-        if(!affectedStudents.includes(invalidCoursePlans[j].dataValues.studentId))
+      let invalidCoursePlans = await CoursePlan.findAll({ where: { coursePlanId: invalidCoursePlanIds } })
+      for (let j = 0; j < invalidCoursePlans.length; j++) {
+        if (!affectedStudents.includes(invalidCoursePlans[j].dataValues.studentId))
           affectedStudents.push(invalidCoursePlans[j].dataValues.studentId)
       }
     }
@@ -273,10 +277,10 @@ async function deleteSemestersFromDB(csvFile, departments) {
     semyear = semArray[i].split(' ')
     // Might have to CASCADE the deletes to the 
     // CoursePlans that reference these courses (?)
-    for(let dept of departments) {
+    for (let dept of departments) {
       await CourseOffering.destroy({
         where: {
-          identifier: {[Op.startsWith] : dept},
+          identifier: { [Op.startsWith]: dept },
           semester: semyear[0],
           year: Number(semyear[1])
         }

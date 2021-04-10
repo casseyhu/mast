@@ -29,7 +29,7 @@ class Browse extends Component {
   addStudent = () => {
     this.props.history.push({
       pathname: '/student',
-      state: { 
+      state: {
         mode: 'Add',
         student: '',
       }
@@ -125,14 +125,14 @@ class Browse extends Component {
     this.setState({
       numPerPage: numPerPage,
       maxPage: maxPage,
-      page: Math.min(this.state.page , maxPage)
+      page: Math.min(this.state.page, maxPage)
     })
   }
 
   componentDidMount() {
     window.addEventListener('resize', this.handleResize)
     axios.get('student', {
-      params: {department : this.props.user.department }
+      params: { department: this.props.user.department }
     }).then(response => {
       this.setState({
         students: response.data,
