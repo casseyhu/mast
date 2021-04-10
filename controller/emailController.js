@@ -1,16 +1,16 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer')
 
 exports.send = (req, res, next) => {
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    service: 'gmail',
     ssl: true,
     auth: {
-      user: "mastgrassjelly@gmail.com",
-      pass: "cse416@stoller"
+      user: 'mastgrassjelly@gmail.com',
+      pass: 'cse416@stoller'
     }
-  });
+  })
   const mail = {
-    from: "mastgrassjelly@gmail.com",
+    from: 'mastgrassjelly@gmail.com',
     to: req.body.params.email,
     subject: req.body.params.subject,
     html: '<b>GoOd NIGHt</b><img src="cid:doggoontreadmill.gif"/>',
@@ -23,9 +23,9 @@ exports.send = (req, res, next) => {
   transporter.sendMail(mail, (err, data) => {
     if (err) {
       console.log(err)
-      res.status(500).send("Failed to send email")
+      res.status(500).send('Failed to send email')
     }
     else
-      res.status(200).send("Successfully sent email")
+      res.status(200).send('Successfully sent email')
   })
 }

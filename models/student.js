@@ -74,5 +74,5 @@ module.exports = (sequelize, Sequelize) => {
     gpdComments: Sequelize.TEXT('long')
   })
 
-  return Student;
+  return Student
 }

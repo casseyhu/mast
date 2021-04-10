@@ -1,19 +1,19 @@
-const database = require('../config/database.js');
+const { IncomingForm } = require('formidable')
+const fs = require('fs')
+const Papa = require('papaparse')
+const database = require('../config/database.js')
 
-const Student = database.Student;
-const Course = database.Course;
-const CoursePlan = database.CoursePlan;
-const CoursePlanItem = database.CoursePlanItem;
-const Degree = database.Degree;
-const GradeRequirement = database.GradeRequirement;
-const GpaRequirement = database.GpaRequirement;
-const CreditRequirement = database.CreditRequirement;
-const CourseRequirement = database.CourseRequirement;
-const RequirementState = database.RequirementState;
+const Student = database.Student
+const Course = database.Course
+const CoursePlan = database.CoursePlan
+const CoursePlanItem = database.CoursePlanItem
+const Degree = database.Degree
+const GradeRequirement = database.GradeRequirement
+const GpaRequirement = database.GpaRequirement
+const CreditRequirement = database.CreditRequirement
+const CourseRequirement = database.CourseRequirement
+const RequirementState = database.RequirementState
 
-const { IncomingForm } = require('formidable');
-const fs = require('fs');
-const Papa = require('papaparse');
 
 const GRADES = { 'A': 4, 'A-': 3.67, 'B+': 3.33, 'B': 3, 'B-': 2.67, 'C+': 2.33, 'C': 2, 'C-': 1.67, 'F': 0 }
 const semDict = {
@@ -27,11 +27,11 @@ const currYear = 2021
 
 // Upload course plans/grades CSV
 exports.uploadPlans = (req, res) => {
-  let form = new IncomingForm();
+  let form = new IncomingForm()
   let dept = ''
   form.parse(req).on('field', (name, field) => {
     if (name === 'dept')
-      dept = field;
+      dept = field
   }).on('file', (field, file) => {
     if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel') {
       res.status(500).send('File must be *.csv')
@@ -75,7 +75,7 @@ async function uploadCoursePlans(coursePlans, dept, res) {
     let condition = { studentId: coursePlans[i].sbu_id }
     let found = await CoursePlan.findOne({ where: condition })
     if (!found) {
-      console.log("Error: Course plan not found for student: " + condition)
+      console.log('Error: Course plan not found for student: ' + condition)
       continue
     }
     studentsPlanId[coursePlans[i].sbu_id] = found.coursePlanId
@@ -91,8 +91,7 @@ async function uploadCoursePlans(coursePlans, dept, res) {
       semester: coursePlans[i].semester,
       year: coursePlans[i].year,
       section: coursePlans[i].section,
-      grade: coursePlans[i].grade,
-      validity: 1
+      grade: coursePlans[i].grade
     }
     found = await CoursePlanItem.findOne({ where: condition })
     if (found)
@@ -111,8 +110,8 @@ async function uploadCoursePlans(coursePlans, dept, res) {
 
 
 function calculateGPA(coursePlanItems, credits) {
-  let totalPoints = 0;
-  let totalCredits = 0;
+  let totalPoints = 0
+  let totalCredits = 0
   for (let course of coursePlanItems) {
     let courseCredit = credits[course.courseId]
     totalCredits += courseCredit
@@ -134,7 +133,7 @@ function getReqState(value, minimum) {
 
 // Calculate course plan and requirements completion by setting states
 async function calculateCompletion(studentsPlanId, credits, res) {
-  console.log("Calculating student CoursePlan completion...")
+  console.log('Calculating student CoursePlan completion...')
   let tot = 0
 
   // Loop through each student (key = sbu ID)
@@ -154,7 +153,7 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     let student = await Student.findOne({ where: { sbuId: key } })
     let degree = await Degree.findOne({ where: { degreeId: student.degreeId } })
     // console.log(student)
-    // console.log(degree.degreeId + "  " + degree.creditRequirement )
+    // console.log(degree.degreeId + '  ' + degree.creditRequirement )
     let creditReq = await CreditRequirement.findOne({ where: { requirementId: degree.creditRequirement } })
     let gpaReq = await GpaRequirement.findOne({ where: { requirementId: degree.gpaRequirement } })
     let gradeReq = await GradeRequirement.findOne({ where: { requirementId: degree.gradeRequirement } })
@@ -165,13 +164,13 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     // List of course plan items with grades
     let gradedCoursePlan = coursePlanItems.filter((course) => (
       course.grade !== null
-    ));
+    ))
 
     // List of course plan items that the student has taken and currently taking
     let takenAndCurrent = coursePlanItems.filter((course) => (
       (course.year < currYear) ||
       ((course.year === currYear) && (semDict[course.semester] <= semDict[currSem]))
-    ));
+    ))
 
     // CREDIT REQUIREMENT: Create and calculate credit requirement
     let totalCredits = 0
@@ -181,9 +180,9 @@ async function calculateCompletion(studentsPlanId, credits, res) {
       if (!credits[courseName]) {
         let course = await Course.findOne({ where: { courseId: courseName } })
         if (course && course.credits != null)
-          credits[courseName] = course.credits;
+          credits[courseName] = course.credits
         else { // should not get to here...
-          console.log("course doesnt exist: " + courseName)
+          console.log('course doesnt exist: ' + courseName)
           credits[courseName] = 3
         }
       }
@@ -205,7 +204,7 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     if (gradeReq) {
       const numCredits = gradedCoursePlan
         .filter((course) => GRADES[course.grade] >= gradeReq.minGrade)
-        .reduce((a, b) => a + credits[b.courseId], 0);
+        .reduce((a, b) => a + credits[b.courseId], 0)
       gradeState = getReqState(numCredits, gradeReq.atLeastCredits)
       states[gradeState]++
       await updateOrCreate(student, 'Grade', gradeReq.requirementId, gradeState, [numCredits])
@@ -222,15 +221,16 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     if (gpaReq.department) {
       let deptCourses = gradedCoursePlan.filter((course) => (
         course.courseId.slice(0, 3) === student.department
-      ));
+      ))
       studentDeptGpa = calculateGPA(deptCourses, credits)
       deptGpaState = getReqState(studentDeptGpa, gpaReq.department)
     }
     // 2. Calculate core GPA if needed
     if (gpaReq.core) {
-      let coreCourses = new Set(courseReq.filter((req) => req.type === 1)
+      let coreCourses = new Set(courseReq
+        .filter((req) => req.type === 1)
         .reduce((a, b) => b.courses.concat(a), []))
-      coreCourses = takenAndCurrent.filter((course) => coreCourses.has(course.courseId));
+      coreCourses = takenAndCurrent.filter((course) => coreCourses.has(course.courseId))
       studentCoreGpa = calculateGPA(coreCourses, credits)
       coreGpaState = getReqState(studentCoreGpa, gpaReq.core)
     }
@@ -238,9 +238,13 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     studentCumGpa = calculateGPA(gradedCoursePlan, credits)
     cumGpaState = getReqState(studentCumGpa, gpaReq.cumulative)
     // Set the state of the GPA requirement. 
-    if ((deptGpaState === 'unsatisfied') || (coreGpaState === 'unsatisfied') || (cumGpaState === 'unsatisfied'))
+    if ((deptGpaState === 'unsatisfied')
+      || (coreGpaState === 'unsatisfied')
+      || (cumGpaState === 'unsatisfied'))
       gpaState = 'unsatisfied'
-    else if ((deptGpaState === 'pending') || (coreGpaState === 'pending') || (cumGpaState === 'pending'))
+    else if ((deptGpaState === 'pending')
+      || (coreGpaState === 'pending')
+      || (cumGpaState === 'pending'))
       gpaState = 'pending'
     else
       gpaState = 'satisfied'
@@ -353,28 +357,28 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     })
   }
   // , studentCoreGpa.toFixed(2), studentDeptGpa.toFixed(2)]
-  console.log("Done calculating " + tot + " students' course plan completion")
-  res.status(200).send("Success")
+  console.log('Done calculating ' + tot + ' students course plan completion')
+  res.status(200).send('Success')
 }
 
 
 async function updateOrCreate(student, requirementType, requirementId, state, metaData) {
-  // console.log("Update/creating for "+student.sbuId+" for requirement type: ", requirementType)
+  // console.log('Update/creating for '+student.sbuId+' for requirement type: ', requirementType)
   // console.log(coursesUsedForReq)
   let reqStr = ''
   switch (requirementType) {
     case 'Grade':
       reqStr = 'GR'
-      break;
+      break
     case 'Gpa':
       reqStr = 'G'
-      break;
+      break
     case 'Credit':
       reqStr = 'CR'
-      break;
+      break
     case 'Course':
       reqStr = 'C'
-      break;
+      break
   }
   let found = await RequirementState.findOne({
     where: {
@@ -402,7 +406,7 @@ async function updateOrCreate(student, requirementType, requirementId, state, me
   Course Plan Items by their id
 */
 exports.findItems = (req, res) => {
-  let condition = req.query;
+  let condition = req.query
   CoursePlan.findOne({ where: condition }).then(coursePlan => {
     condition = { coursePlanId: coursePlan.coursePlanId }
     CoursePlanItem.findAll({ where: condition }).then(coursePlanItems => {
@@ -414,7 +418,7 @@ exports.findItems = (req, res) => {
 }
 
 exports.count = (req, res) => {
-  let condition = req.query;
+  let condition = req.query
   CoursePlanItem.findAll({ where: condition }).then(totalItems => {
     res.status(200).send(totalItems)
   }).catch(err => {

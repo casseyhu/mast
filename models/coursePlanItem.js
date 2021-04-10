@@ -41,10 +41,13 @@ module.exports = (sequelize, Sequelize) => {
     },
     section: Sequelize.STRING,
     grade: Sequelize.STRING,
-    validity: Sequelize.BOOLEAN
+    validity: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: true
+    }
   }, {
     timestamps: false
   })
 
-  return CoursePlanItem;
+  return CoursePlanItem
 }

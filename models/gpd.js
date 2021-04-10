@@ -16,16 +16,16 @@ module.exports = (sequelize, Sequelize) => {
   const Gpd = sequelize.define('gpd', {
     facultyId: {
       type: Sequelize.INTEGER,
-      primaryKey: true,
+      primaryKey: true
     },
     department: Sequelize.STRING,
     firstName: Sequelize.STRING,
     lastName: Sequelize.STRING,
     email: Sequelize.STRING,
-    password: Sequelize.STRING,
+    password: Sequelize.STRING
   }, {
     timestamps: false
-  });
+  })
 
-  return Gpd;
+  return Gpd
 }

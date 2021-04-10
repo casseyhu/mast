@@ -19,20 +19,20 @@ module.exports = (sequelize, Sequelize) => {
     requirementId: {
       type: Sequelize.INTEGER.UNSIGNED,
       primaryKey: true,
-      // autoIncrement: true,
-      references: {
-        model: 'degrees',
-        key: 'gpaRequirement'
-      },
-      onUpdate: 'CASCADE',
-      onDelete: 'CASCADE'
+      autoIncrement: true,
+      // references: {
+      //   model: 'degrees',
+      //   key: 'gpaRequirement'
+      // },
+      // onUpdate: 'CASCADE',
+      // onDelete: 'CASCADE'
     },
     cumulative: Sequelize.FLOAT,
     department: Sequelize.FLOAT,
-    core: Sequelize.FLOAT,
+    core: Sequelize.FLOAT
   }, {
     timestamps: false
-  });
+  })
 
-  return GpaRequirement;
+  return GpaRequirement
 }

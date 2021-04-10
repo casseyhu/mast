@@ -21,15 +21,15 @@ module.exports = (sequelize, Sequelize) => {
   const Course = sequelize.define('course', {
     courseId: {
       type: Sequelize.STRING,
-      primaryKey: true,
+      primaryKey: true
     },
     semester: {
       type: Sequelize.STRING,
-      primaryKey: true,
+      primaryKey: true
     },
     year: {
       type: Sequelize.INTEGER,
-      primaryKey: true,
+      primaryKey: true
     },
     department: Sequelize.STRING,
     courseNum: Sequelize.INTEGER,
@@ -39,8 +39,8 @@ module.exports = (sequelize, Sequelize) => {
         return this.getDataValue('semestersOffered').split('`')
       },
       set(val) {
-        this.setDataValue('semestersOffered', val.join('`'));
-      },
+        this.setDataValue('semestersOffered', val.join('`'))
+      }
     },
     name: Sequelize.STRING,
     description: Sequelize.TEXT('long'),
@@ -51,13 +51,13 @@ module.exports = (sequelize, Sequelize) => {
         return this.getDataValue('prereqs').split('`')
       },
       set(val) {
-        this.setDataValue('prereqs', val.join('`'));
-      },
+        this.setDataValue('prereqs', val.join('`'))
+      }
     },
-    repeat: Sequelize.BOOLEAN,
+    repeat: Sequelize.BOOLEAN
   }, {
     timestamps: false
-  });
+  })
 
-  return Course;
+  return Course
 }

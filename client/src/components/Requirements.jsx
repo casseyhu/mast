@@ -111,7 +111,7 @@ const Requirements = (props) => {
           <div className={getReqColor('G', requirements[1])}>
             Minimum Cumulative GPA:
             {" " + requirements[1].cumulative}
-            <b>&emsp;{gpas['cumulative'] ? gpas['cumulative'] : "N/A"}</b>
+            <b>&emsp;{gpas['cumulative'] ? gpas['cumulative'] : "N/A"}&emsp;</b>
             {requirements[1].core && (
               <span>Minimum Core GPA:
                 {" " + requirements[1].core}
