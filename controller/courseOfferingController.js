@@ -65,15 +65,15 @@ exports.upload = (req, res) => {
 async function uploadCourses(results, res, dept) {
   let semestersCovered = await deleteSemestersFromDB(results, dept)
   let coursesAdded = await uploadNewOfferings(results)
-  // Get all course plans. 
   let coursePlans = await CoursePlan.findAll()
   let affectedStudents = []
-  // For every semester covered by the csv, 
-  // ["Fall 2019", "Fall 2020"]
+  // For every semester covered by the csv...
+  // Ex: semestersCovered = ["Fall 2019", "Fall 2020"]
   for (let i = 0; i < semestersCovered.length; i++) {
     semYear = semestersCovered[i].split(' ')
-    console.log(semYear)
-    let coursesOffered = []
+    semYear[1] = Number(semYear[1])
+    console.log("Checking course plans for semester: ", semYear)
+    let coursesOffered = [] // Holds the courses being offered for current semYear. 
     // For every coursePlan, query the CoursePlanItem table where:
     // coursePlanId == this.coursePlanId, semester+year = current semester and
     // year that we're looking at (outer loop). 
@@ -88,24 +88,25 @@ async function uploadCourses(results, res, dept) {
           grade: null //moved this from update
         }
       })
-      /* Courses with the same identifiers as those in course plan items are added toCheck
-         for further inspection
-      */
+      // Courses in the `coursesAdded` with the same identifiers & same semester and year
+      // as those in course plan items are added `toCheck` for further inspection
       let toCheck = []
       let uniqueCourses = []
+      // checks for students that have time conflicts for that semester + year
+      // push all courses found for that semester
       for (let k = 0; k < coursePlanItems.length; k++) {
-        // checks for students that have time conflicts for that semester + year
         for (let l = 0; l < coursesAdded.length; l++) {
-          // push all courses found for that semester
           if(!coursesOffered.includes(coursesAdded[l].identifier) 
             && coursesAdded[l].semester === semYear[0] 
-            && coursesAdded[l].year === Number(semYear[1])){
+            && coursesAdded[l].year === semYear[1]){
             coursesOffered.push(coursesAdded[l].identifier)
           }
           // include the semester and year to compare
-          if (coursePlanItems[k].courseId == coursesAdded[l].identifier 
-            && coursesAdded[l].semester === coursePlanItems[k].semester
-            && coursesAdded[l].year === coursePlanItems[k].year 
+          // If the CoursePlan has an item that was apart of our coursesAdded
+          // (in the same semester & year too), add it to our toCheck list to check for
+          if ( coursePlanItems[k].courseId === coursesAdded[l].identifier 
+            && coursePlanItems[k].semester === coursesAdded[l].semester
+            && coursePlanItems[k].year  === coursesAdded[l].year
             && !uniqueCourses.includes(coursesAdded[l].identifier)) {
             uniqueCourses.push(coursesAdded[l].identifier)
             toCheck.push(coursesAdded[l])
@@ -140,18 +141,24 @@ async function uploadCourses(results, res, dept) {
               const values = {
                 validity: false
               }
+              // Set the first CoursePlanItem to now be invalid. 
               // invalid course plan item = 0
               let firstCheck = await CoursePlanItem.update(values, {
                 where: {
                   coursePlanId: coursePlans[j].coursePlanId,
                   courseId: toCheck[k].identifier,
+                  semester: semYear[0],
+                  year: semYear[1]
                   //grade: null
                 }
               })
+              // Set the second CoursePlanItem to now be invalid. 
               let secondCheck = await CoursePlanItem.update(values, {
                 where: {
                   coursePlanId: coursePlans[j].coursePlanId,
                   courseId: toCheck[l].identifier,
+                  semester: semYear[0],
+                  year: semYear[1]
                 }
               })
               // only pushes to affected students if either item is affected
@@ -170,14 +177,14 @@ async function uploadCourses(results, res, dept) {
         department: dept, 
         courseId: {[Op.notIn]: coursesOffered},
         semester: semYear[0],
-        year: Number(semYear[1])
+        year: semYear[1]
       }})
       let invalidCoursePlanIds = []
       for(let j = 0; j < coursesNotOffered.length; j++){
         let items = await CoursePlanItem.findAll({where: {
           courseId: coursesNotOffered[j].dataValues.department + coursesNotOffered[j].dataValues.courseNum,
           semester: semYear[0],
-          year: Number(semYear[1])
+          year: semYear[1]
         }})
         // update the validity such that the items are invalid
         for(let k = 0; k < items.length; k++){
@@ -233,11 +240,15 @@ async function uploadCourses(results, res, dept) {
   return
 }
 
-
-async function uploadNewOfferings(csvFile) {
+/**
+ * Scrapes the csv courses and adds all the courses where 
+ * @param {*} csvCourses: The records of the csv file, filtered where csv.courses === this.department.
+ * @return {Array} coursesAdded: The courses from csvCourses that were successfully added to the db.  
+ */
+async function uploadNewOfferings(csvCourses) {
   coursesAdded = []
-  for (let i = 0; i < csvFile.length; i++) {
-    course = csvFile[i]
+  for (let i = 0; i < csvCourses.length; i++) {
+    course = csvCourses[i]
     csvTimeslot = (course.timeslot ? course.timeslot.split(' ') : null)
     day = (csvTimeslot ? csvTimeslot[0] : null)
     timeRange = (csvTimeslot ? csvTimeslot[1].split('-') : null)
@@ -260,14 +271,16 @@ async function uploadNewOfferings(csvFile) {
 
 
 
-// Scrapes the semesters+years from the parsed CSV file. 
-// Then deletes the entries in the CourseOffering Model
-// where the semester+year(s) are covered by this new CSV.
-// Will return a promise after the await is done. Try to
-// catch it in the main loop and handle it in there. 
-async function deleteSemestersFromDB(csvFile, departments) {
+/** 
+ * Scrapes the semesters+years from the parsed CSV file, then deletes the entries 
+ * in the CourseOffering table where the semester and year(s) are covered by this new CSV.
+ * @param courses: The records of the csv file, filtered where csv.courses === this.department.
+ * @param departments: The departments to scrape for. (Ex: CSE can only scrape CSE courses)
+ * @return {Array} semArray: The semesters and years that are covered by this csv file. 
+ */
+async function deleteSemestersFromDB(courses, departments) {
   console.log(departments)
-  semArray = Array.from(new Set(csvFile.map(
+  semArray = Array.from(new Set(courses.map(
     course => course.semester + ' ' + course.year)))
   for (let i = 0; i < semArray.length; i++) {
     semyear = semArray[i].split(' ')
