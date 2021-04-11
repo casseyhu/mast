@@ -22,16 +22,16 @@ const Import = (props) => {
     })
   }
   return (
-    <Container fluid="lg" className="container" style={{pointerEvents: overlay === "none" ? "auto" : "none"}}>
+    <Container fluid="lg" className="container" style={{ pointerEvents: overlay === "none" ? "auto" : "none" }}>
       <div className="flex-horizontal">
         <h1>Import Data</h1>
       </div>
       <div className="flex-vertical">
         <ImportItem header="Course Information" setOverlay={setOverlay} type="PDF" sems={SEMESTERS} years={YEARS} depts={DEPARTMENTS_REQ} />
         <ImportItem header="Degree Requirements" setOverlay={setOverlay} type="JSON" />
-        <ImportItem header="Course Offerings" setOverlay={setOverlay} type="CSV" dept={DEPARTMENTS_REQ}/>
-        <ImportItem header="Student Data" setOverlay={setOverlay} first="Profile CSV" type="Course Plan CSV" dept={DEPARTMENTS_REQ}/>
-        <ImportItem header="Grades" setOverlay={setOverlay} type="CSV" dept={DEPARTMENTS_REQ}/>
+        <ImportItem header="Course Offerings" setOverlay={setOverlay} type="CSV" dept={props.dept} />
+        <ImportItem header="Student Data" setOverlay={setOverlay} first="Profile CSV" type="Course Plan CSV" dept={props.dept} />
+        <ImportItem header="Grades" setOverlay={setOverlay} type="CSV" dept={props.dept} />
         <h4 style={{ margin: "1rem 0" }}>Other</h4>
         <Button
           variant="round"
@@ -46,7 +46,7 @@ const Import = (props) => {
           onConfirm={() => dropStudents()}
           body="Are you sure you want to drop all students?"
         />
-        <div className="overlay" style={{display: overlay}}></div>
+        <div className="overlay" style={{ display: overlay }}></div>
       </div>
     </Container>
   );

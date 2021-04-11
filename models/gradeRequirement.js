@@ -13,25 +13,24 @@
  * @returns A Promise<Model> indicating whether the object was created or not. 
  */
 
- module.exports = (sequelize, Sequelize) => {
-    const GradeRequirement = sequelize.define('graderequirement', {
-      requirementId: {
-        type: Sequelize.INTEGER.UNSIGNED,
-        primaryKey: true,
-        // autoIncrement: true,
-        references: {
-          model: 'degrees',
-          key: 'gradeRequirement'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
-      atLeastCredits: Sequelize.INTEGER,
-      minGrade: Sequelize.FLOAT,
-    }, {
-      timestamps: false
-    });
-  
-    return GradeRequirement;
-  }
-  
+module.exports = (sequelize, Sequelize) => {
+  const GradeRequirement = sequelize.define('graderequirement', {
+    requirementId: {
+      type: Sequelize.INTEGER.UNSIGNED,
+      primaryKey: true,
+      autoIncrement: true,
+      // references: {
+      //   model: 'degrees',
+      //   key: 'gradeRequirement'
+      // },
+      // onUpdate: 'CASCADE',
+      // onDelete: 'CASCADE'
+    },
+    atLeastCredits: Sequelize.INTEGER,
+    minGrade: Sequelize.FLOAT
+  }, {
+    timestamps: false
+  })
+
+  return GradeRequirement
+}

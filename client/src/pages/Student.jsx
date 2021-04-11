@@ -50,7 +50,7 @@ const Student = (props) => {
   // the map to return is empty.
   async function initStateMap(requirementStates) {
     let cpMap = {}
-    for(let req of requirementStates) {
+    for (let req of requirementStates) {
       cpMap[req.requirementId] = [req.state, req.metaData]
     }
     return cpMap
@@ -137,42 +137,42 @@ const Student = (props) => {
   // if (mode !== 'Add' && (!studentInfoParams.requirements || !studentInfoParams.coursePlan || !studentInfoParams.student))
   //   return <>BAD!!</>
   // else
-    return (
-      <Container fluid="lg" className="container">
-        <StudentInfo
-          mode={mode}
-          errorMessage={errorMsg}
-          setError={setErrorMsg}
-          userType={props.type}
-          student={studentInfoParams.student}
-          onSubmit={(e) => modeHandler(e)}
-        />
-        <hr />
-        <Requirements studentInfo={studentInfoParams} />
-        <hr />
-        <CoursePlan
-          coursePlan={studentInfoParams.coursePlan} />
-        <CenteredModal
-          show={showConfirmation}
-          onHide={() => setShowConfirmation(false)}
-          onConfirm={changeMode}
-          body="Student successfully saved"
-        />
-        <CenteredModal
-          show={showEmailBox}
-          onHide={() => setShowEmailBox(false)}
-          onConfirm={notify}
-          variant="multi"
-          body="[Comments Changed] SEND an emial notificATion TO STUDNET! takes a few sec to send so wait"
-        />
-        <CenteredModal
-          show={showEmailConf}
-          onHide={() => setShowEmailConf(false)}
-          onConfirm={() => {setShowEmailConf(false); setShowConfirmation(true)}}
-          body="Sent email successfully "
-        />
-      </Container>
-    );
+  return (
+    <Container fluid="lg" className="container">
+      <StudentInfo
+        mode={mode}
+        errorMessage={errorMsg}
+        setError={setErrorMsg}
+        userType={props.type}
+        student={studentInfoParams.student}
+        onSubmit={(e) => modeHandler(e)}
+      />
+      <hr />
+      <Requirements studentInfo={studentInfoParams} />
+      <hr />
+      <CoursePlan
+        coursePlan={studentInfoParams.coursePlan} />
+      <CenteredModal
+        show={showConfirmation}
+        onHide={() => setShowConfirmation(false)}
+        onConfirm={changeMode}
+        body="Student successfully saved"
+      />
+      <CenteredModal
+        show={showEmailBox}
+        onHide={() => setShowEmailBox(false)}
+        onConfirm={notify}
+        variant="multi"
+        body="[Comments Changed] SEND an emial notificATion TO STUDNET! takes a few sec to send so wait"
+      />
+      <CenteredModal
+        show={showEmailConf}
+        onHide={() => setShowEmailConf(false)}
+        onConfirm={() => { setShowEmailConf(false); setShowConfirmation(true) }}
+        body="Sent email successfully "
+      />
+    </Container>
+  );
 }
 
 export default Student;

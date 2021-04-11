@@ -1,90 +1,76 @@
-const database = require("../config/database.js");
-const Op = database.Sequelize.Op;
-const Papa = require("papaparse");
-const fs = require("fs");
-const IncomingForm = require("formidable").IncomingForm;
-const moment = require("moment");
-const { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } = require("constants");
-const nodemailer = require("nodemailer");
+const database = require('../config/database.js')
+const Op = database.Sequelize.Op
+const Papa = require('papaparse')
+const fs = require('fs')
+const IncomingForm = require('formidable').IncomingForm
+const moment = require('moment')
+const nodemailer = require('nodemailer')
 
-const Course = database.Course;
-const CourseOffering = database.CourseOffering;
-const CoursePlan = database.CoursePlan;
-const CoursePlanItem = database.CoursePlanItem;
-const Student = database.Student;
+const Course = database.Course
+const CourseOffering = database.CourseOffering
+const CoursePlan = database.CoursePlan
+const CoursePlanItem = database.CoursePlanItem
+const Student = database.Student
 
 // Upload course offerings
 exports.upload = (req, res) => {
   // console.log(req.query.department)
   let form = new IncomingForm()
-  let dept = "";
-  form
-    .parse(req)
-    .on("field", (name, field) => {
+  let dept = ''
+  form.parse(req)
+    .on('field', (name, field) => {
       console.log(name, field)
-      if (name === "dept") dept = field;
+      if (name === 'dept') dept = field
     })
-    .on("file", (field, file) => {
-      if (
-        file.type !== "text/csv" &&
-        file.type !== "application/vnd.ms-excel"
-      ) {
-        res.status(500).send("File must be *.csv")
-        return;
+    .on('file', (field, file) => {
+      if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel') {
+        res.status(500).send('File must be *.csv')
+        return
       }
-      const fileIn = fs.readFileSync(file.path, "utf-8")
+      const fileIn = fs.readFileSync(file.path, 'utf-8')
       Papa.parse(fileIn, {
         header: true,
         dynamicTyping: true,
         complete: (results) => {
-          let header = results.meta["fields"];
+          let header = results.meta['fields']
           if (
-            header[0] !== "department" &&
-            header[1] !== "course_num" &&
-            header[2] !== "section" &&
-            header[3] !== "semester" &&
-            header[4] !== "year" &&
-            header[5] !== "timeslot"
+            header[0] !== 'department' &&
+            header[1] !== 'course_num' &&
+            header[2] !== 'section' &&
+            header[3] !== 'semester' &&
+            header[4] !== 'year' &&
+            header[5] !== 'timeslot'
           ) {
-            console.log("invalid csv")
-            res
-              .status(500)
-              .send(
-                "Cannot parse CSV file - headers do not match specifications"
-              )
-            return;
+            console.log('invalid csv')
+            res.status(500).send('Cannot parse CSV file - headers do not match specifications')
+            return
           }
-          let courses = [];
-          let exceptionDepts = ["AMS", "CHE", "JRN", "MEC", "MCB", "PHY"];
-          if (dept === "AMS") {
-            courses = results.data.filter((course) =>
-              exceptionDepts.includes(course.department)
-            )
-            dept = exceptionDepts;
+          let courses = []
+          let exceptionDepts = ['AMS', 'CHE', 'JRN', 'MEC', 'MCB', 'PHY']
+          if (dept === 'AMS') {
+            courses = results.data.filter(course => exceptionDepts.includes(course.department))
+            dept = exceptionDepts
           } else {
-            courses = results.data.filter(
-              (course) => course.department === dept
-            )
-            dept = [dept];
+            courses = results.data.filter(course => course.department === dept)
+            dept = [dept]
           }
-
           uploadCourses(courses, res, dept)
-        },
+        }
       })
     })
-};
+}
 
 async function uploadCourses(results, res, dept) {
   let semestersCovered = await deleteSemestersFromDB(results, dept)
-  let semesters = semestersCovered[0];
-  let years = semestersCovered[1];
+  let semesters = semestersCovered[0]
+  let years = semestersCovered[1]
 
   let coursesAdded = await uploadNewOfferings(results)
   // Grabs students for this specific department only {AMS||CSE||BMI||ESE}
   // and their respective coursePlans. 
   let deptStudents = await Student.findAll({ where: { department: dept } })
   let coursePlans = await CoursePlan.findAll({
-    where: { studentId: deptStudents.map((student) => student.sbuId) },
+    where: { studentId: deptStudents.map(student => student.sbuId) },
   })
   let coursePlanIds = coursePlans.map((plan) => plan.coursePlanId)
   let coursePlanItems = await CoursePlanItem.findAll({
@@ -92,30 +78,30 @@ async function uploadCourses(results, res, dept) {
       coursePlanId: coursePlanIds,
       semester: semesters,
       year: years,
-      grade: null //moved this from update
+      grade: null
     }
   })
 
-  let affectedStudents = [];
-  // For every semester covered by the csv... Ex: semestersCovered = ["Fall 2019", "Fall 2020"]
+  let affectedStudents = []
+  // For every semester covered by the csv... Ex: semestersCovered = ['Fall 2019', 'Fall 2020']
   for (let i = 0; i < semesters.length; i++) {
-    console.log("Checking course plans for semester: ", semesters[i], years[i])
+    console.log('Checking course plans for semester: ', semesters[i], years[i])
     // `semesterAdded` are the courses added for the semester + year from the csv. 
     let semesterAdded = coursesAdded.filter(
-      (course) => course.semester === semesters[i] && course.year === years[i]
+      course => course.semester === semesters[i] && course.year === years[i]
     )
     // For each student...
     for (let j = 0; j < coursePlans.length; j++) {
       let toCheck = []
-      // `semesterItems` are the CoursePlanItems of the current student for this semester + year. 
+      // `semesterItems` are the CoursePlanItems of the current student for this semester + year.
       let semesterItems = coursePlanItems.filter(
-        (item) => item.semester === semesters[i]
+        item => item.semester === semesters[i]
           && item.year === years[i]
           && item.coursePlanId === coursePlanIds[j]
       )
       // For each course plan item of this student in this semester + year...
       // Compare the course plan item to a course we added. If they're the same course
-      // (already in the same sem + year), add it to `toCheck` to check for schedule conflicts.  
+      // (already in the same sem + year), add it to `toCheck` to check for schedule conflicts.
       for (let k = 0; k < semesterItems.length; k++) {
         for (let l = 0; l < semesterAdded.length; l++) {
           if (semesterItems[k].courseId === semesterAdded[l].identifier)
@@ -126,8 +112,8 @@ async function uploadCourses(results, res, dept) {
       // Checks for time/day conflicts in the schedule. 
       for (let k = 0; k < toCheck.length; k++) {
         for (let l = k + 1; l < toCheck.length; l++) {
-          let first = toCheck[k].days;
-          let second = toCheck[l].days;
+          let first = toCheck[k].days
+          let second = toCheck[l].days
           if (
             !first ||
             !second ||
@@ -136,19 +122,19 @@ async function uploadCourses(results, res, dept) {
             !toCheck[k].endTime ||
             !toCheck[l].endTime
           )
-            continue;
+            continue
           if (
-            (first.includes("M") && second.includes("M")) ||
-            (first.includes("TU") && second.includes("TU")) ||
-            (first.includes("W") && second.includes("W")) ||
-            (first.includes("TH") && second.includes("TH")) ||
-            (first.includes("F") && second.includes("F"))
+            (first.includes('M') && second.includes('M')) ||
+            (first.includes('TU') && second.includes('TU')) ||
+            (first.includes('W') && second.includes('W')) ||
+            (first.includes('TH') && second.includes('TH')) ||
+            (first.includes('F') && second.includes('F'))
           ) {
             // Check time conflict
-            let fStart = toCheck[k].startTime;
-            let sStart = toCheck[l].startTime;
-            let fEnd = toCheck[k].endTime;
-            let sEnd = toCheck[l].endTime;
+            let fStart = toCheck[k].startTime
+            let sStart = toCheck[l].startTime
+            let fEnd = toCheck[k].endTime
+            let sEnd = toCheck[l].endTime
             if (
               (fStart >= sStart && fStart < sEnd) ||
               (fEnd <= sEnd && fEnd > sStart) ||
@@ -163,7 +149,6 @@ async function uploadCourses(results, res, dept) {
                   courseId: toCheck[k].identifier,
                   semester: semesters[i],
                   year: years[i]
-                  //grade: null
                 }
               })
               // Set the second CoursePlanItem to now be invalid.
@@ -195,7 +180,7 @@ async function uploadCourses(results, res, dept) {
           year: years[i]
         }
       })
-      let invalidCoursePlanIds = [];
+      let invalidCoursePlanIds = []
       for (let j = 0; j < coursesNotOffered.length; j++) {
         let items = coursePlanItems.filter(item => {
           item.courseId === coursesNotOffered[j].department + coursesNotOffered[j].courseNum
@@ -211,54 +196,54 @@ async function uploadCourses(results, res, dept) {
         invalidCoursePlanIds = new Set(items.map(item => item.coursePlanId))
       }
       let invalidCoursePlans = await CoursePlan.findAll({
-        where: { coursePlanId: invalidCoursePlanIds },
+        where: { coursePlanId: invalidCoursePlanIds }
       })
       invalidCoursePlans.map(plan => affectedStudents.push(plan.studentId))
     }
   }
   // Emailing affected students.
-  let emails = [];
+  let emails = []
   let students = await Student.findAll({ where: { sbuId: affectedStudents } })
   students.map(student => emails.push(student.email))
   console.log(emails)
   let transporter = nodemailer.createTransport({
-    service: "gmail",
+    service: 'gmail',
     auth: {
-      user: "mastgrassjelly@gmail.com",
-      pass: "cse416@stoller",
-    },
+      user: 'mastgrassjelly@gmail.com',
+      pass: 'cse416@stoller'
+    }
   })
   // emails set to our emails
-  // emails = ["sooyeon.kim.2@stonybrook.edu", "andrew.kong@stonybrook.edu", "eddie.xu@stonybrook.edu", "cassey.hu@stonybrook.edu"]
+  // emails = ['sooyeon.kim.2@stonybrook.edu', 'andrew.kong@stonybrook.edu', 'eddie.xu@stonybrook.edu', 'cassey.hu@stonybrook.edu']
   // comment ^ if you don't want it to spam our emails and uncomment v
-  emails = [];
+  emails = []
   for (let i = 0; i < emails.length; i++) {
     let emailOptions = {
-      from: "mastgrassjelly@gmail.com",
+      from: 'mastgrassjelly@gmail.com',
       to: emails[i],
-      subject: "[ACTION REQUIRED] YOU FAILED CSE 416!!!",
-      text: "jk",
-    };
+      subject: '[ACTION REQUIRED] YOU FAILED CSE 416!!!',
+      text: 'jk'
+    }
     transporter.sendMail(emailOptions, function (err, info) {
       if (err) console.log(err)
-      else console.log("Email sent " + info.response)
+      else console.log('Email sent ' + info.response)
     })
   }
   res.status(200).send(affectedStudents)
-  return;
+  return
 }
 
 /**
  * Scrapes the csv courses and adds all the courses where
  * @param {*} csvCourses: The records of the csv file, filtered where csv.courses === this.department.
- * @return {Array} coursesAdded: The courses from csvCourses that were successfully added to the db.
+ * @return {Array} newCourses: The courses from csvCourses that were successfully added to the db.
  */
 async function uploadNewOfferings(csvCourses) {
-  coursesAdded = [];
+  coursesAdded = []
   for (let i = 0; i < csvCourses.length; i++) {
-    let course = csvCourses[i];
-    let csvTimeslot = course.timeslot ? course.timeslot.split(" ") : null;
-    let timeRange = csvTimeslot ? csvTimeslot[1].split("-") : null;
+    let course = csvCourses[i]
+    let csvTimeslot = course.timeslot ? course.timeslot.split(' ') : null
+    let timeRange = csvTimeslot ? csvTimeslot[1].split('-') : null
     coursesAdded.push({
       identifier: course.department + course.course_num,
       semester: course.semester,
@@ -266,16 +251,16 @@ async function uploadNewOfferings(csvCourses) {
       section: course.section,
       days: csvTimeslot ? csvTimeslot[0] : null,
       startTime: timeRange
-        ? moment(timeRange[0], ["h:mmA"]).format("HH:mm")
+        ? moment(timeRange[0], ['h:mmA']).format('HH:mm')
         : null,
       endTime: timeRange
-        ? moment(timeRange[1], ["h:mmA"]).format("HH:mm")
-        : null,
+        ? moment(timeRange[1], ['h:mmA']).format('HH:mm')
+        : null
     })
   }
   const newCourses = await CourseOffering.bulkCreate(coursesAdded)
-  console.log("Done importing all courses from csv")
-  return newCourses;
+  console.log('Done importing all courses from csv')
+  return newCourses
 }
 
 /**
@@ -288,12 +273,12 @@ async function uploadNewOfferings(csvCourses) {
 async function deleteSemestersFromDB(courses, departments) {
   console.log(departments)
   let semArray = Array.from(
-    new Set(courses.map((course) => course.semester + " " + course.year))
+    new Set(courses.map(course => course.semester + ' ' + course.year))
   )
-  let sems = [];
-  let years = [];
+  let sems = []
+  let years = []
   for (let i = 0; i < semArray.length; i++) {
-    semyear = semArray[i].split(" ")
+    semyear = semArray[i].split(' ')
     sems.push(semyear[0])
     years.push(Number(semyear[1]))
     // Might have to CASCADE the deletes to the
@@ -303,11 +288,11 @@ async function deleteSemestersFromDB(courses, departments) {
         where: {
           identifier: { [Op.startsWith]: dept },
           semester: semyear[0],
-          year: Number(semyear[1]),
-        },
+          year: Number(semyear[1])
+        }
       })
     }
   }
-  console.log("Done deleting all scraped semesters from db")
-  return [sems, years];
+  console.log('Done deleting all scraped semesters from db')
+  return [sems, years]
 }

@@ -20,7 +20,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     requirementId: {
       type: Sequelize.STRING,
-      primaryKey: true,
+      primaryKey: true
     },
     state: {
       type: Sequelize.STRING,
@@ -33,11 +33,11 @@ module.exports = (sequelize, Sequelize) => {
       },
       set(val) {
         this.setDataValue('metaData', val.join('`'));
-      },
-    },
+      }
+    }
   }, {
     timestamps: false
-  });
+  })
 
-  return RequirementState;
+  return RequirementState
 }

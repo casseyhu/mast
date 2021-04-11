@@ -1,19 +1,19 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const { IncomingForm } = require('formidable');
-const fs = require('fs');
-const Papa = require('papaparse');
-const database = require('../config/database.js');
-const Op = database.Sequelize.Op;
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
+const { IncomingForm } = require('formidable')
+const fs = require('fs')
+const Papa = require('papaparse')
+const database = require('../config/database.js')
+const Op = database.Sequelize.Op
 
-const Student = database.Student;
-const Degree = database.Degree;
-const GradeRequirement = database.GradeRequirement;
-const GpaRequirement = database.GpaRequirement;
-const CreditRequirement = database.CreditRequirement;
-const CourseRequirement = database.CourseRequirement;
-const CoursePlan = database.CoursePlan;
-const RequirementState = database.RequirementState;
+const Student = database.Student
+const Degree = database.Degree
+const GradeRequirement = database.GradeRequirement
+const GpaRequirement = database.GpaRequirement
+const CreditRequirement = database.CreditRequirement
+const CourseRequirement = database.CourseRequirement
+const CoursePlan = database.CoursePlan
+const RequirementState = database.RequirementState
 
 const semDict = {
   'Fall': '08',
@@ -27,7 +27,7 @@ exports.create = (req, res) => {
   const student = req.body.params
   if (emptyFields(student)) {
     let errMsg = 'Error in adding student. Please check that all necessary student information are filled out.'
-    res.status(500).send(errMsg);
+    res.status(500).send(errMsg)
     return
   }
   let requirementVersion = Number(student.degreeYear + semDict[student.degreeSem])
@@ -35,7 +35,7 @@ exports.create = (req, res) => {
     where: {
       dept: student.dept,
       track: student.track,
-      requirementVersion: requirementVersion,
+      requirementVersion: requirementVersion
     }
   }).then((degree) => {
     if (!degree) {
@@ -44,7 +44,7 @@ exports.create = (req, res) => {
       return
     }
     addStudent(student, degree, res)
-  });
+  })
 }
 
 
@@ -53,7 +53,7 @@ exports.update = (req, res) => {
   const student = req.body.params
   if (emptyFields(student)) {
     let err_msg = 'Error in updating student. Please check that all necessary student information are filled out.'
-    res.status(500).send(err_msg);
+    res.status(500).send(err_msg)
     return
   }
   let requirementVersion = Number(student.degreeYear) * 100 + Number(semDict[student.degreeSem])
@@ -62,7 +62,7 @@ exports.update = (req, res) => {
       where: {
         dept: student.dept,
         track: student.track,
-        requirementVersion: requirementVersion,
+        requirementVersion: requirementVersion
       }
     })
     .then((degree) => {
@@ -92,7 +92,6 @@ exports.update = (req, res) => {
         department: student.dept,
         track: student.track,
         requirementVersion: requirementVersion,
-        // set # unsatisfied, pending, satisfied
         degreeId: degree.degreeId,
         graduated: graduated,
         gpdComments: student.gpdComments,
@@ -110,14 +109,14 @@ exports.update = (req, res) => {
           if (err.parent.code !== undefined && err.parent.code === 'ER_DUP_ENTRY') {
             err_msg = 'Student with ID: ' + student.sbuId + ' exists already.'
           }
-          res.status(500).send(err_msg);
+          res.status(500).send(err_msg)
         })
     })
     .catch((err) => {
       err_msg = 'Error in updating student. Please check student information type (i.e. SBUID must be numbers 0-9).'
-      res.status(500).send(err_msg);
+      res.status(500).send(err_msg)
       return
-    });
+    })
 }
 
 // Checks if any of the AddStudent fields were empty. All fields, except for
@@ -142,44 +141,45 @@ function emptyFields(student) {
 
 // Create Students from uploading file
 exports.upload = (req, res) => {
-  let form = new IncomingForm();
+  let form = new IncomingForm()
   let dept = ''
-  form.parse(req).on('field', (name, field) => {
-    if (name === 'dept')
-      dept = field;
-  }).on('file', (field, file) => {
-    if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel') {
-      res.status(500).send('File must be *.csv')
-      return
-    }
-    const fileIn = fs.readFileSync(file.path, 'utf-8')
-    Papa.parse(fileIn, {
-      header: true,
-      dynamicTyping: true,
-      complete: (results) => {
-        var header = results.meta['fields']
-        if (header[0] !== 'sbu_id'
-          || header[1] !== 'first_name'
-          || header[2] !== 'last_name'
-          || header[3] !== 'email'
-          || header[4] !== 'department'
-          || header[5] !== 'track'
-          || header[6] !== 'entry_semester'
-          || header[7] !== 'entry_year'
-          || header[8] !== 'requirement_version_semester'
-          || header[9] !== 'requirement_version_year'
-          || header[10] !== 'graduation_semester'
-          || header[11] !== 'graduation_year'
-          || header[12] !== 'password') {
-          console.log('invalid csv')
-          res.status(500).send('Cannot parse CSV file - headers do not match specifications')
-          return
-        }
-        let students = results.data.filter(student => student.department === dept)
-        uploadStudents(students, res)
+  form.parse(req)
+    .on('field', (name, field) => {
+      if (name === 'dept')
+        dept = field
+    }).on('file', (field, file) => {
+      if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel') {
+        res.status(500).send('File must be *.csv')
+        return
       }
+      const fileIn = fs.readFileSync(file.path, 'utf-8')
+      Papa.parse(fileIn, {
+        header: true,
+        dynamicTyping: true,
+        complete: (results) => {
+          var header = results.meta['fields']
+          if (header[0] !== 'sbu_id'
+            || header[1] !== 'first_name'
+            || header[2] !== 'last_name'
+            || header[3] !== 'email'
+            || header[4] !== 'department'
+            || header[5] !== 'track'
+            || header[6] !== 'entry_semester'
+            || header[7] !== 'entry_year'
+            || header[8] !== 'requirement_version_semester'
+            || header[9] !== 'requirement_version_year'
+            || header[10] !== 'graduation_semester'
+            || header[11] !== 'graduation_year'
+            || header[12] !== 'password') {
+            console.log('invalid csv')
+            res.status(500).send('Cannot parse CSV file - headers do not match specifications')
+            return
+          }
+          let students = results.data.filter(student => student.department === dept)
+          uploadStudents(students, res)
+        }
+      })
     })
-  })
 }
 
 
@@ -187,7 +187,7 @@ exports.upload = (req, res) => {
 exports.login = (req, res) => {
   Student.findOne({ where: { email: req.query.email } })
     .then(student => {
-      const isValidPass = bcrypt.compareSync(req.query.password, student.password);
+      const isValidPass = bcrypt.compareSync(req.query.password, student.password)
       if (!isValidPass)
         throw 'Invalid password'
       let userData = {
@@ -198,19 +198,19 @@ exports.login = (req, res) => {
       let token = jwt.sign(userData, process.env.JWT_KEY, {
         algorithm: process.env.JWT_ALGO,
         expiresIn: 1200 // Expires in 20 minutes
-      });
-      res.send([token, student]);
+      })
+      res.send([token, student])
     }).catch(err => {
-      res.status(500).send('Invalid login credentials');
+      res.status(500).send('Invalid login credentials')
     })
 }
 
 // Find a Student 
 exports.findById = (req, res) => {
   Student.findByPk(req.params.sbuId).then(student => {
-    res.status(200).send(student);
+    res.status(200).send(student)
   }).catch(err => {
-    res.status(500).send('Error: ' + err);
+    res.status(500).send('Error: ' + err)
   })
 }
 
@@ -235,7 +235,7 @@ exports.filter = (req, res) => {
         { [Op.and]: [{ firstName: { [Op.like]: info[0] + '%' } }, { sbuId: { [Op.like]: info[1] + '%' } }] },
         { [Op.and]: [{ sbuId: { [Op.like]: info[0] + '%' } }, { firstName: { [Op.like]: info[1] + '%' } }] },
         { [Op.and]: [{ lastName: { [Op.like]: info[0] + '%' } }, { sbuId: { [Op.like]: info[1] + '%' } }] },
-        { [Op.and]: [{ sbuId: { [Op.like]: info[0] + '%' } }, { lastName: { [Op.like]: info[1] + '%' } }] },
+        { [Op.and]: [{ sbuId: { [Op.like]: info[0] + '%' } }, { lastName: { [Op.like]: info[1] + '%' } }] }
       ]
     }
   }
@@ -247,7 +247,7 @@ exports.filter = (req, res) => {
         { [Op.and]: [{ lastName: { [Op.like]: info[0] + '%' } }, { firstName: { [Op.like]: info[1] + '%' } }, { sbuId: { [Op.like]: info[2] + '%' } }] },
         { [Op.and]: [{ lastName: { [Op.like]: info[0] + '%' } }, { sbuId: { [Op.like]: info[1] + '%' } }, { firstName: { [Op.like]: info[2] + '%' } }] },
         { [Op.and]: [{ sbuId: { [Op.like]: info[0] + '%' } }, { firstName: { [Op.like]: info[1] + '%' } }, { lastName: { [Op.like]: info[2] + '%' } }] },
-        { [Op.and]: [{ sbuId: { [Op.like]: info[0] + '%' } }, { lastName: { [Op.like]: info[1] + '%' } }, { firstName: { [Op.like]: info[1] + '%' } }] },
+        { [Op.and]: [{ sbuId: { [Op.like]: info[0] + '%' } }, { lastName: { [Op.like]: info[1] + '%' } }, { firstName: { [Op.like]: info[1] + '%' } }] }
       ]
     }
   }
@@ -265,23 +265,22 @@ exports.filter = (req, res) => {
       }
     })
     .then(students => {
-      res.send(students);
+      res.send(students)
     })
     .catch(err => {
-      res.status(500).send('Error: ' + err);
+      res.status(500).send('Error: ' + err)
     })
 }
 
 // Find all Students 
 exports.findAll = (req, res) => {
-  const condition = { department: req.query.department }
   Student
-    .findAll({ where: condition })
+    .findAll({ where: { department: req.query.department } })
     .then(students => {
-      res.send(students);
+      res.send(students)
     })
     .catch(err => {
-      res.status(500).send('Error: ' + err);
+      res.status(500).send('Error: ' + err)
     })
 }
 
@@ -290,10 +289,10 @@ exports.delete = (req, res) => {
   Student
     .destroy({ where: { sbuId: req.params.sbuId } })
     .then(() => {
-      res.status(200).send('Student deleted!');
+      res.status(200).send('Student deleted!')
     })
     .catch(err => {
-      res.status(500).send('Error: ' + err);
+      res.status(500).send('Error: ' + err)
     })
 }
 
@@ -306,23 +305,23 @@ exports.deleteAll = (req, res) => {
     .drop()
     .then(() => {
       database.sequelize.sync({ force: false }).then(() => {
-        console.log('Synced database');
-        res.status(200).send('Deleted student data.');
+        console.log('Synced database')
+        res.status(200).send('Deleted student data.')
       })
     })
     .catch(err => {
       console.log('Error' + err)
-      res.status(500).send('Error: ' + err);
+      res.status(500).send('Error: ' + err)
     })
 }
 
 exports.getStates = (req, res) => {
   RequirementState.findAll({
     where: {
-      sbuID : req.query.sbuId
+      sbuID: req.query.sbuId
     }
   }).then(reqStates => {
-    res.status(200).send(reqStates);
+    res.status(200).send(reqStates)
   }).catch(err => {
     res.status(500).send('Error ' + err)
   })
@@ -331,8 +330,8 @@ exports.getStates = (req, res) => {
 
 async function uploadStudents(students, res) {
   const degrees = await Degree.findAll()
-  let degreeDict = {};
-  const monthsDict = {  '01': 'Winter', '02': 'Spring', '05': 'Summer', '08': 'Fall'}
+  let degreeDict = {}
+  const monthsDict = { '01': 'Winter', '02': 'Spring', '05': 'Summer', '08': 'Fall' }
   const currentGradYear = 202101
   for (let i = 0; i < degrees.length; i++) {
     let requirementVersion = degrees[i].requirementVersion.toString()
@@ -340,7 +339,7 @@ async function uploadStudents(students, res) {
     let requirementYear = requirementVersion.substring(0, 4)
     degreeDict[degrees[i].dept + ' ' + degrees[i].track + ' ' + requirementSem + ' ' + requirementYear] = degrees[i].degreeId
   }
-  let tot = 0;
+  let tot = 0
 
   for (let i = 0; i < students.length; i++) {
     studentInfo = students[i]
@@ -376,7 +375,7 @@ async function uploadStudents(students, res) {
     let found = await Student.findOne({ where: condition })
     if (found)
       await found.update(values)
-    else 
+    else
       await Student.create(values)
     condition = { studentId: studentInfo.sbu_id }
     found = await CoursePlan.findOne({ where: condition })
@@ -420,27 +419,27 @@ function checkFields(student, res) {
   let entryDate = Number(student.entryYear + semDict[student.entrySem])
   let degreeVersion = Number(student.degreeYear + semDict[student.degreeSem])
   if (gradDate < entryDate) {
-    res.status(500).send('Graduation date cannot be earlier than entry date.');
+    res.status(500).send('Graduation date cannot be earlier than entry date.')
     return false
   }
   if (degreeVersion < entryDate) {
-    res.status(500).send('Degree version cannot be earlier than entry date.');
+    res.status(500).send('Degree version cannot be earlier than entry date.')
     return false
   }
   if (degreeVersion > gradDate) {
-    res.status(500).send('Degree version cannot be later than graduation date.');
+    res.status(500).send('Degree version cannot be later than graduation date.')
     return false
   }
   // Check for proper 9-digit SBUID
-  let regex = /^\d{9}$/;
+  let regex = /^\d{9}$/
   if (!regex.test(student.sbuId)) {
-    res.status(500).send('SBUID must be a 9-digit string of numbers 0-9.');
+    res.status(500).send('SBUID must be a 9-digit string of numbers 0-9.')
     return false
   }
   // Check for proper .edu email address
-  regex = /^\w+@\w+\.edu$/;
+  regex = /^\w+@\w+\.edu$/
   if (!regex.test(student.email)) {
-    res.status(500).send('Student must have a valid .edu email.');
+    res.status(500).send('Student must have a valid .edu email.')
     return false
   }
   return true
@@ -451,8 +450,8 @@ async function addStudent(student, degree, res) {
     return
   // Hash the password for the student. (first init + last init + sbuid)
   let password = student.firstName.charAt(0).toLowerCase() + student.lastName.charAt(0).toLowerCase() + student.sbuId
-  let salt = bcrypt.genSaltSync(10);
-  let hashPassword = bcrypt.hashSync(password, salt);
+  let salt = bcrypt.genSaltSync(10)
+  let hashPassword = bcrypt.hashSync(password, salt)
 
   // Get number of degree requirements and set initial state of each requirement to unsatisfied
   let requiredRequirements = []
@@ -498,10 +497,9 @@ async function addStudent(student, degree, res) {
   })
   if (!addedStudent) {
     errMsg = 'Error in adding student. Please check student information type (i.e. SBUID must be numbers 0-9).'
-    if (err.parent.code !== undefined && err.parent.code === 'ER_DUP_ENTRY') {
+    if (err.parent.code !== undefined && err.parent.code === 'ER_DUP_ENTRY')
       errMsg = 'Student with ID: ' + student.sbuId + ' exists already.'
-    }
-    res.status(500).send(errMsg);
+    res.status(500).send(errMsg)
     return
   }
   let studentCoursePlan = await CoursePlan.create({
@@ -509,7 +507,7 @@ async function addStudent(student, degree, res) {
     coursePlanState: 0
   })
   if (!studentCoursePlan) {
-    res.status(500).send('Error creating student course plan.');
+    res.status(500).send('Error creating student course plan.')
     return
   }
   for (let index in requiredRequirements) {

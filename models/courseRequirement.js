@@ -21,7 +21,7 @@ module.exports = (sequelize, Sequelize) => {
     requirementId: {
       type: Sequelize.INTEGER.UNSIGNED,
       primaryKey: true,
-      autoIncrement: true,
+      autoIncrement: true
     },
     type: Sequelize.INTEGER,
     courseLower: Sequelize.INTEGER,
@@ -34,12 +34,12 @@ module.exports = (sequelize, Sequelize) => {
         return this.getDataValue('courses').split('`')
       },
       set(val) {
-        this.setDataValue('courses', val.join('`'));
-      },
-    },
+        this.setDataValue('courses', val.join('`'))
+      }
+    }
   }, {
     timestamps: false
-  });
+  })
 
-  return CourseRequirement;
+  return CourseRequirement
 }

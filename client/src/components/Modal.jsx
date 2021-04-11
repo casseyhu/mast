@@ -17,7 +17,7 @@ const CenteredModal = (props) => {
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
 					{props.variant === "multi" ? "Please Confirm" : "Success"}
-        </Modal.Title>
+				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				{props.body}

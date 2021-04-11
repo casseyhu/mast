@@ -18,19 +18,19 @@ const Button = (props) => {
 
   return (
     <div className={props.divclassName} style={props.style}>
-    <button className={`${props.variant}-button ${props.className}`} onClick={handleClick}>
-      {props.text}
-      {(props.variant === "square")
-        && (
-          <input
-            type="file"
-            ref={hiddenFileInput}
-            onChange={handleChange}
-            style={{ display: 'none' }}
-          />
-        )
-      }
-    </button>
+      <button className={`${props.variant}-button ${props.className}`} onClick={handleClick}>
+        {props.text}
+        {(props.variant === "square")
+          && (
+            <input
+              type="file"
+              ref={hiddenFileInput}
+              onChange={handleChange}
+              style={{ display: 'none' }}
+            />
+          )
+        }
+      </button>
     </div>
   )
 }

@@ -22,10 +22,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
       allowNull: false
     },
-    coursePlanState: Sequelize.INTEGER(4),
+    coursePlanState: Sequelize.INTEGER(4)
   }, {
     timestamps: false
   })
 
-  return CoursePlan;
+  return CoursePlan
 }

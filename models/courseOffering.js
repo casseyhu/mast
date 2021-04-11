@@ -29,10 +29,10 @@ module.exports = (sequelize, Sequelize) => {
     section: Sequelize.STRING,
     days: Sequelize.STRING,
     startTime: Sequelize.TIME,
-    endTime: Sequelize.TIME,
+    endTime: Sequelize.TIME
   }, {
     timestamps: false
-  });
+  })
 
-  return CourseOffering;
+  return CourseOffering
 }

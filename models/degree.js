@@ -26,52 +26,54 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      onDelete:'CASCADE'
+      onDelete: 'CASCADE'
     },
     dept: Sequelize.STRING,
     track: Sequelize.STRING,
     requirementVersion: Sequelize.INTEGER,
     gradeRequirement: {
       type: Sequelize.INTEGER.UNSIGNED,
-      set(value) {
-        // console.log("Setting the degree gradeRequirement with value: ", value)
-        this.setDataValue('gradeRequirement', value)
-      }, 
+      references: {
+        model: 'gradeRequirements',
+        key: 'requirementId'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
       unique: true
     },
     gpaRequirement: {
       type: Sequelize.INTEGER.UNSIGNED,
-      set(value) {
-        // console.log("Setting the degree gpaRequirement with value: ", value)
-        this.setDataValue('gpaRequirement', value)
-      }, 
+      references: {
+        model: 'gpaRequirements',
+        key: 'requirementId'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
       unique: true
     },
     creditRequirement: {
       type: Sequelize.INTEGER.UNSIGNED,
-      set(value) {
-        // console.log("Setting the degree creditRequirement with value: ", value)
-        this.setDataValue('creditRequirement', value)
-      }, 
+      references: {
+        model: 'creditRequirements',
+        key: 'requirementId'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
       unique: true
     },
     courseRequirement: {
-      // String of references to CourseRequirement.requirementId (s).
-      // ex: "C001`C002`C003`C003`..."
       type: Sequelize.STRING,
       get() {
         return this.getDataValue('courseRequirement').split('`')
       },
       set(val) {
-        this.setDataValue('courseRequirement', val.join('`'));
-      },
-    },
+        this.setDataValue('courseRequirement', val.join('`'))
+      }
+    }
   }, {
     timestamps: false,
-  });
+  })
 
-
-  
   // Degree.associate = models => {
   //   Degree.hasOne(models.GradeRequirement, {
   //     sourceKey: 'gradeRequirement',
@@ -85,25 +87,7 @@ module.exports = (sequelize, Sequelize) => {
   //     sourceKey: 'creditRequirement',
   //     foreignKey: 'requirementId'
   //   })
-    
   // }
 
-
-
-  return Degree;
+  return Degree
 }
-
-// .then(() => {
-//   sequelize.addConstraint('degree', [''])
-// })
-// {
-//   type: Sequelize.INTEGER,
-//   references: {
-//     model: {
-//       tableName: 'GradeRequirement',
-//       schema: 'mast'
-//     },
-//     key: 'requirementId'
-//   },
-//   allowNull:false
-// },
