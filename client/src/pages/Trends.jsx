@@ -54,11 +54,19 @@ class Trends extends Component {
     }
     rangeSems.push(goal)
     let series = []
+    /*
+      Error Checking for courses
+      - Invalid courses shouldn't be added
+        - Make sure courses are of length 6
+        - Make sure the course number is actually a number
+      - For lower cases in legend, make them upper case
+    */
     let courses = [...new Set(this.state.courses.replace(/\s+/g, ' ').trim().split(' '))]
     console.log(courses)
     for (let i = 0; i < courses.length; i++) {
       let data = []
       for (let j = 0; j < rangeSems.length; j++) {
+        courses[i] = courses[i].substring(0, 3).toUpperCase() + courses[i].substring(3, 6)
         let semYear = rangeSems[j].split(' ')
         console.log(courses[i], semYear[0], semYear[1])
         let students = await axios.get('/courseplanitem/count', {
@@ -90,7 +98,7 @@ class Trends extends Component {
       stroke: {
         show: true,
         width: width,
-        curve: 'smooth',
+        curve: 'straight',
         dashArray: dashedArray
       },
       title: {
