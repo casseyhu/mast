@@ -382,7 +382,8 @@ async function uploadStudents(students, res) {
     if (!found)
       await CoursePlan.create({
         studentId: studentInfo.sbu_id,
-        coursePlanState: 0
+        coursePlanComplete: false,
+        coursePlanValid: false
       })
   }
   console.log('Done importing ' + tot + ' students from csv')
@@ -504,7 +505,8 @@ async function addStudent(student, degree, res) {
   }
   let studentCoursePlan = await CoursePlan.create({
     studentId: student.sbuId,
-    coursePlanState: 0
+    coursePlanComplete: false,
+    coursePlanValid: false
   })
   if (!studentCoursePlan) {
     res.status(500).send('Error creating student course plan.')

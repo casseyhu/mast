@@ -82,11 +82,17 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
   let courses = []
   /* other requirements i.e prerequisites, credits */
   let checkOthers = false
-  let others = ""
-  /* has prerequisites */
-  let hasPrereqs = false
-  let exceptionDepts = ['CHE', 'JRN', 'MEC', 'MCB', 'PHY', 'CSE', 'ESE']
-  let exceptions = ['CHE541', 'JRN565', 'MEC539', 'MCB520','PHY558', 'ESE533', 'CSE529']
+  let others = ''
+  let exceptionDepts = []
+  let exceptions = ['CHE541', 'JRN565', 'MEC539', 'MCB520', 'PHY558', 'ESE533', 'CSE529']
+  if (depts.includes('ESE')) {
+    exceptionDepts = ['CSE']
+    exceptions = ['CSE506', 'CSE526', 'CSE548']
+  }
+  if (depts.includes('AMS')) {
+    exceptionDepts = ['CHE', 'JRN', 'MEC', 'MCB', 'PHY', 'CSE', 'ESE']
+    exceptions.concat(['CHE541', 'JRN565', 'MEC539', 'MCB520', 'PHY558', 'ESE533', 'CSE529'])
+  }
   pdfExtract.extract(filePath, options, async (err, data) => {
     if (err) {
       res.status(500).send('Error parsing pdf file')
@@ -117,7 +123,7 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
         else if (target !== "") {
           // Checks course name: CSE500
           if (s.str.substring(0, 3) == target && s.fontName == "Helvetica") {
-            if (depts.includes(courseName.substring(0, 3)) && !skip && others === '' && courseName !== '') {
+            if (!skip && depts.includes(courseName.substring(0, 3)) && others === '' && courseName !== '') {
               totCourses += 1
               chosenDept = courseName.substring(0, 3)
               courseNum = courseName.substring(5, 8)
@@ -203,9 +209,6 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
                 others = others.substring(cIndex + 2); //ignore the extra space
               }
               let course = others.substring(0, 7);
-              if(chosenDept + courseNum === "AMS587"){
-                console.log(course)
-              }
               if (isNaN(parseInt(course.substring(4, 7))) == false) {
                 if (parseInt(course.substring(4, 7)) >= 500) {
                   others = others.replace(course, "");
@@ -289,11 +292,11 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
             && !checkOthers) {
             //reaches description
             if (checkCourseName) {
-              if (courses.includes(courseName) == false && courseName != "") {
+              if (courses.includes(courseName) == false && courseName !== "") {
                 courses.push(courseName)
                 chosenDept = courseName.substring(0, 3)
                 courseNum = courseName.substring(5, 8)
-                if (!depts.includes(chosenDept) && ((exceptionDepts.includes(chosenDept) && !exceptions.includes(chosenDept + courseNum)) || courseNum > 700)) {
+                if ((!depts.includes(chosenDept) && ((exceptionDepts.includes(chosenDept) && !exceptions.includes(chosenDept + courseNum))) || courseNum > 700)) {
                   skip = true
                   // checkOthers = false;
                   // courseNum = ''
@@ -317,7 +320,7 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
             if (desc === "") {
               chosenDept = courseName.substring(0, 3)
               courseNum = courseName.substring(5, 8)
-              if (!depts.includes(chosenDept) && ((exceptionDepts.includes(chosenDept) && !exceptions.includes(chosenDept + courseNum)) || courseNum > 700)) {
+              if ((!depts.includes(chosenDept) && ((exceptionDepts.includes(chosenDept) && !exceptions.includes(chosenDept + courseNum))) || courseNum > 700)) {
                 skip = true
                 //   checkOthers = false;
                 //   courseNum = ''

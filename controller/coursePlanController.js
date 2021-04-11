@@ -1,6 +1,7 @@
 const { IncomingForm } = require('formidable')
 const fs = require('fs')
 const Papa = require('papaparse')
+const { CourseOffering } = require('../config/database.js')
 const database = require('../config/database.js')
 
 const Student = database.Student
@@ -91,7 +92,8 @@ async function uploadCoursePlans(coursePlans, dept, res) {
       semester: coursePlans[i].semester,
       year: coursePlans[i].year,
       section: coursePlans[i].section,
-      grade: coursePlans[i].grade
+      grade: coursePlans[i].grade,
+      validity: true
     }
     found = await CoursePlanItem.findOne({ where: condition })
     if (found)
@@ -251,13 +253,6 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     states[gpaState]++
     await updateOrCreate(student, 'Gpa', gpaReq.requirementId, gpaState,
       [studentCumGpa.toFixed(2), studentCoreGpa.toFixed(2), studentDeptGpa.toFixed(2)])
-    // if (student.sbuId === 125318430) {
-    //   console.log('gpas: ', studentCumGpa, studentCoreGpa, studentDeptGpa)
-    //   console.log('totalCredits: ' + totalCredits)
-    //   console.log('credits: ' + credits)
-    //   console.log('courseplan: ' + coursePlanItems)
-    //   // console.log('graded: ',gradedCoursePlan )
-    // }
 
     // COURSE REQUIREMENT: Create and calculate course requirements
     let coursesCount = {}
@@ -345,7 +340,6 @@ async function calculateCompletion(studentsPlanId, credits, res) {
           courseReqState = 'pending'
       }
       states[courseReqState]++
-      // console.log(coursesUsedForReq)
       await updateOrCreate(student, 'Course', requirement.requirementId, courseReqState, coursesUsedForReq)
     }
     tot += 1
@@ -355,16 +349,108 @@ async function calculateCompletion(studentsPlanId, credits, res) {
       pending: states['pending'],
       gpa: studentCumGpa ? studentCumGpa.toFixed(2) : 0
     })
+
+    // If all course plan items are pending and satisfied (no unsatisfied), then the course plan is complete
+    notTakenCourses = coursePlanItems.filter(item => item.grade === null)
+    let coursePlanValidity = await setCoursePlanValidity(notTakenCourses)
+    let studentCoursePlan = await CoursePlan.findOne({ where: { coursePlanId: studentsPlanId[key] } })
+    await studentCoursePlan.update({
+      coursePlanComplete: (states['unsatisfied'] === 0) ? true : false,
+      coursePlanValidity: coursePlanValidity
+    })
   }
-  // , studentCoreGpa.toFixed(2), studentDeptGpa.toFixed(2)]
   console.log('Done calculating ' + tot + ' students course plan completion')
   res.status(200).send('Success')
 }
 
 
+async function setCoursePlanValidity(notTakenCourses) {
+  let coursePlanValidity = true
+  if (notTakenCourses.length === 0)
+    return coursePlanValidity
+  // 1. Get list of all semester+year pairs
+  let semesterYears = Array.from(new Set(notTakenCourses.map(item => item.semester + ' ' + item.year)))
+    .map(item => item.split(' '))
+  // 2. Filter list of semyears by semyears that have course offerings
+  let semYears = []
+  for (let semYear of semesterYears) {
+    let found = await CourseOffering.findOne({ where: { semester: semYear[0], year: semYear[1] } })
+    if (found)
+      semYears.push(semYear)
+  }
+  for (let semYear of semYears) {
+    let invalidItems = []
+    // Course plan items for the current semester and year only
+    let courses = notTakenCourses.filter(item => item.semester === semYear[0] && item.year === Number(semYear[1]))
+    // 3. Get all course offerings for the semester and year
+    let courseOfferings = await CourseOffering.findAll({
+      where: {
+        identifier: courses.map(item => item.courseId),
+        semester: semYear[0],
+        year: Number(semYear[1])
+      }
+    })
+    let courseOfferingMap = {}
+    courseOfferings.map(offering => courseOfferingMap[offering.identifier] = offering)
+    for (let i = 0; i < courses.length; i++) {
+      // If course was not offered, set validity to false
+      if (!courseOfferingMap[courses[i].courseId]) {
+        invalidItems.push(courses[i].courseId)
+        continue
+      }
+      // Course was offered in semester and year
+      for (let j = i + 1; j < courses.length; j++) {
+        let first = courseOfferingMap[courses[i].courseId]
+        let second = courseOfferingMap[courses[j].courseId]
+        if (!first.startTime || !second.startTime
+          || !first.endTime || !second.endTime
+          || !first.days || !second.days)
+          continue
+        let fDays = first.days
+        let sDays = second.days
+        if ((fDays.includes('M') && sDays.includes('M')) ||
+          (fDays.includes('TU') && sDays.includes('TU')) ||
+          (fDays.includes('W') && sDays.includes('W')) ||
+          (fDays.includes('TH') && sDays.includes('TH')) ||
+          (fDays.includes('F') && sDays.includes('F'))) {
+          // Check time conflict
+          let fStart = first.startTime
+          let sStart = second.startTime
+          let fEnd = first.endTime
+          let sEnd = second.endTime
+          if ((fStart >= sStart && fStart < sEnd) ||
+            (fEnd <= sEnd && fEnd > sStart) ||
+            (sStart >= fStart && sStart < fEnd) ||
+            (sEnd <= fEnd && sEnd > fStart)) {
+            invalidItems.push(first.identifier)
+            invalidItems.push(second.identifier)
+          }
+        }
+      }
+    }
+    // update courseplanitem validty for invaliditems
+    if (notTakenCourses[0].coursePlanId === 3) {
+      console.log(invalidItems)
+    }
+    if (invalidItems) {
+      await CoursePlanItem.update({ validity: false }, {
+        where: {
+          courseId: invalidItems,
+          semester: semYear[0],
+          year: Number(semYear[1])
+        }
+      })
+      coursePlanValidity = false
+    }
+  }
+  return coursePlanValidity
+}
+
+/**
+ * Update or create a requirement for a degree
+ */
 async function updateOrCreate(student, requirementType, requirementId, state, metaData) {
   // console.log('Update/creating for '+student.sbuId+' for requirement type: ', requirementType)
-  // console.log(coursesUsedForReq)
   let reqStr = ''
   switch (requirementType) {
     case 'Grade':
@@ -414,6 +500,15 @@ exports.findItems = (req, res) => {
     }).catch(err => {
       console.log(err)
     })
+  })
+}
+
+exports.findAll = (req, res) => {
+  let condition = req.query
+  CoursePlan.findAll({ where: condition }).then(coursePlan => {
+    res.status(200).send(coursePlan)
+  }).catch(err => {
+    console.log(err)
   })
 }
 

@@ -86,11 +86,35 @@ const ImportItem = (props) => {
     }
     console.log(props)
     try {
-      await axios.post(upload_path, formData, {
+      let result = await axios.post(upload_path, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
+      if (props.header === 'Course Offerings') {
+        let sem = result.data[0]
+        let year = result.data[1]
+        let coursePlanItems = await axios.get('/courseplanitem/count', {
+          params: {
+            semester: sem,
+            year: year,
+            validity: false
+          }
+        })
+        let coursePlans = await axios.get('/courseplan/findAll', {
+          params: {
+            coursePlanId: coursePlanItems.data.map(item => item.coursePlanId)
+          }
+        })
+        let students = {}
+        coursePlans.data.map(cp => {
+          students[cp.studentId] = coursePlanItems.data.filter((item) =>
+            item.coursePlanId === cp.coursePlanId
+          )
+        })
+        props.setStudents(students)
+        props.setShowInvalid(true)
+      }
       console.log('Successfully uploaded file');
       setLoading(false)
       props.setOverlay("none")
@@ -100,6 +124,7 @@ const ImportItem = (props) => {
       setLoading(false)
       props.setOverlay("none")
       setFile("")
+      console.log(err)
       setError(err.response.data)
     }
   }
