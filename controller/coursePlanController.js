@@ -113,7 +113,7 @@ function calculateGPA(coursePlanItems, credits) {
   let totalPoints = 0
   let totalCredits = 0
   for (let course of coursePlanItems) {
-    let courseCredit = credits[course.courseId]
+    let courseCredit = GRADES[course.grade] ? credits[course.courseId] : 0
     totalCredits += courseCredit
     totalPoints += courseCredit * (GRADES[course.grade] ? GRADES[course.grade] : 0)
   }
