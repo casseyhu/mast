@@ -84,8 +84,16 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
   /* other requirements i.e prerequisites, credits */
   let checkOthers = false
   let others = ''
-  let exceptionDepts = ['CHE', 'JRN', 'MEC', 'MCB', 'PHY', 'CSE', 'ESE']
+  let exceptionDepts = []
   let exceptions = ['CHE541', 'JRN565', 'MEC539', 'MCB520', 'PHY558', 'ESE533', 'CSE529']
+  if (depts.includes('ESE')) {
+    exceptionDepts = ['CSE']
+    exceptions = ['CSE506', 'CSE526', 'CSE548']
+  }
+  if (depts.includes('AMS')) {
+    exceptionDepts = ['CHE', 'JRN', 'MEC', 'MCB', 'PHY', 'CSE', 'ESE']
+    exceptions.concat(['CHE541', 'JRN565', 'MEC539', 'MCB520', 'PHY558', 'ESE533', 'CSE529'])
+  }
   pdfExtract.extract(filePath, options, async (err, data) => {
     if (err) {
       res.status(500).send('Error parsing pdf file')

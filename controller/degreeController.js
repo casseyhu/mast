@@ -214,7 +214,7 @@ async function createDegree(degree) {
       dept: degree.dept,
       track: degree.track,
       requirementVersion: degree.requirementVersion,
-      gradeRequirement: gradeRequirement.requirementId,
+      gradeRequirement: gradeRequirement ? gradeRequirement.requirementId : null,
       gpaRequirement: gpaRequirement.requirementId,
       creditRequirement: creditRequirement.requirementId,
       courseRequirement: courseReqIds
