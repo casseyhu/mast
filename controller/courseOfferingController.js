@@ -229,7 +229,7 @@ async function uploadCourses(results, res, dept) {
       else console.log('Email sent ' + info.response)
     })
   }
-  res.status(200).send(affectedStudents)
+  res.status(200).send(semestersCovered)
   return
 }
 
@@ -287,6 +287,13 @@ async function deleteSemestersFromDB(courses, departments) {
       await CourseOffering.destroy({
         where: {
           identifier: { [Op.startsWith]: dept },
+          semester: semyear[0],
+          year: Number(semyear[1])
+        }
+      })
+      await CoursePlanItem.update({ validity: true }, {
+        where: {
+          validity: false,
           semester: semyear[0],
           year: Number(semyear[1])
         }

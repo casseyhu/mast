@@ -417,6 +417,15 @@ exports.findItems = (req, res) => {
   })
 }
 
+exports.findAll = (req, res) => {
+  let condition = req.query
+  CoursePlan.findAll({ where: condition }).then(coursePlan => {
+    res.status(200).send(coursePlan)
+  }).catch(err => {
+    console.log(err)
+  })
+}
+
 exports.count = (req, res) => {
   let condition = req.query
   CoursePlanItem.findAll({ where: condition }).then(totalItems => {
