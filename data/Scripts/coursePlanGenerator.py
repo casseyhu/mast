@@ -100,13 +100,13 @@ for i in range(1, len(TRACKS['ESE']) + 1):
 
 
 # Get prereqs for all courses
-prereq_df = pd.read_csv(path + '/prereqs.csv')
+prereq_df = pd.read_csv(path + '\Grades\prereqs.csv')
 prereq_df = prereq_df[prereq_df['prereqs'].notna()]
 
 
 # Get all students and their relevant information from student_profile_file.csv
 students = []
-profile_df = pd.read_csv(path + '/student_profile_file.csv')
+profile_df = pd.read_csv(path + '\Students\student_profile_file.csv')
 df = profile_df[profile_df['department'] == "AMS"]
 for ind in df.index:
     track = df['track'][ind]
