@@ -90,8 +90,12 @@ async function uploadCourses(results, res, dept) {
     let semesterAdded = coursesAdded.filter(
       course => course.semester === semesters[i] && course.year === years[i]
     )
+    // if (coursePlans[2].studentId === 512776214) {
+    //   console.log(semesterAdded)
+    // }
     // For each student...
     for (let j = 0; j < coursePlans.length; j++) {
+      let coursePlanValidity = true
       let toCheck = []
       // `semesterItems` are the CoursePlanItems of the current student for this semester + year.
       let semesterItems = coursePlanItems.filter(
@@ -99,6 +103,11 @@ async function uploadCourses(results, res, dept) {
           && item.year === years[i]
           && item.coursePlanId === coursePlanIds[j]
       )
+      // if (coursePlans[j].studentId === 512776214) {
+      //   console.log(j)
+      //   console.log(semesters[i] + years[i])
+      //   console.log(semesterItems)
+      // }
       // For each course plan item of this student in this semester + year...
       // Compare the course plan item to a course we added. If they're the same course
       // (already in the same sem + year), add it to `toCheck` to check for schedule conflicts.
@@ -161,12 +170,16 @@ async function uploadCourses(results, res, dept) {
                 }
               })
               // only pushes to affected students if either item has a conflict/is affected
-              if (firstCheck[0] === 1 || secondCheck[0] === 1)
+              if (firstCheck[0] === 1 || secondCheck[0] === 1) {
                 affectedStudents.push(coursePlans[j].studentId)
+                coursePlanValidity = false
+              }
             }
           }
         }
       }
+      await coursePlans[j].update({ coursePlanValidity: coursePlanValidity })
+
     }
     // Finds the student's whose course plans are invalid due to a course no longer
     // being offered in the semester + year.
@@ -229,7 +242,7 @@ async function uploadCourses(results, res, dept) {
       else console.log('Email sent ' + info.response)
     })
   }
-  res.status(200).send(affectedStudents)
+  res.status(200).send(semestersCovered)
   return
 }
 
@@ -287,6 +300,13 @@ async function deleteSemestersFromDB(courses, departments) {
       await CourseOffering.destroy({
         where: {
           identifier: { [Op.startsWith]: dept },
+          semester: semyear[0],
+          year: Number(semyear[1])
+        }
+      })
+      await CoursePlanItem.update({ validity: true }, {
+        where: {
+          validity: false,
           semester: semyear[0],
           year: Number(semyear[1])
         }

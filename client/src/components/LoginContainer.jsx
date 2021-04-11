@@ -52,6 +52,7 @@ class LoginContainer extends Component {
       localStorage.setItem('jwt-token', response.data[0])
       console.log("login response", response.data[1]);
       this.props.setLoggedIn(true, user, response.data[1]);
+      document.onkeyup = null;
     }).catch(err => {
       console.log(err)
       this.setState({ error: err.response.data });

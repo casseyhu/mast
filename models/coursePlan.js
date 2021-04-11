@@ -4,7 +4,8 @@
  * Columns, translated over in MySQL terms for convenience:
  *      coursePlanId:       INTEGER AUTOINCREMENT NOT NULL
  *      studentId:          INTEGER NOT NULL
- *      coursePlanState:    TINYINT
+ *      coursePlanComplete: TINYINT
+ *      coursePlanValid:    TINYINT
  *      PRIMARY KEY (coursePlanId)
  * @param {Object} sequelize 
  * @param Sequelize 
@@ -22,7 +23,8 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.INTEGER,
       allowNull: false
     },
-    coursePlanState: Sequelize.INTEGER(4)
+    coursePlanComplete: Sequelize.BOOLEAN,
+    coursePlanValid: Sequelize.BOOLEAN
   }, {
     timestamps: false
   })
