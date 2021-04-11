@@ -87,7 +87,9 @@ class Browse extends Component {
         gradSem: this.state.filters['gradSem'],
         gradYear: this.state.filters['gradYear'],
         track: this.state.filters['track'],
-        graduated: this.state.filters['graduated']
+        graduated: this.state.filters['graduated'],
+        valid: this.state.filters['valid'],
+        complete: this.state.filters['complete']
       }
     }).then(response => {
       this.setState({ students: response.data }, this.handleResize)
