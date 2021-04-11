@@ -52,6 +52,7 @@ const ImportItem = (props) => {
     }
     else if (props.header === "Student Data") {
       setLoading(true)
+      props.setOverlay("")
       firstFormData.append("dept", props.dept);
       formData.append("dept", props.dept);
       try {
@@ -65,6 +66,7 @@ const ImportItem = (props) => {
       } catch (err) {
         console.log(err.response.data)
         setLoading(false)
+        props.setOverlay("none")
         setFirstFile("")
         setFile("")
         setError(err.response.data)
@@ -77,8 +79,10 @@ const ImportItem = (props) => {
       formData.append("dept", props.dept);
     }
 
-    if (!loading)
+    if (!loading) {
       setLoading(true)
+      props.setOverlay("")
+    }
     console.log(props)
     try {
       await axios.post(upload_path, formData, {
@@ -88,10 +92,12 @@ const ImportItem = (props) => {
       })
       console.log('Successfully uploaded file');
       setLoading(false)
+      props.setOverlay("none")
       setUploading(true)
       setFile("")
     } catch (err) {
       setLoading(false)
+      props.setOverlay("none")
       setFile("")
       setError(err.response.data)
     }
