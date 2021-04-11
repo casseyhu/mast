@@ -91,8 +91,7 @@ async function uploadCoursePlans(coursePlans, dept, res) {
       semester: coursePlans[i].semester,
       year: coursePlans[i].year,
       section: coursePlans[i].section,
-      grade: coursePlans[i].grade,
-      validity: 1
+      grade: coursePlans[i].grade
     }
     found = await CoursePlanItem.findOne({ where: condition })
     if (found)
@@ -218,7 +217,7 @@ async function calculateCompletion(studentsPlanId, res) {
             // year: coursePlanItem.year
           }
         })
-        if (course && course.credits)
+        if (course && course.credits != null)
           credits[coursePlanItemCSY] = course.credits;
         else {
           // should not get to here...

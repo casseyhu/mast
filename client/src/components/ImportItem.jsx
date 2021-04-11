@@ -9,6 +9,7 @@ const ImportItem = (props) => {
 
   const [file, setFile] = useState("");
   const [firstfile, setFirstFile] = useState("");
+  const [depts, setDepts] = useState([]);
   const [semester, setSem] = useState("");
   const [year, setYear] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,7 +41,7 @@ const ImportItem = (props) => {
     let upload_path = '';
     if (props.header === "Course Information") {
       upload_path = 'course/upload';
-      formData.append("dept", props.dept);
+      formData.append("depts", depts);
       formData.append("semester", semester);
       formData.append("year", year);
     }
@@ -103,6 +104,11 @@ const ImportItem = (props) => {
     }
   }
 
+  const selectionHandler = (e) => {
+    let value = Array.from(e, option => option.value);
+    setDepts(value);
+  }
+
   return (
     <div style={{ margin: "1rem 0" }}>
       <h4>{props.header}</h4>
@@ -119,7 +125,7 @@ const ImportItem = (props) => {
             {firstfile && <small style={{ marginLeft: "1.5rem" }}>{firstfile.name}</small>}
           </div>
         )}
-      {props.sems && props.years
+      {props.depts && props.sems && props.years
         && (
           <div className="flex-horizontal wrap justify-content-start">
             <span className="filter-span" style={{ width: "150px" }}>Semesters</span>
@@ -137,6 +143,15 @@ const ImportItem = (props) => {
               onChange={(e) => setYear(e.value)}
               style={{ width: '150px', margin: '0 4rem 0.5rem 0' }}
             />
+            <div className="flex-horizontal" style={{ width: '540px' }}>
+              <span style={{ width: '150px' }}>Departments</span>
+              <Dropdown
+                variant="multi"
+                items={props.depts}
+                onChange={selectionHandler}
+                style={{ margin: '0 1rem 0.5rem 0' }}
+              />
+            </div>
           </div>
         )}
       <div className="flex-horizontal parent">
@@ -160,7 +175,7 @@ const ImportItem = (props) => {
       </small>
       {loading && (
         <div className="loading">
-          <PulseLoader size="20" margin="10" color={"#094067"} loading={loading} />
+          <PulseLoader size="20px" margin="10px" color={"#094067"} loading={loading} />
         </div>)}
       {uploading && <Checkmark size='xxLarge' color="#094067" className="checkmark" />}
     </div>

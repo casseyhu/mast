@@ -4,7 +4,7 @@ import ImportItem from '../components/ImportItem';
 import Button from '../components/Button';
 import CenteredModal from '../components/Modal';
 import axios from '../constants/axios';
-import { SEMESTERS, YEARS } from '../constants';
+import { SEMESTERS, YEARS, DEPARTMENTS_REQ } from '../constants';
 
 const Import = (props) => {
   const [showConfirmation, setshowConfirmation] = useState(false)
@@ -27,11 +27,19 @@ const Import = (props) => {
         <h1>Import Data</h1>
       </div>
       <div className="flex-vertical">
+<<<<<<< HEAD
         <ImportItem header="Course Information" setOverlay={setOverlay} type="PDF" sems={SEMESTERS} years={YEARS} dept={props.dept}/>
         <ImportItem header="Degree Requirements" setOverlay={setOverlay} type="JSON" />
         <ImportItem header="Course Offerings" setOverlay={setOverlay} type="CSV" dept={props.dept}/>
         <ImportItem header="Student Data" setOverlay={setOverlay} first="Profile CSV" type="Course Plan CSV" dept={props.dept}/>
         <ImportItem header="Grades" setOverlay={setOverlay} type="CSV" dept={props.dept}/>
+=======
+        <ImportItem header="Course Information" type="PDF" sems={SEMESTERS} years={YEARS} depts={DEPARTMENTS_REQ}/>
+        <ImportItem header="Degree Requirements" type="JSON" />
+        <ImportItem header="Course Offerings" type="CSV" dept={props.dept}/>
+        <ImportItem header="Student Data" first="Profile CSV" type="Course Plan CSV" dept={props.dept}/>
+        <ImportItem header="Grades" type="CSV" dept={props.dept}/>
+>>>>>>> ee9af4458d850190053976c5baa187b72825ba3b
         <h4 style={{ margin: "1rem 0" }}>Other</h4>
         <Button
           variant="round"
