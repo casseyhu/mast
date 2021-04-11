@@ -48,7 +48,7 @@ exports.upload = (req, res) => {
           let courses = []
           let exceptionDepts = ['AMS', 'CHE', 'JRN', 'MEC', 'MCB', 'PHY']
           if (dept === 'AMS') {
-            courses = results.data.filter(course => mexceptionDepts.includes(course.department))
+            courses = results.data.filter(course => exceptionDepts.includes(course.department))
             dept = exceptionDepts
           } else {
             courses = results.data.filter(course => course.department === dept)
