@@ -3,7 +3,7 @@ const fs = require('fs')
 const Papa = require('papaparse')
 const { CourseOffering } = require('../config/database.js')
 const database = require('../config/database.js')
-
+const Op = database.Sequelize.Op
 const Student = database.Student
 const Course = database.Course
 const CoursePlan = database.CoursePlan
@@ -433,12 +433,13 @@ async function setCoursePlanValidity(notTakenCourses) {
       }
     }
     // update courseplanitem validty for invaliditems
-    if (notTakenCourses[0].coursePlanId === 3) {
+    if (notTakenCourses[0].coursePlanId === 114) {
       console.log(invalidItems)
     }
     if (invalidItems) {
       await CoursePlanItem.update({ validity: false }, {
         where: {
+          coursePlanId: notTakenCourses[0].coursePlanId,
           courseId: invalidItems,
           semester: semYear[0],
           year: Number(semYear[1])
@@ -522,5 +523,39 @@ exports.count = (req, res) => {
     res.status(200).send(totalItems)
   }).catch(err => {
     console.log(err)
+  })
+}
+
+exports.filterCV = (req, res) => {
+  // let condition = req.query
+  console.log(req.query)
+  let condition = { studentId: req.query.studentId }
+  if(req.query.valid && req.query.complete)
+    condition = {
+      [Op.and]: [
+        { studentId: req.query.studentId },
+        { coursePlanComplete: req.query.complete },
+        { coursePlanValid: req.query.valid}
+      ]
+    }
+  else if(req.query.complete)
+    condition = {
+      [Op.and]: [
+        { studentId: req.query.studentId },
+        { coursePlanComplete: req.query.complete }
+      ]
+    }
+  else 
+    condition = {
+      [Op.and]: [
+        { studentId: req.query.studentId },
+        { coursePlanValid: req.query.valid }
+      ]
+    }
+  CoursePlan.findAll({ where: condition }).then(results => { 
+    res.status(200).send(results)
+  }).catch(err => {
+    console.log(err)
+    res.status(500).send('Error')
   })
 }
