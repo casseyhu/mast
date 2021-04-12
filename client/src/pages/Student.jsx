@@ -17,7 +17,6 @@ const Student = (props) => {
   const [showEmailConf, setShowEmailConf] = useState(false)
   const [mode, setMode] = useState(props.location.state ? props.location.state.mode : props.mode)
   const [studentInfoParams, setStudentInfoParams] = useState({})
-  const [degree, setDegree] = useState({})
 
   const setStudentInfo = async () => {
     let currStudent = props.student ? props.student : props.location.state.student
@@ -57,7 +56,7 @@ const Student = (props) => {
     if (mode === 'Add')
       return
     let token = localStorage.getItem('jwt-token')
-    var decoded = jwt_decode(token)
+    let decoded = jwt_decode(token)
     if (!decoded)
       return
     setStudentInfo()
@@ -85,8 +84,8 @@ const Student = (props) => {
     } else if (mode === 'View') {
       setMode('Edit')
     } else {
-      var commentBefore = studentInfoParams.student.gpdComments
-      var commentAfter = studentInfo.gpdComments
+      let commentBefore = studentInfoParams.student.gpdComments
+      let commentAfter = studentInfo.gpdComments
       /* Saving student info, UPDATE student in the db*/
       axios.post('/student/update', {
         params: studentInfo
@@ -128,13 +127,13 @@ const Student = (props) => {
 
   const showDegree = (degree) => {
     let requirementState = {}
-    if(degree[0]) 
+    if (degree[0])
       requirementState['GR' + degree[0].requirementId] = ['unsatisfied', []]
-    requirementState['G'  + degree[1].requirementId] = ['unsatisfied', []]
+    requirementState['G' + degree[1].requirementId] = ['unsatisfied', []]
     requirementState['CR' + degree[2].requirementId] = ['unsatisfied', []]
-    for(let course of degree[3]) {
-      if(course.type != 0) 
-        requirementState['C'+ course.requirementId] = ['unsatisfied', []]
+    for (let course of degree[3]) {
+      if (course.type != 0)
+        requirementState['C' + course.requirementId] = ['unsatisfied', []]
     }
     console.log(requirementState)
     setStudentInfoParams({
@@ -144,7 +143,7 @@ const Student = (props) => {
       requirementStates: requirementState
     })
   }
-  
+
   const editCoursePlan = () => {
     localStorage.removeItem('filters')
     history.push({
@@ -179,9 +178,8 @@ const Student = (props) => {
         setDegreeReq={(degreeVer) => showDegree(degreeVer)}
       />
       <hr />
-      <Requirements 
+      <Requirements
         studentInfo={studentInfoParams}
-        degree={degree} 
       />
       <hr />
       <CoursePlan
