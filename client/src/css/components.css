@@ -56,6 +56,10 @@ nav {
   outline-width: 1px;
 }
 
+.bg-white {
+  background-color: white;
+  color: var(--primary);
+}
 /* Dropdown CSS */
 
 .dd-wrapper-multi {

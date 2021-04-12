@@ -516,7 +516,8 @@ async function addStudent(student, degree, res) {
     await RequirementState.create({
       sbuID: student.sbuId,
       requirementId: requiredRequirements[index],
-      state: 'unsatisfied'
+      state: 'unsatisfied',
+      metaData: []
     })
   }
   res.status(200).send(addedStudent)

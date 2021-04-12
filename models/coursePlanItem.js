@@ -44,6 +44,10 @@ module.exports = (sequelize, Sequelize) => {
     validity: {
       type: Sequelize.BOOLEAN,
       defaultValue: true
+    },
+    status: {   // 0: Suggested, 1: In plan
+      type: Sequelize.BOOLEAN,
+      defaultValue: true
     }
   }, {
     timestamps: false
