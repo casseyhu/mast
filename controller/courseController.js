@@ -92,7 +92,7 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
   }
   if (depts.includes('AMS')) {
     exceptionDepts = ['CHE', 'JRN', 'MEC', 'MCB', 'PHY', 'CSE', 'ESE']
-    exceptions.concat(['CHE541', 'JRN565', 'MEC539', 'MCB520', 'PHY558', 'ESE533', 'CSE529'])
+    exceptions = exceptions.concat(['CHE541', 'JRN565', 'MEC539', 'MCB520', 'PHY558', 'ESE533', 'CSE529'])
   }
   pdfExtract.extract(filePath, options, async (err, data) => {
     if (err) {
@@ -290,7 +290,7 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
                 courses.push(courseName)
                 chosenDept = courseName.substring(0, 3)
                 courseNum = courseName.substring(5, 8)
-                if ((exceptionDepts.includes(chosenDept) && !exceptions.includes(chosenDept + courseNum)) || courseNum > 700) {
+                if ((!depts.includes(chosenDept) && exceptionDepts.includes(chosenDept) && !exceptions.includes(chosenDept + courseNum)) || courseNum > 700) {
                   skip = true
                   continue
                 }
@@ -310,7 +310,7 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
             if (desc === '') {
               chosenDept = courseName.substring(0, 3)
               courseNum = courseName.substring(5, 8)
-              if ((exceptionDepts.includes(chosenDept) && !exceptions.includes(chosenDept + courseNum)) || courseNum > 700)
+              if ((!depts.includes(chosenDept) && exceptionDepts.includes(chosenDept) && !exceptions.includes(chosenDept + courseNum)) || courseNum > 700)
                 skip = true
               name = courseName.substring(10, courseName.length)
             }

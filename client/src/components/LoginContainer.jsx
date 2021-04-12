@@ -99,6 +99,7 @@ class LoginContainer extends Component {
           type="email"
           placeholder="email"
           required
+          value={this.state.email}
           onChange={this.setEmail}
         />
         <InputField
@@ -106,6 +107,7 @@ class LoginContainer extends Component {
           type="password"
           placeholder="password"
           required
+          value={this.state.password}
           onChange={this.setPassword} />
         <Button divclassName="login-item" variant="round" text="login" onClick={this.login} />
         <span className="error center-span">{this.state.error}</span>

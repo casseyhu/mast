@@ -1,3 +1,6 @@
+export const CURRENT_SEMESTER = 'Spring'
+export const CURRENT_YEAR = '2021'
+
 export const SEMESTERS = [
   { value: 'Fall', label: 'Fall' },
   { value: 'Winter', label: 'Winter' },
@@ -45,33 +48,19 @@ export const DEPARTMENTS_REQ = [
   { value: 'ESE', label: 'ESE' }
 ];
 
-export const SORT_FIELDS = [
-  { value: 'lastName', label: 'Last Name' },
-  { value: 'firstName', label: 'First Name' },
-  { value: 'sbuId', label: 'Student ID' },
-  { value: 'satisfied', label: 'Satisfied' },
-  { value: 'pending', label: 'Pending' },
-  { value: 'unsatisfied', label: 'Unsatisfied' },
-  { value: 'gpa', label: 'GPA' },
-  { value: 'entrySemYear', label: 'Entry' },
-  { value: 'gradSemYear', label: 'Grad' },
-  { value: 'graduated', label: 'Graduated' },
-  { value: 'track', label: 'Track' }
-]
-
-export const SORT_ORDER = [
-  { value: true, label: 'Ascending' },
-  { value: false, label: 'Descending' },
-]
-
 export const BOOLEAN = [
   { value: 'True', label: 'True' },
   { value: 'False', label: 'False' },
 ]
 
 export const COMPLETENESS = [
-  { value: 'true', label: 'Complete' },
-  { value: 'false', label: 'Incomplete' }
+  { value: 'True', label: 'Complete' },
+  { value: 'False', label: 'Incomplete' }
+]
+
+export const VALIDITY = [
+  { value: 'True', label: 'Valid' },
+  { value: 'False', label: 'Invalid' }
 ]
 
 export const TRACKS = {
@@ -99,7 +88,6 @@ export const TRACKS = {
     { value: 'Non-Thesis', label: 'Non-Thesis' },
     { value: 'Thesis', label: 'Thesis' }
   ]
-
 }
 
 

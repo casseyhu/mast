@@ -17,7 +17,6 @@ class Browse extends Component {
   // We will always show the list in ascending lastName by default. 
   state = {
     students: [],
-    grades: {},
     sortBy: '',
     filters: {},
     page: 1,
@@ -27,22 +26,16 @@ class Browse extends Component {
   }
 
   addStudent = () => {
-    this.props.history.push({
-      pathname: '/student',
-      state: {
-        mode: 'Add',
-        student: '',
-      }
+    this.props.history.push('/student', {
+      mode: 'Add',
+      student: ''
     })
   }
 
   viewStudent = (student) => {
-    this.props.history.push({
-      pathname: '/student',
-      state: {
-        mode: 'View',
-        student: student
-      }
+    this.props.history.push('/student', {
+      mode: 'View',
+      student: student
     })
   }
 
@@ -51,33 +44,19 @@ class Browse extends Component {
   }
 
   setSortField = (field, value) => {
-    if (value == null) {
-      if (this.state.ascending[field] == null) {
-        this.setState({
-          ascending: {
-            [field]: true
-          }
-        })
-      }
-      else {
-        this.setState({
-          ascending: {
-            [field]: !this.state.ascending[field]
-          }
-        })
-      }
-    }
-    else {
-      this.setState({
-        ascending: {
-          [field]: value
-        }
-      })
-    }
-    this.setState({ sortBy: field }, this.sortStudents);
+    let target = true
+    if (value == null)
+      target = (this.state.ascending[field] == null) ? true : !this.state.ascending[field]
+    else
+      target = value
+    this.setState({
+      ascending: { [field]: target },
+      sortBy: field
+    }, this.sortStudents)
   }
 
   filter = () => {
+    localStorage.setItem('filters', JSON.stringify(this.state))
     axios.get('/student/filter', {
       params: {
         nameId: this.state.filters['nameId'],
@@ -87,11 +66,40 @@ class Browse extends Component {
         gradSem: this.state.filters['gradSem'],
         gradYear: this.state.filters['gradYear'],
         track: this.state.filters['track'],
-        graduated: this.state.filters['graduated']
+        graduated: this.state.filters['graduated'],
+        valid: this.state.filters['valid'],
+        complete: this.state.filters['complete']
       }
-    }).then(response => {
-      this.setState({ students: response.data }, this.handleResize)
-      this.setSortField(this.state.sortBy, this.state.ascending[this.state.sortBy])
+    }).then(filteredStudents => {
+      // If CP Validity && CP Complete were not provided values from the advanced options...
+      if (this.state.filters['complete'] === '%' && this.state.filters['valid'] === '%') {
+        this.setState({ students: filteredStudents.data }, this.handleResize)
+        this.setSortField(this.state.sortBy, this.state.ascending[this.state.sortBy])
+      }
+      else {
+        // ... Else, query the CoursePlans for the `filteredStudents` based on the which
+        // conditions were set (valid, complete, or valid&&complete). 
+        let complete = -1
+        if (this.state.filters['complete'] !== '%')
+          complete = this.state.filters['complete'] === '1%' ? 1 : 0
+        let valid = -1
+        if (this.state.filters['valid'] !== '%')
+          valid = this.state.filters['valid'] === '1%' ? 0 : 1
+        axios.get('/courseplan/filterCompleteValid', {
+          params: {
+            studentId: filteredStudents.data.map(student => student.sbuId),
+            complete: complete,
+            valid: valid
+          }
+        }).then(coursePlans => {
+          console.log('Students returned: ', coursePlans.data.length)
+          let studentIds = coursePlans.data.map(coursePlan => coursePlan.studentId)
+          filteredStudents.data = filteredStudents.data.filter(student => studentIds.includes(student.sbuId))
+          console.log('Set the filteredStudents.data')
+          this.setState({ students: filteredStudents.data }, this.handleResize)
+          this.setSortField(this.state.sortBy, this.state.ascending[this.state.sortBy])
+        })
+      }
     }).catch(err => {
       console.log(err)
     });
@@ -121,7 +129,7 @@ class Browse extends Component {
 
   handleResize = () => {
     let numPerPage = Math.max(1, Math.ceil((window.innerHeight - 350) / 30))
-    let maxPage = Math.ceil(this.state.students.length / numPerPage)
+    let maxPage = Math.max(1, Math.ceil(this.state.students.length / numPerPage))
     this.setState({
       numPerPage: numPerPage,
       maxPage: maxPage,
@@ -138,38 +146,21 @@ class Browse extends Component {
         students: response.data,
         numPerPage: Math.ceil((window.innerHeight - 350) / 30),
         maxPage: Math.ceil(response.data.length / Math.ceil((window.innerHeight - 350) / 30))
+      }, ret => {
+        let savedState = localStorage.getItem('filters')
+        if (savedState) {
+          savedState = JSON.parse(savedState)
+          this.setState({
+            sortBy: savedState.sortBy,
+            filters: savedState.filters,
+            page: savedState.page,
+            ascending: savedState.ascending
+          }, this.filter)
+        }
       });
     }).catch(err => {
       console.log(err)
     });
-
-    // axios.get('courseplanitem/findItem', {
-    //   params: {
-    //     grade: ""
-    //   }
-    // }).then(response => {
-    //   const foundGrades = response.data;
-    //   axios.get('courseplan')
-    //     .then(response => {
-    //       const coursePlans = response.data
-    //       let id_dict = {}
-    //       let course_plan_dict = {}
-    //       for (let i = 0; i < coursePlans.length; i++) {
-    //         id_dict[coursePlans[i].studentId] = coursePlans[i].coursePlanId
-    //       }
-    //       for (let i = 0; i < coursePlans.length; i++) {
-    //         course_plan_dict[coursePlans[i].studentId] =
-    //           foundGrades.filter(foundGrade => foundGrade.coursePlanId === id_dict[coursePlans[i].studentId])
-    //       }
-    //       this.setState({ coursePlan: course_plan_dict })
-    //       console.log(this.state.coursePlan)
-    //     }).catch(err => {
-    //       console.log(err)
-    //     })
-    // }).catch(err => {
-    //   console.log(err)
-    // })
-
   }
 
   componentWillUnmount() {

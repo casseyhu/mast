@@ -165,6 +165,7 @@ class Trends extends Component {
               className="lr-padding rm-r-small"
               type="text"
               placeholder="Courses"
+              value={this.state.courses}
               onChange={e => this.setState({ courses: e.target.value })}
               style={{ flexGrow: '1' }}
             />

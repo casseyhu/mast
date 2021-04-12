@@ -80,7 +80,7 @@ const Import = (props) => {
           onConfirm={() => dropStudents()}
           body="Are you sure you want to drop all students?"
         />
-        <CenteredModal
+        {Object.keys(affectedStudents).length && <CenteredModal
           variant="multi"
           show={showInvalid}
           onHide={() => setShowInvalid(false)}
@@ -119,7 +119,7 @@ const Import = (props) => {
               </table>
             </div>
           }
-        />
+        />}
         <CenteredModal
           show={showEmailConf}
           onHide={() => setShowEmailConf(false)}
