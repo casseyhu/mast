@@ -115,7 +115,7 @@ async function uploadCourses(results, res, dept) {
         for (let l = k + 1; l < toCheck.length; l++) {
           let first = toCheck[k].days
           let second = toCheck[l].days
-          if (
+          if (toCheck[k].identifier === toCheck[l].identifier ||
             !first ||
             !second ||
             !toCheck[k].startTime ||

@@ -171,6 +171,7 @@ class Trends extends Component {
             <InputField
               className="lr-padding rm-r-small"
               type="text"
+              value={this.state.courses}
               placeholder="Courses"
               onChange={e => this.setState({ courses: e.target.value })}
               style={{ flexGrow: '1' }}
@@ -224,7 +225,7 @@ class Trends extends Component {
             </div>
           </div>
         </div>
-        <small className={this.state.errorMsg ? "error" : ""} style={{ position: 'relative', marginLeft: '45%' }}>{this.state.errorMsg}</small>
+        <small className={this.state.errorMsg ? "error" : ""}>{this.state.errorMsg}</small>
         <br />
         <ReactApexChart options={this.state.options} series={this.state.series} type="line" /*height={550}*/ />
 
