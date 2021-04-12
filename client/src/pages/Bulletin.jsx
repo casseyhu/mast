@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Container from "react-bootstrap/Container";
 import Dropdown from '../components/Dropdown';
-import { SEMESTERS, MONTH_SEMESTER, YEARS } from '../constants';
+import { SEMESTERS, YEARS, CURRENT_SEMESTER, CURRENT_YEAR } from '../constants';
 import axios from '../constants/axios';
 
 class Bulletin extends Component {
@@ -11,8 +11,8 @@ class Bulletin extends Component {
     dept: this.props.user.department,
     text: '',
     courses: [],
-    semester: this.props.type === 'student' ? MONTH_SEMESTER[this.props.user.requirementVersion.toString().substring(4, 6)] : 'Semester',
-    year: this.props.type === 'student' ? this.props.user.requirementVersion.toString().substring(0, 4) : 'Year'
+    semester: CURRENT_SEMESTER,
+    year: CURRENT_YEAR
   }
 
   setSemester = (e) => {
@@ -55,7 +55,6 @@ class Bulletin extends Component {
   }
 
   render() {
-    console.log(this.props.user)
     return (
       <Container fluid="lg" className="container">
         <div className="flex-horizontal justify-content-between">
@@ -66,7 +65,6 @@ class Bulletin extends Component {
               items={SEMESTERS}
               placeholder="Semester"
               value={{ label: this.state.semester, value: this.state.semester }}
-              disabled={this.props.type === 'student'}
               onChange={this.setSemester}
               style={{ margin: '1rem 1rem 0 0' }}
             />
@@ -75,7 +73,6 @@ class Bulletin extends Component {
               items={YEARS}
               placeholder="Year"
               value={{ label: this.state.year, value: this.state.year }}
-              disabled={this.props.type === 'student'}
               onChange={this.setYear}
               style={{ margin: '1rem 0 0 0' }}
             />

@@ -2,13 +2,10 @@ import React, { useState } from 'react';
 import Button from './Button';
 import Dropdown from './Dropdown';
 import InputField from './InputField'
-import { BOOLEAN, COMPLETENESS, SEMESTERS, YEARS } from '../constants';
+import { BOOLEAN, COMPLETENESS, VALIDITY, SEMESTERS, YEARS } from '../constants';
 
 const BrowseSearchbar = (props) => {
-  // const [degree, setDegree] = useState("");
   const [expanded, setExpanded] = useState(false);
-  // const [advancedFields] = useState(["SBU ID", "Degree", "Track", "Entry Sem", 
-  //   "Grad Sem", "Graduated", "Entry Year", "Grad Year"])
 
   const [filters, setFilters] = useState({
     nameId: '',
@@ -34,15 +31,14 @@ const BrowseSearchbar = (props) => {
     // After querying, send the results to the parent (Browse.jsx)
     // to set the table of students to view. 
     let graduated = "%"
-    if (filters.graduated !== "") 
+    if (filters.graduated !== "")
       graduated = (filters.graduated === "True" ? 1 : 0) + "%"
-    let valid = "%" 
-    if (filters.valid !== "") 
+    let valid = "%"
+    if (filters.valid !== "")
       valid = (filters.valid === "True" ? 1 : 0) + "%"
     let complete = "%"
     if (filters.complete !== "")
       complete = (filters.complete === "True" ? 1 : 0) + "%"
-
 
     let filteredConditions = {
       nameId: filters.nameId,
@@ -63,11 +59,6 @@ const BrowseSearchbar = (props) => {
   }
 
 
-  const expandFilters = (e) => {
-    console.log("Clicked advanced options. Set state to: ", !expanded)
-    setExpanded(!expanded)
-  }
-
   return (
     <div style={{ margin: '0.2rem 0 0.5rem 0' }}>
       {/* Main search bar fields */}
@@ -82,7 +73,7 @@ const BrowseSearchbar = (props) => {
             icon="fa fa-search"
             style={{ flexGrow: '1', marginRight: '1rem' }}
           />
-          <button className="advancedButton" onClick={expandFilters}>Advanced Options</button>
+          <button className="advancedButton" onClick={e => setExpanded(!expanded)}>Advanced Options</button>
         </div>
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
           <Button
@@ -158,7 +149,7 @@ const BrowseSearchbar = (props) => {
               <Dropdown
                 className="filter-component"
                 variant="single"
-                items={BOOLEAN}
+                items={VALIDITY}
                 onChange={e => handleSelection('valid', e)}
               />
             </div>

@@ -6,22 +6,13 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 
 const database = require('./config/database.js');
-// const session = require('express-session');
-
+const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(bodyParser.json())
 
 app.use(cors())
 app.use(express.static(path.join(__dirname, 'client/build')));
-
-// app.use(session({
-// 	secret: process.env.SESSION_PASSWORD,
-// 	resave: true,
-// 	saveUninitialized: true
-// }));
-// app.use(bodyParser.urlencoded({extended:true}));
-
 
 database.sequelize.sync({ force: false }).then(() => {
   console.log("Synced database");
@@ -35,8 +26,6 @@ require('./routes/coursePlanRoute.js')(app);
 require('./routes/degreeRoute.js')(app);
 require('./routes/emailRoute.js')(app);
 
-
-const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
