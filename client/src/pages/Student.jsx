@@ -58,7 +58,7 @@ const Student = (props) => {
     if (mode === 'Add')
       return
     let token = localStorage.getItem('jwt-token')
-    var decoded = jwt_decode(token)
+    let decoded = jwt_decode(token)
     if (!decoded)
       return
     setStudentInfo()
@@ -86,8 +86,8 @@ const Student = (props) => {
     } else if (mode === 'View') {
       setMode('Edit')
     } else {
-      var commentBefore = studentInfoParams.student.gpdComments
-      var commentAfter = studentInfo.gpdComments
+      let commentBefore = studentInfoParams.student.gpdComments
+      let commentAfter = studentInfo.gpdComments
       /* Saving student info, UPDATE student in the db*/
       axios.post('/student/update', {
         params: studentInfo
@@ -130,6 +130,25 @@ const Student = (props) => {
     })
   }
 
+  const showDegree = (degree) => {
+    let requirementState = {}
+    if (degree[0])
+      requirementState['GR' + degree[0].requirementId] = ['unsatisfied', []]
+    requirementState['G' + degree[1].requirementId] = ['unsatisfied', []]
+    requirementState['CR' + degree[2].requirementId] = ['unsatisfied', []]
+    for (let course of degree[3]) {
+      if (course.type != 0)
+        requirementState['C' + course.requirementId] = ['unsatisfied', []]
+    }
+    console.log(requirementState)
+    setStudentInfoParams({
+      // student: 'null',
+      coursePlan: [],
+      requirements: degree,
+      requirementStates: requirementState
+    })
+  }
+
   const editCoursePlan = () => {
     localStorage.removeItem('filters')
     history.push({
@@ -161,9 +180,12 @@ const Student = (props) => {
         userType={props.type}
         student={studentInfoParams.student}
         onSubmit={(e) => modeHandler(e)}
+        setDegreeReq={(degreeVer) => showDegree(degreeVer)}
       />
       <hr />
-      <Requirements studentInfo={studentInfoParams} />
+      <Requirements
+        studentInfo={studentInfoParams}
+      />
       <hr />
       <CoursePlan
         coursePlan={studentInfoParams.coursePlan}

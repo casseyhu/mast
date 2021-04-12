@@ -8,4 +8,6 @@ module.exports = function (app) {
   // Find requirements for a degree
   app.get('/api/requirements', Degree.findRequirements);
 
+  app.get('/api/newStudentRequirements', Degree.newStudentRequirements)
+
 }

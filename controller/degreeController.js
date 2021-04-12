@@ -50,13 +50,32 @@ exports.findRequirements = (req, res) => {
     })
 }
 
+exports.newStudentRequirements = (req, res) =>{
+  console.log("Here")
+  Degree
+    .findOne({
+      where:{
+        dept: req.query.department,
+        track: req.query.track,
+        requirementVersion: req.query.reqVersion
+      }
+    })
+    .then(degree => {
+      console.log(degree)
+      findRequirements(degree, res)
+    })
+}
 
 async function findRequirements(degree, res) {
-  let gradeReq = await GradeRequirement.findOne({
-    where: {
-      requirementId: degree.gradeRequirement
-    }
-  })
+  let gradeReq = ''
+  if(degree.gradeRequirement)
+    gradeReq = await GradeRequirement.findOne({
+      where: {
+        requirementId: degree.gradeRequirement
+      }
+    })
+  else
+    gradeReq = null
   let gpaReq = await GpaRequirement.findOne({
     where: {
       requirementId: degree.gpaRequirement
