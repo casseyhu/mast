@@ -101,14 +101,15 @@ class LoginContainer extends Component {
           required
           value={this.state.email}
           onChange={this.setEmail}
+          value={this.state.email}
         />
         <InputField
           className="login-item"
           type="password"
           placeholder="password"
           required
-          value={this.state.password}
-          onChange={this.setPassword} />
+          onChange={this.setPassword}
+          value={this.state.password} />
         <Button divclassName="login-item" variant="round" text="login" onClick={this.login} />
         <span className="error center-span">{this.state.error}</span>
       </div>

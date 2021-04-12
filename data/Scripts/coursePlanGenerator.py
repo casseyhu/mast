@@ -161,7 +161,7 @@ def convert_time(str_time):
 
 def has_conflicts(timeslot, time):
     for t in timeslot:
-        if (time[0] > t[0] and time[0] < t[1]) or (time[1] > t[0] and time[1] < t[1]):
+        if (time[0] >= t[0] and time[0] <= t[1]) or (time[1] >= t[0] and time[1] <= t[1]):
             return True
     return False
 
