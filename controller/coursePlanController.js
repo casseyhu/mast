@@ -401,6 +401,10 @@ async function setCoursePlanValidity(notTakenCourses) {
       // Course was offered in semester and year
       for (let j = i + 1; j < courses.length; j++) {
         let first = courseOfferingMap[courses[i].courseId]
+        if (!courseOfferingMap[courses[j].courseId]) {
+          invalidItems.push(courses[j].courseId)
+          continue
+        }
         let second = courseOfferingMap[courses[j].courseId]
         if (!first.startTime || !second.startTime
           || !first.endTime || !second.endTime

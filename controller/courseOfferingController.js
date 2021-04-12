@@ -90,9 +90,6 @@ async function uploadCourses(results, res, dept) {
     let semesterAdded = coursesAdded.filter(
       course => course.semester === semesters[i] && course.year === years[i]
     )
-    // if (coursePlans[2].studentId === 512776214) {
-    //   console.log(semesterAdded)
-    // }
     // For each student...
     for (let j = 0; j < coursePlans.length; j++) {
       let coursePlanValidity = true
@@ -103,11 +100,6 @@ async function uploadCourses(results, res, dept) {
           && item.year === years[i]
           && item.coursePlanId === coursePlanIds[j]
       )
-      // if (coursePlans[j].studentId === 512776214) {
-      //   console.log(j)
-      //   console.log(semesters[i] + years[i])
-      //   console.log(semesterItems)
-      // }
       // For each course plan item of this student in this semester + year...
       // Compare the course plan item to a course we added. If they're the same course
       // (already in the same sem + year), add it to `toCheck` to check for schedule conflicts.

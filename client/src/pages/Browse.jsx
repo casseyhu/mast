@@ -91,8 +91,15 @@ class Browse extends Component {
         valid: this.state.filters['valid'],
         complete: this.state.filters['complete']
       }
-    }).then(response => {
-      this.setState({ students: response.data }, this.handleResize)
+    }).then(filteredStudents => {
+      // 1. If state.filters[complete] == True, filter filteredStudents where CoursePlan === Complete. 
+      // for(let i = 0; i < filteredStudents.length; i++) {
+
+      // }
+      // filteredStudents = filteredStudents.filter()
+      // 2. If state.filter[validity] == True, filter step (1)'s filteredStudents by validity, or 
+      //    just axios.get()'s filteredStudents it state.filters[complete] was false (step 1 didnt run)
+      this.setState({ students: filteredStudents.data }, this.handleResize)
       this.setSortField(this.state.sortBy, this.state.ascending[this.state.sortBy])
     }).catch(err => {
       console.log(err)
