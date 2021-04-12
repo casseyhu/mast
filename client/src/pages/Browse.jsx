@@ -79,17 +79,23 @@ class Browse extends Component {
       else {
         // ... Else, query the CoursePlans for the `filteredStudents` based on the which
         // conditions were set (valid, complete, or valid&&complete). 
+        let complete = -1
+        if (this.state.filters['complete'] !== '%')
+          complete = this.state.filters['complete'] === '1%' ? 1 : 0
+        let valid = -1
+        if (this.state.filters['valid'] !== '%')
+          valid = this.state.filters['valid'] === '1%' ? 0 : 1
         axios.get('/courseplan/filterCompleteValid', {
           params: {
             studentId: filteredStudents.data.map(student => student.sbuId),
-            complete: this.state.filters['complete'] === '1%' ? 1 : 0,
-            valid: this.state.filters['valid'] === '1%' ? 1 : 0
+            complete: complete,
+            valid: valid
           }
         }).then(coursePlans => {
-          console.log(coursePlans.data.length)
+          console.log('Students returned: ', coursePlans.data.length)
           let studentIds = coursePlans.data.map(coursePlan => coursePlan.studentId)
           filteredStudents.data = filteredStudents.data.filter(student => studentIds.includes(student.sbuId))
-          console.log("Set the filteredStudents.data")
+          console.log('Set the filteredStudents.data')
           this.setState({ students: filteredStudents.data }, this.handleResize)
           this.setSortField(this.state.sortBy, this.state.ascending[this.state.sortBy])
         })
