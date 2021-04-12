@@ -11,7 +11,7 @@ const Requirements = (props) => {
   // const currYear = 2021
   const grades = { 'A': 4, 'A-': 3.67, 'B+': 3.33, 'B': 3, 'B-': 2.67, 'C+': 2.33, 'C': 2, 'C-': 1.67, 'F': 0 }
 
-  let { student, requirements, coursePlan, requirementStates } = props.studentInfo
+  let { requirements, coursePlan, requirementStates } = props.studentInfo
 
   const getLetter = (points) => {
     return Object.keys(grades).find(key => grades[key] === points)
@@ -72,6 +72,7 @@ const Requirements = (props) => {
   }
 
   useEffect(() => {
+    console.log("Here")
     const getCreds = async () => {
       console.log(requirements)
       console.log(requirementStates)
@@ -88,9 +89,9 @@ const Requirements = (props) => {
       // console.log('credits: ' + credits)
       setDisplay(true);
     }
-    if (student && requirements && coursePlan)
+    if (requirements && coursePlan)
       getCreds()
-  }, [student, requirements, coursePlan, requirementStates])
+  }, [requirements, coursePlan, requirementStates])
 
 
   return (
@@ -108,6 +109,7 @@ const Requirements = (props) => {
       </div>
 
       {display && <div className="flex-vertical" style={{ width: '100%' }}>
+        {console.log("Display is true now, requirements are: ", requirements)}
         {requirements[1] && (
           <div className={getReqColor('G', requirements[1])}>
             Minimum Cumulative GPA:

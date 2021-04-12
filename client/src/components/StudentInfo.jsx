@@ -4,11 +4,18 @@ import Dropdown from './Dropdown';
 import Button from '../components/Button';
 import { BOOLEAN, DEPARTMENTS_REQ, SEMESTERS, MONTH_SEMESTER, YEARS, TRACKS } from '../constants';
 import { useHistory } from "react-router-dom";
+import axios from '../constants/axios';
 
 
 const StudentInfo = (props) => {
   const history = useHistory();
   const [userInfo, setUserInfo] = useState({})
+  const semDict = {
+    'Fall': 8,
+    'Spring': 2,
+    'Winter': 1,
+    'Summer': 5
+  }
 
   const handleSelection = (name, e) => {
     setUserInfo(prevState => ({
@@ -44,6 +51,22 @@ const StudentInfo = (props) => {
       updatedAt: props.student ? new Date(props.student.updatedAt).toLocaleString() : ''
     }))
   }, [props.student])
+
+  useEffect(() => {
+    if(userInfo['dept'] && userInfo['track'] && userInfo['degreeSem'] && userInfo['degreeYear']) {
+      // console.log(userInfo['dept'] , userInfo['track'] , userInfo['degreeSem'] , userInfo['degreeYear'])
+      console.log("Degree information sufficient. Querying backend to get this degree information.")
+      axios.get('/newStudentRequirements', {
+        params: {
+          department: userInfo['dept'],
+          track: userInfo['track'],
+          reqVersion: Number(userInfo['degreeYear'] + '0' + semDict[userInfo['degreeSem']])
+        }
+      }).then(results => {
+        props.setDegreeReq(results.data)
+      })
+    }
+  }, [userInfo])
 
   let { mode, errorMessage } = props;
   return (
