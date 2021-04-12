@@ -91,7 +91,7 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
   }
   if (depts.includes('AMS')) {
     exceptionDepts = ['CHE', 'JRN', 'MEC', 'MCB', 'PHY', 'CSE', 'ESE']
-    exceptions.concat(['CHE541', 'JRN565', 'MEC539', 'MCB520', 'PHY558', 'ESE533', 'CSE529'])
+    exceptions = exceptions.concat(['CHE541', 'JRN565', 'MEC539', 'MCB520', 'PHY558', 'ESE533', 'CSE529'])
   }
   pdfExtract.extract(filePath, options, async (err, data) => {
     if (err) {

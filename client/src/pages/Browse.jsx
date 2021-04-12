@@ -87,15 +87,38 @@ class Browse extends Component {
         gradSem: this.state.filters['gradSem'],
         gradYear: this.state.filters['gradYear'],
         track: this.state.filters['track'],
-        graduated: this.state.filters['graduated']
+        graduated: this.state.filters['graduated'],
+        valid: this.state.filters['valid'],
+        complete: this.state.filters['complete']
       }
-    }).then(response => {
-      this.setState({ students: response.data }, this.handleResize)
-      this.setSortField(this.state.sortBy, this.state.ascending[this.state.sortBy])
+    }).then(filteredStudents => {
+      // If CP Validity && CP Complete were not provided values from the advanced options...
+      if(this.state.filters['complete'] === '%' && this.state.filters['valid'] === '%') {
+        this.setState({ students: filteredStudents.data }, this.handleResize)
+        this.setSortField(this.state.sortBy, this.state.ascending[this.state.sortBy])
+      }
+      else {
+        // ... Else, query the CoursePlans for the `filteredStudents` based on the which
+        // conditions were set (valid, complete, or valid&&complete). 
+        axios.get('/courseplan/filterCompleteValid', {
+          params: { 
+            studentId: filteredStudents.data.map(student => student.sbuId),
+            complete: this.state.filters['complete'] === '1%' ? 1 : 0,
+            valid: this.state.filters['valid'] === '1%' ? 1 : 0
+          }
+        }).then(coursePlans => {
+          console.log(coursePlans.data.length) 
+          let studentIds = coursePlans.data.map(coursePlan => coursePlan.studentId)
+          filteredStudents.data = filteredStudents.data.filter(student => studentIds.includes(student.sbuId))
+          console.log("Set the filteredStudents.data")
+          this.setState({ students: filteredStudents.data }, this.handleResize)
+          this.setSortField(this.state.sortBy, this.state.ascending[this.state.sortBy])
+        })
+      }
     }).catch(err => {
       console.log(err)
     });
-  }
+  } // brb
 
   sortStudents = () => {
     let sortBy = this.state.sortBy;

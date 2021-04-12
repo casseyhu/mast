@@ -70,8 +70,8 @@ export const BOOLEAN = [
 ]
 
 export const COMPLETENESS = [
-  { value: 'true', label: 'Complete' },
-  { value: 'false', label: 'Incomplete' }
+  { value: 'True', label: 'Complete' },
+  { value: 'False', label: 'Incomplete' }
 ]
 
 export const TRACKS = {

@@ -3,7 +3,7 @@ const fs = require('fs')
 const Papa = require('papaparse')
 const { CourseOffering } = require('../config/database.js')
 const database = require('../config/database.js')
-
+const Op = database.Sequelize.Op
 const Student = database.Student
 const Course = database.Course
 const CoursePlan = database.CoursePlan
@@ -115,7 +115,7 @@ function calculateGPA(coursePlanItems, credits) {
   let totalPoints = 0
   let totalCredits = 0
   for (let course of coursePlanItems) {
-    let courseCredit = credits[course.courseId]
+    let courseCredit = GRADES[course.grade] ? credits[course.courseId] : 0
     totalCredits += courseCredit
     totalPoints += courseCredit * (GRADES[course.grade] ? GRADES[course.grade] : 0)
   }
@@ -401,6 +401,10 @@ async function setCoursePlanValidity(notTakenCourses) {
       // Course was offered in semester and year
       for (let j = i + 1; j < courses.length; j++) {
         let first = courseOfferingMap[courses[i].courseId]
+        if (!courseOfferingMap[courses[j].courseId]) {
+          invalidItems.push(courses[j].courseId)
+          continue
+        }
         let second = courseOfferingMap[courses[j].courseId]
         if (!first.startTime || !second.startTime
           || !first.endTime || !second.endTime
@@ -429,12 +433,13 @@ async function setCoursePlanValidity(notTakenCourses) {
       }
     }
     // update courseplanitem validty for invaliditems
-    if (notTakenCourses[0].coursePlanId === 3) {
+    if (notTakenCourses[0].coursePlanId === 114) {
       console.log(invalidItems)
     }
     if (invalidItems) {
       await CoursePlanItem.update({ validity: false }, {
         where: {
+          coursePlanId: notTakenCourses[0].coursePlanId,
           courseId: invalidItems,
           semester: semYear[0],
           year: Number(semYear[1])
@@ -518,5 +523,39 @@ exports.count = (req, res) => {
     res.status(200).send(totalItems)
   }).catch(err => {
     console.log(err)
+  })
+}
+
+exports.filterCV = (req, res) => {
+  // let condition = req.query
+  console.log(req.query)
+  let condition = { studentId: req.query.studentId }
+  if(req.query.valid && req.query.complete)
+    condition = {
+      [Op.and]: [
+        { studentId: req.query.studentId },
+        { coursePlanComplete: req.query.complete },
+        { coursePlanValid: req.query.valid}
+      ]
+    }
+  else if(req.query.complete)
+    condition = {
+      [Op.and]: [
+        { studentId: req.query.studentId },
+        { coursePlanComplete: req.query.complete }
+      ]
+    }
+  else 
+    condition = {
+      [Op.and]: [
+        { studentId: req.query.studentId },
+        { coursePlanValid: req.query.valid }
+      ]
+    }
+  CoursePlan.findAll({ where: condition }).then(results => { 
+    res.status(200).send(results)
+  }).catch(err => {
+    console.log(err)
+    res.status(500).send('Error')
   })
 }

@@ -34,10 +34,16 @@ const BrowseSearchbar = (props) => {
     // After querying, send the results to the parent (Browse.jsx)
     // to set the table of students to view. 
     let graduated = "%"
-    if (filters.graduated !== '') {
-      let num = filters.graduated === 'true' ? 1 : 0
-      graduated = num + graduated
-    }
+    if (filters.graduated !== "") 
+      graduated = (filters.graduated === "True" ? 1 : 0) + "%"
+    let valid = "%" 
+    if (filters.valid !== "") 
+      valid = (filters.valid === "True" ? 1 : 0) + "%"
+    let complete = "%"
+    if (filters.complete !== "")
+      complete = (filters.complete === "True" ? 1 : 0) + "%"
+
+
     let filteredConditions = {
       nameId: filters.nameId,
       department: props.user.department + "%",
@@ -46,7 +52,9 @@ const BrowseSearchbar = (props) => {
       gradSem: filters.gradSem + "%",
       gradYear: filters.gradYear + "%",
       track: filters.track + "%",
-      graduated: graduated
+      graduated: graduated,
+      valid: valid,
+      complete: complete
     }
 
     props.filter(filteredConditions)
