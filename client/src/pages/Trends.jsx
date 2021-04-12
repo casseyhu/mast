@@ -21,6 +21,7 @@ class Trends extends Component {
   }
 
   createGraph = async (e) => {
+    const COURSE_LENGTH = 6
     let startYear = Number(this.state.fromYear)
     let endYear = Number(this.state.toYear)
     if (this.state.courses === '' || this.state.fromSem === '' || this.state.fromYear === '' || this.state.toSem === '' || this.state.toYear === '') {
@@ -35,6 +36,9 @@ class Trends extends Component {
       })
       return
     }
+    this.setState({
+      errorMsg: ''
+    })
     /* Find the range of semesters from start to end */
     let sems = ['Spring', 'Fall']
     let rangeSems = []
@@ -56,15 +60,17 @@ class Trends extends Component {
     let series = []
     /*
       Error Checking for courses
-      - Invalid courses shouldn't be added
-        - Make sure courses are of length 6
-        - Make sure the course number is actually a number
-      - For lower cases in legend, make them upper case
+      - Invalid courses shouldn't be added to graph
+        - Make sure courses are of length 6 formatted (done)
+        - Make sure the course number is actually a number (done)
+        - Check to make sure same department as GPD
+      - For lower cases in legend, make them upper case (done)
     */
     let courses = [...new Set(this.state.courses.replace(/\s+/g, ' ').trim().split(' '))]
-    console.log(courses)
     for (let i = 0; i < courses.length; i++) {
       let data = []
+      if(courses[i].length !== COURSE_LENGTH || isNaN(parseInt(courses[i].substring(3))) || Number(courses[i].substring(3)) < 500)
+        continue
       for (let j = 0; j < rangeSems.length; j++) {
         courses[i] = courses[i].substring(0, 3).toUpperCase() + courses[i].substring(3, 6)
         let semYear = rangeSems[j].split(' ')
@@ -153,6 +159,7 @@ class Trends extends Component {
   }
 
   render() {
+    console.log(this.state.errorMsg)
     return (
       <Container fluid="lg" className="container">
         <div className="flex-horizontal">
@@ -164,6 +171,7 @@ class Trends extends Component {
             <InputField
               className="lr-padding rm-r-small"
               type="text"
+              value={this.state.courses}
               placeholder="Courses"
               onChange={e => this.setState({ courses: e.target.value })}
               style={{ flexGrow: '1' }}
@@ -217,6 +225,7 @@ class Trends extends Component {
             </div>
           </div>
         </div>
+        <small className={this.state.errorMsg ? "error" : ""}>{this.state.errorMsg}</small>
         <br />
         <ReactApexChart options={this.state.options} series={this.state.series} type="line" /*height={550}*/ />
 

@@ -24,11 +24,6 @@ const StudentInfo = (props) => {
     }))
   }
 
-  const modeButtonHandler = () => {
-    props.onSubmit(userInfo)
-    props.setError("")
-  }
-
   useEffect(() => {
     setUserInfo(prevState => ({
       ...prevState,
@@ -80,13 +75,13 @@ const StudentInfo = (props) => {
               variant="round"
               text="Back"
               style={{ margin: '0 1rem 0 0' }}
-              onClick={() => history.goBack()}
+              onClick={e => history.goBack()}
             />
           )}
           <Button
             variant="round"
             text={mode === 'Add' ? 'Add Student' : (mode === 'Edit' ? 'Save Student' : 'Edit Student')}
-            onClick={modeButtonHandler}
+            onClick={e => props.onSubmit(userInfo)}
           />
         </div>
       </div>

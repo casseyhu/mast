@@ -74,9 +74,9 @@ const Requirements = (props) => {
   useEffect(() => {
     console.log("Here")
     const getCreds = async () => {
-      console.log(requirements)
-      console.log(requirementStates)
-      console.log(requirementStates['G' + requirements[1].requirementId])
+      // console.log(requirements)
+      // console.log(requirementStates)
+      // console.log(requirementStates['G' + requirements[1].requirementId])
       let gpas = requirementStates['G' + requirements[1].requirementId][1]
       setGpas({
         "cumulative": gpas[0],
