@@ -4,7 +4,6 @@ const Papa = require('papaparse')
 const fs = require('fs')
 const IncomingForm = require('formidable').IncomingForm
 const moment = require('moment')
-const nodemailer = require('nodemailer')
 
 const Course = database.Course
 const CourseOffering = database.CourseOffering
@@ -117,6 +116,7 @@ async function uploadCourses(results, res, dept) {
             toCheck.push(semesterAdded[l])
         }
       }
+      
       // [CSE500, CSE502, CSE503, CSE504, CSE505]
       // Checks for time/day conflicts in the schedule. 
       for (let k = 0; k < toCheck.length; k++) {
@@ -213,34 +213,6 @@ async function uploadCourses(results, res, dept) {
       })
       invalidCoursePlans.map(plan => affectedStudents.push(plan.studentId))
     }
-  }
-  // Emailing affected students.
-  let emails = []
-  let students = await Student.findAll({ where: { sbuId: affectedStudents } })
-  students.map(student => emails.push(student.email))
-  console.log(emails)
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'mastgrassjelly@gmail.com',
-      pass: 'cse416@stoller'
-    }
-  })
-  // emails set to our emails
-  // emails = ['sooyeon.kim.2@stonybrook.edu', 'andrew.kong@stonybrook.edu', 'eddie.xu@stonybrook.edu', 'cassey.hu@stonybrook.edu']
-  // comment ^ if you don't want it to spam our emails and uncomment v
-  emails = []
-  for (let i = 0; i < emails.length; i++) {
-    let emailOptions = {
-      from: 'mastgrassjelly@gmail.com',
-      to: emails[i],
-      subject: '[ACTION REQUIRED] YOU FAILED CSE 416!!!',
-      text: 'jk'
-    }
-    transporter.sendMail(emailOptions, function (err, info) {
-      if (err) console.log(err)
-      else console.log('Email sent ' + info.response)
-    })
   }
   res.status(200).send(semestersCovered)
   return

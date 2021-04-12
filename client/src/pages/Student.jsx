@@ -15,6 +15,8 @@ const Student = (props) => {
   const [showEmailConf, setShowEmailConf] = useState(false)
   const [mode, setMode] = useState(props.location.state ? props.location.state.mode : props.mode)
   const [studentInfoParams, setStudentInfoParams] = useState({})
+  const [visible, setVisible] = useState("hidden")
+
 
   const setStudentInfo = async () => {
     let currStudent = props.student ? props.student : props.location.state.student
@@ -120,14 +122,17 @@ const Student = (props) => {
   }
 
   const notify = () => {
-    setShowEmailBox(false)
+    setVisible("visible")
     axios.post('/email/send', {
       params: {
         // email: studentInfoParams.student.email,
         email: "sooyeon.kim.2@stonybrook.edu",
-        subject: "GPD updated comments"
+        subject: "GPD updated comments",
+        text: "Check GPD's comments"
       }
     }).then((response) => {
+      setVisible("hidden")
+      setShowEmailBox(false)
       setShowEmailConf(true)
     }).catch((err) => {
       console.log(err)
@@ -163,7 +168,12 @@ const Student = (props) => {
         onHide={() => setShowEmailBox(false)}
         onConfirm={notify}
         variant="multi"
-        body="[Comments Changed] SEND an emial notificATion TO STUDNET! takes a few sec to send so wait"
+        body={
+          <div>
+            <div>[Comments Changed] SEND an emial notificATion TO STUDNET!</div>
+            <small style={{visibility: visible, color: "red"}}>Sending email to student...</small>
+          </div>
+        }
       />
       <CenteredModal
         show={showEmailConf}

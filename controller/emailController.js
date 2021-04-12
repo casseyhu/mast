@@ -13,7 +13,7 @@ exports.send = (req, res, next) => {
     from: 'mastgrassjelly@gmail.com',
     to: req.body.params.email,
     subject: req.body.params.subject,
-    html: '<b>GoOd NIGHt</b><img src="cid:doggoontreadmill.gif"/>',
+    html: req.body.params.text + '<br /><img src="cid:doggoontreadmill.gif"/>',
     attachments: [{
       filename: 'doggoontreadmill.gif',
       path: './client/public/images/doggo.gif',

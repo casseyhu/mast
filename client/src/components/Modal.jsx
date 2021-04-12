@@ -13,6 +13,7 @@ const CenteredModal = (props) => {
 			centered
 			backdrop="static"
 			animation={false}
+      scrollable={props.scrollable}
 		>
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">

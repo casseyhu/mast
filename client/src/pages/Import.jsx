@@ -11,6 +11,8 @@ const Import = (props) => {
   const [overlay, setOverlay] = useState("none")
   const [affectedStudents, setAffectedStudents] = useState({});
   const [showInvalid, setShowInvalid] = useState(false)
+  const [showEmailConf, setShowEmailConf] = useState(false)
+  const [visible, setVisible] = useState("hidden")
 
 
   const dropStudents = () => {
@@ -24,9 +26,34 @@ const Import = (props) => {
     })
   }
 
-  // const getInvalid = () => {
-  //   set
-  // }
+  const sendEmail = async () =>  {
+    console.log("send email")
+    setVisible("visible")
+    let emails = []
+    for (var id of Object.keys(affectedStudents)) {
+      let student = await axios.get('/student/' + id, {
+        params: {
+          sbuId: id
+        }
+      })
+      emails.push(student.data.email)
+    }
+    console.log(emails)
+    axios.post('/email/send', {
+      params: {
+        // email: emails,
+        email: "sooyeon.kim.2@stonybrook.edu",
+        subject: "Your course plan is invalid",
+        text: "Check your course plan."
+      }
+    }).then((response) => {
+      setVisible("hidden")
+      setShowInvalid(false)
+      setShowEmailConf(true)
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
 
   return (
     <Container fluid="lg" className="container">
@@ -57,21 +84,47 @@ const Import = (props) => {
           variant="multi"
           show={showInvalid}
           onHide={() => setShowInvalid(false)}
-          onConfirm={() => console.log("confirm")}
-          body={Object.keys(affectedStudents).map(id => {
-            return (
-              <div>
-                {id}
-                {affectedStudents[id].map(item => {
+          onConfirm={() => sendEmail()}
+          style={{overflow: "scroll"}}
+          scrollable={true}
+          body={
+            <div>
+              <div>Would you like to send emails to these students?</div>
+              <small style={{visibility: visible, color: "red"}}>Sending emails to students...</small>
+              <table className="center">
+                <tbody>
+                  <tr>
+                    <th>SBU ID</th>
+                    <th>Course</th>
+                    <th>Semester</th>
+                    <th>Year</th>
+                  </tr>
+                {Object.keys(affectedStudents).map(id => {
                   return (
-                    <div>
-                      {item.courseId}&nbsp;{item.semester}&nbsp;{item.year}
-                    </div>
+                    <React.Fragment key={id}>
+                      {affectedStudents[id].map(item => {
+                          return (
+                            <tr key={id + item.courseId}>
+                              <td>{id}</td>
+                              <td>{item.courseId}</td>
+                              <td>{item.semester}</td>
+                              <td>{item.year}</td> 
+                            </tr>
+                          )
+                      })}
+                    </React.Fragment>
                   )
                 })}
-              </div>
-            )
-          })}
+                </tbody>
+              </table>
+            </div>
+          }
+        />
+        <CenteredModal
+          show={showEmailConf}
+          onHide={() => setShowEmailConf(false)}
+          onConfirm={() => setShowEmailConf(false)}
+          body="Email has been sent."
         />
         <div className="overlay" style={{ display: overlay }}></div>
       </div>
