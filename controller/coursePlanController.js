@@ -527,31 +527,41 @@ exports.count = (req, res) => {
 }
 
 exports.filterCV = (req, res) => {
-  // let condition = req.query
-  console.log(req.query)
+  // console.log(req.query)
   let condition = { studentId: req.query.studentId }
-  if(req.query.valid && req.query.complete)
+  complete = Number(req.query.complete)
+  valid = Number(req.query.valid)
+  if(valid !== -1 && complete !== -1) {
+    // console.log("Complete and valid filter")
+    // console.log("Complete: ", valid, " Valid: ", complete)
     condition = {
       [Op.and]: [
         { studentId: req.query.studentId },
-        { coursePlanComplete: req.query.complete },
-        { coursePlanValid: req.query.valid}
+        { coursePlanComplete: complete },
+        { coursePlanValid: valid}
       ]
     }
-  else if(req.query.complete)
+  }
+  else if(complete !== -1) {
+    // console.log("Complete filter")
+    // console.log("Complete: ", valid, " Valid: ", complete)
     condition = {
       [Op.and]: [
         { studentId: req.query.studentId },
-        { coursePlanComplete: req.query.complete }
+        { coursePlanComplete: complete }
       ]
     }
-  else 
+  }
+  else if(valid !== -1) {
+    // console.log("Valid filter")
+    // console.log("Complete: ", valid, " Valid: ", complete)
     condition = {
       [Op.and]: [
         { studentId: req.query.studentId },
-        { coursePlanValid: req.query.valid }
+        { coursePlanValid: valid }
       ]
     }
+  }
   CoursePlan.findAll({ where: condition }).then(results => { 
     res.status(200).send(results)
   }).catch(err => {
