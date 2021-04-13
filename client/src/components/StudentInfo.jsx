@@ -131,7 +131,7 @@ const StudentInfo = (props) => {
             placeholder="GPA"
             onChange={e => handleSelection('gpa', e.target)}
             value={userInfo.gpa}
-            disabled={mode === 'View' || mode === 'Add'}
+            disabled={mode === 'View' || mode === 'Add' || props.userType==='student'}
             style={{ width: "200px" }}
           />
         </div>
@@ -153,7 +153,7 @@ const StudentInfo = (props) => {
             items={BOOLEAN}
             placeholder="False"
             value={userInfo.graduated && { label: userInfo.graduated, value: userInfo.graduated }}
-            disabled={mode === 'View' || mode === 'Add'}
+            disabled={mode === 'View' || mode === 'Add' || props.userType==='student'}
             style={{ width: "200px" }}
             onChange={e => handleSelection('graduated', e)}
           />

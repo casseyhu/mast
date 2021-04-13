@@ -24,7 +24,8 @@ const CenteredModal = (props) => {
         <div className="ud-padding">
           {props.body}
         </div>
-        <div className="flex-horizontal justify-content-around pt-2 pb-2">
+      </Modal.Body>
+      <div className="flex-horizontal justify-content-around pt-2 pb-2">
           {props.variant &&
             <Button
               className="bg-white"
@@ -41,7 +42,6 @@ const CenteredModal = (props) => {
             style={{ width: '120px' }}
           />
         </div>
-      </Modal.Body>
     </Modal>
   )
 }

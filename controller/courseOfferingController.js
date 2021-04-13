@@ -104,7 +104,7 @@ async function uploadCourses(results, res, dept) {
       // (already in the same sem + year), add it to `toCheck` to check for schedule conflicts.
       for (let k = 0; k < semesterItems.length; k++) {
         for (let l = 0; l < semesterAdded.length; l++) {
-          if (semesterItems[k].courseId === semesterAdded[l].identifier)
+          if (semesterItems[k].courseId === semesterAdded[l].identifier && semesterItems[k].section === semesterAdded[l].section)
             toCheck.push(semesterAdded[l])
         }
       }
@@ -185,11 +185,11 @@ async function uploadCourses(results, res, dept) {
           year: years[i]
         }
       })
-      let invalidCoursePlanIds = []
+      //console.log(coursesNotOffered)
       for (let j = 0; j < coursesNotOffered.length; j++) {
-        let items = coursePlanItems.filter(item => {
-          item.courseId === coursesNotOffered[j].department + coursesNotOffered[j].courseNum
-        })
+        let items = coursePlanItems.filter(item =>
+          item.courseId === coursesNotOffered[j].courseId
+        )
         // update the validity such that the items are invalid
         await CoursePlanItem.update({ validity: false }, {
           where: {

@@ -56,6 +56,7 @@ const ImportItem = (props) => {
       props.setOverlay("")
       firstFormData.append("dept", props.dept);
       formData.append("dept", props.dept);
+      formData.append("delete", true);
       try {
         await axios.post('student/upload', firstFormData, {
           headers: {
@@ -78,6 +79,7 @@ const ImportItem = (props) => {
     else { // Uploading grades. 
       upload_path = 'courseplan/upload';
       formData.append("dept", props.dept);
+      formData.append("delete", false);
     }
 
     if (!loading) {

@@ -30,9 +30,13 @@ const currYear = 2021
 exports.uploadPlans = (req, res) => {
   let form = new IncomingForm()
   let dept = ''
+  let deleted = false
   form.parse(req).on('field', (name, field) => {
     if (name === 'dept')
       dept = field
+    else if(name === 'delete'){
+      deleted = field
+    }
   }).on('file', (field, file) => {
     if (file.type !== 'text/csv' && file.type !== 'application/vnd.ms-excel') {
       res.status(500).send('File must be *.csv')
@@ -56,17 +60,25 @@ exports.uploadPlans = (req, res) => {
           return
         }
         let coursePlans = results.data
-        uploadCoursePlans(coursePlans, dept, res)
+        uploadCoursePlans(coursePlans, dept, res, deleted)
       }
     })
   })
 }
 
 
-async function uploadCoursePlans(coursePlans, dept, res) {
+async function uploadCoursePlans(coursePlans, dept, res, deleted) {
+  console.log(deleted)
   let students = await Student.findAll({ where: { department: dept } })
   students = new Set(students.map(student => student.sbuId))
   coursePlans = coursePlans.filter(coursePlan => students.has(coursePlan.sbu_id))
+  //delete all existing course plan items from database
+  if(deleted === 'true'){
+    let existCoursePlans = await CoursePlan.findAll({where : { studentId : Array.from(students) }})
+    let coursePlanIds = existCoursePlans.map(coursePlan => coursePlan.coursePlanId)
+    console.log("waiting for existing course plans", coursePlanIds)
+    await CoursePlanItem.destroy({ where: { coursePlanId: coursePlanIds } })
+  }
   // console.log(coursePlans)
   let studentsPlanId = {}
   // Create/Update all the course plan items
