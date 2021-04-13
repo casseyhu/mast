@@ -117,6 +117,7 @@ const Import = (props) => {
                   })}
                 </tbody>
               </table>
+              <small style={{ visibility: visible, color: "red" }}>Sending emails to students...</small>
             </div>
           }
         />}
