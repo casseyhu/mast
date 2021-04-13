@@ -104,11 +104,10 @@ async function uploadCourses(results, res, dept) {
       // (already in the same sem + year), add it to `toCheck` to check for schedule conflicts.
       for (let k = 0; k < semesterItems.length; k++) {
         for (let l = 0; l < semesterAdded.length; l++) {
-          if (semesterItems[k].courseId === semesterAdded[l].identifier && semesterItems[k].section === semesterAdded[l].section)
+          if (semesterItems[k].courseId === semesterAdded[l].identifier && Number(semesterItems[k].section) === semesterAdded[l].section)
             toCheck.push(semesterAdded[l])
         }
       }
-
       // [CSE500, CSE502, CSE503, CSE504, CSE505]
       // Checks for time/day conflicts in the schedule. 
       for (let k = 0; k < toCheck.length; k++) {
