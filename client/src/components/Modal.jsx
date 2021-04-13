@@ -26,22 +26,22 @@ const CenteredModal = (props) => {
         </div>
       </Modal.Body>
       <div className="flex-horizontal justify-content-around pt-2 pb-2">
-          {props.variant &&
-            <Button
-              className="bg-white"
-              variant="round"
-              text="Cancel"
-              onClick={props.onHide}
-              style={{ width: '120px' }}
-            />}
+        {props.variant &&
           <Button
             className="bg-white"
             variant="round"
-            text={props.variant === "multi" ? "Confirm" : "Ok"}
-            onClick={props.onConfirm}
+            text="Cancel"
+            onClick={props.onHide}
             style={{ width: '120px' }}
-          />
-        </div>
+          />}
+        <Button
+          className="bg-white"
+          variant="round"
+          text={props.variant === "multi" ? "Confirm" : "Ok"}
+          onClick={props.onConfirm}
+          style={{ width: '120px' }}
+        />
+      </div>
     </Modal>
   )
 }
