@@ -75,7 +75,9 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
   students = Array.from(new Set(students.map(student => student.sbuId)))
   // filters the course plan items from the csv for only the students on this department 
   coursePlans = coursePlans.filter(coursePlan => students.includes(coursePlan.sbu_id) )
+  students = coursePlans.map(item => item.sbu_id)
   // delete all existing course plan items for duplicate students from database
+  console.log(coursePlans.includes(112206690))
   if(deleted === 'true'){
     let existCoursePlans = await CoursePlan.findAll({where : { studentId : students }})
     let coursePlanIds = existCoursePlans.map(coursePlan => coursePlan.coursePlanId)
