@@ -65,19 +65,26 @@ exports.uploadPlans = (req, res) => {
     })
   })
 }
-
+  // let students = Array.from(new Set(coursePlans.map(item => item.sbu_id)))
 
 async function uploadCoursePlans(coursePlans, dept, res, deleted) {
   console.log(deleted)
-  let students = await Student.findAll({ where: { department: dept } })
-  students = new Set(students.map(student => student.sbuId))
-  coursePlans = coursePlans.filter(coursePlan => students.has(coursePlan.sbu_id))
-  //delete all existing course plan items from database
+  // grabs all students of this department
+  let students = await Student.findAll({ where: { department: dept }})
+  // gets the list of only the sbuids of the students of this department
+  students = Array.from(new Set(students.map(student => student.sbuId)))
+  // filters the course plan items from the csv for only the students on this department 
+  coursePlans = coursePlans.filter(coursePlan => students.includes(coursePlan.sbu_id) )
+  students = coursePlans.map(item => item.sbu_id)
+  // delete all existing course plan items for duplicate students from database
+  console.log(coursePlans.includes(112206690))
   if(deleted === 'true'){
-    let existCoursePlans = await CoursePlan.findAll({where : { studentId : Array.from(students) }})
+    let existCoursePlans = await CoursePlan.findAll({where : { studentId : students }})
     let coursePlanIds = existCoursePlans.map(coursePlan => coursePlan.coursePlanId)
     console.log("waiting for existing course plans", coursePlanIds)
+    // Delete all courseplanitems 
     await CoursePlanItem.destroy({ where: { coursePlanId: coursePlanIds } })
+    await RequirementState.destroy({where : {sbuID : students}})
   }
   // console.log(coursePlans)
   let studentsPlanId = {}
@@ -87,8 +94,9 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
       continue
     let condition = { studentId: coursePlans[i].sbu_id }
     let found = await CoursePlan.findOne({ where: condition })
+    // console.log(found)
     if (!found) {
-      console.log('Error: Course plan not found for student: ' + condition)
+      console.log('Error: Course plan not found for student: ' + coursePlans[i].sbu_id)
       continue
     }
     studentsPlanId[coursePlans[i].sbu_id] = found.coursePlanId
@@ -110,7 +118,7 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
     found = await CoursePlanItem.findOne({ where: condition })
     if (found)
       course = await CoursePlanItem.update(values, { where: condition })
-    else
+    else if(deleted === 'true')
       course = await CoursePlanItem.create(values)
   }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Container from "react-bootstrap/Container";
 import CenteredModal from '../components/Modal';
 import StudentInfo from '../components/StudentInfo';
@@ -19,38 +19,39 @@ const Student = (props) => {
   const [studentInfoParams, setStudentInfoParams] = useState({})
   const [visible, setVisible] = useState("hidden")
 
+  let student = props.student ? props.student : props.location.state.student
 
-  const setStudentInfo = async () => {
-    let currStudent = props.student ? props.student : props.location.state.student
-    let studentRes = await axios.get('/student/' + currStudent.sbuId, {
-      params: { sbuId: currStudent.sbuId }
-    })
-    let coursePlanItems = await axios.get('/courseplanitem/findItems', {
-      params: {
-        studentId: studentRes.data.sbuId
+  const setStudentInfo = useCallback(
+    async () => {
+      let studentRes = await axios.get('/student/' + student.sbuId, {
+        params: { sbuId: student.sbuId }
+      })
+      let coursePlanItems = await axios.get('/courseplanitem/findItems', {
+        params: {
+          studentId: studentRes.data.sbuId
+        }
+      })
+      let requirements = await axios.get('/requirements', {
+        params: {
+          department: studentRes.data.department,
+          track: studentRes.data.track,
+          degreeId: studentRes.data.degreeId
+        }
+      })
+      let requirementStates = await axios.get('/student/requirementStates', {
+        params: { sbuId: student.sbuId }
+      })
+      let reqStateMap = {}
+      for (let req of requirementStates.data) {
+        reqStateMap[req.requirementId] = [req.state, req.metaData]
       }
-    })
-    let requirements = await axios.get('/requirements', {
-      params: {
-        department: studentRes.data.department,
-        track: studentRes.data.track,
-        degreeId: studentRes.data.degreeId
-      }
-    })
-    let requirementStates = await axios.get('/student/requirementStates', {
-      params: { sbuId: currStudent.sbuId }
-    })
-    let reqStateMap = {}
-    for (let req of requirementStates.data) {
-      reqStateMap[req.requirementId] = [req.state, req.metaData]
-    }
-    setStudentInfoParams({
-      student: studentRes.data,
-      coursePlan: coursePlanItems.data,
-      requirements: requirements.data,
-      requirementStates: reqStateMap
-    })
-  }
+      setStudentInfoParams({
+        student: studentRes.data,
+        coursePlan: coursePlanItems.data,
+        requirements: requirements.data,
+        requirementStates: reqStateMap
+      })
+    }, [student])
 
 
   useEffect(() => {
@@ -62,7 +63,7 @@ const Student = (props) => {
     if (!decoded)
       return
     setStudentInfo()
-  }, [mode])
+  }, [mode, setStudentInfo])
 
 
   const modeHandler = (studentInfo) => {
@@ -130,24 +131,25 @@ const Student = (props) => {
     })
   }
 
-  const showDegree = (degree) => {
-    let requirementState = {}
-    if (degree[0])
-      requirementState['GR' + degree[0].requirementId] = ['unsatisfied', []]
-    requirementState['G' + degree[1].requirementId] = ['unsatisfied', []]
-    requirementState['CR' + degree[2].requirementId] = ['unsatisfied', []]
-    for (let course of degree[3]) {
-      if (course.type != 0)
-        requirementState['C' + course.requirementId] = ['unsatisfied', []]
-    }
-    console.log(requirementState)
-    setStudentInfoParams({
-      // student: 'null',
-      coursePlan: [],
-      requirements: degree,
-      requirementStates: requirementState
-    })
-  }
+  const showDegree = useCallback(
+    (degree) => {
+      let requirementState = {}
+      if (degree[0])
+        requirementState['GR' + degree[0].requirementId] = ['unsatisfied', []]
+      requirementState['G' + degree[1].requirementId] = ['unsatisfied', []]
+      requirementState['CR' + degree[2].requirementId] = ['unsatisfied', []]
+      for (let course of degree[3]) {
+        if (course.type !== 0)
+          requirementState['C' + course.requirementId] = ['unsatisfied', []]
+      }
+      console.log(requirementState)
+      setStudentInfoParams({
+        // student: 'null',
+        coursePlan: [],
+        requirements: degree,
+        requirementStates: requirementState
+      })
+    }, [])
 
   const editCoursePlan = () => {
     localStorage.removeItem('filters')
@@ -180,7 +182,7 @@ const Student = (props) => {
         userType={props.type}
         student={studentInfoParams.student}
         onSubmit={(e) => modeHandler(e)}
-        setDegreeReq={(degreeVer) => showDegree(degreeVer)}
+        setDegreeReq={showDegree}
       />
       <hr />
       <Requirements
@@ -206,7 +208,7 @@ const Student = (props) => {
         body={
           <div>
             <div>[Comments Changed] SEND an emial notificATion TO STUDNET!</div>
-            <small style={{visibility: visible, color: "red"}}>Sending email to student...</small>
+            <small style={{ visibility: visible, color: "red" }}>Sending email to student...</small>
           </div>
         }
       />

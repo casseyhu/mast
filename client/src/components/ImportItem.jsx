@@ -22,6 +22,7 @@ const ImportItem = (props) => {
         setUploading(false);
       }, 2800)
     }
+    return
   }, [uploading])
 
   const uploadFile = async () => {
@@ -66,7 +67,6 @@ const ImportItem = (props) => {
         console.log('Successfully uploaded profile');
         setFirstFile("")
       } catch (err) {
-        console.log(err.response.data)
         setLoading(false)
         props.setOverlay("none")
         setFirstFile("")
@@ -86,7 +86,6 @@ const ImportItem = (props) => {
       setLoading(true)
       props.setOverlay("")
     }
-    console.log(props)
     try {
       let result = await axios.post(upload_path, formData, {
         headers: {
@@ -109,11 +108,11 @@ const ImportItem = (props) => {
           }
         })
         let students = {}
-        coursePlans.data.map(cp => {
-          students[cp.studentId] = coursePlanItems.data.filter((item) =>
-            item.coursePlanId === cp.coursePlanId
-          )
-        })
+        for (let cp of coursePlans.data) {
+          let items = coursePlanItems.data.filter(item => item.coursePlanId === cp.coursePlanId)
+          if (items.length > 0)
+            students[cp.studentId] = items
+        }
         props.setStudents(students)
         props.setShowInvalid(true)
       }

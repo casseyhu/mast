@@ -33,7 +33,7 @@ const Import = (props) => {
     })
   }
 
-  const sendEmail = async () =>  {
+  const sendEmail = async () => {
     console.log("send email")
     setVisible("visible")
     let emails = []
@@ -70,7 +70,7 @@ const Import = (props) => {
       <div className="flex-vertical">
         <ImportItem header="Course Information" setOverlay={setOverlay} type="PDF" sems={SEMESTERS} years={YEARS} depts={DEPARTMENTS_REQ} />
         <ImportItem header="Degree Requirements" setOverlay={setOverlay} type="JSON" />
-        <ImportItem header="Course Offerings" setOverlay={setOverlay} type="CSV" dept={props.dept} setStudents={setAffectedStudents} setShowInvalid={setShowInvalid}/>
+        <ImportItem header="Course Offerings" setOverlay={setOverlay} type="CSV" dept={props.dept} setStudents={setAffectedStudents} setShowInvalid={setShowInvalid} />
         <ImportItem header="Student Data" setOverlay={setOverlay} first="Profile CSV" type="Course Plan CSV" dept={props.dept} />
         <ImportItem header="Grades" setOverlay={setOverlay} type="CSV" dept={props.dept} />
         <h4 style={{ margin: "1rem 0" }}>Other</h4>
@@ -87,17 +87,17 @@ const Import = (props) => {
           onConfirm={() => dropStudents()}
           body="Are you sure you want to drop all students?"
         />
-        {showInvalid && Object.keys(affectedStudents).length && <CenteredModal
+        {showInvalid && Object.keys(affectedStudents).length > 0 && <CenteredModal
           variant="multi"
           show={showInvalid}
           onHide={() => setShowInvalid(false)}
           onConfirm={() => sendEmail()}
-          style={{overflow: "scroll"}}
+          style={{ overflow: "scroll" }}
           scrollable={true}
           body={
             <div>
               <div>Would you like to send emails to these students?</div>
-              <small style={{visibility: visible, color: "red"}}>Sending emails to students...</small>
+              <small style={{ visibility: visible, color: "red" }}>Sending emails to students...</small>
               <table className="center">
                 <tbody>
                   <tr>
@@ -106,25 +106,25 @@ const Import = (props) => {
                     <th>Semester</th>
                     <th>Year</th>
                   </tr>
-                {Object.keys(affectedStudents).map(id => {
-                  return (
-                    <React.Fragment key={id}>
-                      {affectedStudents[id].map(item => {
+                  {Object.keys(affectedStudents).map(id => {
+                    return (
+                      <React.Fragment key={id}>
+                        {affectedStudents[id].map(item => {
                           return (
                             <tr key={id + item.courseId}>
                               <td>{id}</td>
                               <td>{item.courseId}</td>
                               <td>{item.semester}</td>
-                              <td>{item.year}</td> 
+                              <td>{item.year}</td>
                             </tr>
                           )
-                      })}
-                    </React.Fragment>
-                  )
-                })}
+                        })}
+                      </React.Fragment>
+                    )
+                  })}
                 </tbody>
               </table>
-              <small style={{visibility: visible, color: "red"}}>Sending emails to students...</small>
+              <small style={{ visibility: visible, color: "red" }}>Sending emails to students...</small>
             </div>
           }
         />}

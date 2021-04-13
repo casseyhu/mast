@@ -101,7 +101,6 @@ class LoginContainer extends Component {
           required
           value={this.state.email}
           onChange={this.setEmail}
-          value={this.state.email}
         />
         <InputField
           className="login-item"
