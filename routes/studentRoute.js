@@ -30,6 +30,6 @@ module.exports = function (app) {
   app.delete('/api/student/:sbuId', Student.delete)
 
   // Delete all students
-  app.post('/api/student/deleteall', Student.deleteAll)
+  app.post('/api/student/deleteAll', Student.deleteAll)
 
 }

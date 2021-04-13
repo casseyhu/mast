@@ -581,3 +581,22 @@ exports.filterCV = (req, res) => {
     res.status(500).send('Error')
   })
 }
+
+// Delete all course plans and student reqs from database. Used primarly for testing by GPD
+exports.deleteAll = (req, res) => {
+  CoursePlanItem.drop().then(() => {
+    database.sequelize.sync({ force: false })
+    CoursePlan.drop().then(() => {
+      database.sequelize.sync({ force: false })
+      RequirementState.drop().then(() => {
+        database.sequelize.sync({ force: false })
+        res.status(200).send('Deleted course plan data.')
+      })
+    })
+  })
+  .catch(err => {
+    console.log('Delete course plan error' + err)
+    res.status(500).send('Error: ' + err)
+  })
+  
+}
