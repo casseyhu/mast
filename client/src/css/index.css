@@ -212,6 +212,8 @@ i.fa {
   .navbar-collapse {
     padding-top: 0.3rem;
     z-index: 10;
+    background-color: var(--white);
+    transform: translateY(1rem);
   }
   .navbar-dark .navbar-nav .nav-link {
     color: var(--primary) !important;

@@ -69,7 +69,7 @@ class Trends extends Component {
     let courses = [...new Set(this.state.courses.replace(/\s+/g, ' ').trim().split(' '))]
     for (let i = 0; i < courses.length; i++) {
       let data = []
-      if(courses[i].length !== COURSE_LENGTH || isNaN(parseInt(courses[i].substring(3))) || Number(courses[i].substring(3)) < 500)
+      if (courses[i].length !== COURSE_LENGTH || isNaN(parseInt(courses[i].substring(3))) || Number(courses[i].substring(3)) < 500)
         continue
       for (let j = 0; j < rangeSems.length; j++) {
         courses[i] = courses[i].substring(0, 3).toUpperCase() + courses[i].substring(3, 6)
@@ -173,7 +173,6 @@ class Trends extends Component {
               type="text"
               value={this.state.courses}
               placeholder="Courses"
-              value={this.state.courses}
               onChange={e => this.setState({ courses: e.target.value })}
               style={{ flexGrow: '1' }}
             />

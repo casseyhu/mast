@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import Button from './Button';
 import Dropdown from './Dropdown';
 import InputField from './InputField'
-import { BOOLEAN, COMPLETENESS, VALIDITY, SEMESTERS, YEARS } from '../constants';
+import { BOOLEAN, COMPLETENESS, VALIDITY, SEMESTERS, YEARS, TRACKS } from '../constants';
 
 const BrowseSearchbar = (props) => {
   const [expanded, setExpanded] = useState(false);
+  const department = props.user.department
 
   const [filters, setFilters] = useState({
     nameId: '',
@@ -127,12 +128,12 @@ const BrowseSearchbar = (props) => {
 
             <div className="flex-horizontal" style={{ width: 'fit-content' }}>
               <span className="filter-span">Track:</span>
-              <InputField
+              <Dropdown
                 className="filter-component"
-                type="search"
+                variant="single"
                 placeholder="Track"
-                value={filters.track}
-                onChange={e => handleSelection('track', e.target)}
+                items={TRACKS[department]}
+                onChange={e => handleSelection('track', e)}
               />
             </div>
             <div className="flex-horizontal" style={{ width: 'fit-content' }}>

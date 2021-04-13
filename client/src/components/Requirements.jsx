@@ -72,7 +72,6 @@ const Requirements = (props) => {
   }
 
   useEffect(() => {
-    console.log("Here")
     const getCreds = async () => {
       // console.log(requirements)
       // console.log(requirementStates)

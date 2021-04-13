@@ -219,7 +219,7 @@ class Browse extends Component {
             {(page - 1 > 0) && (
               <Pagination.Item onClick={() => this.setState({ page: page - 1 })}>{page - 1}</Pagination.Item>
             )}
-            <Pagination.Item active >{page}</Pagination.Item>
+            <Pagination.Item active style={{ zIndex: '0' }}>{page}</Pagination.Item>
             {(page + 1 <= maxPage) && (
               <Pagination.Item onClick={() => this.setState({ page: page + 1 })}>{page + 1}</Pagination.Item>
             )}

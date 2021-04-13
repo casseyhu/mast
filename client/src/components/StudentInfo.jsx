@@ -7,15 +7,11 @@ import { useHistory } from "react-router-dom";
 import axios from '../constants/axios';
 
 
-const StudentInfo = (props) => {
+const StudentInfo = ({ student, mode, errorMessage, userType, setDegreeReq, onSubmit }) => {
   const history = useHistory();
   const [userInfo, setUserInfo] = useState({})
-  const semDict = {
-    'Fall': 8,
-    'Spring': 2,
-    'Winter': 1,
-    'Summer': 5
-  }
+
+  // let { student, mode, errorMessage, userType, setDegreeReq, onSubmit } = props
 
   const handleSelection = (name, e) => {
     setUserInfo(prevState => ({
@@ -27,50 +23,55 @@ const StudentInfo = (props) => {
   useEffect(() => {
     setUserInfo(prevState => ({
       ...prevState,
-      firstName: props.student ? props.student.firstName : '',
-      lastName: props.student ? props.student.lastName : '',
-      sbuId: props.student ? props.student.sbuId : '',
-      email: props.student ? props.student.email : '',
-      gpa: props.student ? props.student.gpa : '',
-      graduated: props.student ? (props.student.graduated ? "True" : "False") : "",
-      dept: props.student ? props.student.department : null,
-      track: props.student ? props.student.track : null,
-      entrySem: props.student ? props.student.entrySem : null,
-      entryYear: props.student ? props.student.entryYear.toString() : null,
-      gradSem: props.student ? props.student.gradSem : null,
-      gradYear: props.student ? props.student.gradYear.toString() : null,
-      degreeSem: props.student ? MONTH_SEMESTER[props.student.requirementVersion.toString().substring(4, 6)] : '',
-      degreeYear: props.student ? props.student.requirementVersion.toString().substring(0, 4) : '',
-      gpdComments: props.student ? props.student.gpdComments : '',
-      studentComments: props.student ? props.student.studentComments : '',
-      updatedAt: props.student ? new Date(props.student.updatedAt).toLocaleString() : ''
+      firstName: student ? student.firstName : '',
+      lastName: student ? student.lastName : '',
+      sbuId: student ? student.sbuId : '',
+      email: student ? student.email : '',
+      gpa: student ? student.gpa : '',
+      graduated: student ? (student.graduated ? "True" : "False") : "",
+      dept: student ? student.department : null,
+      track: student ? student.track : null,
+      entrySem: student ? student.entrySem : null,
+      entryYear: student ? student.entryYear.toString() : null,
+      gradSem: student ? student.gradSem : null,
+      gradYear: student ? student.gradYear.toString() : null,
+      degreeSem: student ? MONTH_SEMESTER[student.requirementVersion.toString().substring(4, 6)] : '',
+      degreeYear: student ? student.requirementVersion.toString().substring(0, 4) : '',
+      gpdComments: student ? student.gpdComments : '',
+      studentComments: student ? student.studentComments : '',
+      updatedAt: student ? new Date(student.updatedAt).toLocaleString() : ''
     }))
-  }, [props.student])
+  }, [student])
 
   useEffect(() => {
-    if (!props.student && userInfo['dept'] && userInfo['track'] && userInfo['degreeSem'] && userInfo['degreeYear']) {
+    const semDict = {
+      'Fall': 8,
+      'Spring': 2,
+      'Winter': 1,
+      'Summer': 5
+    }
+    if (!student && userInfo.dept && userInfo.track && userInfo.degreeSem && userInfo.degreeYear) {
       // console.log(userInfo['dept'] , userInfo['track'] , userInfo['degreeSem'] , userInfo['degreeYear'])
       console.log("Degree information sufficient. Querying backend to get this degree information.")
       axios.get('/newStudentRequirements', {
         params: {
-          department: userInfo['dept'],
-          track: userInfo['track'],
-          reqVersion: Number(userInfo['degreeYear'] + '0' + semDict[userInfo['degreeSem']])
+          department: userInfo.dept,
+          track: userInfo.track,
+          reqVersion: Number(userInfo.degreeYear + '0' + semDict[userInfo.degreeSem])
         }
       }).then(results => {
-        props.setDegreeReq(results.data)
+        setDegreeReq(results.data)
       })
     }
-  }, [userInfo])
+  }, [student, userInfo.dept, userInfo.track, userInfo.degreeSem, userInfo.degreeYear, setDegreeReq])
 
-  let { mode, errorMessage } = props;
   return (
     <div className="flex-horizontal wrap">
       <div className="flex-horizontal justify-content-between">
         <h1>{mode} Student</h1>
         <small>Last Updated: {userInfo.updatedAt}</small>
         <div className="flex-horizontal" style={{ width: 'fit-content' }}>
-          {props.userType === 'gpd' && (
+          {userType === 'gpd' && (
             <Button
               variant="round"
               text="Back"
@@ -81,7 +82,7 @@ const StudentInfo = (props) => {
           <Button
             variant="round"
             text={mode === 'Add' ? 'Add Student' : (mode === 'Edit' ? 'Save Student' : 'Edit Student')}
-            onClick={e => props.onSubmit(userInfo)}
+            onClick={e => onSubmit(userInfo)}
           />
         </div>
       </div>
@@ -131,7 +132,7 @@ const StudentInfo = (props) => {
             placeholder="GPA"
             onChange={e => handleSelection('gpa', e.target)}
             value={userInfo.gpa}
-            disabled={mode === 'View' || mode === 'Add'}
+            disabled={mode === 'View' || mode === 'Add' || userType === "student"}
             style={{ width: "200px" }}
           />
         </div>
@@ -153,7 +154,7 @@ const StudentInfo = (props) => {
             items={BOOLEAN}
             placeholder="False"
             value={userInfo.graduated && { label: userInfo.graduated, value: userInfo.graduated }}
-            disabled={mode === 'View' || mode === 'Add'}
+            disabled={mode === 'View' || mode === 'Add' || userType === "student"}
             style={{ width: "200px" }}
             onChange={e => handleSelection('graduated', e)}
           />
@@ -166,7 +167,7 @@ const StudentInfo = (props) => {
             items={SEMESTERS}
             placeholder="Semester"
             value={userInfo.entrySem && { label: userInfo.entrySem, value: userInfo.entrySem }}
-            disabled={mode === 'View'}
+            disabled={mode === 'View' || userType === "student"}
             onChange={e => handleSelection('entrySem', e)}
           />
           <Dropdown
@@ -174,7 +175,7 @@ const StudentInfo = (props) => {
             items={YEARS}
             placeholder="Year"
             value={userInfo.entryYear && { label: userInfo.entryYear, value: userInfo.entryYear }}
-            disabled={mode === 'View'}
+            disabled={mode === 'View' || userType === "student"}
             onChange={e => handleSelection('entryYear', e)}
           />
         </div>
@@ -186,14 +187,14 @@ const StudentInfo = (props) => {
             items={SEMESTERS}
             placeholder="Semester"
             value={userInfo.gradSem && { label: userInfo.gradSem, value: userInfo.gradSem }}
-            disabled={mode === 'View'}
+            disabled={mode === 'View' || userType === "student"}
             onChange={e => handleSelection('gradSem', e)} />
           <Dropdown
             className="all-padding"
             items={YEARS}
             placeholder="Year"
             value={userInfo.gradYear && { label: userInfo.gradYear, value: userInfo.gradYear }}
-            disabled={mode === 'View'}
+            disabled={mode === 'View' || userType === "student"}
             onChange={e => handleSelection('gradYear', e)} />
         </div>
 
@@ -204,27 +205,27 @@ const StudentInfo = (props) => {
             items={DEPARTMENTS_REQ}
             placeholder="Dept"
             value={userInfo.dept && { label: userInfo.dept, value: userInfo.dept }}
-            disabled={mode === 'View'}
+            disabled={mode === 'View' || userType === "student"}
             onChange={e => handleSelection('dept', e)} />
           <Dropdown
             className="all-padding"
             items={TRACKS[userInfo.dept]}
             placeholder="Track"
             value={userInfo.track && { label: userInfo.track, value: userInfo.track }}
-            disabled={mode === 'View'}
+            disabled={mode === 'View' || userType === "student"}
             onChange={e => handleSelection('track', e)} />
           <Dropdown
             className="all-padding"
             items={SEMESTERS}
             placeholder="Semester"
-            disabled={mode === 'View'}
+            disabled={mode === 'View' || userType === "student"}
             value={userInfo.degreeSem && { label: userInfo.degreeSem, value: userInfo.degreeSem }}
             onChange={e => handleSelection('degreeSem', e)} />
           <Dropdown
             className="all-padding"
             items={YEARS}
             placeholder="Year"
-            disabled={mode === 'View'}
+            disabled={mode === 'View' || userType === "student"}
             value={userInfo.degreeYear && { label: userInfo.degreeYear, value: userInfo.degreeYear }}
             onChange={e => handleSelection('degreeYear', e)} />
         </div>
@@ -236,7 +237,7 @@ const StudentInfo = (props) => {
           className="textarea resize-ta"
           placeholder="GPD Comments"
           value={userInfo.gpdComments}
-          disabled={mode === 'View' || props.userType === "student"}
+          disabled={mode === 'View' || userType === "student"}
           onChange={e => handleSelection('gpdComments', e.target)}
           style={{ minWidth: "375px" }} />
         <small>Student Comments:</small>
@@ -244,7 +245,7 @@ const StudentInfo = (props) => {
           placeholder="Student Comments"
           className="textarea resize-ta"
           value={userInfo.studentComments}
-          disabled={mode === 'View' || props.userType === "gpd"}
+          disabled={mode === 'View' || userType === "gpd"}
           onChange={e => handleSelection('studentComments', e.target)}
           style={{ minWidth: "375px" }} />
       </div>
