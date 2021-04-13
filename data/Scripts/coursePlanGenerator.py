@@ -85,7 +85,7 @@ for i in range(1, len(TRACKS['CSE']) + 1):
         elif req[0] != "0:(,):(,6)":
             requirements.append(req[1:])
         if req[0] == "0:(,):(,)":
-            for x in range(5):
+            for x in range(6):
                 requirements.append(req[1:])
     course_req[track] = requirements
 
@@ -146,9 +146,10 @@ def get_section_time(course, semester, year, course_df):
     df2 = df1[(df1['semester'] == semester) & (df1['year'] == year)]
     if len(df2) == 0:
         return (-1, "")
-    course_df[(course_df['department'] == course[:3]) &
-              (course_df['course_num'] == course[3:])]
-    return (random.choice(df2['section'].values), df2['timeslot'].values[0])
+    course_df[(course_df['department'] == course[:3]) 
+              & (course_df['course_num'] == course[3:])]
+    sec = random.randint(1, len(df2)) - 1
+    return (df2['section'].values[sec], df2['timeslot'].values[sec])
 
 
 def convert_time(str_time):
@@ -169,7 +170,7 @@ def has_conflicts(timeslot, time):
 def add_course(course, section, student, semester, year, GRADES):
     cp = "\n" + str(student['sbu_id']) + "," + \
         course[:3] + "," + str(course[3:]) + ","
-    if year < 2021 or (year == 2021 and semester == "Spring"):
+    if year <= 2021:
         cp += str(section)
     cp += "," + semester + "," + str(year) + ","
     if year < 2021:
@@ -190,28 +191,29 @@ def check_time(time, section, course, student, semester, year):
         t = time.split()[1]
         time_str = t.split("-")
         t = (convert_time(time_str[0]), convert_time(time_str[1]))
-        slots = None
+        slots = []
         if "HTBA" in day:
             add_course(course, section, student, semester, year, GRADES)
         else:
             if "M" in day:
-                slots = student['schedule'][semester + " " + str(year)]["M"]
+                slots.append(student['schedule'][semester + " " + str(year)]["M"])
             if "TU" in day:
-                slots = student['schedule'][semester + " " + str(year)]["TU"]
+                slots.append(student['schedule'][semester + " " + str(year)]["TU"])
             if "W" in day:
-                slots = student['schedule'][semester + " " + str(year)]["W"]
+                slots.append(student['schedule'][semester + " " + str(year)]["W"])
             if "TH" in day:
-                slots = student['schedule'][semester + " " + str(year)]["TH"]
+                slots.append(student['schedule'][semester + " " + str(year)]["TH"])
             if "F" in day:
-                slots = student['schedule'][semester + " " + str(year)]["F"]
-            if slots != None:
-                if slots == []:
-                    add_course(course, section, student, semester, year, GRADES)
-                else:
-                    if not has_conflicts(slots, t):
-                        add_course(course, section, student,
-                                semester, year, GRADES)
-                slots.append(t)
+                slots.append(student['schedule'][semester + " " + str(year)]["F"])
+            add = True
+            for slot in slots:
+                if has_conflicts(slot, t):
+                    add = False
+                    break
+            if add:
+                add_course(course, section, student, semester, year, GRADES)
+                for slot in slots:
+                    slot.append(t)
 
 
 def prereq_satisfied(course, student, prereq_df, semester, year):
@@ -274,8 +276,6 @@ course_plans = ""
 # Add course plan items for each student to student_course_plan_file.csv
 for student in students:
     requirements = course_req[student['track']]
-    # if student['degree'] != 'AMS':
-    #     continue
     while True:
         semester = student['entry_sem']
         year = student['entry_year']
@@ -313,9 +313,13 @@ for student in students:
             if student['degree'] == "BMI":
                 student['num_courses'][semester + " " + str(year)] += 1
                 add_course_plan_item(["BMI592"], student, semester, year, course_df, GRADES, prereq_df)
-            if student['track'] == "Computational Biology" and i != 0:
-                student['num_courses'][semester + " " + str(year)] += 1
-                add_course_plan_item(["AMS532"], student, semester, year, course_df, GRADES, prereq_df)
+            if student['track'] == "Computational Biology":
+                if student['entry_sem'] == "Fall" and i != 0:
+                    student['num_courses'][semester + " " + str(year)] += 1
+                    add_course_plan_item(["AMS532"], student, semester, year, course_df, GRADES, prereq_df)
+                elif student['entry_sem'] == "Spring" and i != 1: 
+                    student['num_courses'][semester + " " + str(year)] += 1
+                    add_course_plan_item(["AMS532"], student, semester, year, course_df, GRADES, prereq_df)
             if semester == "Fall":
                 semester = "Spring"
                 year += 1
