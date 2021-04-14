@@ -185,6 +185,7 @@ async function uploadCourses(results, res, dept) {
         }
       })
       //console.log(coursesNotOffered)
+      let invalidCoursePlanIds = []
       for (let j = 0; j < coursesNotOffered.length; j++) {
         let items = coursePlanItems.filter(item =>
           item.courseId === coursesNotOffered[j].courseId
