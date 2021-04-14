@@ -40,7 +40,7 @@ class Trends extends Component {
       errorMsg: ''
     })
     /* Find the range of semesters from start to end */
-    let sems = ['Spring', 'Fall']
+    let sems = ['Winter', 'Spring', 'Summer', 'Fall']
     let rangeSems = []
     let dashedArray = []
     let width = []

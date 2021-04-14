@@ -243,7 +243,7 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
                   index = others.indexOf(" credit") - 1;
                 while (index >= 0
                   && isNaN(parseInt(others.substring(index, index + 1)))
-                  == false) {
+                  == false && Number(others.substring(index, index + 1) + creds) <= 12) {
                   creds = others.substring(index, index + 1) + creds;
                   index--;
                 }
@@ -353,6 +353,7 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
               else
                 others += + s.str;
             }
+            
           }
         }// end of if (target)
       }
