@@ -19,7 +19,7 @@ const Student = (props) => {
   const [studentInfoParams, setStudentInfoParams] = useState({})
   const [visible, setVisible] = useState("hidden")
 
-  let student = props.student ? props.student : props.location.state.student
+  let student = props.student ? props.student : (props.location.state ? props.location.state.student : "Invalid")
 
   const setStudentInfo = useCallback(
     async () => {
@@ -65,6 +65,11 @@ const Student = (props) => {
     setStudentInfo()
   }, [mode, setStudentInfo])
 
+
+  useEffect(() => {
+    if (student === "Invalid")
+      history.push('/')
+  }, [])
 
   const modeHandler = (studentInfo) => {
     setErrorMsg("")

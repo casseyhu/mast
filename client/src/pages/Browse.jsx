@@ -26,6 +26,7 @@ class Browse extends Component {
   }
 
   addStudent = () => {
+    localStorage.setItem('filters', JSON.stringify(this.state))
     this.props.history.push('/student', {
       mode: 'Add',
       student: ''
@@ -33,6 +34,7 @@ class Browse extends Component {
   }
 
   viewStudent = (student) => {
+    localStorage.setItem('filters', JSON.stringify(this.state))
     this.props.history.push('/student', {
       mode: 'View',
       student: student

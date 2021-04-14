@@ -208,7 +208,7 @@ i.fa {
 
 
 /* Media queries CSS */
-@media (max-width: 1000px) {
+@media (max-width: 990px) {
   .navbar-collapse {
     padding-top: 0.3rem;
     z-index: 10;
@@ -219,8 +219,10 @@ i.fa {
     color: var(--primary) !important;
     margin-left: auto !important;
   }
+}
+@media (max-width: 1000px) {
   .container{
-    min-width: 100vw;
+    min-width: 98vw;
   }
   .textarea {
     width: calc(100vw - 6rem);
@@ -231,6 +233,6 @@ i.fa {
     min-width: 1000px;
   }
   .textarea {
-    width: 910px;
+    width: 905px;
   }
 }
