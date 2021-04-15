@@ -3,6 +3,7 @@ const Sequelize = require('sequelize')
 let sequelize;
 // Creating new Object of Sequelize 
 if (process.env.NODE_ENV === 'production') {
+  console.log("Running on SBU server.")
   sequelize = new Sequelize(
     'cashu',
     'cashu',

@@ -123,7 +123,7 @@ const Student = (props) => {
     axios.post('/email/send', {
       params: {
         // email: studentInfoParams.student.email,
-        email: "sooyeon.kim.2@stonybrook.edu",
+        email: "eddie.xu@stonybrook.edu",
         subject: "GPD updated comments",
         text: "Check GPD's comments"
       }
@@ -212,7 +212,7 @@ const Student = (props) => {
         variant="multi"
         body={
           <div>
-            <div>[Comments Changed] SEND an emial notificATion TO STUDNET!</div>
+            <div>[Comments Changed] Send notification that comments have been changed to student?</div>
             <small style={{ visibility: visible, color: "red" }}>Sending email to student...</small>
           </div>
         }

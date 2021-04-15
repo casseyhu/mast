@@ -49,7 +49,7 @@ const Import = (props) => {
     axios.post('/email/send', {
       params: {
         // email: emails,
-        email: "sooyeon.kim.2@stonybrook.edu",
+        email: "eddie.xu@stonybrook.edu",
         subject: "Your course plan is invalid",
         text: "Check your course plan."
       }
