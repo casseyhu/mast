@@ -53,7 +53,7 @@ const StudentInfo = ({ student, mode, errorMessage, userType, setDegreeReq, onSu
     if (!student && userInfo.dept && userInfo.track && userInfo.degreeSem && userInfo.degreeYear) {
       // console.log(userInfo['dept'] , userInfo['track'] , userInfo['degreeSem'] , userInfo['degreeYear'])
       console.log("Degree information sufficient. Querying backend to get this degree information.")
-      axios.get('/newStudentRequirements', {
+      axios.get('/newStudentRequirements/', {
         params: {
           department: userInfo.dept,
           track: userInfo.track,

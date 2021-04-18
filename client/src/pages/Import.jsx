@@ -18,14 +18,14 @@ const Import = (props) => {
   const dropStudents = () => {
     setShowConfirmation(false)
     console.log("Dropping students")
-    axios.post('student/deleteAll').then((response) => {
+    axios.post('student/deleteAll/').then((response) => {
       console.log(response)
     }).catch(function (err) {
       console.log("Axios DELETE error")
       console.log(err.response.data)
     })
     console.log("Deleting student data")
-    axios.post('courseplan/deleteAll').then((response) => {
+    axios.post('courseplan/deleteAll/').then((response) => {
       console.log(response)
     }).catch(function (err) {
       console.log("Axios DELETE error")
@@ -46,7 +46,7 @@ const Import = (props) => {
       emails.push(student.data.email)
     }
     console.log(emails)
-    axios.post('/email/send', {
+    axios.post('/email/send/', {
       params: {
         // email: emails,
         email: "eddie.xu@stonybrook.edu",

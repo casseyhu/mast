@@ -41,15 +41,15 @@ const ImportItem = (props) => {
 
     let upload_path = '';
     if (props.header === "Course Information") {
-      upload_path = 'course/upload';
+      upload_path = 'course/upload/';
       formData.append("depts", depts);
       formData.append("semester", semester);
       formData.append("year", year);
     }
     else if (props.header === "Degree Requirements")
-      upload_path = 'degree/upload';
+      upload_path = 'degree/upload/';
     else if (props.header === "Course Offerings") {
-      upload_path = 'courseoffering/upload';
+      upload_path = 'courseoffering/upload/';
       formData.append("dept", props.dept);
     }
     else if (props.header === "Student Data") {
@@ -59,7 +59,7 @@ const ImportItem = (props) => {
       formData.append("dept", props.dept);
       formData.append("delete", true);
       try {
-        await axios.post('student/upload', firstFormData, {
+        await axios.post('student/upload/', firstFormData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -74,10 +74,10 @@ const ImportItem = (props) => {
         setError(err.response.data)
         return
       }
-      upload_path = 'courseplan/upload'
+      upload_path = 'courseplan/upload/'
     }
     else { // Uploading grades. 
-      upload_path = 'courseplan/upload';
+      upload_path = 'courseplan/upload/';
       formData.append("dept", props.dept);
       formData.append("delete", false);
     }
@@ -95,14 +95,14 @@ const ImportItem = (props) => {
       if (props.header === 'Course Offerings') {
         let sem = result.data[0]
         let year = result.data[1]
-        let coursePlanItems = await axios.get('/courseplanitem/count', {
+        let coursePlanItems = await axios.get('/courseplanitem/count/', {
           params: {
             semester: sem,
             year: year,
             validity: false
           }
         })
-        let coursePlans = await axios.get('/courseplan/findAll', {
+        let coursePlans = await axios.get('/courseplan/findAll/', {
           params: {
             coursePlanId: coursePlanItems.data.map(item => item.coursePlanId)
           }

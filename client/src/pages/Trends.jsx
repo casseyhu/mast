@@ -75,7 +75,7 @@ class Trends extends Component {
         courses[i] = courses[i].substring(0, 3).toUpperCase() + courses[i].substring(3, 6)
         let semYear = rangeSems[j].split(' ')
         console.log(courses[i], semYear[0], semYear[1])
-        let students = await axios.get('/courseplanitem/count', {
+        let students = await axios.get('/courseplanitem/count/', {
           params: {
             courseId: courses[i],
             semester: semYear[0],

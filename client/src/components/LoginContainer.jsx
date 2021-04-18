@@ -43,7 +43,7 @@ class LoginContainer extends Component {
 
   login = (e) => {
     let { user } = this.state;
-    axios.get(`/${user}/login`, {
+    axios.get(`${user}/login/`, {
       params: {
         email: this.state.email,
         password: this.state.password

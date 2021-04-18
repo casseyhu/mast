@@ -59,7 +59,7 @@ class Browse extends Component {
 
   filter = () => {
     localStorage.setItem('filters', JSON.stringify(this.state))
-    axios.get('/student/filter', {
+    axios.get('/student/filter/', {
       params: {
         nameId: this.state.filters['nameId'],
         department: this.state.filters['department'],
@@ -87,7 +87,7 @@ class Browse extends Component {
         let valid = -1
         if (this.state.filters['valid'] !== '%')
           valid = this.state.filters['valid'] === '1%' ? 0 : 1
-        axios.get('/courseplan/filterCompleteValid', {
+        axios.get('/courseplan/filterCompleteValid/', {
           params: {
             studentId: filteredStudents.data.map(student => student.sbuId),
             complete: complete,
@@ -141,7 +141,7 @@ class Browse extends Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.handleResize)
-    axios.get('student', {
+    axios.get('student/', {
       params: { department: this.props.user.department }
     }).then(response => {
       this.setState({

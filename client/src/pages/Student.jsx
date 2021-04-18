@@ -26,19 +26,19 @@ const Student = (props) => {
       let studentRes = await axios.get('/student/' + student.sbuId, {
         params: { sbuId: student.sbuId }
       })
-      let coursePlanItems = await axios.get('/courseplanitem/findItems', {
+      let coursePlanItems = await axios.get('/courseplanitem/findItems/', {
         params: {
           studentId: studentRes.data.sbuId
         }
       })
-      let requirements = await axios.get('/requirements', {
+      let requirements = await axios.get('/requirements/', {
         params: {
           department: studentRes.data.department,
           track: studentRes.data.track,
           degreeId: studentRes.data.degreeId
         }
       })
-      let requirementStates = await axios.get('/student/requirementStates', {
+      let requirementStates = await axios.get('/student/requirementStates/', {
         params: { sbuId: student.sbuId }
       })
       let reqStateMap = {}
@@ -76,7 +76,7 @@ const Student = (props) => {
     console.log("Page mode: ", mode)
     if (mode === 'Add') {
       /* Add new student into the db */
-      axios.post('student/create', {
+      axios.post('student/create/', {
         params: studentInfo
       }).then((response) => {
         setStudentInfoParams((prevState) => ({
@@ -95,7 +95,7 @@ const Student = (props) => {
       let commentBefore = studentInfoParams.student.gpdComments
       let commentAfter = studentInfo.gpdComments
       /* Saving student info, UPDATE student in the db*/
-      axios.post('/student/update', {
+      axios.post('/student/update/', {
         params: studentInfo
       }).then((response) => {
         setStudentInfoParams((prevState) => ({
@@ -120,7 +120,7 @@ const Student = (props) => {
 
   const notify = () => {
     setVisible("visible")
-    axios.post('/email/send', {
+    axios.post('/email/send/', {
       params: {
         // email: studentInfoParams.student.email,
         email: "eddie.xu@stonybrook.edu",

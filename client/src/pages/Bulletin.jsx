@@ -34,7 +34,7 @@ class Bulletin extends Component {
   }
 
   showCourses = () => {
-    axios.get('/course', {
+    axios.get('/course/', {
       params: {
         dept: this.state.dept,
         semester: this.state.semester,
