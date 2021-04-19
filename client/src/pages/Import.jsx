@@ -111,9 +111,9 @@ const Import = (props) => {
                       <React.Fragment key={id}>
                         {affectedStudents[id].map(item => {
                           return (
-                            <tr key={id + item.courseId}>
+                            <tr key={id + item.identifier}>
                               <td>{id}</td>
-                              <td>{item.courseId}</td>
+                              <td>{item.identifier}</td>
                               <td>{item.semester}</td>
                               <td>{item.year}</td>
                             </tr>

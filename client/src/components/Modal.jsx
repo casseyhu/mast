@@ -21,11 +21,9 @@ const CenteredModal = (props) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="flex-vertical center">
-        <div className="ud-padding">
-          {props.body}
-        </div>
+        {props.body}
       </Modal.Body>
-      <div className="flex-horizontal justify-content-around pt-2 pb-2">
+      <div className="flex-horizontal justify-content-around pb-4">
         {props.variant &&
           <Button
             className="bg-white"

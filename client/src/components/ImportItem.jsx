@@ -93,27 +93,28 @@ const ImportItem = (props) => {
         }
       })
       if (props.header === 'Course Offerings') {
-        let sem = result.data[0]
-        let year = result.data[1]
-        let coursePlanItems = await axios.get('/courseplanitem/count/', {
-          params: {
-            semester: sem,
-            year: year,
-            validity: false
-          }
-        })
-        let coursePlans = await axios.get('/courseplan/findAll/', {
-          params: {
-            coursePlanId: coursePlanItems.data.map(item => item.coursePlanId)
-          }
-        })
-        let students = {}
-        for (let cp of coursePlans.data) {
-          let items = coursePlanItems.data.filter(item => item.coursePlanId === cp.coursePlanId)
-          if (items.length > 0)
-            students[cp.studentId] = items
-        }
-        props.setStudents(students)
+        console.log(result)
+        // let sem = result.data[0]
+        // let year = result.data[1]
+        // let coursePlanItems = await axios.get('/courseplanitem/count/', {
+        //   params: {
+        //     semester: sem,
+        //     year: year,
+        //     validity: false
+        //   }
+        // })
+        // let coursePlans = await axios.get('/courseplan/findAll/', {
+        //   params: {
+        //     coursePlanId: coursePlanItems.data.map(item => item.coursePlanId)
+        //   }
+        // })
+        // let students = {}
+        // for (let cp of coursePlans.data) {
+        //   let items = coursePlanItems.data.filter(item => item.coursePlanId === cp.coursePlanId)
+        //   if (items.length > 0)
+        //     students[cp.studentId] = items
+        // }
+        props.setStudents(result.data)
         props.setShowInvalid(true)
       }
       console.log('Successfully uploaded file');

@@ -1,51 +1,74 @@
-const database = require('../config/database.js');
+const database = require('../config/database.js')
 const IncomingForm = require('formidable').IncomingForm
-const PDFExtract = require('pdf.js-extract').PDFExtract;
-const pdfExtract = new PDFExtract();
+const PDFExtract = require('pdf.js-extract').PDFExtract
+const pdfExtract = new PDFExtract()
 
-const Course = database.Course;
-// Upload a course info to the database 
+const Course = database.Course
+
+/**
+ * Upload course information (name, description, credits, etc..) to the database.
+ * @param {*} req Contains a FormData containing the list of departments to scrape from
+ * and a specified semester and year. The main form is a PDF containing course information
+ * for all degrees for the given semester and year.
+ * @param {*} res
+ */
 exports.upload = (req, res) => {
-  let form = new IncomingForm();
+  let form = new IncomingForm()
   let depts = [];
-  let semester = "";
-  let year = "";
-  form.parse(req).on('field', (name, field) => {
-    if (name === 'depts')
-      depts = field;
-    if (name === 'semester')
-      semester = field;
-    if (name === 'year')
-      year = field;
-  }).on('file', (field, file) => {
-    if (file.type != 'application/pdf') {
-      res.status(500).send('File must be *.pdf')
-      return
-    }
-    if (semester === "" || year === "" || depts === "") {
-      res.status(500).send("Must specify semester and departments to scrape for.");
-      return
-    }
-    console.log(depts, semester, year)
-    scrapeCourses(file.path, depts, semester, year, res)
-  })
+  let semester = '';
+  let year = '';
+  form
+    .parse(req)
+    // Get the fields that we want to scrape for
+    .on('field', (name, field) => {
+      if (name === 'depts')
+        depts = field
+      if (name === 'semester')
+        semester = field
+      if (name === 'year')
+        year = field
+    })
+    // Scrape the course information, if it is a valid PDF
+    .on('file', (field, file) => {
+      if (file.type != 'application/pdf') {
+        res.status(500).send('File must be *.pdf')
+        return
+      }
+      if (semester === '' || year === '' || depts === '') {
+        res.status(500).send('Must specify semester and departments to scrape for.')
+        return
+      }
+      console.log('Scraping for: ', depts, semester, year)
+      scrapeCourses(file.path, depts, semester, year, res)
+    })
 }
 
-//find a course based on courseId
+
+/**
+ * Finds a course by courseId.
+ * @param {*} req Contains parameter for courseId
+ * @param {*} res 
+ */
 exports.findOne = (req, res) => {
-  Course.findOne({
-    where: {
-      courseId: req.query.courseId
-    }
-  }).then(course => {
-    res.status(200).send(course)
-  }).catch(err => {
-    console.log(err)
-    res.status(500).send("Error finding course")
-  })
+  Course
+    .findOne({
+      where: {
+        courseId: req.query.courseId
+      }
+    })
+    .then(course => res.status(200).send(course))
+    .catch(err => {
+      console.log(err)
+      res.status(500).send('Error finding course')
+    })
 }
 
-//find all courses based on the dept
+
+/**
+ * Finds all the courses for a department in a given semester and year.
+ * @param {*} req Contains parameter for department, semester, and year
+ * @param {*} res 
+ */
 exports.findAll = (req, res) => {
   Course
     .findAll({
@@ -59,25 +82,33 @@ exports.findAll = (req, res) => {
       res.status(200).send(foundCourses)
     })
     .catch(err => {
-      res.status(500).send("Error in finding courses")
+      res.status(500).send('Error in finding courses')
       console.log(err)
     })
 }
 
-// dept : list of departments to scrape from
-scrapeCourses = (filePath, depts, semester, year, res) => {
+
+/**
+ * Scrapes course information for a given set of departments in semester and year.
+ * @param {String} filePath Path of user uploaded PDF file
+ * @param {Array<String>} depts List of departments to scrape for
+ * @param {String} semester Semester to scrape for
+ * @param {String} year Year to scrape for
+ * @param {*} res
+ */
+const scrapeCourses = (filePath, depts, semester, year, res) => {
   const options = {}
-  let sem = ["Fall", "Winter", "Spring", "Summer"]
-  let target = ""
+  let sem = ['Fall', 'Winter', 'Spring', 'Summer']
+  let target = ''
   /* info to store in database */
-  let chosenDept = ""
+  let chosenDept = ''
   let totCourses = 0
   let courseNum = 0
-  let name = ""
-  let courseName = ""
+  let name = ''
+  let courseName = ''
   let checkCourseName = false;
   /* temporary way to store description of course */
-  let desc = ""
+  let desc = ''
   /* add all courses to array that are in the dept variables */
   let courses = []
   /* other requirements i.e prerequisites, credits */
@@ -113,16 +144,16 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
           continue
         }
         // Check BIG department header
-        if (s.fontName == "Times" && s.str.length == 3 && isNaN(parseInt(s.str)) === true) {
+        if (s.fontName == 'Times' && s.str.length == 3 && isNaN(parseInt(s.str)) === true) {
           if (depts.includes(s.str) || exceptionDepts.includes(s.str)) {
             target = s.str;
             checkOthers = false
           }
         }
         // If we are at a target department
-        else if (target !== "") {
+        else if (target !== '') {
           // Checks course name: CSE500
-          if (s.str.substring(0, 3) == target && s.fontName == "Helvetica") {
+          if (s.str.substring(0, 3) == target && s.fontName == 'Helvetica') {
             if (!skip && depts.includes(courseName.substring(0, 3)) && others === '' && courseName !== '') {
               totCourses += 1
               chosenDept = courseName.substring(0, 3)
@@ -136,7 +167,7 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
                 year: Number(year),
                 semestersOffered: ['Fall', 'Spring'],
                 name: name,
-                description: "",
+                description: '',
                 credits: 3,
                 prereqs: [],
                 repeat: 0
@@ -146,15 +177,15 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
                 year: Number(year)
               })
             }
-            if (!skip && others != "" && chosenDept !== '' && courseNum !== '') { // Has detailed info
+            if (!skip && others != '' && chosenDept !== '' && courseNum !== '') { // Has detailed info
               // full course ([Dept] [CourseNum] + [CourseName])
-              // others = others.replace(", Letter graded (A, A-, B+, etc.)", "")
-              // others = others.replace(" or permission of the, instructor", "")
-              // others = others.replace(" or permission of, instructor,", "")
+              // others = others.replace(', Letter graded (A, A-, B+, etc.)', '')
+              // others = others.replace(' or permission of the, instructor', '')
+              // others = others.replace(' or permission of, instructor,', '')
               //console.log(chosenDept + courseNum)
               var foundSem = []
               var tot = 0;
-              var creds = "";
+              var creds = '';
               // The semesters mentioned in the pdf for each course
               for (let k = 0; k < sem.length; k++) {
                 if (others.includes(sem[k]) || desc.includes(sem[k])) {
@@ -163,71 +194,68 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
                 }
               }
               if (tot == 0)
-                foundSem = ["Fall", "Spring"];
+                foundSem = ['Fall', 'Spring'];
               let prereqs = []
               // First check for description and see if it has prerequisites
-              // if(desc.includes("Prerequisite")){
+              // if(desc.includes('Prerequisite')){
               //   hasPrereqs = true
 
               // }
               // First check for description and see prerequisites
-              if (desc.includes("Prerequisite: ")) {
-                let index = desc.indexOf("Prerequisite: ") + 14;
+              if (desc.includes('Prerequisite: ')) {
+                let index = desc.indexOf('Prerequisite: ') + 14;
                 let course = desc.substring(index, index + 7);
                 if (isNaN(parseInt(course.substring(4, 7))) == false) {
                   if (parseInt(course.substring(4, 7)) >= 500) {
-                    course = course.replace(" ", "");
+                    course = course.replace(' ', '');
                     if (!prereqs.includes(course))
                       prereqs.push(course);
                   }
                 }
-              }
-              else if (desc.includes("Prerequisites: ")) {
-                let fullPrereqs = desc.substring(desc.indexOf("Prerequisites: "))
+              } else if (desc.includes('Prerequisites: ')) {
+                let fullPrereqs = desc.substring(desc.indexOf('Prerequisites: '))
                 if (fullPrereqs.includes('and')) {
                   if (fullPrereqs.includes(' or')) {
                     fullPrereqs = fullPrereqs.substring(0, fullPrereqs.indexOf(' or'))
                   }
-                  fullPrereqs = fullPrereqs.replace("Prerequisites: ", "")
-                  fullPrereqs = fullPrereqs.replace(" ", "")
-                  fullPrereqs = fullPrereqs.replace(" and", ",")
+                  fullPrereqs = fullPrereqs.replace('Prerequisites: ', '')
+                  fullPrereqs = fullPrereqs.replace(' ', '')
+                  fullPrereqs = fullPrereqs.replace(' and', ',')
                   prereqs = fullPrereqs.split(', ')
                   console.log(chosenDept + courseNum)
-                }
-                else {
-                  fullPrereqs = fullPrereqs.replace("Prerequisites: ", "")
-                  fullPrereqs = fullPrereqs.replace(" ", "")
-                  fullPrereqs = fullPrereqs.replace(".", "")
+                } else {
+                  fullPrereqs = fullPrereqs.replace('Prerequisites: ', '')
+                  fullPrereqs = fullPrereqs.replace(' ', '')
+                  fullPrereqs = fullPrereqs.replace('.', '')
                   if (isNaN(parseInt(fullPrereqs.substring(3, 6))) === false)
                     prereqs.push(fullPrereqs)
                 }
               }
-              others = others.replace("Prerequisite: ", "");
-              others = others.replace("Prerequisites: ", "");
-              if (others.includes("Prerequisite for")) {
-                let cIndex = others.indexOf(":");
+              others = others.replace('Prerequisite: ', '');
+              others = others.replace('Prerequisites: ', '');
+              if (others.includes('Prerequisite for')) {
+                let cIndex = others.indexOf(':');
                 others = others.substring(cIndex + 2); //ignore the extra space
               }
               let course = others.substring(0, 7);
               if (isNaN(parseInt(course.substring(4, 7))) == false) {
                 if (parseInt(course.substring(4, 7)) >= 500) {
-                  others = others.replace(course, "");
-                  course = course.replace(" ", "");
+                  others = others.replace(course, '');
+                  course = course.replace(' ', '');
                   if (!prereqs.includes(course))
                     prereqs.push(course);
-                }
-                else {
-                  others = others.replace(course, "");
-                  course = course.replace(" ", "");
-                  if (others.includes("or ")) {
-                    others = others.replace("or", "");
-                    while (others.substring(0, 1) === " ")
+                } else {
+                  others = others.replace(course, '');
+                  course = course.replace(' ', '');
+                  if (others.includes('or ')) {
+                    others = others.replace('or', '');
+                    while (others.substring(0, 1) === ' ')
                       others = others.substring(1);
                     course = others.substring(0, 7);
                     if (isNaN(parseInt(course.substring(4, 7))) == false) {
                       if (parseInt(course.substring(4, 7)) >= 500) {
-                        others = others.replace(course, "");
-                        course = course.replace(" ", "");
+                        others = others.replace(course, '');
+                        course = course.replace(' ', '');
                         if (!prereqs.includes(course))
                           prereqs.push(course);
                       }
@@ -235,20 +263,20 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
                   }
                 }
               }
-              if (others.includes(" credits") || others.includes(" credit")) {
+              if (others.includes(' credits') || others.includes(' credit')) {
                 let index = -1;
-                if (others.includes(" credits"))
-                  index = others.indexOf(" credits") - 1;
-                else if (others.includes(" credit"))
-                  index = others.indexOf(" credit") - 1;
-                while (index >= 0
-                  && isNaN(parseInt(others.substring(index, index + 1)))
-                  == false && Number(others.substring(index, index + 1) + creds) <= 12) {
+                if (others.includes(' credits'))
+                  index = others.indexOf(' credits') - 1;
+                else if (others.includes(' credit'))
+                  index = others.indexOf(' credit') - 1;
+                while (index >= 0 &&
+                  isNaN(parseInt(others.substring(index, index + 1))) ==
+                  false && Number(others.substring(index, index + 1) + creds) <= 12) {
                   creds = others.substring(index, index + 1) + creds;
                   index--;
                 }
               }
-              if (creds === "")
+              if (creds === '')
                 creds = 3
               totCourses += 1
               await insertUpdate({
@@ -269,93 +297,80 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
                 year: Number(year)
               })
             }
-            chosenDept = "";
-            courseNum = "";
-            desc = "";
-            others = "";
+            chosenDept = '';
+            courseNum = '';
+            desc = '';
+            others = '';
             checkOthers = false;
             courseName = s.str;
             checkCourseName = true;
             skip = false
-
           } // end of checking course name header 
 
           // Continues if course + course name exceeds more than one line
-          else if (!skip && checkCourseName && s.fontName == "Helvetica")
-            courseName += " " + s.str;
+          else if (!skip && checkCourseName && s.fontName == 'Helvetica')
+            courseName += ' ' + s.str;
           // Start getting course descriptions
-          else if (!skip && s.fontName == "Times" && !s.str.includes("credits,")
-            && s.str.substring(0, 13) !== "Prerequisites"
-            && s.str.substring(0, 12) !== "Prerequisite"
-            && !s.str.includes("S/U grading")
-            && !s.str.includes("credit,")
-            && !checkOthers) {
+          else if (!skip && s.fontName == 'Times' && !s.str.includes('credits,') &&
+            s.str.substring(0, 13) !== 'Prerequisites' &&
+            s.str.substring(0, 12) !== 'Prerequisite' &&
+            !s.str.includes('S/U grading') &&
+            !s.str.includes('credit,') &&
+            !checkOthers) {
             //reaches description
             if (checkCourseName) {
-              if (courses.includes(courseName) == false && courseName !== "") {
+              if (courses.includes(courseName) == false && courseName !== '') {
                 courses.push(courseName)
                 chosenDept = courseName.substring(0, 3)
                 courseNum = courseName.substring(5, 8)
                 if ((!depts.includes(chosenDept) && ((exceptionDepts.includes(chosenDept) && !exceptions.includes(chosenDept + courseNum))) || courseNum > 700)) {
                   skip = true
-                  // checkOthers = false;
-                  // courseNum = ''
-                  // others = ''
-                  // desc = ''
                   continue
                 }
                 name = courseName.substring(10, courseName.length)
                 // console.log(chosenDept + courseNum) //full course ([Dept] [CourseNum] + [CourseName])
               }
-              desc += (desc == "") ? s.str : " " + s.str;
+              desc += (desc == '') ? s.str : ' ' + s.str;
             }
           }
           // First/second line of others
-          else if (!skip && s.str.includes("credits")
-            || s.str.includes("Prerequisites")
-            || s.str.includes('Prerequisite')
-            || s.str.includes("S/U grading")
-            || s.str.includes("credit,")
-            || checkOthers) {
-            if (desc === "") {
+          else if (!skip && s.str.includes('credits') ||
+            s.str.includes('Prerequisites') ||
+            s.str.includes('Prerequisite') ||
+            s.str.includes('S/U grading') ||
+            s.str.includes('credit,') ||
+            checkOthers) {
+            if (desc === '') {
               chosenDept = courseName.substring(0, 3)
               courseNum = courseName.substring(5, 8)
-              if ((!depts.includes(chosenDept) && ((exceptionDepts.includes(chosenDept) && !exceptions.includes(chosenDept + courseNum))) || courseNum > 700)) {
+              if ((!depts.includes(chosenDept) && ((exceptionDepts.includes(chosenDept) && !exceptions.includes(chosenDept + courseNum))) || courseNum > 700))
                 skip = true
-                //   checkOthers = false;
-                //   courseNum = ''
-                //   others = ''
-                //   desc = ''
-              }
               name = courseName.substring(10, courseName.length)
             }
             checkCourseName = false;
             checkOthers = true
 
-            if (others == "" && checkOthers)
+            if (others == '' && checkOthers)
               others = s.str
             else if (checkOthers) {
-              if (s.str.substring(0, 1) != ","
-                || others.substring(others.length - 1) != ",") {
-                var c = s.str.substring(0, s.str.indexOf(" "))
+              if (s.str.substring(0, 1) != ',' ||
+                others.substring(others.length - 1) != ',') {
+                var c = s.str.substring(0, s.str.indexOf(' '))
                 if (isNaN(parseInt(c)) == false)
                   others += s.str;
                 else {
-                  if (s.str.substring(0, 1) != ","
-                    && others.substring(others.length - 1) != ","
-                    && isNaN(parseInt(s.str))) {
-                    others += ", " + s.str;
-                  }
-                  else
-                    others += " " + s.str;
+                  if (s.str.substring(0, 1) != ',' &&
+                    others.substring(others.length - 1) != ',' &&
+                    isNaN(parseInt(s.str))) {
+                    others += ', ' + s.str;
+                  } else
+                    others += ' ' + s.str;
                 }
-              }
-              else
-                others += + s.str;
+              } else
+                others += +s.str;
             }
-            
           }
-        }// end of if (target)
+        } // end of if (target)
       }
     }
     console.log('total: ', totCourses)
@@ -363,16 +378,33 @@ scrapeCourses = (filePath, depts, semester, year, res) => {
       res.status(500).send('No information was scraped. Please ensure the PDF follows the SBU graduate course descriptions PDF.')
     else
       res.status(200).send('Success')
-  });
+  })
 }
 
 
-insertUpdate = async (values, condition) => {
-  const found = await Course.findOne({ where: condition })
+/**
+ * If course doesn't exist in the database, create the course entry.
+ * If course exists in the database, update the course entry.
+ * @param {Object} values A course object
+ * @param {Object} condition Contains courseId, semester, and year to look for
+ * @return {Object} An object containing the course and whether or not it was created
+ */
+const insertUpdate = async (values, condition) => {
+  const found = await Course.findOne({
+    where: condition
+  })
   if (found) {
-    const course = await Course.update(values, { where: condition })
-    return { course, created: false }
+    const course = await Course.update(values, {
+      where: condition
+    })
+    return {
+      course,
+      created: false
+    }
   }
   const course = await Course.create(values)
-  return { course, created: true }
+  return {
+    course,
+    created: true
+  }
 }

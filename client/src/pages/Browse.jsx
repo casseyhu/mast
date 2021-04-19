@@ -152,6 +152,19 @@ class Browse extends Component {
         let savedState = localStorage.getItem('filters')
         if (savedState) {
           savedState = JSON.parse(savedState)
+          if (Object.keys(savedState.filters).length === 0) {
+            savedState.filters = {
+              nameId: '%',
+              track: '%',
+              entrySem: '%',
+              entryYear: '%',
+              gradSem: '%',
+              gradYear: '%',
+              graduated: '%',
+              valid: '%',
+              complete: '%'
+            }
+          }
           this.setState({
             sortBy: savedState.sortBy,
             filters: savedState.filters,
@@ -179,7 +192,7 @@ class Browse extends Component {
         </div>
         <BrowseSearchbar user={this.props.user} sortField={this.setSortField} filter={this.setFilter} />
         <div className="studentTable">
-          <table >
+          <table className="mb-2">
             <thead>
               <tr style={{ cursor: "pointer" }}>
                 <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("lastName", null)}>Last Name</th>
@@ -234,7 +247,7 @@ class Browse extends Component {
             {!(page - 1 > 0) && (page + 4 <= maxPage) && (
               <Pagination.Item onClick={() => this.setState({ page: page + 4 })}>{page + 4}</Pagination.Item>
             )}
-            {(page + 3 <= maxPage) && <Pagination.Ellipsis />}
+            {(page + 5 < maxPage) && <Pagination.Ellipsis />}
             <Pagination.Next disabled={page === maxPage} onClick={() => this.setState({ page: page + 1 })} />
             <Pagination.Last disabled={page === maxPage} onClick={() => this.setState({ page: maxPage })} />
           </Pagination>

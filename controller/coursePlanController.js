@@ -1,7 +1,11 @@
-const { IncomingForm } = require('formidable')
+const {
+  IncomingForm
+} = require('formidable')
 const fs = require('fs')
 const Papa = require('papaparse')
-const { CourseOffering } = require('../config/database.js')
+const {
+  CourseOffering
+} = require('../config/database.js')
 const database = require('../config/database.js')
 const Op = database.Sequelize.Op
 const Student = database.Student
@@ -16,7 +20,17 @@ const CourseRequirement = database.CourseRequirement
 const RequirementState = database.RequirementState
 
 
-const GRADES = { 'A': 4, 'A-': 3.67, 'B+': 3.33, 'B': 3, 'B-': 2.67, 'C+': 2.33, 'C': 2, 'C-': 1.67, 'F': 0 }
+const GRADES = {
+  'A': 4,
+  'A-': 3.67,
+  'B+': 3.33,
+  'B': 3,
+  'B-': 2.67,
+  'C+': 2.33,
+  'C': 2,
+  'C-': 1.67,
+  'F': 0
+}
 const semDict = {
   'Fall': 8,
   'Spring': 2,
@@ -34,7 +48,7 @@ exports.uploadPlans = (req, res) => {
   form.parse(req).on('field', (name, field) => {
     if (name === 'dept')
       dept = field
-    else if(name === 'delete'){
+    else if (name === 'delete') {
       deleted = field
     }
   }).on('file', (field, file) => {
@@ -48,13 +62,13 @@ exports.uploadPlans = (req, res) => {
       dynamicTyping: true,
       complete: (results) => {
         var header = results.meta['fields']
-        if (header[0] !== 'sbu_id'
-          || header[1] !== 'department'
-          || header[2] !== 'course_num'
-          || header[3] !== 'section'
-          || header[4] !== 'semester'
-          || header[5] !== 'year'
-          || header[6] !== 'grade') {
+        if (header[0] !== 'sbu_id' ||
+          header[1] !== 'department' ||
+          header[2] !== 'course_num' ||
+          header[3] !== 'section' ||
+          header[4] !== 'semester' ||
+          header[5] !== 'year' ||
+          header[6] !== 'grade') {
           console.log('invalid csv')
           res.status(500).send('Cannot parse course plan CSV file - headers do not match specifications')
           return
@@ -65,26 +79,41 @@ exports.uploadPlans = (req, res) => {
     })
   })
 }
-  // let students = Array.from(new Set(coursePlans.map(item => item.sbu_id)))
+// let students = Array.from(new Set(coursePlans.map(item => item.sbu_id)))
 
 async function uploadCoursePlans(coursePlans, dept, res, deleted) {
   console.log(deleted)
   // grabs all students of this department
-  let students = await Student.findAll({ where: { department: dept }})
+  let students = await Student.findAll({
+    where: {
+      department: dept
+    }
+  })
   // gets the list of only the sbuids of the students of this department
   students = Array.from(new Set(students.map(student => student.sbuId)))
   // filters the course plan items from the csv for only the students on this department 
-  coursePlans = coursePlans.filter(coursePlan => students.includes(coursePlan.sbu_id) )
+  coursePlans = coursePlans.filter(coursePlan => students.includes(coursePlan.sbu_id))
   students = coursePlans.map(item => item.sbu_id)
   // delete all existing course plan items for duplicate students from database
-  console.log(coursePlans.includes(112206690))
-  if(deleted === 'true'){
-    let existCoursePlans = await CoursePlan.findAll({where : { studentId : students }})
+  if (deleted === 'true') {
+    let existCoursePlans = await CoursePlan.findAll({
+      where: {
+        studentId: students
+      }
+    })
     let coursePlanIds = existCoursePlans.map(coursePlan => coursePlan.coursePlanId)
     console.log("waiting for existing course plans", coursePlanIds)
     // Delete all courseplanitems 
-    await CoursePlanItem.destroy({ where: { coursePlanId: coursePlanIds } })
-    await RequirementState.destroy({where : {sbuID : students}})
+    await CoursePlanItem.destroy({
+      where: {
+        coursePlanId: coursePlanIds
+      }
+    })
+    await RequirementState.destroy({
+      where: {
+        sbuID: students
+      }
+    })
   }
   // console.log(coursePlans)
   let studentsPlanId = {}
@@ -92,8 +121,12 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
   for (let i = 0; i < coursePlans.length; i++) {
     if (!coursePlans[i].sbu_id)
       continue
-    let condition = { studentId: coursePlans[i].sbu_id }
-    let found = await CoursePlan.findOne({ where: condition })
+    let condition = {
+      studentId: coursePlans[i].sbu_id
+    }
+    let found = await CoursePlan.findOne({
+      where: condition
+    })
     // console.log(found)
     if (!found) {
       console.log('Error: Course plan not found for student: ' + coursePlans[i].sbu_id)
@@ -115,15 +148,23 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
       grade: coursePlans[i].grade,
       validity: true
     }
-    found = await CoursePlanItem.findOne({ where: condition })
+    found = await CoursePlanItem.findOne({
+      where: condition
+    })
     if (found)
-      course = await CoursePlanItem.update(values, { where: condition })
-    else if(deleted === 'true')
+      course = await CoursePlanItem.update(values, {
+        where: condition
+      })
+    else if (deleted === 'true')
       course = await CoursePlanItem.create(values)
   }
 
   // Credits mapping for each course in the department
-  let courses = await Course.findAll({ where: { department: dept } })
+  let courses = await Course.findAll({
+    where: {
+      department: dept
+    }
+  })
   let credits = {}
   for (let j = 0; j < courses.length; j++)
     credits[courses[j].courseId] = courses[j].credits
@@ -172,16 +213,44 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     let gpaState = ''
 
     // Find the student and all the degree requirement objects for students degree
-    let student = await Student.findOne({ where: { sbuId: key } })
-    let degree = await Degree.findOne({ where: { degreeId: student.degreeId } })
+    let student = await Student.findOne({
+      where: {
+        sbuId: key
+      }
+    })
+    let degree = await Degree.findOne({
+      where: {
+        degreeId: student.degreeId
+      }
+    })
     // console.log(student)
     // console.log(degree.degreeId + '  ' + degree.creditRequirement )
-    let creditReq = await CreditRequirement.findOne({ where: { requirementId: degree.creditRequirement } })
-    let gpaReq = await GpaRequirement.findOne({ where: { requirementId: degree.gpaRequirement } })
-    let gradeReq = await GradeRequirement.findOne({ where: { requirementId: degree.gradeRequirement } })
-    let courseReq = await CourseRequirement.findAll({ where: { requirementId: degree.courseRequirement } })
+    let creditReq = await CreditRequirement.findOne({
+      where: {
+        requirementId: degree.creditRequirement
+      }
+    })
+    let gpaReq = await GpaRequirement.findOne({
+      where: {
+        requirementId: degree.gpaRequirement
+      }
+    })
+    let gradeReq = await GradeRequirement.findOne({
+      where: {
+        requirementId: degree.gradeRequirement
+      }
+    })
+    let courseReq = await CourseRequirement.findAll({
+      where: {
+        requirementId: degree.courseRequirement
+      }
+    })
     // Get this student's coursePlan to see what courses they've taken/currently taken/are going to take.
-    let coursePlanItems = await CoursePlanItem.findAll({ where: { coursePlanId: studentsPlanId[key] } })
+    let coursePlanItems = await CoursePlanItem.findAll({
+      where: {
+        coursePlanId: studentsPlanId[key]
+      }
+    })
 
     // List of course plan items with grades
     let gradedCoursePlan = coursePlanItems.filter((course) => (
@@ -200,7 +269,11 @@ async function calculateCompletion(studentsPlanId, credits, res) {
       // Create the course credits mapping and get total credits for their entire course plan
       let courseName = coursePlanItems[j].courseId
       if (!credits[courseName]) {
-        let course = await Course.findOne({ where: { courseId: courseName } })
+        let course = await Course.findOne({
+          where: {
+            courseId: courseName
+          }
+        })
         if (course && course.credits != null)
           credits[courseName] = course.credits
         else { // should not get to here...
@@ -241,7 +314,7 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     let cumGpaState = ''
     // 1. Calculate departmental GPA if needed
     if (gpaReq.department) {
-      let deptCourses = gradedCoursePlan.filter((course) => (
+      let deptCourses = gradedCoursePlan.filter(course => (
         course.courseId.slice(0, 3) === student.department
       ))
       studentDeptGpa = calculateGPA(deptCourses, credits)
@@ -250,9 +323,9 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     // 2. Calculate core GPA if needed
     if (gpaReq.core) {
       let coreCourses = new Set(courseReq
-        .filter((req) => req.type === 1)
+        .filter(req => req.type === 1)
         .reduce((a, b) => b.courses.concat(a), []))
-      coreCourses = takenAndCurrent.filter((course) => coreCourses.has(course.courseId))
+      coreCourses = takenAndCurrent.filter(course => coreCourses.has(course.courseId))
       studentCoreGpa = calculateGPA(coreCourses, credits)
       coreGpaState = getReqState(studentCoreGpa, gpaReq.core)
     }
@@ -260,13 +333,13 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     studentCumGpa = calculateGPA(gradedCoursePlan, credits)
     cumGpaState = getReqState(studentCumGpa, gpaReq.cumulative)
     // Set the state of the GPA requirement. 
-    if ((deptGpaState === 'unsatisfied')
-      || (coreGpaState === 'unsatisfied')
-      || (cumGpaState === 'unsatisfied'))
+    if ((deptGpaState === 'unsatisfied') ||
+      (coreGpaState === 'unsatisfied') ||
+      (cumGpaState === 'unsatisfied'))
       gpaState = 'unsatisfied'
-    else if ((deptGpaState === 'pending')
-      || (coreGpaState === 'pending')
-      || (cumGpaState === 'pending'))
+    else if ((deptGpaState === 'pending') ||
+      (coreGpaState === 'pending') ||
+      (cumGpaState === 'pending'))
       gpaState = 'pending'
     else
       gpaState = 'satisfied'
@@ -296,8 +369,8 @@ async function calculateCompletion(studentsPlanId, credits, res) {
       else
         coursesCount[course.courseId] = 1
     }
-    let usedCourses = new Set()   // course cant be used for multiple requirements
-    for (let requirement of courseReq) {  // each course requirement
+    let usedCourses = new Set() // course cant be used for multiple requirements
+    for (let requirement of courseReq) { // each course requirement
       if (requirement.type === 0) // Not required for the degree 
         continue
       let coursesUsedForReq = []
@@ -373,7 +446,11 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     // If all course plan items are pending and satisfied (no unsatisfied), then the course plan is complete
     notTakenCourses = coursePlanItems.filter(item => item.grade === null)
     let coursePlanValidity = await setCoursePlanValidity(notTakenCourses)
-    let studentCoursePlan = await CoursePlan.findOne({ where: { coursePlanId: studentsPlanId[key] } })
+    let studentCoursePlan = await CoursePlan.findOne({
+      where: {
+        coursePlanId: studentsPlanId[key]
+      }
+    })
     await studentCoursePlan.update({
       coursePlanComplete: (states['unsatisfied'] === 0) ? true : false,
       coursePlanValidity: coursePlanValidity
@@ -389,25 +466,33 @@ async function setCoursePlanValidity(notTakenCourses) {
   if (notTakenCourses.length === 0)
     return coursePlanValidity
   // 1. Get list of all semester+year pairs
-  let semesterYears = Array.from(new Set(notTakenCourses.map(item => item.semester + ' ' + item.year)))
+  let semesterYears = Array.from(new Set(notTakenCourses
+      .map(item => item.semester + ' ' + item.year)))
     .map(item => item.split(' '))
   // 2. Filter list of semyears by semyears that have course offerings
   let semYears = []
   for (let semYear of semesterYears) {
-    let found = await CourseOffering.findOne({ where: { semester: semYear[0], year: semYear[1] } })
+    let found = await CourseOffering.findOne({
+      where: {
+        semester: semYear[0],
+        year: semYear[1]
+      }
+    })
     if (found)
       semYears.push(semYear)
   }
   for (let semYear of semYears) {
+    const semester = semYear[0]
+    const year = Number(semYear[1])
     let invalidItems = []
     // Course plan items for the current semester and year only
-    let courses = notTakenCourses.filter(item => item.semester === semYear[0] && item.year === Number(semYear[1]))
+    let courses = notTakenCourses.filter(item => item.semester === semester && item.year === year)
     // 3. Get all course offerings for the semester and year
     let courseOfferings = await CourseOffering.findAll({
       where: {
         identifier: courses.map(item => item.courseId),
-        semester: semYear[0],
-        year: Number(semYear[1])
+        semester: semester,
+        year: year
       }
     })
     let courseOfferingMap = {}
@@ -426,9 +511,9 @@ async function setCoursePlanValidity(notTakenCourses) {
           continue
         }
         let second = courseOfferingMap[courses[j].courseId]
-        if (!first.startTime || !second.startTime
-          || !first.endTime || !second.endTime
-          || !first.days || !second.days)
+        if (!first.startTime || !second.startTime ||
+          !first.endTime || !second.endTime ||
+          !first.days || !second.days)
           continue
         let fDays = first.days
         let sDays = second.days
@@ -453,11 +538,13 @@ async function setCoursePlanValidity(notTakenCourses) {
       }
     }
     // update courseplanitem validty for invaliditems
-    if (notTakenCourses[0].coursePlanId === 114) {
-      console.log(invalidItems)
-    }
-    if (invalidItems) {
-      await CoursePlanItem.update({ validity: false }, {
+    // if (notTakenCourses[0].coursePlanId === 114) {
+    console.log(invalidItems)
+    // }
+    if (invalidItems.length > 0) {
+      await CoursePlanItem.update({
+        validity: false
+      }, {
         where: {
           coursePlanId: notTakenCourses[0].coursePlanId,
           courseId: invalidItems,
@@ -518,9 +605,15 @@ async function updateOrCreate(student, requirementType, requirementId, state, me
 */
 exports.findItems = (req, res) => {
   let condition = req.query
-  CoursePlan.findOne({ where: condition }).then(coursePlan => {
-    condition = { coursePlanId: coursePlan.coursePlanId }
-    CoursePlanItem.findAll({ where: condition }).then(coursePlanItems => {
+  CoursePlan.findOne({
+    where: condition
+  }).then(coursePlan => {
+    condition = {
+      coursePlanId: coursePlan.coursePlanId
+    }
+    CoursePlanItem.findAll({
+      where: condition
+    }).then(coursePlanItems => {
       res.status(200).send(coursePlanItems)
     }).catch(err => {
       console.log(err)
@@ -530,7 +623,9 @@ exports.findItems = (req, res) => {
 
 exports.findAll = (req, res) => {
   let condition = req.query
-  CoursePlan.findAll({ where: condition }).then(coursePlan => {
+  CoursePlan.findAll({
+    where: condition
+  }).then(coursePlan => {
     res.status(200).send(coursePlan)
   }).catch(err => {
     console.log(err)
@@ -539,7 +634,9 @@ exports.findAll = (req, res) => {
 
 exports.count = (req, res) => {
   let condition = req.query
-  CoursePlanItem.findAll({ where: condition }).then(totalItems => {
+  CoursePlanItem.findAll({
+    where: condition
+  }).then(totalItems => {
     res.status(200).send(totalItems)
   }).catch(err => {
     console.log(err)
@@ -548,41 +645,54 @@ exports.count = (req, res) => {
 
 exports.filterCV = (req, res) => {
   // console.log(req.query)
-  let condition = { studentId: req.query.studentId }
+  let condition = {
+    studentId: req.query.studentId
+  }
   complete = Number(req.query.complete)
   valid = Number(req.query.valid)
-  if(valid !== -1 && complete !== -1) {
+  if (valid !== -1 && complete !== -1) {
     // console.log("Complete and valid filter")
     // console.log("Complete: ", valid, " Valid: ", complete)
     condition = {
-      [Op.and]: [
-        { studentId: req.query.studentId },
-        { coursePlanComplete: complete },
-        { coursePlanValid: valid}
+      [Op.and]: [{
+          studentId: req.query.studentId
+        },
+        {
+          coursePlanComplete: complete
+        },
+        {
+          coursePlanValid: valid
+        }
       ]
     }
-  }
-  else if(complete !== -1) {
+  } else if (complete !== -1) {
     // console.log("Complete filter")
     // console.log("Complete: ", valid, " Valid: ", complete)
     condition = {
-      [Op.and]: [
-        { studentId: req.query.studentId },
-        { coursePlanComplete: complete }
+      [Op.and]: [{
+          studentId: req.query.studentId
+        },
+        {
+          coursePlanComplete: complete
+        }
       ]
     }
-  }
-  else if(valid !== -1) {
+  } else if (valid !== -1) {
     // console.log("Valid filter")
     // console.log("Complete: ", valid, " Valid: ", complete)
     condition = {
-      [Op.and]: [
-        { studentId: req.query.studentId },
-        { coursePlanValid: valid }
+      [Op.and]: [{
+          studentId: req.query.studentId
+        },
+        {
+          coursePlanValid: valid
+        }
       ]
     }
   }
-  CoursePlan.findAll({ where: condition }).then(results => { 
+  CoursePlan.findAll({
+    where: condition
+  }).then(results => {
     res.status(200).send(results)
   }).catch(err => {
     console.log(err)
@@ -593,18 +703,24 @@ exports.filterCV = (req, res) => {
 // Delete all course plans and student reqs from database. Used primarly for testing by GPD
 exports.deleteAll = (req, res) => {
   CoursePlanItem.drop().then(() => {
-    database.sequelize.sync({ force: false })
-    CoursePlan.drop().then(() => {
-      database.sequelize.sync({ force: false })
-      RequirementState.drop().then(() => {
-        database.sequelize.sync({ force: false })
-        res.status(200).send('Deleted course plan data.')
+      database.sequelize.sync({
+        force: false
+      })
+      CoursePlan.drop().then(() => {
+        database.sequelize.sync({
+          force: false
+        })
+        RequirementState.drop().then(() => {
+          database.sequelize.sync({
+            force: false
+          })
+          res.status(200).send('Deleted course plan data.')
+        })
       })
     })
-  })
-  .catch(err => {
-    console.log('Delete course plan error' + err)
-    res.status(500).send('Error: ' + err)
-  })
-  
+    .catch(err => {
+      console.log('Delete course plan error' + err)
+      res.status(500).send('Error: ' + err)
+    })
+
 }

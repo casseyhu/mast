@@ -1,4 +1,3 @@
-
 const express = require('express');
 const https = require('https');
 const fs = require('fs');
@@ -16,7 +15,9 @@ app.use(cors())
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-database.sequelize.sync({ force: false }).then(() => {
+database.sequelize.sync({
+  force: false
+}).then(() => {
   console.log("Synced database");
 })
 
@@ -28,12 +29,12 @@ require('./routes/coursePlanRoute.js')(app);
 require('./routes/degreeRoute.js')(app);
 require('./routes/emailRoute.js')(app);
 
-console.log(process.env)
+// console.log(process.env)
 if (process.env.SAFARI) {
   https.createServer({
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem')
-  }, app)
+      key: fs.readFileSync('key.pem'),
+      cert: fs.readFileSync('cert.pem')
+    }, app)
     .listen(PORT, function () {
       console.log(`Listening on port ${PORT}`);
     })
