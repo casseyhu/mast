@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactApexChart from 'react-apexcharts'
-import Container from "react-bootstrap/Container";
+import Container from 'react-bootstrap/Container';
 import InputField from '../components/InputField'
 import Dropdown from '../components/Dropdown';
 import Button from '../components/Button';
@@ -17,7 +17,39 @@ class Trends extends Component {
     toYear: '',
     errorMsg: '',
     series: [],
-    options: {}
+    options: {
+      title: {
+        text: 'Enrollment Trends',
+        align: 'center',
+        style: {
+          fontFamily: 'Montserrat',
+        }
+      },
+      xaxis: {
+        categories: [],
+        title: {
+          text: 'Semester',
+          style: {
+            fontFamily: 'Montserrat',
+          },
+        }
+      },
+      yaxis: {
+        show: true,
+        labels: {
+          show: true,
+          align: 'right',
+          minWidth: 0,
+          maxWidth: 160,
+        },
+        title: {
+          text: 'Enrollment Count',
+          style: {
+            fontFamily: 'Montserrat',
+          },
+        }
+      },
+    },
   }
 
   createGraph = async (e) => {
@@ -46,9 +78,9 @@ class Trends extends Component {
     let width = []
     let currentYear = Number(this.state.fromYear)
     let index = sems.indexOf(this.state.fromSem)
-    let goal = this.state.toSem + " " + this.state.toYear
-    while (sems[index] + " " + currentYear !== goal) {
-      rangeSems.push(sems[index] + " " + currentYear)
+    let goal = this.state.toSem + ' ' + this.state.toYear
+    while (sems[index] + ' ' + currentYear !== goal) {
+      rangeSems.push(sems[index] + ' ' + currentYear)
       if (index >= sems.length - 1) {
         index = 0
         currentYear += 1
@@ -64,13 +96,26 @@ class Trends extends Component {
         - Make sure courses are of length 6 formatted (done)
         - Make sure the course number is actually a number (done)
         - Check to make sure same department as GPD
+        - Must be graduate courses entered (done)
+        - Must be valid courses (done)
       - For lower cases in legend, make them upper case (done)
+      - Display default title and axis names (done)
     */
     let courses = [...new Set(this.state.courses.replace(/\s+/g, ' ').trim().split(' '))]
     for (let i = 0; i < courses.length; i++) {
       let data = []
-      if (courses[i].length !== COURSE_LENGTH || isNaN(parseInt(courses[i].substring(3))) || Number(courses[i].substring(3)) < 500)
-        continue
+      if (courses[i].length !== COURSE_LENGTH || isNaN(parseInt(courses[i].substring(3)))) {
+        this.setState({
+          errorMsg: 'At least 1 of the courses entered are invalid courses.'
+        })
+        return
+      }
+      if (Number(courses[i].substring(3)) < 500) {
+        this.setState({
+          errorMsg: 'At least 1 of the courses entered are not graduate courses.'
+        })
+        return
+      }
       for (let j = 0; j < rangeSems.length; j++) {
         courses[i] = courses[i].substring(0, 3).toUpperCase() + courses[i].substring(3, 6)
         let semYear = rangeSems[j].split(' ')
@@ -111,7 +156,7 @@ class Trends extends Component {
         text: 'Enrollment Trends',
         align: 'center',
         style: {
-          fontFamily: "Montserrat",
+          fontFamily: 'Montserrat',
         },
       },
       legend: {
@@ -128,9 +173,9 @@ class Trends extends Component {
       xaxis: {
         categories: rangeSems,
         title: {
-          text: "Semester",
+          text: 'Semester',
           style: {
-            fontFamily: "Montserrat",
+            fontFamily: 'Montserrat',
           },
         }
       },
@@ -143,9 +188,9 @@ class Trends extends Component {
           maxWidth: 160,
         },
         title: {
-          text: "Enrollment Count",
+          text: 'Enrollment Count',
           style: {
-            fontFamily: "Montserrat",
+            fontFamily: 'Montserrat',
           },
         }
       },
@@ -161,73 +206,73 @@ class Trends extends Component {
   render() {
     console.log(this.state.errorMsg)
     return (
-      <Container fluid="lg" className="container">
-        <div className="flex-horizontal">
+      <Container fluid='lg' className='container'>
+        <div className='flex-horizontal'>
           <h1>Enrollment Trends</h1>
         </div>
-        <div className="flex-horizontal wrap justify-content-between" style={{ width: '100%' }}>
-          <div className="flex-horizontal" style={{ width: 'fit-content', flexGrow: '1' }}>
+        <div className='flex-horizontal wrap justify-content-between' style={{ width: '100%' }}>
+          <div className='flex-horizontal' style={{ width: 'fit-content', flexGrow: '1' }}>
             <span style={{ width: '65px' }}>Courses</span>
             <InputField
-              className="lr-padding rm-r-small"
-              type="text"
+              className='lr-padding rm-r-small'
+              type='text'
               value={this.state.courses}
-              placeholder="Courses"
+              placeholder='Courses'
               onChange={e => this.setState({ courses: e.target.value })}
               style={{ flexGrow: '1' }}
             />
           </div>
-          <div className="flex-horizontal wrap" style={{ width: 'fit-content', flexGrow: '1' }}>
-            <div className="flex-horizontal" style={{ width: 'fit-content', flexGrow: '1' }}>
-              <span className="trends-span">From:</span>
+          <div className='flex-horizontal wrap' style={{ width: 'fit-content', flexGrow: '1' }}>
+            <div className='flex-horizontal' style={{ width: 'fit-content', flexGrow: '1' }}>
+              <span className='trends-span'>From:</span>
               <Dropdown
-                className="lr-padding"
-                variant="single"
+                className='lr-padding'
+                variant='single'
                 items={SEMESTERS}
-                placeholder="Semester"
+                placeholder='Semester'
                 onChange={e => this.setState({ fromSem: e.value })}
                 style={{ width: '140px', flexGrow: '1' }}
               />
               <Dropdown
-                className="lr-padding rm-r-small"
-                variant="single"
+                className='lr-padding rm-r-small'
+                variant='single'
                 items={YEARS}
-                placeholder="Year"
+                placeholder='Year'
                 onChange={e => this.setState({ fromYear: e.value })}
                 style={{ width: '120px', flexGrow: '1' }}
               />
             </div>
-            <div className="flex-horizontal" style={{ width: 'fit-content', flexGrow: '1' }}>
-              <span className="trends-span">To:</span>
+            <div className='flex-horizontal' style={{ width: 'fit-content', flexGrow: '1' }}>
+              <span className='trends-span'>To:</span>
               <Dropdown
-                className="lr-padding"
-                variant="single"
+                className='lr-padding'
+                variant='single'
                 items={SEMESTERS}
-                placeholder="Semester"
+                placeholder='Semester'
                 onChange={e => this.setState({ toSem: e.value })}
                 style={{ width: '140px', flexGrow: '1' }}
               />
               <Dropdown
-                className="lr-padding"
-                variant="single"
+                className='lr-padding'
+                variant='single'
                 items={YEARS}
-                placeholder="Year"
+                placeholder='Year'
                 onChange={e => this.setState({ toYear: e.value })}
                 style={{ width: '120px', flexGrow: '1' }}
               />
               <Button
-                divclassName="lr-padding"
-                variant="round"
-                text="go"
+                divclassName='lr-padding'
+                variant='round'
+                text='go'
                 onClick={(e) => this.createGraph(e)}
                 style={{ width: '70px', flexGrow: '1', paddingLeft: '0.5rem' }}
               />
             </div>
           </div>
         </div>
-        <small className={this.state.errorMsg ? "error" : ""}>{this.state.errorMsg}</small>
+        <small className={this.state.errorMsg ? 'error' : ''}>{this.state.errorMsg}</small>
         <br />
-        <ReactApexChart options={this.state.options} series={this.state.series} type="line" /*height={550}*/ />
+        <ReactApexChart options={this.state.options} series={this.state.series} type='line' /*height={550}*/ />
 
       </Container >
     );

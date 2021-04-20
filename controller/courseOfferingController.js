@@ -204,6 +204,7 @@ async function uploadCourses(results, res, dept) {
       }
     })
     let invalidCoursePlanIds = new Set()
+    let allInvalidItems = []
     for (let j = 0; j < coursesNotOffered.length; j++) {
       let items = semesterPlans.filter(item => item.courseId === coursesNotOffered[j].courseId)
       if (items.length === 0)
@@ -218,8 +219,10 @@ async function uploadCourses(results, res, dept) {
           year: year
         }
       })
+      allInvalidItems = allInvalidItems.concat(items)
       items.forEach(item => invalidCoursePlanIds.add(item.coursePlanId))
     }
+    invalidCoursePlanIds = Array.from(invalidCoursePlanIds)
     let invalidCoursePlans = await CoursePlan.findAll({
       where: {
         coursePlanId: invalidCoursePlanIds
@@ -227,21 +230,22 @@ async function uploadCourses(results, res, dept) {
     })
     invalidCoursePlans.forEach(plan => {
       if (!affectedStudents[plan.studentId])
-        affectedStudents[plan.studentId] = [plan]
+        affectedStudents[plan.studentId] = allInvalidItems.filter(item => item.coursePlanId === plan.coursePlanId)
       else
-        affectedStudents[plan.studentId].push(plan)
+        affectedStudents[plan.studentId] = affectedStudents[plan.studentId].concat(allInvalidItems.filter(item => item.coursePlanId === plan.coursePlanId))
     })
   }
   // Create the set of effected course plan items for each student
   for (let student of Object.keys(affectedStudents)) {
     let distinct = new Set(affectedStudents[student].map(
-      item => item.identifier + item.semester + item.year
+      item => (item.identifier ? item.identifier : item.courseId) + item.semester + item.year
     ))
     let itemSet = []
     affectedStudents[student].forEach(item => {
-      if (distinct.has(item.identifier + item.semester + item.year)) {
+      let identifier = item.identifier ? item.identifier : item.courseId
+      if (distinct.has(identifier + item.semester + item.year)) {
         itemSet.push(item)
-        distinct.delete(item.identifier + item.semester + item.year)
+        distinct.delete(identifier + item.semester + item.year)
       }
     })
     affectedStudents[student] = itemSet
