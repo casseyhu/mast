@@ -9,10 +9,6 @@ module.exports = function (app) {
 
   app.get('/api/courseplan/findAll', CoursePlan.findAll)
 
-  app.get('/api/courseplan/filterCompleteValid', CoursePlan.filterCV)
-
   app.get('/api/courseplanitem/count', CoursePlan.count)
-
-  app.post('/api/courseplan/deleteAll', CoursePlan.deleteAll)
 
 }

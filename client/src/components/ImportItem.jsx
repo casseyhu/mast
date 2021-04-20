@@ -75,8 +75,7 @@ const ImportItem = (props) => {
         return
       }
       upload_path = 'courseplan/upload/'
-    }
-    else { // Uploading grades. 
+    } else { // Uploading grades. 
       upload_path = 'courseplan/upload/'
       formData.append("dept", props.dept)
       formData.append("delete", false)

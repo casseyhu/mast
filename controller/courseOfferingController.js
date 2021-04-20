@@ -1,10 +1,13 @@
-const database = require('../config/database.js')
 const Papa = require('papaparse')
 const fs = require('fs')
 const IncomingForm = require('formidable').IncomingForm
 const moment = require('moment')
 
+const shared = require('./shared')
+
+const database = require('../config/database.js')
 const Op = database.Sequelize.Op
+
 const Course = database.Course
 const CourseOffering = database.CourseOffering
 const CoursePlan = database.CoursePlan
@@ -39,14 +42,12 @@ exports.upload = (req, res) => {
         dynamicTyping: true,
         complete: (results) => {
           let header = results.meta['fields']
-          if (
-            header[0] !== 'department' &&
+          if (header[0] !== 'department' &&
             header[1] !== 'course_num' &&
             header[2] !== 'section' &&
             header[3] !== 'semester' &&
             header[4] !== 'year' &&
-            header[5] !== 'timeslot'
-          ) {
+            header[5] !== 'timeslot') {
             console.log('invalid csv')
             res.status(500).send('Cannot parse CSV file - headers do not match specifications')
             return
@@ -83,11 +84,7 @@ async function uploadCourses(results, res, dept) {
   // Upload all the new course offerings
   const coursesAdded = await uploadNewOfferings(results)
   // Find all students for this specific department and their respective coursePlans.
-  const deptStudents = await Student.findAll({
-    where: {
-      department: dept
-    }
-  })
+  const deptStudents = await Student.findAll({ where: { department: dept } })
   const coursePlans = await CoursePlan.findAll({
     where: {
       studentId: deptStudents.map(student => student.sbuId)
@@ -135,60 +132,39 @@ async function uploadCourses(results, res, dept) {
       // Checks for day/time conflicts in the schedule.  O(n) operation
       for (let k = 0; k < toCheck.length; k++) {
         for (let l = k + 1; l < toCheck.length; l++) {
-          let first = toCheck[k].days
-          let second = toCheck[l].days
-          // Check empty fields
-          if (toCheck[k].identifier === toCheck[l].identifier || !first || !second || !toCheck[k].startTime ||
-            !toCheck[l].startTime || !toCheck[k].endTime || !toCheck[l].endTime)
-            continue
-          if ((first.includes('M') && second.includes('M')) || (first.includes('TU') && second.includes('TU')) ||
-            (first.includes('W') && second.includes('W')) || (first.includes('TH') && second.includes('TH')) ||
-            (first.includes('F') && second.includes('F'))) {
-            // Check time conflict
-            let fStart = toCheck[k].startTime
-            let sStart = toCheck[l].startTime
-            let fEnd = toCheck[k].endTime
-            let sEnd = toCheck[l].endTime
-            if ((fStart >= sStart && fStart < sEnd) || (fEnd <= sEnd && fEnd > sStart) ||
-              (sStart >= fStart && sStart < fEnd) || (sEnd <= fEnd && sEnd > fStart)) {
-              // Mark first conflicting course plan item to invalid
-              let firstCheck = await CoursePlanItem.update({
-                validity: false
-              }, {
-                where: {
-                  coursePlanId: coursePlanIds[j],
-                  courseId: toCheck[k].identifier,
-                  semester: semester,
-                  year: year
-                }
-              })
-              // Mark second conflicting course plan item to invalid
-              let secondCheck = await CoursePlanItem.update({
-                validity: false
-              }, {
-                where: {
-                  coursePlanId: coursePlanIds[j],
-                  courseId: toCheck[l].identifier,
-                  semester: semester,
-                  year: year
-                }
-              })
-              // Only pushes to affected students if either item has a conflict/is affected
-              if (firstCheck[0] === 1 || secondCheck[0] === 1) {
-                if (!affectedStudents[coursePlans[j].studentId])
-                  affectedStudents[coursePlans[j].studentId] = [toCheck[k]]
-                else
-                  affectedStudents[coursePlans[j].studentId].push(toCheck[k])
-                affectedStudents[coursePlans[j].studentId].push(toCheck[l])
-                coursePlanValidity = false
+          let invalidCourses = []
+          // If the 2 courses have a conflict, update the validity of the courses
+          if (shared.checkTimeConflict(toCheck[k], toCheck[l], invalidCourses)) {
+            // Mark first conflicting course plan item to invalid
+            await CoursePlanItem.update({ validity: false }, {
+              where: {
+                coursePlanId: coursePlanIds[j],
+                courseId: toCheck[k].identifier,
+                semester: semester,
+                year: year
               }
-            }
+            })
+            // Mark second conflicting course plan item to invalid
+            await CoursePlanItem.update({ validity: false }, {
+              where: {
+                coursePlanId: coursePlanIds[j],
+                courseId: toCheck[l].identifier,
+                semester: semester,
+                year: year
+              }
+            })
+            if (!affectedStudents[coursePlans[j].studentId])
+              affectedStudents[coursePlans[j].studentId] = [toCheck[k]]
+            else
+              affectedStudents[coursePlans[j].studentId].push(toCheck[k])
+            affectedStudents[coursePlans[j].studentId].push(toCheck[l])
+            coursePlanValidity = false
           }
         }
       }
       // Update the students course plan validity if it becomes invalid
       await coursePlans[j].update({
-        coursePlanValidity: coursePlanValidity
+        coursePlanValid: coursePlanValidity
       })
     }
     // Finds the student's whose course plans are invalid due to a course no longer
@@ -196,30 +172,29 @@ async function uploadCourses(results, res, dept) {
     const coursesNotOffered = await Course.findAll({
       where: {
         department: dept,
-        courseId: {
-          [Op.notIn]: semesterAdded.map(course => course.identifier)
-        },
+        courseId: { [Op.notIn]: semesterAdded.map(course => course.identifier) },
         semester: semester,
         year: year
       }
     })
     let invalidCoursePlanIds = new Set()
+    let allInvalidItems = []
     for (let j = 0; j < coursesNotOffered.length; j++) {
       let items = semesterPlans.filter(item => item.courseId === coursesNotOffered[j].courseId)
       if (items.length === 0)
         continue
       // Update the validity such that the items are invalid
-      await CoursePlanItem.update({
-        validity: false
-      }, {
+      await CoursePlanItem.update({ validity: false }, {
         where: {
           courseId: items.map(item => item.courseId),
           semester: semester,
           year: year
         }
       })
+      allInvalidItems = allInvalidItems.concat(items)
       items.forEach(item => invalidCoursePlanIds.add(item.coursePlanId))
     }
+    invalidCoursePlanIds = Array.from(invalidCoursePlanIds)
     let invalidCoursePlans = await CoursePlan.findAll({
       where: {
         coursePlanId: invalidCoursePlanIds
@@ -227,21 +202,22 @@ async function uploadCourses(results, res, dept) {
     })
     invalidCoursePlans.forEach(plan => {
       if (!affectedStudents[plan.studentId])
-        affectedStudents[plan.studentId] = [plan]
+        affectedStudents[plan.studentId] = allInvalidItems.filter(item => item.coursePlanId === plan.coursePlanId)
       else
-        affectedStudents[plan.studentId].push(plan)
+        affectedStudents[plan.studentId] = affectedStudents[plan.studentId].concat(allInvalidItems.filter(item => item.coursePlanId === plan.coursePlanId))
     })
   }
   // Create the set of effected course plan items for each student
   for (let student of Object.keys(affectedStudents)) {
     let distinct = new Set(affectedStudents[student].map(
-      item => item.identifier + item.semester + item.year
+      item => (item.identifier ? item.identifier : item.courseId) + item.semester + item.year
     ))
     let itemSet = []
     affectedStudents[student].forEach(item => {
-      if (distinct.has(item.identifier + item.semester + item.year)) {
+      let identifier = item.identifier ? item.identifier : item.courseId
+      if (distinct.has(identifier + item.semester + item.year)) {
         itemSet.push(item)
-        distinct.delete(item.identifier + item.semester + item.year)
+        distinct.delete(identifier + item.semester + item.year)
       }
     })
     affectedStudents[student] = itemSet
