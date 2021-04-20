@@ -27,7 +27,11 @@ const semDict = {
   'Summer': '05'
 }
 
-// Create a Student from Add Student 
+/**
+ * Create a student to the database based on the fields that were given.
+ * @param {*} req Contains information (i.e. name, id, degree, ...) about the student.
+ * @param {*} res 
+ */
 exports.create = (req, res) => {
   const student = req.body.params
   if (emptyFields(student)) {
@@ -53,7 +57,11 @@ exports.create = (req, res) => {
 }
 
 
-// Update a student
+/**
+ * Update a currently existing student's information in the database.
+ * @param {*} req Contains information (i.e. name, id, degree,...) about the student.
+ * @param {*} res 
+ */
 exports.update = (req, res) => {
   const student = req.body.params
   if (emptyFields(student)) {
@@ -130,8 +138,12 @@ exports.update = (req, res) => {
     })
 }
 
-// Checks if any of the AddStudent fields were empty. All fields, except for
-// GPA, GPD comments, Student comments CANNOT be empty. 
+/**
+ * Checks if any required field are empty.
+ * @param {*} student contains all information about the student.
+ * 
+ * @returns {Boolean} returns true if any of the required fields are empty, else return false.
+ */
 function emptyFields(student) {
   for (let fields of Object.keys(student)) {
     if (fields === 'studentComments' ||
@@ -150,7 +162,12 @@ function emptyFields(student) {
   return false
 }
 
-// Create Students from uploading file
+/**
+ * Uploads students' profiles which contains their information in a CSV file. 
+ * @param {*} req Contains a FormData that has a department field, which is used to 
+ * upload students' profiles for that specified department.
+ * @param {*} res 
+ */
 exports.upload = (req, res) => {
   let form = new IncomingForm()
   let dept = ''
@@ -188,7 +205,12 @@ exports.upload = (req, res) => {
 }
 
 
-// Verify a student for login
+/**
+ * Handles the login transaction for students.
+ * @param {*} req Contains information (i.e email, password), which is used to find
+ * a result that matches from the database.
+ * @param {*} res 
+ */
 exports.login = (req, res) => {
   Student
     .findOne({ where: { email: req.query.email } })
@@ -211,7 +233,12 @@ exports.login = (req, res) => {
     })
 }
 
-// Find a Student 
+/**
+ * Attempts to find a student from the database based on the student's id.
+ * @param {*} req Contains information (i.e student's id) to find a student in 
+ * the database.
+ * @param {*} res 
+ */
 exports.findById = (req, res) => {
   Student.findByPk(req.params.sbuId).then(student => {
     res.status(200).send(student)
@@ -220,7 +247,12 @@ exports.findById = (req, res) => {
   })
 }
 
-// Filter all students by filters provided by the user. 
+/**
+ * Filters the students in the database based on conditions (name or student's id) that are partial or complete.
+ * @param {*} req Contains partial or complete information of the name or student id, which is used to match
+ * for all results that starts with those conditions in any order.
+ * @param {*} res 
+ */
 exports.filter = (req, res) => {
   let info = req.query.nameId.replace(/\s+/g, ' ').trim().split(' ')
   let filters = null
@@ -340,7 +372,12 @@ exports.filter = (req, res) => {
     })
 }
 
-// Find all Students 
+/**
+ * Finds all students that are in the department.
+ * @param {*} req Contains information (i.e department), which is used to find all
+ * all students from the department in the database.
+ * @param {*} res 
+ */
 exports.findAll = (req, res) => {
   Student
     .findAll({
@@ -356,7 +393,12 @@ exports.findAll = (req, res) => {
     })
 }
 
-// Delete a Student
+/**
+ * Delete a student from the database.
+ * @param {*} req Contains information (i.e student's id), which is used to delete the
+ * student from the database.
+ * @param {*} res 
+ */
 exports.delete = (req, res) => {
   Student
     .destroy({
@@ -375,7 +417,12 @@ exports.delete = (req, res) => {
 // https://www.freecodecamp.org/news/node-js-child-processes-everything-you-need-to-know-e69498fe970a/
 
 
-// Delete all students from database. Used primarly for testing by GPD
+/**
+ * Delete all students from the database as well as all information that exist about the students
+ * (i.e CoursePlan, CoursePlanItem, RequirementStates).
+ * @param {*} req
+ * @param {*} res 
+ */
 exports.deleteAll = async (req, res) => {
   try {
     await Student.drop()
@@ -395,7 +442,12 @@ exports.deleteAll = async (req, res) => {
     res.status(500).send('Error: ' + err)
   }
 }
-
+/**
+ * Get the requirement state of the student based on their student id.
+ * @param {*} req Contains information (i.e student's id), which is used to find all
+ * requirement states based on the student's id.
+ * @param {*} res 
+ */
 exports.getStates = (req, res) => {
   RequirementState.findAll({
     where: {
@@ -408,7 +460,13 @@ exports.getStates = (req, res) => {
   })
 }
 
-
+/**
+ * Helper function to uploading students' profiles based on a given department.
+ * @param {*} students List of all students in a given department from the CSV.
+ * @param {*} res 
+ * 
+ * @returns
+ */
 async function uploadStudents(students, res) {
   const degrees = await Degree.findAll()
   let degreeDict = {}
@@ -483,7 +541,17 @@ async function uploadStudents(students, res) {
   console.log('Done importing ' + tot + ' students from csv')
   res.status(200).send('Success')
 }
-
+/**
+ * Find all requirements for a degree as listed below.
+ *  - GradeRequirement (B or higher)
+ *  - GpaRequirement (Minimum of 3.0 or higher)
+ *  - CreditRequirement (Minimum of 31 credits)
+ *  - CourseRequirement (Required to take CSE523)
+ * @param {*} degree the targeted degree to find all requirements.
+ * 
+ * @returns {Array<Object>} returns an array that contains all the degree's 
+ * requirements 
+ */
 async function findRequirements(degree) {
   let gradeReq = await GradeRequirement.findOne({
     where: {
@@ -507,7 +575,13 @@ async function findRequirements(degree) {
   })
   return [gradeReq, gpaReq, creditReq, courseReq]
 }
-
+/**
+ * Checks to make sure all the fields that were entered are valid entries.
+ * @param {Object} student contains all necessary information about the student.
+ * @param {*} res
+ * 
+ * @returns {Boolean} returns true if all conditions are satisfied, else return false.
+ */
 function checkFields(student, res) {
   // Check for valid graduation date. If EntryDate == GradDate, it's valid for now.
   let gradDate = Number(student.gradYear + semDict[student.gradSem])
@@ -539,7 +613,15 @@ function checkFields(student, res) {
   }
   return true
 }
-
+/**
+ * Attempts to add/create the student to the database.
+ * @param {*} student information about the student to be added to the database
+ * if all criterias are met.
+ * @param {*} degree used to find requirements for the degree
+ * @param {*} res 
+ * 
+ * @returns
+ */
 async function addStudent(student, degree, res) {
   if (!checkFields(student, res))
     return
