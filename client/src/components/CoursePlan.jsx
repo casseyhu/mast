@@ -11,7 +11,7 @@ const CoursePlan = (props) => {
   return (
     <div >
       <div className='flex-horizontal justify-content-between' style={{ width: '100%' }}>
-        <h3>Course Plan</h3>
+        <h3>{props.heading ? props.heading : 'Course Plan'}</h3>
         <div className='flex-horizontal' style={{ width: 'fit-content' }}>
           {props.suggestCoursePlan &&
             <Button

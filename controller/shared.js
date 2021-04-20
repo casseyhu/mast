@@ -1,10 +1,12 @@
 const database = require('../config/database.js')
 
-const Degree = database.Degree
 const GradeRequirement = database.GradeRequirement
 const GpaRequirement = database.GpaRequirement
 const CreditRequirement = database.CreditRequirement
 const CourseRequirement = database.CourseRequirement
+
+const CoursePlan = database.CoursePlan
+const CoursePlanItem = database.CoursePlanItem
 
 /**
  * Checks if two course offerings have a conflict in day and time.
@@ -73,4 +75,15 @@ exports.findRequirements = async (degree) => {
   } catch (err) {
     return []
   }
+}
+
+
+exports.findCoursePlanItems = async (sbuId) => {
+  const coursePlan = await CoursePlan.findOne({ where: { studentId: sbuId } })
+  const items = await CoursePlanItem.findAll({
+    where: {
+      coursePlanId: coursePlan.coursePlanId
+    }
+  })
+  return items
 }
