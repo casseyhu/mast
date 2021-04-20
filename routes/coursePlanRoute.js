@@ -13,6 +13,4 @@ module.exports = function (app) {
 
   app.get('/api/courseplanitem/count', CoursePlan.count);
 
-  app.post('/api/courseplan/deleteAll', CoursePlan.deleteAll);
-
 }
