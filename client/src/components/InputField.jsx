@@ -12,7 +12,7 @@ const InputField = (props) => {
         required={props.required}
         onChange={props.onChange}
       />
-      {props.icon && <i id="icon" className={props.icon} onClick={props.onClick} />}
+      {props.icon && <i id='icon' className={props.icon} onClick={props.onClick} />}
     </div>
   )
 }

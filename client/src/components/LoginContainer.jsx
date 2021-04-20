@@ -5,7 +5,7 @@ import axios from '../constants/axios'
 
 class LoginContainer extends Component {
   state = {
-    user: "gpd",
+    user: 'gpd',
     email: '',
     password: '',
     error: ''
@@ -24,13 +24,13 @@ class LoginContainer extends Component {
   }
 
   switchUser = (e) => {
-    if (this.state.user === "gpd") {
+    if (this.state.user === 'gpd') {
       this.setState({
-        user: "student"
+        user: 'student'
       })
     } else {
       this.setState({
-        user: "gpd"
+        user: 'gpd'
       })
     }
   }
@@ -50,7 +50,7 @@ class LoginContainer extends Component {
       }
     }).then(response => {
       localStorage.setItem('jwt-token', response.data[0])
-      console.log("login response", response.data[1])
+      console.log('login response', response.data[1])
       this.props.setLoggedIn(true, user, response.data[1])
       document.onkeyup = null
     }).catch(err => {
@@ -64,53 +64,53 @@ class LoginContainer extends Component {
     document.onkeyup = this.handleKeyUp
     return (
       <div className='login-box'>
-        <div className="login-box-top">
-          <h2 className="login-heading">
+        <div className='login-box-top'>
+          <h2 className='login-heading'>
             Welcome.
             <small>Stony Brook University <br />
             Masters Student Tracking System</small>
           </h2>
         </div>
-        <hr className="login-title" />
-        <div className="login-item">
+        <hr className='login-title' />
+        <div className='login-item'>
           <input
-            id="toggle-gpd"
-            className="toggle toggle-left"
-            name="toggle"
-            value="gpd"
-            type="radio"
+            id='toggle-gpd'
+            className='toggle toggle-left'
+            name='toggle'
+            value='gpd'
+            type='radio'
             onChange={this.switchUser}
             checked={this.state.user === 'gpd'}
           />
-          <label htmlFor="toggle-gpd" className="users gpd">GPD</label>
+          <label htmlFor='toggle-gpd' className='users gpd'>GPD</label>
           <input
-            id="toggle-student"
-            className="toggle toggle-right"
-            name="toggle"
-            value="student"
-            type="radio"
+            id='toggle-student'
+            className='toggle toggle-right'
+            name='toggle'
+            value='student'
+            type='radio'
             onChange={this.switchUser}
             checked={this.state.user === 'student'}
           />
-          <label htmlFor="toggle-student" className="users student">Student</label>
+          <label htmlFor='toggle-student' className='users student'>Student</label>
         </div>
         <InputField
-          className="login-item"
-          type="email"
-          placeholder="email"
+          className='login-item'
+          type='email'
+          placeholder='email'
           required
           value={this.state.email}
           onChange={this.setEmail}
         />
         <InputField
-          className="login-item"
-          type="password"
-          placeholder="password"
+          className='login-item'
+          type='password'
+          placeholder='password'
           required
           onChange={this.setPassword}
           value={this.state.password} />
-        <Button divclassName="login-item" variant="round" text="login" onClick={this.login} />
-        <span className="error center-span">{this.state.error}</span>
+        <Button divclassName='login-item' variant='round' text='login' onClick={this.login} />
+        <span className='error center-span'>{this.state.error}</span>
       </div>
     )
   }

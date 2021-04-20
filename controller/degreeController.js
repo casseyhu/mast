@@ -51,7 +51,6 @@ exports.findRequirements = (req, res) => {
 }
 
 exports.newStudentRequirements = (req, res) =>{
-  console.log("Here")
   Degree
     .findOne({
       where:{

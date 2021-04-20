@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Container from "react-bootstrap/Container"
+import Container from 'react-bootstrap/Container'
 import Pagination from 'react-bootstrap/Pagination'
 import Button from '../components/Button'
 import axios from '../constants/axios'
@@ -84,14 +84,14 @@ class Browse extends Component {
     let students = this.state.students
     let ascending = this.state.ascending[sortBy]
     students.sort(function (a, b) {
-      if (sortBy === "gradSemYear") {
-        let aGradSemYear = a.gradYear * 100 + (a.gradSem === "Fall" ? 8 : 2)
-        let bGradSemYear = b.gradYear * 100 + (b.gradSem === "Fall" ? 8 : 2)
+      if (sortBy === 'gradSemYear') {
+        let aGradSemYear = a.gradYear * 100 + (a.gradSem === 'Fall' ? 8 : 2)
+        let bGradSemYear = b.gradYear * 100 + (b.gradSem === 'Fall' ? 8 : 2)
         return ascending ? aGradSemYear - bGradSemYear : bGradSemYear - aGradSemYear
       }
-      if (typeof a[sortBy] === "string")
+      if (typeof a[sortBy] === 'string')
         return ascending ? a[sortBy].localeCompare(b[sortBy]) : b[sortBy].localeCompare(a[sortBy])
-      else if (typeof a[sortBy] === "number" || typeof a[sortBy] === "boolean")
+      else if (typeof a[sortBy] === 'number' || typeof a[sortBy] === 'boolean')
         if (a === null)
           return ascending ? 1 : -1
         else if (b === null)
@@ -151,47 +151,47 @@ class Browse extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.handleResize)
+    window.removeEventListener('resize', this.handleResize)
   }
 
   render() {
     let { students, page, numPerPage, maxPage } = this.state
     return (
-      <Container fluid className="container">
-        <div className="flex-horizontal justify-content-between">
+      <Container fluid className='container'>
+        <div className='flex-horizontal justify-content-between'>
           <h1>Browse Student</h1>
-          <Button variant="round" text="Add student" onClick={this.addStudent} style={{ marginTop: '1rem' }} />
+          <Button variant='round' text='Add student' onClick={this.addStudent} style={{ marginTop: '1rem' }} />
         </div>
         <BrowseSearchbar user={this.props.user} sortField={this.setSortField} filter={this.setFilter} />
-        <div className="studentTable">
-          <table className="mb-2">
+        <div className='studentTable'>
+          <table className='mb-2'>
             <thead>
-              <tr style={{ cursor: "pointer" }}>
-                <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("lastName", null)}>Last Name</th>
-                <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("firstName", null)}>First Name</th>
-                <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField("sbuId", null)}>Student ID</th>
-                <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField("satisfied", null)}>S/P/U</th>
-                <th scope='col' style={{ width: '8%' }} onClick={() => this.setSortField("department", null)}>Degree</th>
-                <th scope='col' style={{ width: '20%' }} onClick={() => this.setSortField("track", null)}>Track</th>
-                <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField("gpa", null)}>GPA</th>
-                <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField("entrySemYear", null)}>Entry</th>
-                <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField("gradSemYear", null)}>Grad</th>
-                <th scope='col' style={{ width: '8%' }} onClick={() => this.setSortField("graduated", null)}>Graduated</th>
+              <tr style={{ cursor: 'pointer' }}>
+                <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField('lastName', null)}>Last Name</th>
+                <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField('firstName', null)}>First Name</th>
+                <th scope='col' style={{ width: '12%' }} onClick={() => this.setSortField('sbuId', null)}>Student ID</th>
+                <th scope='col' style={{ width: '7%' }} onClick={() => this.setSortField('satisfied', null)}>S/P/U</th>
+                <th scope='col' style={{ width: '8%' }} onClick={() => this.setSortField('department', null)}>Degree</th>
+                <th scope='col' style={{ width: '20%' }} onClick={() => this.setSortField('track', null)}>Track</th>
+                <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField('gpa', null)}>GPA</th>
+                <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField('entrySemYear', null)}>Entry</th>
+                <th scope='col' style={{ width: '6%' }} onClick={() => this.setSortField('gradSemYear', null)}>Grad</th>
+                <th scope='col' style={{ width: '8%' }} onClick={() => this.setSortField('graduated', null)}>Graduated</th>
               </tr>
             </thead>
             <tbody>
               {students.slice((page - 1) * numPerPage, page * numPerPage).map((student, i) => {
                 return <tr key={i} onClick={(e) => this.viewStudent(student)} style={{ cursor: 'pointer' }}>
-                  <td className="padleft">{student.lastName}</td>
-                  <td className="padleft">{student.firstName}</td>
-                  <td className="padleft">{student.sbuId}</td>
-                  <td className="center">{student.satisfied}/{student.pending}/{student.unsatisfied}</td>
-                  <td className="center">{student.department}</td>
-                  <td className="center">{student.track.substring(0, 22)}{student.track.length > 22 ? '...' : ''}</td>
-                  <td className="center">{(student.gpa === null) ? "N/A" : Number(student.gpa).toFixed(2)}</td>
-                  <td className="center">{student.entrySem.slice(0, 2)} {student.entryYear % 2000}</td>
-                  <td className="center">{student.gradSem.slice(0, 2)} {student.gradYear % 2000}</td>
-                  <td className="center">{student.graduated ? "Yes" : "No"}</td>
+                  <td className='padleft'>{student.lastName}</td>
+                  <td className='padleft'>{student.firstName}</td>
+                  <td className='padleft'>{student.sbuId}</td>
+                  <td className='center'>{student.satisfied}/{student.pending}/{student.unsatisfied}</td>
+                  <td className='center'>{student.department}</td>
+                  <td className='center'>{student.track.substring(0, 22)}{student.track.length > 22 ? '...' : ''}</td>
+                  <td className='center'>{(student.gpa === null) ? 'N/A' : Number(student.gpa).toFixed(2)}</td>
+                  <td className='center'>{student.entrySem.slice(0, 2)} {student.entryYear % 2000}</td>
+                  <td className='center'>{student.gradSem.slice(0, 2)} {student.gradYear % 2000}</td>
+                  <td className='center'>{student.graduated ? 'Yes' : 'No'}</td>
                 </tr>
               })}
             </tbody>
