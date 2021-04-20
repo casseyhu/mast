@@ -220,7 +220,7 @@ exports.findById = (req, res) => {
   })
 }
 
-// Filter all students by filters
+// Filter all students by filters provided by the user. 
 exports.filter = (req, res) => {
   let info = req.query.nameId.replace(/\s+/g, ' ').trim().split(' ')
   let filters = null
@@ -232,168 +232,28 @@ exports.filter = (req, res) => {
         { sbuId: { [Op.like]: info[0] + '%' } }
       ]
     }
-  } else if (info.length == 2) {
+  }
+  else if (info.length == 2) {
     filters = {
-      [Op.or]: [{
-        [Op.and]: [{
-          firstName: {
-            [Op.like]: info[0] + '%'
-          }
-        }, {
-          lastName: {
-            [Op.like]: info[1] + '%'
-          }
-        }]
-      },
-      {
-        [Op.and]: [{
-          lastName: {
-            [Op.like]: info[0] + '%'
-          }
-        }, {
-          firstName: {
-            [Op.like]: info[1] + '%'
-          }
-        }]
-      },
-      {
-        [Op.and]: [{
-          firstName: {
-            [Op.like]: info[0] + '%'
-          }
-        }, {
-          sbuId: {
-            [Op.like]: info[1] + '%'
-          }
-        }]
-      },
-      {
-        [Op.and]: [{
-          sbuId: {
-            [Op.like]: info[0] + '%'
-          }
-        }, {
-          firstName: {
-            [Op.like]: info[1] + '%'
-          }
-        }]
-      },
-      {
-        [Op.and]: [{
-          lastName: {
-            [Op.like]: info[0] + '%'
-          }
-        }, {
-          sbuId: {
-            [Op.like]: info[1] + '%'
-          }
-        }]
-      },
-      {
-        [Op.and]: [{
-          sbuId: {
-            [Op.like]: info[0] + '%'
-          }
-        }, {
-          lastName: {
-            [Op.like]: info[1] + '%'
-          }
-        }]
-      }
+      [Op.or]: [
+        { [Op.and]: [{ firstName: { [Op.like]: info[0] + '%' } }, { lastName: { [Op.like]: info[1] + '%' } }] },
+        { [Op.and]: [{ lastName: { [Op.like]: info[0] + '%' } }, { firstName: { [Op.like]: info[1] + '%' } }] },
+        { [Op.and]: [{ firstName: { [Op.like]: info[0] + '%' } }, { sbuId: { [Op.like]: info[1] + '%' } }] },
+        { [Op.and]: [{ sbuId: { [Op.like]: info[0] + '%' } }, { firstName: { [Op.like]: info[1] + '%' } }] },
+        { [Op.and]: [{ lastName: { [Op.like]: info[0] + '%' } }, { sbuId: { [Op.like]: info[1] + '%' } }] },
+        { [Op.and]: [{ sbuId: { [Op.like]: info[0] + '%' } }, { lastName: { [Op.like]: info[1] + '%' } }] }
       ]
     }
-  } else {
+  }
+  else {
     filters = {
-      [Op.or]: [{
-        [Op.and]: [{
-          firstName: {
-            [Op.like]: info[0] + '%'
-          }
-        }, {
-          lastName: {
-            [Op.like]: info[1] + '%'
-          }
-        }, {
-          sbuId: {
-            [Op.like]: info[2] + '%'
-          }
-        }]
-      },
-      {
-        [Op.and]: [{
-          firstName: {
-            [Op.like]: info[0] + '%'
-          }
-        }, {
-          sbuId: {
-            [Op.like]: info[1] + '%'
-          }
-        }, {
-          lastName: {
-            [Op.like]: info[2] + '%'
-          }
-        }]
-      },
-      {
-        [Op.and]: [{
-          lastName: {
-            [Op.like]: info[0] + '%'
-          }
-        }, {
-          firstName: {
-            [Op.like]: info[1] + '%'
-          }
-        }, {
-          sbuId: {
-            [Op.like]: info[2] + '%'
-          }
-        }]
-      },
-      {
-        [Op.and]: [{
-          lastName: {
-            [Op.like]: info[0] + '%'
-          }
-        }, {
-          sbuId: {
-            [Op.like]: info[1] + '%'
-          }
-        }, {
-          firstName: {
-            [Op.like]: info[2] + '%'
-          }
-        }]
-      },
-      {
-        [Op.and]: [{
-          sbuId: {
-            [Op.like]: info[0] + '%'
-          }
-        }, {
-          firstName: {
-            [Op.like]: info[1] + '%'
-          }
-        }, {
-          lastName: {
-            [Op.like]: info[2] + '%'
-          }
-        }]
-      },
-      {
-        [Op.and]: [{
-          sbuId: {
-            [Op.like]: info[0] + '%'
-          }
-        }, {
-          lastName: {
-            [Op.like]: info[1] + '%'
-          }
-        }, {
-          firstName: {
-            [Op.like]: info[1] + '%'
-          }
-        }]
-      }
+      [Op.or]: [
+        { [Op.and]: [{ firstName: { [Op.like]: info[0] + '%' } }, { lastName: { [Op.like]: info[1] + '%' } }, { sbuId: { [Op.like]: info[2] + '%' } }] },
+        { [Op.and]: [{ firstName: { [Op.like]: info[0] + '%' } }, { sbuId: { [Op.like]: info[1] + '%' } }, { lastName: { [Op.like]: info[2] + '%' } }] },
+        { [Op.and]: [{ lastName: { [Op.like]: info[0] + '%' } }, { firstName: { [Op.like]: info[1] + '%' } }, { sbuId: { [Op.like]: info[2] + '%' } }] },
+        { [Op.and]: [{ lastName: { [Op.like]: info[0] + '%' } }, { sbuId: { [Op.like]: info[1] + '%' } }, { firstName: { [Op.like]: info[2] + '%' } }] },
+        { [Op.and]: [{ sbuId: { [Op.like]: info[0] + '%' } }, { firstName: { [Op.like]: info[1] + '%' } }, { lastName: { [Op.like]: info[2] + '%' } }] },
+        { [Op.and]: [{ sbuId: { [Op.like]: info[0] + '%' } }, { lastName: { [Op.like]: info[1] + '%' } }, { firstName: { [Op.like]: info[1] + '%' } }] }
       ]
     }
   }
@@ -401,33 +261,81 @@ exports.filter = (req, res) => {
     .findAll({
       where: {
         [Op.and]: filters,
-        department: {
-          [Op.like]: req.query.department
-        },
-        entrySem: {
-          [Op.like]: req.query.entrySem
-        },
-        entryYear: {
-          [Op.like]: req.query.entryYear
-        },
-        track: {
-          [Op.like]: req.query.track
-        },
-        gradSem: {
-          [Op.like]: req.query.gradSem
-        },
-        gradYear: {
-          [Op.like]: req.query.gradYear
-        },
-        graduated: {
-          [Op.like]: req.query.graduated
-        }
+        department: { [Op.like]: req.query.department },
+        entrySem: { [Op.like]: req.query.entrySem },
+        entryYear: { [Op.like]: req.query.entryYear },
+        track: { [Op.like]: req.query.track },
+        gradSem: { [Op.like]: req.query.gradSem },
+        gradYear: { [Op.like]: req.query.gradYear },
+        graduated: { [Op.like]: req.query.graduated }
       }
     })
     .then(students => {
-      res.send(students)
+      // Filter these `students` by CP Completeness and CP Validity, if the query was given. 
+      console.log('No complete/filter num students: ', students.length)
+      let completeFilter = req.query.complete
+      let validFilter = req.query.valid
+      if (req.query.complete === '%' && req.query.valid === '%') {
+        // If complete && valid queries were not given (user didn't apply this filter)...
+        res.send(students)
+      }
+      else {
+        console.log("Completeness or filter query was provided. Filtering...")
+        console.log("Complete: ", req.query.complete, " Valid: ", req.query.valid)
+        // ... Else, query the CoursePlans for the `filteredStudents` based on the which
+        // conditions were set (valid, complete, or valid&&complete). 
+        let complete = -1
+        if(req.query.complete !== '%')
+          complete = req.query.complete === '1%' ? 1 : 0 
+        let valid = -1
+        if(req.query.valid !== '%')
+          valid = req.query.valid === '1%' ? 1 : 0 
+        // Now, filter the `students` on `complete` and/or `valid'
+        let studentIds = students.map(student => student.sbuId)
+        let condition = {}
+        if (valid !== -1 && complete !== -1) {
+          condition = {
+            [Op.and]: [
+              { studentId: studentIds },
+              { coursePlanComplete: complete },
+              { coursePlanValid: valid }
+            ]
+          }
+        } else if (complete !== -1) {
+          condition = {
+            [Op.and]: [
+              { studentId: studentIds },
+              { coursePlanComplete: complete }
+            ]
+          }
+        } else if (valid !== -1) {
+          condition = {
+            [Op.and]: [
+              { studentId: studentIds },
+              { coursePlanValid: valid }
+            ]
+          }
+        }
+        CoursePlan
+          .findAll({ where: condition })
+          .then(coursePlans => {
+            // After filtering the already-filtered students by [completeness and valid]...
+            // Only return the students who matched the completeness/valid queries. 
+            let filteredStudentIds = coursePlans.map(coursePlan => coursePlan.studentId)
+            students = students.filter(student => filteredStudentIds.includes(student.sbuId))
+            console.log('C/V Filtered students: ', students.length)
+            res.send(students)
+          })
+          .catch(err => {
+            console.log(err)
+            res.status(500).send(students)
+          })
+      }
     })
     .catch(err => {
+      // If an error happens when filtering, we return 'Error: ' + err. This will crash
+      // the program when we get back to the Browse.jsx and it tries to show the 
+      // "filtered students"
       res.status(500).send('Error: ' + err)
     })
 }

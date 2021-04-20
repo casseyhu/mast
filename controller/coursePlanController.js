@@ -5,7 +5,6 @@ const fs = require('fs')
 const Papa = require('papaparse')
 
 const shared = require('./shared')
-
 const database = require('../config/database.js')
 const Op = database.Sequelize.Op
 
@@ -453,6 +452,7 @@ async function calculateCourseRequirement(credits, states, courseReq, student, c
 async function calculateCompletion(studentsPlanId, credits, res) {
   console.log('Calculating student CoursePlan completion...')
   let tot = 0
+  let degrees = {}
   // Loop through each student (key = sbu ID)
   for (let key in studentsPlanId) {
     // Keep track of total number of satisfied/pending/unsatisfied requirements
@@ -464,10 +464,10 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     // Find the student and all the degree requirement objects for students degree
     const student = await Student.findOne({ where: { sbuId: key } })
     const degree = await Degree.findOne({ where: { degreeId: student.degreeId } })
-    const creditReq = await CreditRequirement.findOne({ where: { requirementId: degree.creditRequirement } })
-    const gpaReq = await GpaRequirement.findOne({ where: { requirementId: degree.gpaRequirement } })
-    const gradeReq = await GradeRequirement.findOne({ where: { requirementId: degree.gradeRequirement } })
-    const courseReq = await CourseRequirement.findAll({ where: { requirementId: degree.courseRequirement } })
+    if (!degrees[student.degreeId])
+      degrees[student.degreeId] = await shared.findRequirements(degree)
+    const [gradeReq, gpaReq, creditReq, courseReq] = degrees[student.degreeId]
+
     // Get this student's coursePlan to see what courses they've taken/currently taken/are going to take.
     const coursePlanItems = await CoursePlanItem.findAll({ where: { coursePlanId: studentsPlanId[key] } })
     // List of course plan items with grades
@@ -669,40 +669,4 @@ exports.count = (req, res) => {
     })
 }
 
-
-exports.filterCV = (req, res) => {
-  let condition = { studentId: req.query.studentId }
-  complete = Number(req.query.complete)
-  valid = Number(req.query.valid)
-  if (valid !== -1 && complete !== -1) {
-    condition = {
-      [Op.and]: [
-        { studentId: req.query.studentId },
-        { coursePlanComplete: complete },
-        { coursePlanValid: valid }
-      ]
-    }
-  } else if (complete !== -1) {
-    condition = {
-      [Op.and]: [
-        { studentId: req.query.studentId },
-        { coursePlanComplete: complete }
-      ]
-    }
-  } else if (valid !== -1) {
-    condition = {
-      [Op.and]: [
-        { studentId: req.query.studentId },
-        { coursePlanValid: valid }
-      ]
-    }
-  }
-  CoursePlan
-    .findAll({ where: condition })
-    .then(results => res.status(200).send(results))
-    .catch(err => {
-      console.log(err)
-      res.status(500).send('Error')
-    })
-}
 

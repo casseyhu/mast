@@ -161,6 +161,7 @@ const Student = (props) => {
     history.push({
       pathname: '/courseplan',
       state: {
+        student: studentInfoParams.student,
         coursePlan: studentInfoParams.coursePlan
       }
     })
@@ -168,9 +169,11 @@ const Student = (props) => {
 
   const suggestCoursePlan = () => {
     localStorage.removeItem('filters')
+    console.log("Suggesting course plan for student: ", studentInfoParams.student)
     history.push({
       pathname: '/suggest',
       state: {
+        student: studentInfoParams.student,
         coursePlan: studentInfoParams.coursePlan
       }
     })
