@@ -12,7 +12,8 @@ type
           will have a type of 0 
         - The courseRequirement object that starts with "0:(,):(,)" will contain 
           all non required courses that can be used to satisfy the 
-          creditRequirement.
+          creditRequirement (if courses are not specified, then any course from the 
+          department can be used to fill up the creditRequirement)
         - These requirements will not be given a state.
     type = 1 
         - Represents the required list of course(s) that students should take.

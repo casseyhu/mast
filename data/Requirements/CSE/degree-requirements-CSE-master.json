@@ -14,8 +14,12 @@
             ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
             ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
             ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
             ["2:(2,2):(,)", "CSE523", "CSE524"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
+            ["0:(,):(,)"]
         ]
     },
     "degree2": {
@@ -33,9 +37,14 @@
             ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
             ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
             ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
             ["2:(1,1):(,)", "CSE522"],
             ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
-            ["0:(,):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"]
+            ["0:(,):(,)"]
         ]
     },
     "degree3": {
@@ -53,14 +62,17 @@
             ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
             ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
             ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
             ["2:(1,):(6,9)", "CSE599"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
+            ["0:(,):(,)"]
         ]
     },
     "degree4": { 
         "dept": "CSE",
-        "track": "Advanced Project",
-        "requirementVersion": 201908, 
+        "track": "Advanced Project Proficiency",
+        "requirementVersion": 201808, 
         "gradeRequirement": null,
         "creditRequirement": 31,
         "gpaRequirements": {
@@ -69,17 +81,22 @@
             "coreGpa": null
         },
         "courseRequirements": [ 
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
             ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
             ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
             ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
             ["2:(2,2):(,)", "CSE523", "CSE524"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
+            ["0:(,):(,)"]
         ]
     },
     "degree5": {
         "dept": "CSE",
-        "track": "Special Project",
-        "requirementVersion": 201908, 
+        "track": "Special Project Proficiency",
+        "requirementVersion": 201808, 
         "gradeRequirement": null,
         "creditRequirement": 31,
         "gpaRequirements": {
@@ -88,18 +105,24 @@
             "coreGpa": null
         },
         "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
             ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
             ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
             ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
             ["2:(1,1):(,)", "CSE522"],
             ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
-            ["0:(,):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"]
+            ["0:(,):(,)"]
         ]
     },
     "degree6": {
         "dept": "CSE",
-        "track": "Thesis",
-        "requirementVersion": 201908, 
+        "track": "Thesis Proficiency",
+        "requirementVersion": 201808, 
         "gradeRequirement": null,
         "creditRequirement": 31,
         "gpaRequirements": {
@@ -108,17 +131,21 @@
             "coreGpa": null
         },
         "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
             ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
             ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
             ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
             ["2:(1,):(6,9)", "CSE599"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
+            ["0:(,):(,)"]
         ]
     },
     "degree7": { 
         "dept": "CSE",
         "track": "Advanced Project",
-        "requirementVersion": 202008, 
+        "requirementVersion": 201908, 
         "gradeRequirement": null,
         "creditRequirement": 31,
         "gpaRequirements": {
@@ -130,14 +157,18 @@
             ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
             ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
             ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
             ["2:(2,2):(,)", "CSE523", "CSE524"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
+            ["0:(,):(,)"]
         ]
     },
     "degree8": {
         "dept": "CSE",
         "track": "Special Project",
-        "requirementVersion": 202008, 
+        "requirementVersion": 201908, 
         "gradeRequirement": null,
         "creditRequirement": 31,
         "gpaRequirements": {
@@ -149,14 +180,137 @@
             ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
             ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
             ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
             ["2:(1,1):(,)", "CSE522"],
             ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
-            ["0:(,):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"]
+            ["0:(,):(,)"]
         ]
     },
     "degree9": {
         "dept": "CSE",
         "track": "Thesis",
+        "requirementVersion": 201908, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree10": { 
+        "dept": "CSE",
+        "track": "Advanced Project Proficiency",
+        "requirementVersion": 201908, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree11": {
+        "dept": "CSE",
+        "track": "Special Project Proficiency",
+        "requirementVersion": 201908, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["2:(1,1):(,)", "CSE522"],
+            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree12": {
+        "dept": "CSE",
+        "track": "Thesis Proficiency",
+        "requirementVersion": 201908, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree13": { 
+        "dept": "CSE",
+        "track": "Advanced Project",
+        "requirementVersion": 202008, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree14": {
+        "dept": "CSE",
+        "track": "Special Project",
         "requirementVersion": 202008, 
         "gradeRequirement": null,
         "creditRequirement": 31,
@@ -169,110 +323,280 @@
             ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
             ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
             ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(1,):(6,9)", "CSE599"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
-        ]
-    },
-    "degree10": { 
-        "dept": "CSE",
-        "track": "Advanced Project",
-        "requirementVersion": 202108, 
-        "gradeRequirement": null,
-        "creditRequirement": 31,
-        "gpaRequirements": {
-            "cumulGpa": 3.0,
-            "deptGpa": null,
-            "coreGpa": null
-        },
-        "courseRequirements": [ 
-            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
-            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
-            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(2,2):(,)", "CSE523", "CSE524"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
-        ]
-    },
-    "degree11": {
-        "dept": "CSE",
-        "track": "Special Project",
-        "requirementVersion": 202108, 
-        "gradeRequirement": null,
-        "creditRequirement": 31,
-        "gpaRequirements": {
-            "cumulGpa": 3.0,
-            "deptGpa": null,
-            "coreGpa": null
-        },
-        "courseRequirements": [
-            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
-            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
-            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
             ["2:(1,1):(,)", "CSE522"],
             ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
-            ["0:(,):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"]
-        ]
-    },
-    "degree12": {
-        "dept": "CSE",
-        "track": "Thesis",
-        "requirementVersion": 202108, 
-        "gradeRequirement": null,
-        "creditRequirement": 31,
-        "gpaRequirements": {
-            "cumulGpa": 3.0,
-            "deptGpa": null,
-            "coreGpa": null
-        },
-        "courseRequirements": [
-            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
-            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
-            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(1,):(6,9)", "CSE599"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
-        ]
-    },
-    "degree13": { 
-        "dept": "CSE",
-        "track": "Advanced Project",
-        "requirementVersion": 202208, 
-        "gradeRequirement": null,
-        "creditRequirement": 31,
-        "gpaRequirements": {
-            "cumulGpa": 3.0,
-            "deptGpa": null,
-            "coreGpa": null
-        },
-        "courseRequirements": [ 
-            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
-            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
-            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(2,2):(,)", "CSE523", "CSE524"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
-        ]
-    },
-    "degree14": {
-        "dept": "CSE",
-        "track": "Special Project",
-        "requirementVersion": 202208, 
-        "gradeRequirement": null,
-        "creditRequirement": 31,
-        "gpaRequirements": {
-            "cumulGpa": 3.0,
-            "deptGpa": null,
-            "coreGpa": null
-        },
-        "courseRequirements": [
-            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
-            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
-            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(1,1):(,)", "CSE522"],
-            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
-            ["0:(,):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"]
+            ["0:(,):(,)"]
         ]
     },
     "degree15": {
         "dept": "CSE",
         "track": "Thesis",
+        "requirementVersion": 202008, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree16": { 
+        "dept": "CSE",
+        "track": "Advanced Project Proficiency",
+        "requirementVersion": 202008, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree17": {
+        "dept": "CSE",
+        "track": "Special Project Proficiency",
+        "requirementVersion": 202008, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["2:(1,1):(,)", "CSE522"],
+            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree18": {
+        "dept": "CSE",
+        "track": "Thesis Proficiency",
+        "requirementVersion": 202008, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree19": { 
+        "dept": "CSE",
+        "track": "Advanced Project",
+        "requirementVersion": 202108, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree20": {
+        "dept": "CSE",
+        "track": "Special Project",
+        "requirementVersion": 202108, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["2:(1,1):(,)", "CSE522"],
+            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree21": {
+        "dept": "CSE",
+        "track": "Thesis",
+        "requirementVersion": 202108, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree22": { 
+        "dept": "CSE",
+        "track": "Advanced Project Proficiency",
+        "requirementVersion": 202108, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree23": {
+        "dept": "CSE",
+        "track": "Special Project Proficiency",
+        "requirementVersion": 202108, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["2:(1,1):(,)", "CSE522"],
+            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree24": {
+        "dept": "CSE",
+        "track": "Thesis Proficiency",
+        "requirementVersion": 202108, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree25": { 
+        "dept": "CSE",
+        "track": "Advanced Project",
+        "requirementVersion": 202208, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree26": {
+        "dept": "CSE",
+        "track": "Special Project",
         "requirementVersion": 202208, 
         "gradeRequirement": null,
         "creditRequirement": 31,
@@ -285,226 +609,566 @@
             ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
             ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
             ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(1,):(6,9)", "CSE599"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
-        ]
-    },
-    "degree16": { 
-        "dept": "CSE",
-        "track": "Advanced Project",
-        "requirementVersion": 201802, 
-        "gradeRequirement": null,
-        "creditRequirement": 31,
-        "gpaRequirements": {
-            "cumulGpa": 3.0,
-            "deptGpa": null,
-            "coreGpa": null
-        },
-        "courseRequirements": [ 
-            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
-            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
-            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(2,2):(,)", "CSE523", "CSE524"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
-        ]
-    },
-    "degree17": {
-        "dept": "CSE",
-        "track": "Special Project",
-        "requirementVersion": 201802, 
-        "gradeRequirement": null,
-        "creditRequirement": 31,
-        "gpaRequirements": {
-            "cumulGpa": 3.0,
-            "deptGpa": null,
-            "coreGpa": null
-        },
-        "courseRequirements": [
-            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
-            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
-            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
             ["2:(1,1):(,)", "CSE522"],
             ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
-            ["0:(,):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"]
-        ]
-    },
-    "degree18": {
-        "dept": "CSE",
-        "track": "Thesis",
-        "requirementVersion": 201802, 
-        "gradeRequirement": null,
-        "creditRequirement": 31,
-        "gpaRequirements": {
-            "cumulGpa": 3.0,
-            "deptGpa": null,
-            "coreGpa": null
-        },
-        "courseRequirements": [
-            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
-            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
-            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(1,):(6,9)", "CSE599"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
-        ]
-    },
-    "degree19": { 
-        "dept": "CSE",
-        "track": "Advanced Project",
-        "requirementVersion": 201902, 
-        "gradeRequirement": null,
-        "creditRequirement": 31,
-        "gpaRequirements": {
-            "cumulGpa": 3.0,
-            "deptGpa": null,
-            "coreGpa": null
-        },
-        "courseRequirements": [ 
-            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
-            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
-            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(2,2):(,)", "CSE523", "CSE524"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
-        ]
-    },
-    "degree20": {
-        "dept": "CSE",
-        "track": "Special Project",
-        "requirementVersion": 201902, 
-        "gradeRequirement": null,
-        "creditRequirement": 31,
-        "gpaRequirements": {
-            "cumulGpa": 3.0,
-            "deptGpa": null,
-            "coreGpa": null
-        },
-        "courseRequirements": [
-            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
-            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
-            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(1,1):(,)", "CSE522"],
-            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
-            ["0:(,):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"]
-        ]
-    },
-    "degree21": {
-        "dept": "CSE",
-        "track": "Thesis",
-        "requirementVersion": 201902, 
-        "gradeRequirement": null,
-        "creditRequirement": 31,
-        "gpaRequirements": {
-            "cumulGpa": 3.0,
-            "deptGpa": null,
-            "coreGpa": null
-        },
-        "courseRequirements": [
-            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
-            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
-            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(1,):(6,9)", "CSE599"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
-        ]
-    },
-    "degree22": { 
-        "dept": "CSE",
-        "track": "Advanced Project",
-        "requirementVersion": 202002, 
-        "gradeRequirement": null,
-        "creditRequirement": 31,
-        "gpaRequirements": {
-            "cumulGpa": 3.0,
-            "deptGpa": null,
-            "coreGpa": null
-        },
-        "courseRequirements": [ 
-            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
-            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
-            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(2,2):(,)", "CSE523", "CSE524"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
-        ]
-    },
-    "degree23": {
-        "dept": "CSE",
-        "track": "Special Project",
-        "requirementVersion": 202002, 
-        "gradeRequirement": null,
-        "creditRequirement": 31,
-        "gpaRequirements": {
-            "cumulGpa": 3.0,
-            "deptGpa": null,
-            "coreGpa": null
-        },
-        "courseRequirements": [
-            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
-            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
-            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(1,1):(,)", "CSE522"],
-            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
-            ["0:(,):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"]
-        ]
-    },
-    "degree24": {
-        "dept": "CSE",
-        "track": "Thesis",
-        "requirementVersion": 202002, 
-        "gradeRequirement": null,
-        "creditRequirement": 31,
-        "gpaRequirements": {
-            "cumulGpa": 3.0,
-            "deptGpa": null,
-            "coreGpa": null
-        },
-        "courseRequirements": [
-            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
-            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
-            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(1,):(6,9)", "CSE599"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
-        ]
-    },
-    "degree35": { 
-        "dept": "CSE",
-        "track": "Advanced Project",
-        "requirementVersion": 202102, 
-        "gradeRequirement": null,
-        "creditRequirement": 31,
-        "gpaRequirements": {
-            "cumulGpa": 3.0,
-            "deptGpa": null,
-            "coreGpa": null
-        },
-        "courseRequirements": [ 
-            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
-            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
-            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(2,2):(,)", "CSE523", "CSE524"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
-        ]
-    },
-    "degree26": {
-        "dept": "CSE",
-        "track": "Special Project",
-        "requirementVersion": 202102, 
-        "gradeRequirement": null,
-        "creditRequirement": 31,
-        "gpaRequirements": {
-            "cumulGpa": 3.0,
-            "deptGpa": null,
-            "coreGpa": null
-        },
-        "courseRequirements": [
-            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
-            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
-            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(1,1):(,)", "CSE522"],
-            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
-            ["0:(,):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"]
+            ["0:(,):(,)"]
         ]
     },
     "degree27": {
         "dept": "CSE",
         "track": "Thesis",
+        "requirementVersion": 202208, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree28": { 
+        "dept": "CSE",
+        "track": "Advanced Project Proficiency",
+        "requirementVersion": 202208, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree29": {
+        "dept": "CSE",
+        "track": "Special Project Proficiency",
+        "requirementVersion": 202208, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["2:(1,1):(,)", "CSE522"],
+            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree30": {
+        "dept": "CSE",
+        "track": "Thesis Proficiency",
+        "requirementVersion": 202208, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree31": { 
+        "dept": "CSE",
+        "track": "Advanced Project",
+        "requirementVersion": 201802, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree32": {
+        "dept": "CSE",
+        "track": "Special Project",
+        "requirementVersion": 201802, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["2:(1,1):(,)", "CSE522"],
+            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree33": {
+        "dept": "CSE",
+        "track": "Thesis",
+        "requirementVersion": 201802, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree34": { 
+        "dept": "CSE",
+        "track": "Advanced Project Proficiency",
+        "requirementVersion": 201802, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree35": {
+        "dept": "CSE",
+        "track": "Special Project Proficiency",
+        "requirementVersion": 201802, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["2:(1,1):(,)", "CSE522"],
+            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree36": {
+        "dept": "CSE",
+        "track": "Thesis Proficiency",
+        "requirementVersion": 201802, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree37": { 
+        "dept": "CSE",
+        "track": "Advanced Project",
+        "requirementVersion": 201902, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree38": {
+        "dept": "CSE",
+        "track": "Special Project",
+        "requirementVersion": 201902, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["2:(1,1):(,)", "CSE522"],
+            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree39": {
+        "dept": "CSE",
+        "track": "Thesis",
+        "requirementVersion": 201902, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree40": { 
+        "dept": "CSE",
+        "track": "Advanced Project Proficiency",
+        "requirementVersion": 201902, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree41": {
+        "dept": "CSE",
+        "track": "Special Project Proficiency",
+        "requirementVersion": 201902, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["2:(1,1):(,)", "CSE522"],
+            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree42": {
+        "dept": "CSE",
+        "track": "Thesis Proficiency",
+        "requirementVersion": 201902, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree43": { 
+        "dept": "CSE",
+        "track": "Advanced Project",
+        "requirementVersion": 202002, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree44": {
+        "dept": "CSE",
+        "track": "Special Project",
+        "requirementVersion": 202002, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["2:(1,1):(,)", "CSE522"],
+            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree45": {
+        "dept": "CSE",
+        "track": "Thesis",
+        "requirementVersion": 202002, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree46": { 
+        "dept": "CSE",
+        "track": "Advanced Project Proficiency",
+        "requirementVersion": 202002, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree47": {
+        "dept": "CSE",
+        "track": "Special Project Proficiency",
+        "requirementVersion": 202002, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["2:(1,1):(,)", "CSE522"],
+            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree48": {
+        "dept": "CSE",
+        "track": "Thesis Proficiency",
+        "requirementVersion": 202002, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree49": { 
+        "dept": "CSE",
+        "track": "Advanced Project",
+        "requirementVersion": 202102, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree50": {
+        "dept": "CSE",
+        "track": "Special Project",
         "requirementVersion": 202102, 
         "gradeRequirement": null,
         "creditRequirement": 31,
@@ -517,11 +1181,112 @@
             ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
             ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
             ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
-            ["2:(1,):(6,9)", "CSE599"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["2:(1,1):(,)", "CSE522"],
+            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
+            ["0:(,):(,)"]
         ]
     },
-    "degree28": { 
+    "degree51": {
+        "dept": "CSE",
+        "track": "Thesis",
+        "requirementVersion": 202102, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree52": { 
+        "dept": "CSE",
+        "track": "Advanced Project Proficiency",
+        "requirementVersion": 202102, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree53": {
+        "dept": "CSE",
+        "track": "Special Project Proficiency",
+        "requirementVersion": 202102, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["2:(1,1):(,)", "CSE522"],
+            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree54": {
+        "dept": "CSE",
+        "track": "Thesis Proficiency",
+        "requirementVersion": 202102, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree55": { 
         "dept": "CSE",
         "track": "Advanced Project",
         "requirementVersion": 202202, 
@@ -536,11 +1301,15 @@
             ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
             ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
             ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
             ["2:(2,2):(,)", "CSE523", "CSE524"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
+            ["0:(,):(,)"]
         ]
     },
-    "degree29": {
+    "degree56": {
         "dept": "CSE",
         "track": "Special Project",
         "requirementVersion": 202202, 
@@ -555,12 +1324,17 @@
             ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
             ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
             ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
             ["2:(1,1):(,)", "CSE522"],
             ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
-            ["0:(,):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"]
+            ["0:(,):(,)"]
         ]
     },
-    "degree30": {
+    "degree57": {
         "dept": "CSE",
         "track": "Thesis",
         "requirementVersion": 202202, 
@@ -575,8 +1349,84 @@
             ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
             ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
             ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
             ["2:(1,):(6,9)", "CSE599"],
-            ["0:(,):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"]
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree58": { 
+        "dept": "CSE",
+        "track": "Advanced Project Proficiency",
+        "requirementVersion": 202202, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [ 
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(2,2):(,)", "CSE523", "CSE524"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree59": {
+        "dept": "CSE",
+        "track": "Special Project Proficiency",
+        "requirementVersion": 202202, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["1:(1,1):(,)", "CSE507","CSE510","CSE511","CSE514","CSE515","CSE516","CSE517","CSE518","CSE521","CSE525","CSE529","CSE530","CSE531","CSE533","CSE536","CSE542","CSE544","CSE545","CSE546","CSE550","CSE551","CSE552","CSE555","CSE564","CSE570","CSE577"],
+            ["2:(1,1):(,)", "CSE522"],
+            ["0:(,):(,6)", "CSE590", "CSE591", "CSE592", "CSE593", "CSE594", "CSE595","CSE602","CSE605","CSE608","CSE610","CSE613","CSE614","CSE615","CSE617","CSE620","CSE621","CSE624","CSE625","CSE626","CSE628","CSE633","CSE638"],
+            ["0:(,):(,)"]
+        ]
+    },
+    "degree60": {
+        "dept": "CSE",
+        "track": "Thesis Proficiency",
+        "requirementVersion": 202202, 
+        "gradeRequirement": null,
+        "creditRequirement": 31,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": null
+        },
+        "courseRequirements": [
+            ["1:(1,):(,)", "CSE581", "CSE582", "CSE587"],
+            ["1:(1,1):(,)", "CSE512", "CSE526", "CSE540", "CSE541", "CSE547", "CSE548", "CSE549"],
+            ["1:(1,1):(,)", "CSE502", "CSE504", "CSE506", "CSE508", "CSE509", "CSE532", "CSE534", "CSE535"],
+            ["1:(1,1):(,)", "CSE505", "CSE519", "CSE527", "CSE528", "CSE537", "CSE538", "CSE564"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["1:(1,1):(,)", "CSE507", "CSE510", "CSE511", "CSE514", "CSE515", "CSE516", "CSE517", "CSE518", "CSE521", "CSE525", "CSE529", "CSE530", "CSE531", "CSE533", "CSE536", "CSE542", "CSE544", "CSE545", "CSE546", "CSE550", "CSE551", "CSE552", "CSE555", "CSE570", "CSE577", "CSE590", "CSE591", "CSE592", "CSE594", "CSE595", "CSE602", "CSE605", "CSE608", "CSE610", "CSE613", "CSE614", "CSE615", "CSE617", "CSE620", "CSE621", "CSE624", "CSE625", "CSE626", "CSE628", "CSE633", "CSE638"],
+            ["2:(1,):(6,9)", "CSE599"],
+            ["0:(,):(,)"]
         ]
     }
 }
