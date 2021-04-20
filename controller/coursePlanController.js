@@ -671,39 +671,3 @@ exports.count = (req, res) => {
   })
 }
 
-exports.filterCV = (req, res) => {
-  let condition = { studentId: req.query.studentId }
-  complete = Number(req.query.complete)
-  valid = Number(req.query.valid)
-  if (valid !== -1 && complete !== -1) {
-    condition = {
-      [Op.and]: [
-        { studentId: req.query.studentId },
-        { coursePlanComplete: complete },
-        { coursePlanValid: valid }
-      ]
-    }
-  } else if (complete !== -1) {
-    condition = {
-      [Op.and]: [
-        { studentId: req.query.studentId },
-        { coursePlanComplete: complete }
-      ]
-    }
-  } else if (valid !== -1) {
-    condition = {
-      [Op.and]: [
-        { studentId: req.query.studentId },
-        { coursePlanValid: valid }
-      ]
-    }
-  }
-  CoursePlan
-    .findAll({ where: condition })
-    .then(results => res.status(200).send(results))
-    .catch(err => {
-      console.log(err)
-      res.status(500).send('Error')
-    })
-}
-

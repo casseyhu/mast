@@ -19,15 +19,16 @@ const Suggest = (props) => {
   }, [props])
 
   useEffect(() => {
-    console.log(props)
+    // console.log(props.location.state.student)
   }, [])
+  
   return (
     <Container fluid="lg" className="container">
       <div className="flex-horizontal justify-content-between">
         <h1>Suggest Course Plan</h1>
         <Button variant="round" text="Save Changes" />
       </div>
-      <h4>Student:</h4>
+      <h4>Student: </h4>
     </Container>
   );
 }
