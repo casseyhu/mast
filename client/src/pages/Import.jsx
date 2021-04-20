@@ -104,9 +104,9 @@ const Import = (props) => {
                       <React.Fragment key={id}>
                         {affectedStudents[id].map(item => {
                           return (
-                            <tr key={id + item.identifier}>
+                            <tr key={id + (item.identifier ? item.identifier : item.courseId)}>
                               <td>{id}</td>
-                              <td>{item.identifier}</td>
+                              <td>{(item.identifier ? item.identifier : item.courseId)}</td>
                               <td>{item.semester}</td>
                               <td>{item.year}</td>
                             </tr>
