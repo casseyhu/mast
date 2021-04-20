@@ -285,11 +285,11 @@ exports.filter = (req, res) => {
         // ... Else, query the CoursePlans for the `filteredStudents` based on the which
         // conditions were set (valid, complete, or valid&&complete). 
         let complete = -1
-        if(req.query.complete !== '%')
-          complete = req.query.complete === '1%' ? 1 : 0 
+        if (req.query.complete !== '%')
+          complete = req.query.complete === '1%' ? 1 : 0
         let valid = -1
-        if(req.query.valid !== '%')
-          valid = req.query.valid === '1%' ? 1 : 0 
+        if (req.query.valid !== '%')
+          valid = req.query.valid === '1%' ? 1 : 0
         // Now, filter the `students` on `complete` and/or `valid'
         let studentIds = students.map(student => student.sbuId)
         let condition = {}
@@ -356,23 +356,6 @@ exports.findAll = (req, res) => {
     })
 }
 
-// Delete a Student
-exports.delete = (req, res) => {
-  Student
-    .destroy({
-      where: {
-        sbuId: req.params.sbuId
-      }
-    })
-    .then(() => {
-      res.status(200).send('Student deleted!')
-    })
-    .catch(err => {
-      res.status(500).send('Error: ' + err)
-    })
-}
-
-// https://www.freecodecamp.org/news/node-js-child-processes-everything-you-need-to-know-e69498fe970a/
 
 
 // Delete all students from database. Used primarly for testing by GPD

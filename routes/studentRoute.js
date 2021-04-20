@@ -5,7 +5,7 @@ module.exports = function (app) {
   // Create a Student from Add Student 
   app.post('/api/student/create', Student.create)
 
-  //Update student's field based on id
+  // Update student's field based on id
   app.post('/api/student/update', Student.update)
 
   // Upload all students from CSV file
@@ -25,9 +25,6 @@ module.exports = function (app) {
 
   // Get all students
   app.get('/api/student', Student.findAll)
-
-  // Delete a student
-  app.delete('/api/student/:sbuId', Student.delete)
 
   // Delete all students
   app.post('/api/student/deleteAll', Student.deleteAll)

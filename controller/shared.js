@@ -1,6 +1,5 @@
 const database = require('../config/database.js')
 
-const Degree = database.Degree
 const GradeRequirement = database.GradeRequirement
 const GpaRequirement = database.GpaRequirement
 const CreditRequirement = database.CreditRequirement

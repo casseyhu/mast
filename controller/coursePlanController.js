@@ -6,7 +6,6 @@ const Papa = require('papaparse')
 
 const shared = require('./shared')
 const database = require('../config/database.js')
-const Op = database.Sequelize.Op
 
 const Student = database.Student
 const Course = database.Course
@@ -15,10 +14,6 @@ const CoursePlanItem = database.CoursePlanItem
 const CourseOffering = database.CourseOffering
 
 const Degree = database.Degree
-const GradeRequirement = database.GradeRequirement
-const GpaRequirement = database.GpaRequirement
-const CreditRequirement = database.CreditRequirement
-const CourseRequirement = database.CourseRequirement
 const RequirementState = database.RequirementState
 
 
