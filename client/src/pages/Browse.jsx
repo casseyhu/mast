@@ -73,35 +73,37 @@ class Browse extends Component {
         complete: this.state.filters['complete']
       }
     }).then(filteredStudents => {
+      this.setState({ students: filteredStudents.data }, this.handleResize)
+      this.setSortField(this.state.sortBy, this.state.ascending[this.state.sortBy])
       // If CP Validity && CP Complete were not provided values from the advanced options...
-      if (this.state.filters['complete'] === '%' && this.state.filters['valid'] === '%') {
-        this.setState({ students: filteredStudents.data }, this.handleResize)
-        this.setSortField(this.state.sortBy, this.state.ascending[this.state.sortBy])
-      }
-      else {
-        // ... Else, query the CoursePlans for the `filteredStudents` based on the which
-        // conditions were set (valid, complete, or valid&&complete). 
-        let complete = -1
-        if (this.state.filters['complete'] !== '%')
-          complete = this.state.filters['complete'] === '1%' ? 1 : 0
-        let valid = -1
-        if (this.state.filters['valid'] !== '%')
-          valid = this.state.filters['valid'] === '1%' ? 0 : 1
-        axios.get('/courseplan/filterCompleteValid/', {
-          params: {
-            studentId: filteredStudents.data.map(student => student.sbuId),
-            complete: complete,
-            valid: valid
-          }
-        }).then(coursePlans => {
-          console.log('Students returned: ', coursePlans.data.length)
-          let studentIds = coursePlans.data.map(coursePlan => coursePlan.studentId)
-          filteredStudents.data = filteredStudents.data.filter(student => studentIds.includes(student.sbuId))
-          console.log('Set the filteredStudents.data')
-          this.setState({ students: filteredStudents.data }, this.handleResize)
-          this.setSortField(this.state.sortBy, this.state.ascending[this.state.sortBy])
-        })
-      }
+      // if (this.state.filters['complete'] === '%' && this.state.filters['valid'] === '%') {
+      //   this.setState({ students: filteredStudents.data }, this.handleResize)
+      //   this.setSortField(this.state.sortBy, this.state.ascending[this.state.sortBy])
+      // }
+      // else {
+      //   // ... Else, query the CoursePlans for the `filteredStudents` based on the which
+      //   // conditions were set (valid, complete, or valid&&complete). 
+      //   let complete = -1
+      //   if (this.state.filters['complete'] !== '%')
+      //     complete = this.state.filters['complete'] === '1%' ? 1 : 0
+      //   let valid = -1
+      //   if (this.state.filters['valid'] !== '%')
+      //     valid = this.state.filters['valid'] === '1%' ? 1 : 0
+      //   axios.get('/courseplan/filterCompleteValid/', {
+      //     params: {
+      //       studentId: filteredStudents.data.map(student => student.sbuId),
+      //       complete: complete,
+      //       valid: valid
+      //     }
+      //   }).then(coursePlans => {
+      //     console.log('Students returned: ', coursePlans.data.length)
+      //     let studentIds = coursePlans.data.map(coursePlan => coursePlan.studentId)
+      //     filteredStudents.data = filteredStudents.data.filter(student => studentIds.includes(student.sbuId))
+      //     console.log('Set the filteredStudents.data')
+      //     this.setState({ students: filteredStudents.data }, this.handleResize)
+      //     this.setSortField(this.state.sortBy, this.state.ascending[this.state.sortBy])
+      //   })
+      // }
     }).catch(err => {
       console.log(err)
     });
