@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import Container from "react-bootstrap/Container";
-import Button from '../components/Button';
+import React, { Component } from 'react'
+import Container from 'react-bootstrap/Container'
+import Button from '../components/Button'
 
 
 class CoursePlan extends Component {
@@ -11,14 +11,14 @@ class CoursePlan extends Component {
   }
   render() {
     return (
-      <Container fluid="lg" className="container">
-        <div className="flex-horizontal justify-content-between">
+      <Container fluid='lg' className='container'>
+        <div className='flex-horizontal justify-content-between'>
           <h1>Edit Course Plan</h1>
-          <Button variant="round" text="Save Changes" />
+          <Button variant='round' text='Save Changes' />
         </div>
       </Container>
-    );
+    )
   }
 }
 
-export default CoursePlan;
+export default CoursePlan

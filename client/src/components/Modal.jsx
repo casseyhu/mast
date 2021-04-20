@@ -1,6 +1,6 @@
 import React from 'react'
-import Modal from 'react-bootstrap/Modal';
-import Button from './Button';
+import Modal from 'react-bootstrap/Modal'
+import Button from './Button'
 
 const CenteredModal = (props) => {
   return (
@@ -8,40 +8,43 @@ const CenteredModal = (props) => {
       onClick={props.onClick}
       show={props.show}
       onHide={props.onHide}
-      size="md"
-      aria-labelledby="contained-modal-title-vcenter"
+      size='md'
+      aria-labelledby='contained-modal-title-vcenter'
       centered
-      backdrop="static"
+      backdrop='static'
       animation={false}
       scrollable={props.scrollable}
     >
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          {props.variant === "multi" ? "Please Confirm" : "Success"}
+        <Modal.Title id='contained-modal-title-vcenter'>
+          {props.variant === 'multi' ? 'Please Confirm' : 'Success'}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body className="flex-vertical center">
+      <Modal.Body className='flex-vertical center'>
         {props.body}
       </Modal.Body>
-      <div className="flex-horizontal justify-content-around pb-4">
-        {props.variant &&
+      <Modal.Footer className='center'>
+        {props.footer}
+      </Modal.Footer>
+        <div className='flex-horizontal justify-content-around pb-4'>
+          {props.variant &&
+            <Button
+              className='bg-white'
+              variant='round'
+              text='Cancel'
+              onClick={props.onHide}
+              style={{ width: '120px' }}
+            />}
           <Button
-            className="bg-white"
-            variant="round"
-            text="Cancel"
-            onClick={props.onHide}
+            className='bg-white'
+            variant='round'
+            text={props.variant === 'multi' ? 'Confirm' : 'Ok'}
+            onClick={props.onConfirm}
             style={{ width: '120px' }}
-          />}
-        <Button
-          className="bg-white"
-          variant="round"
-          text={props.variant === "multi" ? "Confirm" : "Ok"}
-          onClick={props.onConfirm}
-          style={{ width: '120px' }}
-        />
-      </div>
+          />
+        </div>
     </Modal>
   )
 }
 
-export default CenteredModal;
+export default CenteredModal

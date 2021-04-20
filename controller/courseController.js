@@ -15,9 +15,9 @@ const Course = database.Course
  */
 exports.upload = (req, res) => {
   let form = new IncomingForm()
-  let depts = [];
-  let semester = '';
-  let year = '';
+  let depts = []
+  let semester = ''
+  let year = ''
   form
     .parse(req)
     // Get the fields that we want to scrape for
@@ -107,7 +107,7 @@ const scrapeCourses = (filePath, depts, semester, year, res) => {
   let courseNum = 0
   let name = ''
   let courseName = ''
-  let checkCourseName = false;
+  let checkCourseName = false
   /* temporary way to store description of course */
   let desc = ''
   /* add all courses to array that are in the dept variables */
@@ -147,7 +147,7 @@ const scrapeCourses = (filePath, depts, semester, year, res) => {
         // Check BIG department header
         if (s.fontName == 'Times' && s.str.length == 3 && isNaN(parseInt(s.str)) === true) {
           if (depts.includes(s.str) || exceptionDepts.includes(s.str)) {
-            target = s.str;
+            target = s.str
             checkOthers = false
           }
         }
@@ -185,17 +185,17 @@ const scrapeCourses = (filePath, depts, semester, year, res) => {
               // others = others.replace(' or permission of, instructor,', '')
               //console.log(chosenDept + courseNum)
               var foundSem = []
-              var tot = 0;
-              var creds = '';
+              var tot = 0
+              var creds = ''
               // The semesters mentioned in the pdf for each course
               for (let k = 0; k < sem.length; k++) {
                 if (others.includes(sem[k]) || desc.includes(sem[k])) {
-                  foundSem.push(sem[k]);
-                  tot += 1;
+                  foundSem.push(sem[k])
+                  tot += 1
                 }
               }
               if (tot == 0)
-                foundSem = ['Fall', 'Spring'];
+                foundSem = ['Fall', 'Spring']
               let prereqs = []
               // First check for description and see if it has prerequisites
               // if(desc.includes('Prerequisite')){
@@ -204,13 +204,13 @@ const scrapeCourses = (filePath, depts, semester, year, res) => {
               // }
               // First check for description and see prerequisites
               if (desc.includes('Prerequisite: ')) {
-                let index = desc.indexOf('Prerequisite: ') + 14;
-                let course = desc.substring(index, index + 7);
+                let index = desc.indexOf('Prerequisite: ') + 14
+                let course = desc.substring(index, index + 7)
                 if (isNaN(parseInt(course.substring(4, 7))) == false) {
                   if (parseInt(course.substring(4, 7)) >= 500) {
-                    course = course.replace(' ', '');
+                    course = course.replace(' ', '')
                     if (!prereqs.includes(course))
-                      prereqs.push(course);
+                      prereqs.push(course)
                   }
                 }
               } else if (desc.includes('Prerequisites: ')) {
@@ -232,49 +232,49 @@ const scrapeCourses = (filePath, depts, semester, year, res) => {
                     prereqs.push(fullPrereqs)
                 }
               }
-              others = others.replace('Prerequisite: ', '');
-              others = others.replace('Prerequisites: ', '');
+              others = others.replace('Prerequisite: ', '')
+              others = others.replace('Prerequisites: ', '')
               if (others.includes('Prerequisite for')) {
-                let cIndex = others.indexOf(':');
-                others = others.substring(cIndex + 2); //ignore the extra space
+                let cIndex = others.indexOf(':')
+                others = others.substring(cIndex + 2) //ignore the extra space
               }
-              let course = others.substring(0, 7);
+              let course = others.substring(0, 7)
               if (isNaN(parseInt(course.substring(4, 7))) == false) {
                 if (parseInt(course.substring(4, 7)) >= 500) {
-                  others = others.replace(course, '');
-                  course = course.replace(' ', '');
+                  others = others.replace(course, '')
+                  course = course.replace(' ', '')
                   if (!prereqs.includes(course))
-                    prereqs.push(course);
+                    prereqs.push(course)
                 } else {
-                  others = others.replace(course, '');
-                  course = course.replace(' ', '');
+                  others = others.replace(course, '')
+                  course = course.replace(' ', '')
                   if (others.includes('or ')) {
-                    others = others.replace('or', '');
+                    others = others.replace('or', '')
                     while (others.substring(0, 1) === ' ')
-                      others = others.substring(1);
-                    course = others.substring(0, 7);
+                      others = others.substring(1)
+                    course = others.substring(0, 7)
                     if (isNaN(parseInt(course.substring(4, 7))) == false) {
                       if (parseInt(course.substring(4, 7)) >= 500) {
-                        others = others.replace(course, '');
-                        course = course.replace(' ', '');
+                        others = others.replace(course, '')
+                        course = course.replace(' ', '')
                         if (!prereqs.includes(course))
-                          prereqs.push(course);
+                          prereqs.push(course)
                       }
                     }
                   }
                 }
               }
               if (others.includes(' credits') || others.includes(' credit')) {
-                let index = -1;
+                let index = -1
                 if (others.includes(' credits'))
-                  index = others.indexOf(' credits') - 1;
+                  index = others.indexOf(' credits') - 1
                 else if (others.includes(' credit'))
-                  index = others.indexOf(' credit') - 1;
+                  index = others.indexOf(' credit') - 1
                 while (index >= 0 &&
                   isNaN(parseInt(others.substring(index, index + 1))) ==
                   false && Number(others.substring(index, index + 1) + creds) <= 12) {
-                  creds = others.substring(index, index + 1) + creds;
-                  index--;
+                  creds = others.substring(index, index + 1) + creds
+                  index--
                 }
               }
               if (creds === '')
@@ -298,19 +298,19 @@ const scrapeCourses = (filePath, depts, semester, year, res) => {
                 year: Number(year)
               })
             }
-            chosenDept = '';
-            courseNum = '';
-            desc = '';
-            others = '';
-            checkOthers = false;
-            courseName = s.str;
-            checkCourseName = true;
+            chosenDept = ''
+            courseNum = ''
+            desc = ''
+            others = ''
+            checkOthers = false
+            courseName = s.str
+            checkCourseName = true
             skip = false
           } // end of checking course name header 
 
           // Continues if course + course name exceeds more than one line
           else if (!skip && checkCourseName && s.fontName == 'Helvetica')
-            courseName += ' ' + s.str;
+            courseName += ' ' + s.str
           // Start getting course descriptions
           else if (!skip && s.fontName == 'Times' && !s.str.includes('credits,') &&
             s.str.substring(0, 13) !== 'Prerequisites' &&
@@ -331,7 +331,7 @@ const scrapeCourses = (filePath, depts, semester, year, res) => {
                 name = courseName.substring(10, courseName.length)
                 // console.log(chosenDept + courseNum) //full course ([Dept] [CourseNum] + [CourseName])
               }
-              desc += (desc == '') ? s.str : ' ' + s.str;
+              desc += (desc == '') ? s.str : ' ' + s.str
             }
           }
           // First/second line of others
@@ -348,7 +348,7 @@ const scrapeCourses = (filePath, depts, semester, year, res) => {
                 skip = true
               name = courseName.substring(10, courseName.length)
             }
-            checkCourseName = false;
+            checkCourseName = false
             checkOthers = true
 
             if (others == '' && checkOthers)
@@ -358,17 +358,17 @@ const scrapeCourses = (filePath, depts, semester, year, res) => {
                 others.substring(others.length - 1) != ',') {
                 var c = s.str.substring(0, s.str.indexOf(' '))
                 if (isNaN(parseInt(c)) == false)
-                  others += s.str;
+                  others += s.str
                 else {
                   if (s.str.substring(0, 1) != ',' &&
                     others.substring(others.length - 1) != ',' &&
                     isNaN(parseInt(s.str))) {
-                    others += ', ' + s.str;
+                    others += ', ' + s.str
                   } else
-                    others += ' ' + s.str;
+                    others += ' ' + s.str
                 }
               } else
-                others += +s.str;
+                others += +s.str
             }
           }
         } // end of if (target)

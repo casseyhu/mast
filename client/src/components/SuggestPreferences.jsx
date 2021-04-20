@@ -18,7 +18,7 @@ const SuggestPreferences = (props) => {
   }, [props])
 
   const addCourse = (mode, course) => {
-    console.log("Here, ")
+    console.log('Here, ')
     console.log('Adding', course, 'to', mode, 'list')
     if (mode === 'preferred')
       setPreferred([...preferred, course])
@@ -44,7 +44,7 @@ const SuggestPreferences = (props) => {
         <div className='flex-horizontal'>
           <CoursePreferences
             department={props.department}
-            mode={"preferred"}
+            mode={'preferred'}
             addCourse={addCourse}
           />
         </div>
@@ -75,7 +75,7 @@ const SuggestPreferences = (props) => {
         <div className='flex-horizontal'>
           <CoursePreferences
             department={props.department}
-            mode={"avoid"}
+            mode={'avoid'}
             addCourse={addCourse}
           />
         </div>

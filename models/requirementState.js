@@ -32,7 +32,7 @@ module.exports = (sequelize, Sequelize) => {
         return this.getDataValue('metaData').split('`')
       },
       set(val) {
-        this.setDataValue('metaData', val.join('`'));
+        this.setDataValue('metaData', val.join('`'))
       }
     }
   }, {

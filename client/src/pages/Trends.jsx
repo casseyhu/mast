@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import ReactApexChart from 'react-apexcharts'
-import Container from 'react-bootstrap/Container';
+import Container from 'react-bootstrap/Container'
 import InputField from '../components/InputField'
-import Dropdown from '../components/Dropdown';
-import Button from '../components/Button';
-import axios from '../constants/axios';
+import Dropdown from '../components/Dropdown'
+import Button from '../components/Button'
+import axios from '../constants/axios'
 import { SEMESTERS, YEARS, SEMESTER_MONTH } from '../constants'
 
 
@@ -119,7 +119,6 @@ class Trends extends Component {
       for (let j = 0; j < rangeSems.length; j++) {
         courses[i] = courses[i].substring(0, 3).toUpperCase() + courses[i].substring(3, 6)
         let semYear = rangeSems[j].split(' ')
-        console.log(courses[i], semYear[0], semYear[1])
         let students = await axios.get('/courseplanitem/count/', {
           params: {
             courseId: courses[i],
@@ -275,8 +274,8 @@ class Trends extends Component {
         <ReactApexChart options={this.state.options} series={this.state.series} type='line' /*height={550}*/ />
 
       </Container >
-    );
+    )
   }
 }
 
-export default Trends;
+export default Trends

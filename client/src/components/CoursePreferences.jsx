@@ -30,7 +30,7 @@ const CoursePreferences = (props) => {
     // exists at all in this department (that is, we don't have this course in DB)
     console.log(deptCourses)
     if(!deptCourses[course]) {
-      console.log("Course doesnt exist")
+      console.log('Course doesnt exist')
       setErrMsg('Course ' + course + ' does not exist.')
       showError(true)
     }
@@ -43,30 +43,30 @@ const CoursePreferences = (props) => {
 
 
   return (
-    <div className="flex-vertical wrap" style={{ maxWidth: '530px' }}>
+    <div className='flex-vertical wrap' style={{ maxWidth: '530px' }}>
 
-      <div className="flex-horizontal justify-content-between">
+      <div className='flex-horizontal justify-content-between'>
         <span style={{paddingRight:'2rem'}}>
           {mode === 'avoid' ? 'Avoid' : 'Preferred'} Courses: 
         </span>
         <InputField
-            className="lr-padding"
-            type="text"
+            className='lr-padding'
+            type='text'
             disabled={false}
-            placeholder={"Course"}
+            placeholder={'Course'}
             value={course}
             onChange={e => setQuery(e.target.value)}
-            style={{ paddingRight: '0px', width: "210px", flexShrink: '1' }}
+            style={{ paddingRight: '0px', width: '210px', flexShrink: '1' }}
           />
         <Button
-          variant="round"
-          text="Add Course"
+          variant='round'
+          text='Add Course'
           onClick={e => checkCourse()}
         />
       </div>
       {error && 
-        <div className="flex-horizontal wrap" style={{ marginBottom: "0.5rem", width: '100%' }}>
-          <span className="error"><strong>{errorMessage}</strong></span>
+        <div className='flex-horizontal wrap' style={{ marginBottom: '0.5rem', width: '100%' }}>
+          <span className='error'><strong>{errorMessage}</strong></span>
         </div>
       }
 

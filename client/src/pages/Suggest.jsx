@@ -44,7 +44,7 @@ const Suggest = (props) => {
         />
       }
     </Container>
-  );
+  )
 }
 
-export default Suggest;
+export default Suggest
