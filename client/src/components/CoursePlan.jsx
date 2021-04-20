@@ -1,11 +1,11 @@
-import React from 'react';
-import Button from '../components/Button';
+import React from 'react'
+import Button from '../components/Button'
 
 const CoursePlan = (props) => {
   const sortBySem = (a, b) => {
-    let aSemYear = a.year * 100 + (a.semester === "Fall" ? 8 : 2);
-    let bSemYear = b.year * 100 + (b.semester === "Fall" ? 8 : 2);
-    return aSemYear - bSemYear;
+    let aSemYear = a.year * 100 + (a.semester === "Fall" ? 8 : 2)
+    let bSemYear = b.year * 100 + (b.semester === "Fall" ? 8 : 2)
+    return aSemYear - bSemYear
   }
 
   return (

@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 
 const Requirements = (props) => {
-  // const [credits, setCredits] = useState({});
-  const [gpas, setGpas] = useState({});
-  const [display, setDisplay] = useState(false);
-  const [totalCredits, setTotalCredits] = useState(null);
+  const [gpas, setGpas] = useState({})
+  const [display, setDisplay] = useState(false)
+  const [totalCredits, setTotalCredits] = useState(null)
 
-  // const semDict = { 'Fall': 8, 'Spring': 2, 'Winter': 1, 'Summer': 5 }
-  // const currSem = 'Spring'
-  // const currYear = 2021
   const grades = { 'A': 4, 'A-': 3.67, 'B+': 3.33, 'B': 3, 'B-': 2.67, 'C+': 2.33, 'C': 2, 'C-': 1.67, 'F': 0 }
 
   let { requirements, coursePlan, requirementStates } = props.studentInfo
@@ -28,40 +24,40 @@ const Requirements = (props) => {
   }
 
   const getText = (req) => {
-    let text = "";
-    let hasCreditBounds = false;
+    let text = ""
+    let hasCreditBounds = false
     if (req.type === 1)
-      text = "[Required] ";
+      text = "[Required] "
     else if (req.type === 2)
-      text = "[Track Required] ";
+      text = "[Track Required] "
     else if (req.type === 0)
-      return "[Non Required] ";
+      return "[Non Required] "
     if (req.creditUpper || req.creditLower) {
       if (req.creditUpper && req.creditLower) {
         if (req.creditUpper === req.creditLower)
-          text += req.creditLower + " credit(s)";
+          text += req.creditLower + " credit(s)"
         else
-          text += req.creditLower + "-" + req.creditUpper + " credit(s)";
+          text += req.creditLower + "-" + req.creditUpper + " credit(s)"
       }
       else if (req.creditUpper)
-        text += " up to " + req.creditUpper + " credit(s)";
+        text += " up to " + req.creditUpper + " credit(s)"
       else
-        text += " at least " + req.creditUpper + " credit(s)";
-      hasCreditBounds = true;
+        text += " at least " + req.creditUpper + " credit(s)"
+      hasCreditBounds = true
     }
     if (req.courseUpper || req.courseLower) {
       if (hasCreditBounds)
         text += " and "
       if (req.courseUpper && req.courseLower) {
         if (req.courseUpper === req.courseLower)
-          text += req.courseLower + " course(s)";
+          text += req.courseLower + " course(s)"
         else
-          text += req.courseLower + " to " + req.courseUpper + " course(s)";
+          text += req.courseLower + " to " + req.courseUpper + " course(s)"
       }
       else if (req.courseUpper)
-        text += " up to " + req.courseUpper + " course(s)";
+        text += " up to " + req.courseUpper + " course(s)"
       else
-        text += " at least " + req.courseLower + " course(s)";
+        text += " at least " + req.courseLower + " course(s)"
     }
     return text + " in: "
   }
@@ -73,20 +69,15 @@ const Requirements = (props) => {
 
   useEffect(() => {
     const getCreds = async () => {
-      // console.log(requirements)
-      // console.log(requirementStates)
-      // console.log(requirementStates['G' + requirements[1].requirementId])
       let gpas = requirementStates['G' + requirements[1].requirementId][1]
       setGpas({
         "cumulative": gpas[0],
         "department": gpas[2],
         "core": gpas[1]
-      });
-      // console.log('gpas: ' + gpas)
+      })
       let credits = requirementStates['CR' + requirements[2].requirementId][1]
       setTotalCredits(credits)
-      // console.log('credits: ' + credits)
-      setDisplay(true);
+      setDisplay(true)
     }
     if (requirements && coursePlan)
       getCreds()
@@ -160,4 +151,4 @@ const Requirements = (props) => {
   )
 }
 
-export default Requirements;
+export default Requirements

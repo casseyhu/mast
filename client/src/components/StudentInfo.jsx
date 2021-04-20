@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import InputField from './InputField';
-import Dropdown from './Dropdown';
-import Button from '../components/Button';
-import { BOOLEAN, DEPARTMENTS_REQ, SEMESTERS, MONTH_SEMESTER, YEARS, TRACKS } from '../constants';
-import { useHistory } from "react-router-dom";
-import axios from '../constants/axios';
+import InputField from './InputField'
+import Dropdown from './Dropdown'
+import Button from '../components/Button'
+import { BOOLEAN, DEPARTMENTS_REQ, SEMESTERS, MONTH_SEMESTER, YEARS, TRACKS } from '../constants'
+import { useHistory } from "react-router-dom"
+import axios from '../constants/axios'
 
 
 const StudentInfo = ({ student, mode, errorMessage, userType, setDegreeReq, onSubmit }) => {
-  const history = useHistory();
+  const history = useHistory()
   const [userInfo, setUserInfo] = useState({})
 
   // let { student, mode, errorMessage, userType, setDegreeReq, onSubmit } = props
@@ -250,8 +250,7 @@ const StudentInfo = ({ student, mode, errorMessage, userType, setDegreeReq, onSu
           style={{ minWidth: "375px" }} />
       </div>
     </div>
-  );
-
+  )
 }
 
-export default StudentInfo;
+export default StudentInfo

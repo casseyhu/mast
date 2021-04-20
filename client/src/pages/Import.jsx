@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import Container from "react-bootstrap/Container";
-import ImportItem from '../components/ImportItem';
-import Button from '../components/Button';
-import CenteredModal from '../components/Modal';
-import axios from '../constants/axios';
-import { SEMESTERS, YEARS, DEPARTMENTS_REQ } from '../constants';
+import React, { useState } from 'react'
+import Container from "react-bootstrap/Container"
+import ImportItem from '../components/ImportItem'
+import Button from '../components/Button'
+import CenteredModal from '../components/Modal'
+import axios from '../constants/axios'
+import { SEMESTERS, YEARS, DEPARTMENTS_REQ } from '../constants'
 
 const Import = (props) => {
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [overlay, setOverlay] = useState("none")
-  const [affectedStudents, setAffectedStudents] = useState({});
+  const [affectedStudents, setAffectedStudents] = useState({})
   const [showInvalid, setShowInvalid] = useState(false)
   const [showEmailConf, setShowEmailConf] = useState(false)
   const [visible, setVisible] = useState("hidden")
@@ -137,8 +137,8 @@ const Import = (props) => {
         <div className="overlay" style={{ display: overlay }}></div>
       </div>
     </Container>
-  );
+  )
 
 }
 
-export default Import;
+export default Import

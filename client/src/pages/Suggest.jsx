@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
-// import CoursePlan from '../components/CoursePlan';
-import Container from "react-bootstrap/Container";
-import Button from '../components/Button';
+import React, { Component } from 'react'
+import Container from "react-bootstrap/Container"
+import Button from '../components/Button'
 
 class Suggest extends Component {
   render() {
@@ -12,8 +11,8 @@ class Suggest extends Component {
           <Button variant="round" text="Save Changes" />
         </div>
       </Container>
-    );
+    )
   }
 }
 
-export default Suggest;
+export default Suggest

@@ -1,6 +1,6 @@
 import React from 'react'
-import Modal from 'react-bootstrap/Modal';
-import Button from './Button';
+import Modal from 'react-bootstrap/Modal'
+import Button from './Button'
 
 const CenteredModal = (props) => {
   return (
@@ -44,4 +44,4 @@ const CenteredModal = (props) => {
   )
 }
 
-export default CenteredModal;
+export default CenteredModal

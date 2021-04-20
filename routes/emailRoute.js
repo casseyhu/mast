@@ -1,7 +1,7 @@
 module.exports = function (app) {
-  const Email = require('../controller/emailController.js');
+  const Email = require('../controller/emailController.js')
 
   // Send email
-  app.post('/api/email/send', Email.send);
+  app.post('/api/email/send', Email.send)
 
 }

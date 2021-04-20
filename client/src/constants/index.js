@@ -6,7 +6,7 @@ export const SEMESTERS = [
   { value: 'Winter', label: 'Winter' },
   { value: 'Spring', label: 'Spring' },
   { value: 'Summer', label: 'Summer' }
-];
+]
 
 export const MONTH_SEMESTER = {
   '01': 'Winter',
@@ -31,7 +31,7 @@ export const YEARS = [
   { value: '2023', label: '2023' },
   { value: '2024', label: '2024' },
   { value: '2025', label: '2025' }
-];
+]
 
 export const DEPARTMENTS = [
   { value: '', label: 'All' },
@@ -39,14 +39,14 @@ export const DEPARTMENTS = [
   { value: 'BMI', label: 'BMI' },
   { value: 'CSE', label: 'CSE' },
   { value: 'ESE', label: 'ESE' }
-];
+]
 
 export const DEPARTMENTS_REQ = [
   { value: 'AMS', label: 'AMS' },
   { value: 'BMI', label: 'BMI' },
   { value: 'CSE', label: 'CSE' },
   { value: 'ESE', label: 'ESE' }
-];
+]
 
 export const BOOLEAN = [
   { value: 'True', label: 'True' },

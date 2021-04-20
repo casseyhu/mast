@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import InputField from './InputField';
-import Button from './Button';
-import axios from '../constants/axios';
+import React, { Component } from 'react'
+import InputField from './InputField'
+import Button from './Button'
+import axios from '../constants/axios'
 
 class LoginContainer extends Component {
   state = {
@@ -37,12 +37,12 @@ class LoginContainer extends Component {
 
   handleKeyUp = (e) => {
     if (e.key === 'Enter') {
-      this.login();
+      this.login()
     }
   }
 
   login = (e) => {
-    let { user } = this.state;
+    let { user } = this.state
     axios.get(`${user}/login/`, {
       params: {
         email: this.state.email,
@@ -50,18 +50,18 @@ class LoginContainer extends Component {
       }
     }).then(response => {
       localStorage.setItem('jwt-token', response.data[0])
-      console.log("login response", response.data[1]);
-      this.props.setLoggedIn(true, user, response.data[1]);
-      document.onkeyup = null;
+      console.log("login response", response.data[1])
+      this.props.setLoggedIn(true, user, response.data[1])
+      document.onkeyup = null
     }).catch(err => {
       console.log(err)
-      this.setState({ error: err.response.data });
+      this.setState({ error: err.response.data })
     })
     return
   }
 
   render() {
-    document.onkeyup = this.handleKeyUp;
+    document.onkeyup = this.handleKeyUp
     return (
       <div className='login-box'>
         <div className="login-box-top">
@@ -117,4 +117,4 @@ class LoginContainer extends Component {
 
 }
 
-export default LoginContainer;
+export default LoginContainer
