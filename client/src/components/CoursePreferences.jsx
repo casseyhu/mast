@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import InputField from './InputField';
-import Button from '../components/Button';
-import axios from '../constants/axios';
+import React, { useState, useEffect, useCallback } from 'react'
+import InputField from './InputField'
+import Button from '../components/Button'
+import axios from '../constants/axios'
 
 const CoursePreferences = (props) => {
   const [mode, setMode] = useState('')

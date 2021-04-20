@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import InputField from './InputField';
+import React, { useState, useEffect, useCallback } from 'react'
+import InputField from './InputField'
 import CoursePreferences from '../components/CoursePreferences'
 
 const SuggestPreferences = (props) => {
