@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Container from "react-bootstrap/Container"
+import Container from 'react-bootstrap/Container'
 import Dropdown from '../components/Dropdown'
 import { SEMESTERS, YEARS, CURRENT_SEMESTER, CURRENT_YEAR } from '../constants'
 import axios from '../constants/axios'
@@ -56,38 +56,38 @@ class Bulletin extends Component {
 
   render() {
     return (
-      <Container fluid="lg" className="container">
-        <div className="flex-horizontal justify-content-between">
+      <Container fluid='lg' className='container'>
+        <div className='flex-horizontal justify-content-between'>
           <h1>Bulletin</h1>
-          <div className="flex-horizontal" style={{ width: 'fit-content' }}>
+          <div className='flex-horizontal' style={{ width: 'fit-content' }}>
             <Dropdown
-              variant="single"
+              variant='single'
               items={SEMESTERS}
-              placeholder="Semester"
+              placeholder='Semester'
               value={{ label: this.state.semester, value: this.state.semester }}
               onChange={this.setSemester}
               style={{ margin: '1rem 1rem 0 0' }}
             />
             <Dropdown
-              variant="single"
+              variant='single'
               items={YEARS}
-              placeholder="Year"
+              placeholder='Year'
               value={{ label: this.state.year, value: this.state.year }}
               onChange={this.setYear}
               style={{ margin: '1rem 0 0 0' }}
             />
           </div>
         </div>
-        <div className="">
+        <div className=''>
           {this.state.courses.map(course => {
             return <div>
               <b style={{ borderBottom: '2px solid var(--grey)' }}>
-                {course.department + " " + course.courseNum}: {course.name}
+                {course.department + ' ' + course.courseNum}: {course.name}
               </b>
               <br />{course.description}<br />
-              <br /><b>Semesters:</b>{" " + course.semestersOffered.join(", ")}<br />
-              <b>Prerequisites:</b>{course.prereqs[0] !== "" ? " " + course.prereqs.toString().replace(",", ", ") : " None"} <br />
-              {course.credits} {(course.credits !== 1) ? "credits" : "credit"}
+              <br /><b>Semesters:</b>{' ' + course.semestersOffered.join(', ')}<br />
+              <b>Prerequisites:</b>{course.prereqs[0] !== '' ? ' ' + course.prereqs.toString().replace(',', ', ') : ' None'} <br />
+              {course.credits} {(course.credits !== 1) ? 'credits' : 'credit'}
               <br /> <br />
             </div>
           })}

@@ -1,25 +1,25 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import Container from "react-bootstrap/Container"
+import Container from 'react-bootstrap/Container'
 import CenteredModal from '../components/Modal'
 import StudentInfo from '../components/StudentInfo'
 import Requirements from '../components/Requirements'
 import CoursePlan from '../components/CoursePlan'
 import axios from '../constants/axios'
 import jwt_decode from 'jwt-decode'
-import { useHistory } from "react-router-dom"
+import { useHistory } from 'react-router-dom'
 
 const Student = (props) => {
   const history = useHistory()
 
-  const [errorMsg, setErrorMsg] = useState("")
+  const [errorMsg, setErrorMsg] = useState('')
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showEmailBox, setShowEmailBox] = useState(false)
   const [showEmailConf, setShowEmailConf] = useState(false)
   const [mode, setMode] = useState(props.location.state ? props.location.state.mode : props.mode)
   const [studentInfoParams, setStudentInfoParams] = useState({})
-  const [visible, setVisible] = useState("hidden")
+  const [visible, setVisible] = useState('hidden')
 
-  let student = props.student ? props.student : (props.location.state ? props.location.state.student : "Invalid")
+  let student = props.student ? props.student : (props.location.state ? props.location.state.student : 'Invalid')
 
   const setStudentInfo = useCallback(
     async () => {
@@ -55,7 +55,7 @@ const Student = (props) => {
 
 
   useEffect(() => {
-    // console.log("user: " + props.type)
+    // console.log('user: ' + props.type)
     if (mode === 'Add')
       return
     let token = localStorage.getItem('jwt-token')
@@ -67,13 +67,13 @@ const Student = (props) => {
 
 
   useEffect(() => {
-    if (student === "Invalid")
+    if (student === 'Invalid')
       history.push('/')
   }, [])
 
   const modeHandler = (studentInfo) => {
-    setErrorMsg("")
-    console.log("Page mode: ", mode)
+    setErrorMsg('')
+    console.log('Page mode: ', mode)
     if (mode === 'Add') {
       /* Add new student into the db */
       axios.post('student/create/', {
@@ -83,7 +83,7 @@ const Student = (props) => {
           ...prevState,
           student: response.data
         }))
-        setErrorMsg("")
+        setErrorMsg('')
         setShowConfirmation(true)
         setStudentInfo()
       }).catch(function (err) {
@@ -119,16 +119,16 @@ const Student = (props) => {
   }
 
   const notify = () => {
-    setVisible("visible")
+    setVisible('visible')
     axios.post('/email/send/', {
       params: {
         // email: studentInfoParams.student.email,
-        email: "eddie.xu@stonybrook.edu",
-        subject: "GPD updated comments",
-        text: "Check GPD's comments"
+        email: 'sooyeon.kim.2@stonybrook.edu',
+        subject: 'GPD updated comments',
+        text: 'Check GPD\'s comments'
       }
     }).then((response) => {
-      setVisible("hidden")
+      setVisible('hidden')
       setShowEmailBox(false)
       setShowEmailConf(true)
     }).catch((err) => {
@@ -169,7 +169,7 @@ const Student = (props) => {
 
   const suggestCoursePlan = () => {
     localStorage.removeItem('filters')
-    console.log("Suggesting course plan for student: ", studentInfoParams.student)
+    console.log('Suggesting course plan for student: ', studentInfoParams.student)
     history.push({
       pathname: '/suggest',
       state: {
@@ -183,7 +183,7 @@ const Student = (props) => {
   //   return <>BAD!!</>
   // else
   return (
-    <Container fluid="lg" className="container">
+    <Container fluid='lg' className='container'>
       <StudentInfo
         mode={mode}
         errorMessage={errorMsg}
@@ -206,25 +206,29 @@ const Student = (props) => {
         show={showConfirmation}
         onHide={() => setShowConfirmation(false)}
         onConfirm={changeMode}
-        body="Student successfully saved"
+        body='Student successfully saved'
       />
       <CenteredModal
         show={showEmailBox}
         onHide={() => setShowEmailBox(false)}
         onConfirm={notify}
-        variant="multi"
+        variant='multi'
         body={
           <div>
             <div>[Comments Changed] Send notification that comments have been changed to student?</div>
-            <small style={{ visibility: visible, color: "red" }}>Sending email to student...</small>
           </div>
+        }
+        footer={
+          <small style={{ visibility: visible, color: 'red', width: '100%' }}>
+            Sending emails to students...
+          </small>
         }
       />
       <CenteredModal
         show={showEmailConf}
         onHide={() => setShowEmailConf(false)}
         onConfirm={() => { setShowEmailConf(false); setShowConfirmation(true) }}
-        body="Sent email successfully "
+        body='Sent email successfully '
       />
     </Container>
   )

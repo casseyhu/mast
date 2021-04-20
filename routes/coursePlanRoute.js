@@ -7,8 +7,5 @@ module.exports = function (app) {
 
   app.get('/api/courseplanitem/findItems', CoursePlan.findItems)
 
-  app.get('/api/courseplan/findAll', CoursePlan.findAll)
-
-  app.get('/api/courseplanitem/count', CoursePlan.count)
-
+  app.get('/api/courseplanitem/count', CoursePlan.count);
 }
