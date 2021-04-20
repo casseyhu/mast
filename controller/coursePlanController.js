@@ -3,7 +3,6 @@ const fs = require('fs')
 const Papa = require('papaparse')
 
 const shared = require('./shared')
-
 const database = require('../config/database.js')
 const Op = database.Sequelize.Op
 
@@ -451,6 +450,7 @@ async function calculateCourseRequirement(credits, states, courseReq, student, c
 async function calculateCompletion(studentsPlanId, credits, res) {
   console.log('Calculating student CoursePlan completion...')
   let tot = 0
+  let degrees = {}
   // Loop through each student (key = sbu ID)
   for (let key in studentsPlanId) {
     // Keep track of total number of satisfied/pending/unsatisfied requirements
@@ -462,10 +462,9 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     // Find the student and all the degree requirement objects for students degree
     const student = await Student.findOne({ where: { sbuId: key } })
     const degree = await Degree.findOne({ where: { degreeId: student.degreeId } })
-    const creditReq = await CreditRequirement.findOne({ where: { requirementId: degree.creditRequirement } })
-    const gpaReq = await GpaRequirement.findOne({ where: { requirementId: degree.gpaRequirement } })
-    const gradeReq = await GradeRequirement.findOne({ where: { requirementId: degree.gradeRequirement } })
-    const courseReq = await CourseRequirement.findAll({ where: { requirementId: degree.courseRequirement } })
+    if (!degrees[student.degreeId])
+      degrees[student.degreeId] = await shared.findRequirements(degree)
+    const [gradeReq, gpaReq, creditReq, courseReq] = degrees[student.degreeId]
     // Get this student's coursePlan to see what courses they've taken/currently taken/are going to take.
     const coursePlanItems = await CoursePlanItem.findAll({ where: { coursePlanId: studentsPlanId[key] } })
     // List of course plan items with grades
@@ -492,7 +491,7 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     })
     // If all course plan items are pending and satisfied (no unsatisfied), then the course plan is complete
     const notTakenCourses = coursePlanItems.filter(item => item.grade === null)
-    const coursePlanValidity = await getCoursePlanValidity(notTakenCourses)
+    const coursePlanValidity = await checkCoursePlanValidity(notTakenCourses)
     let studentCoursePlan = await CoursePlan.findOne({
       where: {
         coursePlanId: studentsPlanId[key]
@@ -515,7 +514,7 @@ async function calculateCompletion(studentsPlanId, credits, res) {
  * @param {Array<Object>} notTakenCourses List of course plan items that were not taken by student
  * @returns Boolean indicating if course plan is valid or not
  */
-async function getCoursePlanValidity(notTakenCourses) {
+async function checkCoursePlanValidity(notTakenCourses) {
   let coursePlanValidity = true
   if (notTakenCourses.length === 0)
     return coursePlanValidity
@@ -574,8 +573,8 @@ async function getCoursePlanValidity(notTakenCourses) {
         where: {
           coursePlanId: notTakenCourses[0].coursePlanId,
           courseId: invalidItems,
-          semester: semYear[0],
-          year: Number(semYear[1])
+          semester: semester,
+          year: year
         }
       })
       coursePlanValidity = false
@@ -586,10 +585,14 @@ async function getCoursePlanValidity(notTakenCourses) {
 
 
 /**
- * Update or create a requirement for a degree
+ * Update or create a degree requirement state.
+ * @param {Object} student Student to update requirement for
+ * @param {String} requirementType Requirement type (Credit, Grade, Gpa, Course)
+ * @param {Number} requirementId Requirement ID of requirement
+ * @param {String} state State to set requirement (unsatisfied, pending, satisfied)
+ * @param {Array<String>} metaData List of metadata information to store with requirement state
  */
 async function updateOrCreate(student, requirementType, requirementId, state, metaData) {
-  // console.log('Update/creating for '+student.sbuId+' for requirement type: ', requirementType)
   let reqStr = ''
   switch (requirementType) {
     case 'Grade':
@@ -627,45 +630,40 @@ async function updateOrCreate(student, requirementType, requirementId, state, me
 }
 
 
-/* 
-  Course Plan Items by their id
-*/
-exports.findItems = (req, res) => {
-  let condition = req.query
-  CoursePlan.findOne({
-    where: condition
-  }).then(coursePlan => {
-    condition = {
-      coursePlanId: coursePlan.coursePlanId
-    }
-    CoursePlanItem.findAll({
-      where: condition
-    }).then(coursePlanItems => {
-      res.status(200).send(coursePlanItems)
-    }).catch(err => {
-      console.log(err)
+/**
+ * Finds all course plan items for a given studentId.
+ * @param {*} req Contains paramaters containing studentId
+ * @param {*} res 
+ */
+exports.findItems = async (req, res) => {
+  try {
+    const coursePlan = await CoursePlan.findOne({ where: req.query })
+    const coursePlanItems = await CoursePlanItem.findAll({
+      where: {
+        coursePlanId: coursePlan.coursePlanId
+      }
     })
-  })
+    res.status(200).send(coursePlanItems)
+  } catch (err) {
+    console.log(err)
+    res.status(500).send('Error')
+  }
 }
 
-exports.findAll = (req, res) => {
-  CoursePlan
+
+/**
+ * Finds the list of course plan items for a course in a specified semester and year.
+ * @param {*} req Contains paramters for courseId, semester, and year
+ * @param {*} res 
+ */
+exports.count = (req, res) => {
+  CoursePlanItem
     .findAll({ where: req.query })
-    .then(coursePlan => res.status(200).send(coursePlan))
+    .then(totalItems => res.status(200).send(totalItems))
     .catch(err => {
       console.log(err)
       res.status(500).send('Error')
     })
 }
 
-exports.count = (req, res) => {
-  CoursePlanItem.findAll({
-    where: req.query
-  }).then(totalItems => {
-    res.status(200).send(totalItems)
-  }).catch(err => {
-    console.log(err)
-    res.status(500).send('Error')
-  })
-}
 
