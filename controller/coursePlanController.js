@@ -494,7 +494,7 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     })
     // If all course plan items are pending and satisfied (no unsatisfied), then the course plan is complete
     const notTakenCourses = coursePlanItems.filter(item => item.grade === null)
-    const coursePlanValidity = await getCoursePlanValidity(notTakenCourses)
+    const coursePlanValidity = await checkCoursePlanValidity(notTakenCourses)
     let studentCoursePlan = await CoursePlan.findOne({
       where: {
         coursePlanId: studentsPlanId[key]
@@ -517,7 +517,7 @@ async function calculateCompletion(studentsPlanId, credits, res) {
  * @param {Array<Object>} notTakenCourses List of course plan items that were not taken by student
  * @returns Boolean indicating if course plan is valid or not
  */
-async function getCoursePlanValidity(notTakenCourses) {
+async function checkCoursePlanValidity(notTakenCourses) {
   let coursePlanValidity = true
   if (notTakenCourses.length === 0)
     return coursePlanValidity
@@ -576,8 +576,8 @@ async function getCoursePlanValidity(notTakenCourses) {
         where: {
           coursePlanId: notTakenCourses[0].coursePlanId,
           courseId: invalidItems,
-          semester: semYear[0],
-          year: Number(semYear[1])
+          semester: semester,
+          year: year
         }
       })
       coursePlanValidity = false
@@ -588,10 +588,14 @@ async function getCoursePlanValidity(notTakenCourses) {
 
 
 /**
- * Update or create a requirement for a degree
+ * Update or create a degree requirement state.
+ * @param {Object} student Student to update requirement for
+ * @param {String} requirementType Requirement type (Credit, Grade, Gpa, Course)
+ * @param {Number} requirementId Requirement ID of requirement
+ * @param {String} state State to set requirement (unsatisfied, pending, satisfied)
+ * @param {Array<String>} metaData List of metadata information to store with requirement state
  */
 async function updateOrCreate(student, requirementType, requirementId, state, metaData) {
-  // console.log('Update/creating for '+student.sbuId+' for requirement type: ', requirementType)
   let reqStr = ''
   switch (requirementType) {
     case 'Grade':
@@ -629,47 +633,42 @@ async function updateOrCreate(student, requirementType, requirementId, state, me
 }
 
 
-/* 
-  Course Plan Items by their id
-*/
-exports.findItems = (req, res) => {
-  let condition = req.query
-  CoursePlan.findOne({
-    where: condition
-  }).then(coursePlan => {
-    condition = {
-      coursePlanId: coursePlan.coursePlanId
-    }
-    CoursePlanItem.findAll({
-      where: condition
-    }).then(coursePlanItems => {
-      res.status(200).send(coursePlanItems)
-    }).catch(err => {
-      console.log(err)
+/**
+ * Finds all course plan items for a given studentId.
+ * @param {*} req Contains paramaters containing studentId
+ * @param {*} res 
+ */
+exports.findItems = async (req, res) => {
+  try {
+    const coursePlan = await CoursePlan.findOne({ where: req.query })
+    const coursePlanItems = await CoursePlanItem.findAll({
+      where: {
+        coursePlanId: coursePlan.coursePlanId
+      }
     })
-  })
+    res.status(200).send(coursePlanItems)
+  } catch (err) {
+    console.log(err)
+    res.status(500).send('Error')
+  }
 }
 
-exports.findAll = (req, res) => {
-  CoursePlan
+
+/**
+ * Finds the list of course plan items for a course in a specified semester and year.
+ * @param {*} req Contains paramters for courseId, semester, and year
+ * @param {*} res 
+ */
+exports.count = (req, res) => {
+  CoursePlanItem
     .findAll({ where: req.query })
-    .then(coursePlan => res.status(200).send(coursePlan))
+    .then(totalItems => res.status(200).send(totalItems))
     .catch(err => {
       console.log(err)
       res.status(500).send('Error')
     })
 }
 
-exports.count = (req, res) => {
-  CoursePlanItem.findAll({
-    where: req.query
-  }).then(totalItems => {
-    res.status(200).send(totalItems)
-  }).catch(err => {
-    console.log(err)
-    res.status(500).send('Error')
-  })
-}
 
 exports.filterCV = (req, res) => {
   let condition = { studentId: req.query.studentId }

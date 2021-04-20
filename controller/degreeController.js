@@ -9,10 +9,15 @@ const CreditRequirement = database.CreditRequirement
 const CourseRequirement = database.CourseRequirement
 
 
-// Upload degree
+/**
+ * Uploads a degree requirement to the database from a JSON file.
+ * @param {*} req Contains a formData containing the JSON file
+ * @param {*} res 
+ */
 exports.upload = (req, res) => {
   var form = new IncomingForm()
-  form.parse(req)
+  form
+    .parse(req)
     .on('file', (field, file) => {
       if (file.type != 'application/json') {
         res.status(500).send('File must be *.json')
@@ -42,19 +47,17 @@ exports.findRequirements = (req, res) => {
         degreeId: req.query.degreeId
       }
     })
-    .then(degree => {
-      findRequirements(degree, res)
-    })
+    .then(degree => findRequirements(degree, res))
     .catch(err => {
       res.status(500).send('Could not find degree requirement version.')
     })
 }
 
-exports.newStudentRequirements = (req, res) =>{
+exports.newStudentRequirements = (req, res) => {
   console.log("Here")
   Degree
     .findOne({
-      where:{
+      where: {
         dept: req.query.department,
         track: req.query.track,
         requirementVersion: req.query.reqVersion
@@ -68,7 +71,7 @@ exports.newStudentRequirements = (req, res) =>{
 
 async function findRequirements(degree, res) {
   let gradeReq = ''
-  if(degree.gradeRequirement)
+  if (degree.gradeRequirement)
     gradeReq = await GradeRequirement.findOne({
       where: {
         requirementId: degree.gradeRequirement
