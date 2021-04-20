@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import Button from './Button';
-import Dropdown from './Dropdown';
-import axios from '../constants/axios';
+import React, { useState, useEffect } from 'react'
+import Button from './Button'
+import Dropdown from './Dropdown'
+import axios from '../constants/axios'
 import { Checkmark } from 'react-checkmark'
-import PulseLoader from "react-spinners/PulseLoader";
+import PulseLoader from "react-spinners/PulseLoader"
 
 const ImportItem = (props) => {
 
-  const [file, setFile] = useState("");
-  const [firstfile, setFirstFile] = useState("");
-  const [depts, setDepts] = useState([]);
-  const [semester, setSem] = useState("");
-  const [year, setYear] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState("");
+  const [file, setFile] = useState("")
+  const [firstfile, setFirstFile] = useState("")
+  const [depts, setDepts] = useState([])
+  const [semester, setSem] = useState("")
+  const [year, setYear] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const [error, setError] = useState("")
 
   useEffect(() => {
     if (uploading === true) {
       setTimeout(() => {
-        setUploading(false);
+        setUploading(false)
       }, 2800)
     }
     return
@@ -28,43 +28,43 @@ const ImportItem = (props) => {
   const uploadFile = async () => {
     if (props.header === "Student Data" && (firstfile === "" || file === "")) {
       setError("Must have both student profile and course plan files to upload.")
-      return;
+      return
     }
     else if (file === "") {
       setError("Must choose a file to upload.")
-      return;
+      return
     }
-    var firstFormData = new FormData();
-    firstFormData.append("file", firstfile);
-    var formData = new FormData();
-    formData.append("file", file);
+    var firstFormData = new FormData()
+    firstFormData.append("file", firstfile)
+    var formData = new FormData()
+    formData.append("file", file)
 
-    let upload_path = '';
+    let upload_path = ''
     if (props.header === "Course Information") {
-      upload_path = 'course/upload/';
-      formData.append("depts", depts);
-      formData.append("semester", semester);
-      formData.append("year", year);
+      upload_path = 'course/upload/'
+      formData.append("depts", depts)
+      formData.append("semester", semester)
+      formData.append("year", year)
     }
     else if (props.header === "Degree Requirements")
-      upload_path = 'degree/upload/';
+      upload_path = 'degree/upload/'
     else if (props.header === "Course Offerings") {
-      upload_path = 'courseoffering/upload/';
-      formData.append("dept", props.dept);
+      upload_path = 'courseoffering/upload/'
+      formData.append("dept", props.dept)
     }
     else if (props.header === "Student Data") {
       setLoading(true)
       props.setOverlay("")
-      firstFormData.append("dept", props.dept);
-      formData.append("dept", props.dept);
-      formData.append("delete", true);
+      firstFormData.append("dept", props.dept)
+      formData.append("dept", props.dept)
+      formData.append("delete", true)
       try {
         await axios.post('student/upload/', firstFormData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         })
-        console.log('Successfully uploaded profile');
+        console.log('Successfully uploaded profile')
         setFirstFile("")
       } catch (err) {
         setLoading(false)
@@ -76,9 +76,9 @@ const ImportItem = (props) => {
       }
       upload_path = 'courseplan/upload/'
     } else { // Uploading grades. 
-      upload_path = 'courseplan/upload/';
-      formData.append("dept", props.dept);
-      formData.append("delete", false);
+      upload_path = 'courseplan/upload/'
+      formData.append("dept", props.dept)
+      formData.append("delete", false)
     }
 
     if (!loading) {
@@ -96,7 +96,7 @@ const ImportItem = (props) => {
         props.setStudents(result.data)
         props.setShowInvalid(true)
       }
-      console.log('Successfully uploaded file');
+      console.log('Successfully uploaded file')
       setLoading(false)
       props.setOverlay("none")
       setUploading(true)
@@ -111,8 +111,8 @@ const ImportItem = (props) => {
   }
 
   const selectionHandler = (e) => {
-    let value = Array.from(e, option => option.value);
-    setDepts(value);
+    let value = Array.from(e, option => option.value)
+    setDepts(value)
   }
 
   return (

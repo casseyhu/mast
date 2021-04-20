@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import Container from "react-bootstrap/Container";
-import Dropdown from '../components/Dropdown';
-import { SEMESTERS, YEARS, CURRENT_SEMESTER, CURRENT_YEAR } from '../constants';
-import axios from '../constants/axios';
+import React, { Component } from 'react'
+import Container from "react-bootstrap/Container"
+import Dropdown from '../components/Dropdown'
+import { SEMESTERS, YEARS, CURRENT_SEMESTER, CURRENT_YEAR } from '../constants'
+import axios from '../constants/axios'
 
 class Bulletin extends Component {
 
@@ -20,7 +20,7 @@ class Bulletin extends Component {
       semester: e.value
     }, () => {
       if (this.state.year)
-        this.showCourses();
+        this.showCourses()
     })
   }
 
@@ -29,7 +29,7 @@ class Bulletin extends Component {
       year: e.value
     }, () => {
       if (this.state.semester)
-        this.showCourses();
+        this.showCourses()
     })
   }
 
@@ -41,13 +41,13 @@ class Bulletin extends Component {
         year: Number(this.state.year)
       }
     }).then(response => {
-      const foundCourses = response.data;
+      const foundCourses = response.data
       this.setState({
         courses: foundCourses
       })
     }).catch(err => {
       console.log(err)
-    });
+    })
   }
 
   componentDidMount() {
@@ -93,8 +93,8 @@ class Bulletin extends Component {
           })}
         </div>
       </Container>
-    );
+    )
   }
 }
 
-export default Bulletin;
+export default Bulletin

@@ -1,16 +1,16 @@
 
-import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import MainPage from './pages/index';
-import NavigationBar from './components/Navbar';
-import Browse from './pages/Browse';
-import Trends from './pages/Trends';
-import Import from './pages/Import';
-import Bulletin from './pages/Bulletin';
-import Suggest from './pages/Suggest';
-import Student from './pages/Student';
-import CoursePlan from './pages/CoursePlan';
-import jwt_decode from 'jwt-decode';
+import React, { Component } from 'react'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import MainPage from './pages/index'
+import NavigationBar from './components/Navbar'
+import Browse from './pages/Browse'
+import Trends from './pages/Trends'
+import Import from './pages/Import'
+import Bulletin from './pages/Bulletin'
+import Suggest from './pages/Suggest'
+import Student from './pages/Student'
+import CoursePlan from './pages/CoursePlan'
+import jwt_decode from 'jwt-decode'
 
 class App extends Component {
 
@@ -51,7 +51,7 @@ class App extends Component {
 
 
   render() {
-    const { type, user } = this.state;
+    const { type, user } = this.state
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <NavigationBar loggedIn={this.state.loggedIn} />
@@ -82,4 +82,4 @@ const NotFound404 = () => {
   )
 }
 
-export default App;
+export default App

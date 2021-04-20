@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import Container from "react-bootstrap/Container";
-import CenteredModal from '../components/Modal';
-import StudentInfo from '../components/StudentInfo';
-import Requirements from '../components/Requirements';
-import CoursePlan from '../components/CoursePlan';
-import axios from '../constants/axios';
-import jwt_decode from 'jwt-decode';
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from 'react'
+import Container from "react-bootstrap/Container"
+import CenteredModal from '../components/Modal'
+import StudentInfo from '../components/StudentInfo'
+import Requirements from '../components/Requirements'
+import CoursePlan from '../components/CoursePlan'
+import axios from '../constants/axios'
+import jwt_decode from 'jwt-decode'
+import { useHistory } from "react-router-dom"
 
 const Student = (props) => {
-  const history = useHistory();
+  const history = useHistory()
 
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("")
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showEmailBox, setShowEmailBox] = useState(false)
   const [showEmailConf, setShowEmailConf] = useState(false)
@@ -227,7 +227,7 @@ const Student = (props) => {
         body="Sent email successfully "
       />
     </Container>
-  );
+  )
 }
 
-export default Student;
+export default Student

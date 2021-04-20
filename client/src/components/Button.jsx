@@ -1,20 +1,20 @@
-import React from 'react';
+import React from 'react'
 
 const Button = (props) => {
-  const hiddenFileInput = React.useRef(null);
+  const hiddenFileInput = React.useRef(null)
 
   const handleClick = (e) => {
     if (props.variant === "square")
-      hiddenFileInput.current.click();
+      hiddenFileInput.current.click()
     if (props.onClick)
-      props.onClick();
-    e.target.value = null;
-  };
+      props.onClick()
+    e.target.value = null
+  }
 
   const handleChange = event => {
-    const file = event.target.files[0];
-    props.setFile(file);
-  };
+    const file = event.target.files[0]
+    props.setFile(file)
+  }
 
   return (
     <div className={props.divclassName} style={props.style}>

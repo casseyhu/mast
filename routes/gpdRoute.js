@@ -1,16 +1,7 @@
 
 module.exports = function (app) {
-  const gpd = require('../controller/gpdController.js');
-
-  // Get a GPD
-  // app.get('/api/gpd/:gpdId', gpd.findById);
+  const gpd = require('../controller/gpdController.js')
 
   // Verify GPD login
-  app.get('/api/gpd/login', gpd.login);
-
-  // Update a GPD
-  // app.get('/api/gpd/:gpdId', gpd.update)
-
-  // // Delete a GPD
-  // app.get('/api/gpd/:gpdId', gpd.delete)
+  app.get('/api/gpd/login', gpd.login)
 }

@@ -1,7 +1,7 @@
-import React from 'react';
-import LoginContainer from '../components/LoginContainer';
-import '../css/login.css';
-import { LANDING_WAVE_ANIMATION } from '../constants/svgs';
+import React from 'react'
+import LoginContainer from '../components/LoginContainer'
+import '../css/login.css'
+import { LANDING_WAVE_ANIMATION } from '../constants/svgs'
 
 const MainPage = (props) => {
 
@@ -18,4 +18,4 @@ const MainPage = (props) => {
   )
 }
 
-export default MainPage;
+export default MainPage

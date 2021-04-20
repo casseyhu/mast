@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import Container from "react-bootstrap/Container";
-import Pagination from 'react-bootstrap/Pagination';
-import Button from '../components/Button';
-// import Dropdown from '../components/Dropdown';
-import axios from '../constants/axios';
-import BrowseSearchbar from '../components/BrowseSearchbar';
+import React, { Component } from 'react'
+import Container from "react-bootstrap/Container"
+import Pagination from 'react-bootstrap/Pagination'
+import Button from '../components/Button'
+import axios from '../constants/axios'
+import BrowseSearchbar from '../components/BrowseSearchbar'
 
 
 class Browse extends Component {
@@ -77,28 +76,28 @@ class Browse extends Component {
       this.setSortField(this.state.sortBy, this.state.ascending[this.state.sortBy])
     }).catch(err => {
       console.log(err)
-    });
+    })
   }
 
   sortStudents = () => {
-    let sortBy = this.state.sortBy;
-    let students = this.state.students;
-    let ascending = this.state.ascending[sortBy];
+    let sortBy = this.state.sortBy
+    let students = this.state.students
+    let ascending = this.state.ascending[sortBy]
     students.sort(function (a, b) {
       if (sortBy === "gradSemYear") {
-        let aGradSemYear = a.gradYear * 100 + (a.gradSem === "Fall" ? 8 : 2);
-        let bGradSemYear = b.gradYear * 100 + (b.gradSem === "Fall" ? 8 : 2);
-        return ascending ? aGradSemYear - bGradSemYear : bGradSemYear - aGradSemYear;
+        let aGradSemYear = a.gradYear * 100 + (a.gradSem === "Fall" ? 8 : 2)
+        let bGradSemYear = b.gradYear * 100 + (b.gradSem === "Fall" ? 8 : 2)
+        return ascending ? aGradSemYear - bGradSemYear : bGradSemYear - aGradSemYear
       }
       if (typeof a[sortBy] === "string")
-        return ascending ? a[sortBy].localeCompare(b[sortBy]) : b[sortBy].localeCompare(a[sortBy]);
+        return ascending ? a[sortBy].localeCompare(b[sortBy]) : b[sortBy].localeCompare(a[sortBy])
       else if (typeof a[sortBy] === "number" || typeof a[sortBy] === "boolean")
         if (a === null)
-          return ascending ? 1 : -1;
+          return ascending ? 1 : -1
         else if (b === null)
-          return ascending ? -1 : 1;
-      return ascending ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
-    });
+          return ascending ? -1 : 1
+      return ascending ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy]
+    })
     this.setState({ students })
   }
 
@@ -145,18 +144,18 @@ class Browse extends Component {
             ascending: savedState.ascending
           }, this.filter)
         }
-      });
+      })
     }).catch(err => {
       console.log(err)
-    });
+    })
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.handleResize);
+    window.removeEventListener("resize", this.handleResize)
   }
 
   render() {
-    let { students, page, numPerPage, maxPage } = this.state;
+    let { students, page, numPerPage, maxPage } = this.state
     return (
       <Container fluid className="container">
         <div className="flex-horizontal justify-content-between">
@@ -226,8 +225,8 @@ class Browse extends Component {
           </Pagination>
         </div>
       </Container>
-    );
+    )
   }
 }
 
-export default Browse;
+export default Browse

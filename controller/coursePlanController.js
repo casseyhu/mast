@@ -467,7 +467,6 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     if (!degrees[student.degreeId])
       degrees[student.degreeId] = await shared.findRequirements(degree)
     const [gradeReq, gpaReq, creditReq, courseReq] = degrees[student.degreeId]
-
     // Get this student's coursePlan to see what courses they've taken/currently taken/are going to take.
     const coursePlanItems = await CoursePlanItem.findAll({ where: { coursePlanId: studentsPlanId[key] } })
     // List of course plan items with grades

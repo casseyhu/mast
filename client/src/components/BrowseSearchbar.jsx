@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import Button from './Button';
-import Dropdown from './Dropdown';
+import React, { useState } from 'react'
+import Button from './Button'
+import Dropdown from './Dropdown'
 import InputField from './InputField'
-import { BOOLEAN, COMPLETENESS, VALIDITY, SEMESTERS, YEARS, TRACKS } from '../constants';
+import { BOOLEAN, COMPLETENESS, VALIDITY, SEMESTERS, YEARS, TRACKS } from '../constants'
 
 const BrowseSearchbar = (props) => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false)
   const department = props.user.department
 
   const [filters, setFilters] = useState({

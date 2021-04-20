@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from "react-bootstrap/Nav";
-import jwt_decode from 'jwt-decode';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+import Navbar from 'react-bootstrap/Navbar'
+import Nav from "react-bootstrap/Nav"
+import jwt_decode from 'jwt-decode'
+import { Link } from 'react-router-dom'
 
 const NavigationBar = (props) => {
   const [userType, setUserType] = useState("")
@@ -18,7 +18,7 @@ const NavigationBar = (props) => {
   }, [props.loggedIn])
 
   const logout = () => {
-    localStorage.clear();
+    localStorage.clear()
   }
 
   if (userType === '')
@@ -98,6 +98,6 @@ const NavigationBar = (props) => {
         </Nav>
       </Navbar.Collapse>
     </Navbar>
-  );
+  )
 }
-export default NavigationBar;
+export default NavigationBar
