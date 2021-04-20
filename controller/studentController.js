@@ -280,8 +280,8 @@ exports.filter = (req, res) => {
         res.send(students)
       }
       else {
-        console.log("Completeness or filter query was provided. Filtering...")
-        console.log("Complete: ", req.query.complete, " Valid: ", req.query.valid)
+        console.log('Completeness or filter query was provided. Filtering...')
+        console.log('Complete: ', req.query.complete, ' Valid: ', req.query.valid)
         // ... Else, query the CoursePlans for the `filteredStudents` based on the which
         // conditions were set (valid, complete, or valid&&complete). 
         let complete = -1
@@ -335,7 +335,7 @@ exports.filter = (req, res) => {
     .catch(err => {
       // If an error happens when filtering, we return 'Error: ' + err. This will crash
       // the program when we get back to the Browse.jsx and it tries to show the 
-      // "filtered students"
+      // 'filtered students'
       res.status(500).send('Error: ' + err)
     })
 }

@@ -1,11 +1,14 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-
 const database = require('../config/database.js')
 
 const Gpd = database.Gpd
 
-// Verify a GPD for login
+/**
+ * Verifies a GPD for login and generates jwt token for GPD.
+ * @param {*} req Contains parameter for email and password
+ * @param {*} res 
+ */
 exports.login = (req, res) => {
   Gpd.findOne({ where: { email: req.query.email } })
     .then(gpd => {

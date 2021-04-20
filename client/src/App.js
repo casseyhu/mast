@@ -56,17 +56,17 @@ class App extends Component {
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <NavigationBar loggedIn={this.state.loggedIn} />
         <Switch>
-          {!type && <Route exact path="/" component={(props) => <MainPage {...props} setLoggedIn={this.setLoggedIn} />} />}
-          {type === 'gpd' && <Route exact path="/" component={(props) => <Browse {...props} user={user} />} />}
+          {!type && <Route exact path='/' component={(props) => <MainPage {...props} setLoggedIn={this.setLoggedIn} />} />}
+          {type === 'gpd' && <Route exact path='/' component={(props) => <Browse {...props} user={user} />} />}
 
-          {type === 'student' && <Route exact path="/" component={(props) => <Student {...props} mode="View" type={type} student={user} />} />}
-          {type === 'gpd' && <Route path="/student" component={(props) => <Student {...props} mode="View" type={type} />} />}
+          {type === 'student' && <Route exact path='/' component={(props) => <Student {...props} mode='View' type={type} student={user} />} />}
+          {type === 'gpd' && <Route path='/student' component={(props) => <Student {...props} mode='View' type={type} />} />}
 
-          {type === 'gpd' && <Route path="/trends" component={Trends} />}
-          {type === 'gpd' && <Route path="/import" component={(props) => <Import {...props} dept={user.department} />} />}
-          {type && <Route path="/bulletin" component={(props) => <Bulletin {...props} type={type} user={user} />} />}
-          {type && <Route path="/suggest" component={Suggest} />}
-          {type && <Route path="/courseplan" component={CoursePlan} />}
+          {type === 'gpd' && <Route path='/trends' component={Trends} />}
+          {type === 'gpd' && <Route path='/import' component={(props) => <Import {...props} dept={user.department} />} />}
+          {type && <Route path='/bulletin' component={(props) => <Bulletin {...props} type={type} user={user} />} />}
+          {type && <Route path='/suggest' component={Suggest} />}
+          {type && <Route path='/courseplan' component={CoursePlan} />}
           <Route component={NotFound404} />
         </Switch>
       </BrowserRouter>

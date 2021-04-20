@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ReactApexChart from 'react-apexcharts'
-import Container from "react-bootstrap/Container"
+import Container from 'react-bootstrap/Container'
 import InputField from '../components/InputField'
 import Dropdown from '../components/Dropdown'
 import Button from '../components/Button'

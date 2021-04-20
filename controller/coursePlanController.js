@@ -1,6 +1,4 @@
-const {
-  IncomingForm
-} = require('formidable')
+const { IncomingForm } = require('formidable')
 const fs = require('fs')
 const Papa = require('papaparse')
 

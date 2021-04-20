@@ -21,17 +21,17 @@ const customStyles = {
   }),
   multiValueRemove: (provided) => ({
     ...provided,
-    "&:hover": {
-      backgroundColor: "rgba(30, 61, 107, 0.75)",
+    '&:hover': {
+      backgroundColor: 'rgba(30, 61, 107, 0.75)',
       borderRadius: '0.5rem',
-      color: "white"
+      color: 'white'
     }
   }),
   control: (provided) => ({
     ...provided,
     border: '2px solid rgb(30, 61, 107)',
     borderRadius: '0.5rem',
-    "&:hover": {
+    '&:hover': {
       border: '2px solid rgb(30, 61, 107)',
     }
   })

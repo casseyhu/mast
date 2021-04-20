@@ -67,7 +67,7 @@ courses_scraped = []
 
 while True:
     content = driver.page_source
-    soup = BeautifulSoup(content, "html.parser")
+    soup = BeautifulSoup(content, 'html.parser')
     l = soup.find('ul', {'class': 'recordSet'})
     for i in l.findChildren('li', recursive=False):
         Lab = False
@@ -87,7 +87,7 @@ while True:
         course_info = course_info.replace('</b>', '')
         course_info = course_info.replace('<br/>', '\n')
         texts = ((i.find('div', {'class': 'span-11'})).text)
-        texts = " ".join(texts.split())
+        texts = ' '.join(texts.split())
         if texts.find('LEC :') == -1 and texts.find('LEC: ') == -1 and texts.find('SEM :') == -1 and texts.find('LAB :') == -1:
             texts = texts.split()
             # print(texts)
@@ -110,41 +110,41 @@ while True:
             #Check for labs/recitations
             recitation_day = None
             recitation_time = None
-            extra = ""
+            extra = ''
             if texts.find('REC :') != -1 or texts.find('LAB :') != -1:
                 if texts.find('REC :') != -1:
                     texts = texts[(texts.find('REC :') + 5)::]
-                    extra = "R"
+                    extra = 'R'
                 elif texts.find('LAB :') != -1:
                     texts = texts[(texts.find('LAB :') + 5)::]
-                    extra = "L"
+                    extra = 'L'
                     Lab = True
                 if texts.find('RETU') != -1:
                     copy = texts[texts.find('RETU') + 2::].split()
                     recitation_day = copy[0]
                     recitation_time = copy[1]
-                    extra = "R"
+                    extra = 'R'
                 elif texts.find('RETH') != -1:
                     copy = texts[texts.find('RETH') + 2::].split()
                     recitation_day = copy[0]
                     recitation_time = copy[1]
-                    extra = "R"
+                    extra = 'R'
                 elif texts.find('RECM') != -1:
                     copy = texts[texts.find('RECM') + 3::].split()
                     recitation_day = copy[0]
                     recitation_time = copy[1]
-                    extra = "R"
+                    extra = 'R'
                 elif texts.find('RECW') != -1:
                     copy = texts[texts.find('RECW') + 3::].split()
                     recitation_day = copy[0]
                     recitation_time = copy[1]
-                    extra = "R"
+                    extra = 'R'
                 elif texts.find('RECF') != -1:
                     copy = texts[texts.find('RECF') + 3::].split()
                     recitation_day = copy[0]
                     recitation_time = copy[1]
-                    extra = "R"
-                elif texts[0:3] != "REC":
+                    extra = 'R'
+                elif texts[0:3] != 'REC':
                     copy = texts.split()
                     recitation_day = copy[0]
                     recitation_time = copy[1]
@@ -165,10 +165,10 @@ while True:
                 rec_end_time = None
                 recitation_day = None
             course_start_time, course_end_time = course_time.split('-')[0], course_time.split('-')[1]
-            if recitation_day == "FLEX":
+            if recitation_day == 'FLEX':
                 rec_start_time = None
                 rec_end_time = None
-            if course_day == "FLEX":
+            if course_day == 'FLEX':
                 course_start_time = None
                 course_end_time = None
             # print(course, course_num, section, course_day, course_start_time, course_end_time, recitation_day, rec_start_time, rec_end_time)
@@ -182,7 +182,7 @@ while True:
             courses_scraped.append(csv_fields)
             count += 1
     try:
-        loadMoreButton = driver.find_element_by_xpath("//a[contains(text(), 'Next')]")
+        loadMoreButton = driver.find_element_by_xpath('//a[contains(text(), 'Next')]')
         loadMoreButton.location_once_scrolled_into_view
         loadMoreButton.click()
     except Exception as e:
@@ -195,7 +195,7 @@ writer = csv.writer(csvfile)
 for course in courses_scraped:
     writer.writerow(course)
 
-print("Complete")
+print('Complete')
 
 print(count)
 driver.quit()

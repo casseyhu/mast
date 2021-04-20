@@ -15,51 +15,51 @@ const Requirements = (props) => {
 
   const getReqColor = (type, courseRequirement) => {
     let reqState = requirementStates[type + courseRequirement.requirementId][0]
-    if (reqState === "satisfied")
+    if (reqState === 'satisfied')
       return 'green'
-    else if (reqState === "unsatisfied")
+    else if (reqState === 'unsatisfied')
       return 'red'
     else
       return 'yellow'
   }
 
   const getText = (req) => {
-    let text = ""
+    let text = ''
     let hasCreditBounds = false
     if (req.type === 1)
-      text = "[Required] "
+      text = '[Required] '
     else if (req.type === 2)
-      text = "[Track Required] "
+      text = '[Track Required] '
     else if (req.type === 0)
-      return "[Non Required] "
+      return '[Non Required] '
     if (req.creditUpper || req.creditLower) {
       if (req.creditUpper && req.creditLower) {
         if (req.creditUpper === req.creditLower)
-          text += req.creditLower + " credit(s)"
+          text += req.creditLower + ' credit(s)'
         else
-          text += req.creditLower + "-" + req.creditUpper + " credit(s)"
+          text += req.creditLower + '-' + req.creditUpper + ' credit(s)'
       }
       else if (req.creditUpper)
-        text += " up to " + req.creditUpper + " credit(s)"
+        text += ' up to ' + req.creditUpper + ' credit(s)'
       else
-        text += " at least " + req.creditUpper + " credit(s)"
+        text += ' at least ' + req.creditUpper + ' credit(s)'
       hasCreditBounds = true
     }
     if (req.courseUpper || req.courseLower) {
       if (hasCreditBounds)
-        text += " and "
+        text += ' and '
       if (req.courseUpper && req.courseLower) {
         if (req.courseUpper === req.courseLower)
-          text += req.courseLower + " course(s)"
+          text += req.courseLower + ' course(s)'
         else
-          text += req.courseLower + " to " + req.courseUpper + " course(s)"
+          text += req.courseLower + ' to ' + req.courseUpper + ' course(s)'
       }
       else if (req.courseUpper)
-        text += " up to " + req.courseUpper + " course(s)"
+        text += ' up to ' + req.courseUpper + ' course(s)'
       else
-        text += " at least " + req.courseLower + " course(s)"
+        text += ' at least ' + req.courseLower + ' course(s)'
     }
-    return text + " in: "
+    return text + ' in: '
   }
 
   const isTaken = (courseRequirement, course) => {
@@ -71,9 +71,9 @@ const Requirements = (props) => {
     const getCreds = async () => {
       let gpas = requirementStates['G' + requirements[1].requirementId][1]
       setGpas({
-        "cumulative": gpas[0],
-        "department": gpas[2],
-        "core": gpas[1]
+        'cumulative': gpas[0],
+        'department': gpas[2],
+        'core': gpas[1]
       })
       let credits = requirementStates['CR' + requirements[2].requirementId][1]
       setTotalCredits(credits)
@@ -85,36 +85,36 @@ const Requirements = (props) => {
 
 
   return (
-    <div className="flex-vertical" style={{ width: '100%' }}>
-      <div className="flex-horizontal wrap justify-content-between">
+    <div className='flex-vertical' style={{ width: '100%' }}>
+      <div className='flex-horizontal wrap justify-content-between'>
         <h3>Degree Requirements</h3>
-        <div className="flex-horizontal" style={{ display: 'table', maxWidth: '500px' }}>
-          <div className="green color-box" />
-          <p className="req-state">Satisfied</p>
-          <div className="yellow color-box" />
-          <p className="req-state">Pending</p>
-          <div className="red color-box" />
-          <p className="req-state">Unsatisfied</p>
+        <div className='flex-horizontal' style={{ display: 'table', maxWidth: '500px' }}>
+          <div className='green color-box' />
+          <p className='req-state'>Satisfied</p>
+          <div className='yellow color-box' />
+          <p className='req-state'>Pending</p>
+          <div className='red color-box' />
+          <p className='req-state'>Unsatisfied</p>
         </div>
       </div>
 
-      {display && <div className="flex-vertical" style={{ width: '100%' }}>
-        {console.log("Display is true now, requirements are: ", requirements)}
+      {display && <div className='flex-vertical' style={{ width: '100%' }}>
+        {console.log('Display is true now, requirements are: ', requirements)}
         {requirements[1] && (
           <div className={getReqColor('G', requirements[1])}>
             Minimum Cumulative GPA:
-            {" " + requirements[1].cumulative}
-            <b>&emsp;{gpas['cumulative'] ? gpas['cumulative'] : "N/A"}&emsp;</b>
+            {' ' + requirements[1].cumulative}
+            <b>&emsp;{gpas['cumulative'] ? gpas['cumulative'] : 'N/A'}&emsp;</b>
             {requirements[1].core && (
               <span>Minimum Core GPA:
-                {" " + requirements[1].core}
-                <b>&emsp;{gpas['core'] ? gpas['core'] : "N/A"}</b>
+                {' ' + requirements[1].core}
+                <b>&emsp;{gpas['core'] ? gpas['core'] : 'N/A'}</b>
               </span>
             )}
             {requirements[1].department && (
               <span>Minimum Department GPA:
-                {" " + requirements[1].department}
-                <b>&emsp;{gpas['department'] ? gpas['department'] : "N/A"}</b>
+                {' ' + requirements[1].department}
+                <b>&emsp;{gpas['department'] ? gpas['department'] : 'N/A'}</b>
               </span>
             )}
           </div>
@@ -129,11 +129,11 @@ const Requirements = (props) => {
         {requirements[0] && requirements[0].atLeastCredits && requirements[0].minGrade &&
           <div className={getReqColor('GR', requirements[0])}>
             At least {requirements[0].atLeastCredits} credits must be
-            {" " + getLetter(requirements[0].minGrade)} or above
+            {' ' + getLetter(requirements[0].minGrade)} or above
           </div>
         }
         {requirements[3] && requirements[3].map((req, key) => {
-          // non required non electives (e.g. "cannot take cse538 twice")
+          // non required non electives (e.g. 'cannot take cse538 twice')
           if (req.type === 0)
             return <div key={key}></div>
           else return (
@@ -141,7 +141,7 @@ const Requirements = (props) => {
               {getText(req)}
               {req.courses.map((course, ckey) => isTaken(req, course)
                 ? <span key={ckey}><b>{course} </b></span>
-                : <span key={ckey}>{course + " "}</span>)}
+                : <span key={ckey}>{course + ' '}</span>)}
             </div>
           )
         })}

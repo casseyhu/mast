@@ -4,7 +4,7 @@ const Button = (props) => {
   const hiddenFileInput = React.useRef(null)
 
   const handleClick = (e) => {
-    if (props.variant === "square")
+    if (props.variant === 'square')
       hiddenFileInput.current.click()
     if (props.onClick)
       props.onClick()
@@ -20,10 +20,10 @@ const Button = (props) => {
     <div className={props.divclassName} style={props.style}>
       <button className={`${props.variant}-button ${props.className}`} onClick={handleClick}>
         {props.text}
-        {(props.variant === "square")
+        {(props.variant === 'square')
           && (
             <input
-              type="file"
+              type='file'
               ref={hiddenFileInput}
               onChange={handleChange}
               style={{ display: 'none' }}
