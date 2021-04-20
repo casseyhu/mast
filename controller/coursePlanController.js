@@ -82,7 +82,7 @@ exports.uploadPlans = (req, res) => {
 // let students = Array.from(new Set(coursePlans.map(item => item.sbu_id)))
 
 async function uploadCoursePlans(coursePlans, dept, res, deleted) {
-  console.log(deleted)
+  // console.log(deleted)
   // grabs all students of this department
   let students = await Student.findAll({
     where: {
@@ -539,7 +539,7 @@ async function setCoursePlanValidity(notTakenCourses) {
     }
     // update courseplanitem validty for invaliditems
     // if (notTakenCourses[0].coursePlanId === 114) {
-    console.log(invalidItems)
+    // console.log(invalidItems)
     // }
     if (invalidItems.length > 0) {
       await CoursePlanItem.update({
