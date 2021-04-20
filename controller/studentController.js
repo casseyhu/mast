@@ -1,19 +1,24 @@
+const {
+  IncomingForm
+} = require('formidable')
+const fs = require('fs')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-const { IncomingForm } = require('formidable')
-const fs = require('fs')
 const Papa = require('papaparse')
 const database = require('../config/database.js')
 const Op = database.Sequelize.Op
 
 const Student = database.Student
+const CoursePlan = database.CoursePlan
+const CoursePlanItem = database.CoursePlanItem
+
 const Degree = database.Degree
 const GradeRequirement = database.GradeRequirement
 const GpaRequirement = database.GpaRequirement
 const CreditRequirement = database.CreditRequirement
 const CourseRequirement = database.CourseRequirement
-const CoursePlan = database.CoursePlan
 const RequirementState = database.RequirementState
+
 
 const semDict = {
   'Fall': '08',
@@ -75,7 +80,9 @@ exports.update = (req, res) => {
         return
 
       // Update student information based on student id
-      const condition = { sbuId: student.sbuId }
+      const condition = {
+        sbuId: student.sbuId
+      }
       let graduated = student.graduated === 'False' ? 0 : 1
       const value = {
         sbuId: student.sbuId,
@@ -97,10 +104,14 @@ exports.update = (req, res) => {
         gpdComments: student.gpdComments,
         studentComments: student.studentComments
       }
-      Student.update(value, { where: condition })
+      Student.update(value, {
+        where: condition
+      })
         .then(response => {
           //update retuned array [1]
-          Student.findOne({ where: condition }).then(student => {
+          Student.findOne({
+            where: condition
+          }).then(student => {
             res.status(200).send(student)
           })
         })
@@ -123,13 +134,13 @@ exports.update = (req, res) => {
 // GPA, GPD comments, Student comments CANNOT be empty. 
 function emptyFields(student) {
   for (let fields of Object.keys(student)) {
-    if (fields === 'studentComments'
-      || fields === 'gpdComments'
-      || fields === 'gpa'
-      || fields === 'graduated'
-      || fields === 'degreeSem'
-      || fields === 'degreeYear'
-      || fields === 'updatedAt') {
+    if (fields === 'studentComments' ||
+      fields === 'gpdComments' ||
+      fields === 'gpa' ||
+      fields === 'graduated' ||
+      fields === 'degreeSem' ||
+      fields === 'degreeYear' ||
+      fields === 'updatedAt') {
       continue
     }
     if (student[fields] === '') {
@@ -158,19 +169,13 @@ exports.upload = (req, res) => {
         dynamicTyping: true,
         complete: (results) => {
           var header = results.meta['fields']
-          if (header[0] !== 'sbu_id'
-            || header[1] !== 'first_name'
-            || header[2] !== 'last_name'
-            || header[3] !== 'email'
-            || header[4] !== 'department'
-            || header[5] !== 'track'
-            || header[6] !== 'entry_semester'
-            || header[7] !== 'entry_year'
-            || header[8] !== 'requirement_version_semester'
-            || header[9] !== 'requirement_version_year'
-            || header[10] !== 'graduation_semester'
-            || header[11] !== 'graduation_year'
-            || header[12] !== 'password') {
+          if (header[0] !== 'sbu_id' || header[1] !== 'first_name' ||
+            header[2] !== 'last_name' || header[3] !== 'email' ||
+            header[4] !== 'department' || header[5] !== 'track' ||
+            header[6] !== 'entry_semester' || header[7] !== 'entry_year' ||
+            header[8] !== 'requirement_version_semester' ||
+            header[9] !== 'requirement_version_year' || header[12] !== 'password' ||
+            header[10] !== 'graduation_semester' || header[11] !== 'graduation_year') {
             console.log('invalid csv')
             res.status(500).send('Cannot parse CSV file - headers do not match specifications')
             return
@@ -185,7 +190,8 @@ exports.upload = (req, res) => {
 
 // Verify a student for login
 exports.login = (req, res) => {
-  Student.findOne({ where: { email: req.query.email } })
+  Student
+    .findOne({ where: { email: req.query.email } })
     .then(student => {
       const isValidPass = bcrypt.compareSync(req.query.password, student.password)
       if (!isValidPass)
@@ -226,28 +232,168 @@ exports.filter = (req, res) => {
         { sbuId: { [Op.like]: info[0] + '%' } }
       ]
     }
-  }
-  else if (info.length == 2) {
+  } else if (info.length == 2) {
     filters = {
-      [Op.or]: [
-        { [Op.and]: [{ firstName: { [Op.like]: info[0] + '%' } }, { lastName: { [Op.like]: info[1] + '%' } }] },
-        { [Op.and]: [{ lastName: { [Op.like]: info[0] + '%' } }, { firstName: { [Op.like]: info[1] + '%' } }] },
-        { [Op.and]: [{ firstName: { [Op.like]: info[0] + '%' } }, { sbuId: { [Op.like]: info[1] + '%' } }] },
-        { [Op.and]: [{ sbuId: { [Op.like]: info[0] + '%' } }, { firstName: { [Op.like]: info[1] + '%' } }] },
-        { [Op.and]: [{ lastName: { [Op.like]: info[0] + '%' } }, { sbuId: { [Op.like]: info[1] + '%' } }] },
-        { [Op.and]: [{ sbuId: { [Op.like]: info[0] + '%' } }, { lastName: { [Op.like]: info[1] + '%' } }] }
+      [Op.or]: [{
+        [Op.and]: [{
+          firstName: {
+            [Op.like]: info[0] + '%'
+          }
+        }, {
+          lastName: {
+            [Op.like]: info[1] + '%'
+          }
+        }]
+      },
+      {
+        [Op.and]: [{
+          lastName: {
+            [Op.like]: info[0] + '%'
+          }
+        }, {
+          firstName: {
+            [Op.like]: info[1] + '%'
+          }
+        }]
+      },
+      {
+        [Op.and]: [{
+          firstName: {
+            [Op.like]: info[0] + '%'
+          }
+        }, {
+          sbuId: {
+            [Op.like]: info[1] + '%'
+          }
+        }]
+      },
+      {
+        [Op.and]: [{
+          sbuId: {
+            [Op.like]: info[0] + '%'
+          }
+        }, {
+          firstName: {
+            [Op.like]: info[1] + '%'
+          }
+        }]
+      },
+      {
+        [Op.and]: [{
+          lastName: {
+            [Op.like]: info[0] + '%'
+          }
+        }, {
+          sbuId: {
+            [Op.like]: info[1] + '%'
+          }
+        }]
+      },
+      {
+        [Op.and]: [{
+          sbuId: {
+            [Op.like]: info[0] + '%'
+          }
+        }, {
+          lastName: {
+            [Op.like]: info[1] + '%'
+          }
+        }]
+      }
       ]
     }
-  }
-  else {
+  } else {
     filters = {
-      [Op.or]: [
-        { [Op.and]: [{ firstName: { [Op.like]: info[0] + '%' } }, { lastName: { [Op.like]: info[1] + '%' } }, { sbuId: { [Op.like]: info[2] + '%' } }] },
-        { [Op.and]: [{ firstName: { [Op.like]: info[0] + '%' } }, { sbuId: { [Op.like]: info[1] + '%' } }, { lastName: { [Op.like]: info[2] + '%' } }] },
-        { [Op.and]: [{ lastName: { [Op.like]: info[0] + '%' } }, { firstName: { [Op.like]: info[1] + '%' } }, { sbuId: { [Op.like]: info[2] + '%' } }] },
-        { [Op.and]: [{ lastName: { [Op.like]: info[0] + '%' } }, { sbuId: { [Op.like]: info[1] + '%' } }, { firstName: { [Op.like]: info[2] + '%' } }] },
-        { [Op.and]: [{ sbuId: { [Op.like]: info[0] + '%' } }, { firstName: { [Op.like]: info[1] + '%' } }, { lastName: { [Op.like]: info[2] + '%' } }] },
-        { [Op.and]: [{ sbuId: { [Op.like]: info[0] + '%' } }, { lastName: { [Op.like]: info[1] + '%' } }, { firstName: { [Op.like]: info[1] + '%' } }] }
+      [Op.or]: [{
+        [Op.and]: [{
+          firstName: {
+            [Op.like]: info[0] + '%'
+          }
+        }, {
+          lastName: {
+            [Op.like]: info[1] + '%'
+          }
+        }, {
+          sbuId: {
+            [Op.like]: info[2] + '%'
+          }
+        }]
+      },
+      {
+        [Op.and]: [{
+          firstName: {
+            [Op.like]: info[0] + '%'
+          }
+        }, {
+          sbuId: {
+            [Op.like]: info[1] + '%'
+          }
+        }, {
+          lastName: {
+            [Op.like]: info[2] + '%'
+          }
+        }]
+      },
+      {
+        [Op.and]: [{
+          lastName: {
+            [Op.like]: info[0] + '%'
+          }
+        }, {
+          firstName: {
+            [Op.like]: info[1] + '%'
+          }
+        }, {
+          sbuId: {
+            [Op.like]: info[2] + '%'
+          }
+        }]
+      },
+      {
+        [Op.and]: [{
+          lastName: {
+            [Op.like]: info[0] + '%'
+          }
+        }, {
+          sbuId: {
+            [Op.like]: info[1] + '%'
+          }
+        }, {
+          firstName: {
+            [Op.like]: info[2] + '%'
+          }
+        }]
+      },
+      {
+        [Op.and]: [{
+          sbuId: {
+            [Op.like]: info[0] + '%'
+          }
+        }, {
+          firstName: {
+            [Op.like]: info[1] + '%'
+          }
+        }, {
+          lastName: {
+            [Op.like]: info[2] + '%'
+          }
+        }]
+      },
+      {
+        [Op.and]: [{
+          sbuId: {
+            [Op.like]: info[0] + '%'
+          }
+        }, {
+          lastName: {
+            [Op.like]: info[1] + '%'
+          }
+        }, {
+          firstName: {
+            [Op.like]: info[1] + '%'
+          }
+        }]
+      }
       ]
     }
   }
@@ -255,13 +401,27 @@ exports.filter = (req, res) => {
     .findAll({
       where: {
         [Op.and]: filters,
-        department: { [Op.like]: req.query.department },
-        entrySem: { [Op.like]: req.query.entrySem },
-        entryYear: { [Op.like]: req.query.entryYear },
-        track: { [Op.like]: req.query.track },
-        gradSem: { [Op.like]: req.query.gradSem },
-        gradYear: { [Op.like]: req.query.gradYear },
-        graduated: { [Op.like]: req.query.graduated }
+        department: {
+          [Op.like]: req.query.department
+        },
+        entrySem: {
+          [Op.like]: req.query.entrySem
+        },
+        entryYear: {
+          [Op.like]: req.query.entryYear
+        },
+        track: {
+          [Op.like]: req.query.track
+        },
+        gradSem: {
+          [Op.like]: req.query.gradSem
+        },
+        gradYear: {
+          [Op.like]: req.query.gradYear
+        },
+        graduated: {
+          [Op.like]: req.query.graduated
+        }
       }
     })
     .then(students => {
@@ -275,7 +435,11 @@ exports.filter = (req, res) => {
 // Find all Students 
 exports.findAll = (req, res) => {
   Student
-    .findAll({ where: { department: req.query.department } })
+    .findAll({
+      where: {
+        department: req.query.department
+      }
+    })
     .then(students => {
       res.send(students)
     })
@@ -287,7 +451,11 @@ exports.findAll = (req, res) => {
 // Delete a Student
 exports.delete = (req, res) => {
   Student
-    .destroy({ where: { sbuId: req.params.sbuId } })
+    .destroy({
+      where: {
+        sbuId: req.params.sbuId
+      }
+    })
     .then(() => {
       res.status(200).send('Student deleted!')
     })
@@ -300,19 +468,24 @@ exports.delete = (req, res) => {
 
 
 // Delete all students from database. Used primarly for testing by GPD
-exports.deleteAll = (req, res) => {
-  Student
-    .drop()
-    .then(() => {
-      database.sequelize.sync({ force: false }).then(() => {
-        console.log('Synced database')
-        res.status(200).send('Deleted student data.')
-      })
+exports.deleteAll = async (req, res) => {
+  try {
+    await Student.drop()
+    await CoursePlanItem.drop()
+    await CoursePlan.drop()
+    await RequirementState.drop()
+    await database.sequelize.sync({
+      force: false
     })
-    .catch(err => {
-      console.log('Error' + err)
-      res.status(500).send('Error: ' + err)
+    console.log('Synced database')
+    res.status(200).send('Deleted student data')
+  } catch (e) {
+    await database.sequelize.sync({
+      force: false
     })
+    console.log('Delete student data error' + err)
+    res.status(500).send('Error: ' + err)
+  }
 }
 
 exports.getStates = (req, res) => {
@@ -331,7 +504,12 @@ exports.getStates = (req, res) => {
 async function uploadStudents(students, res) {
   const degrees = await Degree.findAll()
   let degreeDict = {}
-  const monthsDict = { '01': 'Winter', '02': 'Spring', '05': 'Summer', '08': 'Fall' }
+  const monthsDict = {
+    '01': 'Winter',
+    '02': 'Spring',
+    '05': 'Summer',
+    '08': 'Fall'
+  }
   const currentGradYear = 202101
   for (let i = 0; i < degrees.length; i++) {
     let requirementVersion = degrees[i].requirementVersion.toString()
@@ -343,7 +521,9 @@ async function uploadStudents(students, res) {
 
   for (let i = 0; i < students.length; i++) {
     studentInfo = students[i]
-    let condition = { sbuId: studentInfo.sbu_id }
+    let condition = {
+      sbuId: studentInfo.sbu_id
+    }
     let semYear = Number(studentInfo.entry_year + semDict[studentInfo.entry_semester])
     let graduated = Number(studentInfo.graduation_year + semDict[studentInfo.graduation_semester]) <= currentGradYear ? 1 : 0
     let requirementVersion = Number(studentInfo.requirement_version_year) * 100 + Number(semDict[studentInfo.requirement_version_semester])
@@ -372,13 +552,19 @@ async function uploadStudents(students, res) {
       studentComments: ''
     }
     tot += 1
-    let found = await Student.findOne({ where: condition })
+    let found = await Student.findOne({
+      where: condition
+    })
     if (found)
       await found.update(values)
     else
       await Student.create(values)
-    condition = { studentId: studentInfo.sbu_id }
-    found = await CoursePlan.findOne({ where: condition })
+    condition = {
+      studentId: studentInfo.sbu_id
+    }
+    found = await CoursePlan.findOne({
+      where: condition
+    })
     if (!found)
       await CoursePlan.create({
         studentId: studentInfo.sbu_id,

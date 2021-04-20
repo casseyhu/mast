@@ -75,8 +75,7 @@ const ImportItem = (props) => {
         return
       }
       upload_path = 'courseplan/upload/'
-    }
-    else { // Uploading grades. 
+    } else { // Uploading grades. 
       upload_path = 'courseplan/upload/';
       formData.append("dept", props.dept);
       formData.append("delete", false);
@@ -94,26 +93,6 @@ const ImportItem = (props) => {
       })
       if (props.header === 'Course Offerings') {
         console.log(result)
-        // let sem = result.data[0]
-        // let year = result.data[1]
-        // let coursePlanItems = await axios.get('/courseplanitem/count/', {
-        //   params: {
-        //     semester: sem,
-        //     year: year,
-        //     validity: false
-        //   }
-        // })
-        // let coursePlans = await axios.get('/courseplan/findAll/', {
-        //   params: {
-        //     coursePlanId: coursePlanItems.data.map(item => item.coursePlanId)
-        //   }
-        // })
-        // let students = {}
-        // for (let cp of coursePlans.data) {
-        //   let items = coursePlanItems.data.filter(item => item.coursePlanId === cp.coursePlanId)
-        //   if (items.length > 0)
-        //     students[cp.studentId] = items
-        // }
         props.setStudents(result.data)
         props.setShowInvalid(true)
       }
