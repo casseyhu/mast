@@ -7,7 +7,8 @@ module.exports = function (app) {
   
   app.get('/api/course/findOne', Course.findOne);
 
+  app.get('/api/course/deptCourses', Course.getDeptCourses)
+
   app.get('/api/course', Course.findAll);
-  
 
 }

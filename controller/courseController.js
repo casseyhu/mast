@@ -2,6 +2,7 @@ const database = require('../config/database.js')
 const IncomingForm = require('formidable').IncomingForm
 const PDFExtract = require('pdf.js-extract').PDFExtract
 const pdfExtract = new PDFExtract()
+const Sequelize = database.Sequelize
 
 const Course = database.Course
 
@@ -406,5 +407,32 @@ const insertUpdate = async (values, condition) => {
   return {
     course,
     created: true
+  }
+}
+
+/**
+ * Gets the set of all courses that are in the database for a department. 
+ * Returns a map of courseIds to a boolean {'CSE500' : true, 'CSE502' : true, 
+ * 'CSE504' : true,  ... } so that we have O(1) access to see if the course 
+ * is offered or not. 
+ * @param {*} req axios request.
+ * @param {*} res axios response.
+ */
+exports.getDeptCourses = (req, res) => { 
+  console.log(req.query)
+  if(req.query.dept !== '') {
+    console.log(req.query.dept)
+    Course.findAll({
+      attributes: [
+        [Sequelize.fn('DISTINCT', Sequelize.col('courseId')), 'courseId'],
+      ],
+      where: {
+        department: req.query.dept
+      }
+    }).then(result => {
+      courseIds = {}
+      result.map(course => courseIds[course.dataValues.courseId] = true)
+      res.status(200).send(courseIds)
+    })
   }
 }
