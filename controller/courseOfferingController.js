@@ -2,12 +2,10 @@ const Papa = require('papaparse')
 const fs = require('fs')
 const IncomingForm = require('formidable').IncomingForm
 const moment = require('moment')
-
 const shared = require('./shared')
-
 const database = require('../config/database.js')
-const Op = database.Sequelize.Op
 
+const Op = database.Sequelize.Op
 const Course = database.Course
 const CourseOffering = database.CourseOffering
 const CoursePlan = database.CoursePlan
@@ -92,7 +90,7 @@ async function uploadCourses(results, res, dept) {
   })
   // Find the non-graded course plan items for all the students in this specific department
   const coursePlanIds = coursePlans.map(plan => plan.coursePlanId)
-  const coursePlanItems = await CoursePlanItem.findAll({
+  let coursePlanItems = await CoursePlanItem.findAll({
     where: {
       coursePlanId: coursePlanIds,
       semester: semesters,
@@ -100,6 +98,14 @@ async function uploadCourses(results, res, dept) {
       grade: null
     }
   })
+  // const semCoursePlanIds = coursePlanItems.map((item) => item.coursePlanId)
+
+  // await CoursePlan.update({ coursePlanValid: true }, {
+  //   where: {
+  //     coursePlanId: semCoursePlanIds,
+  //     coursePlanValid: false
+  //   }
+  // })
 
   let affectedStudents = {}
   // Loop through every semester+year covered by the csv
@@ -200,6 +206,13 @@ async function uploadCourses(results, res, dept) {
         coursePlanId: invalidCoursePlanIds
       }
     })
+    // Update course plan validity to false if it has invalid course plan items
+    await CoursePlan.update({ coursePlanValid: false }, {
+      where: {
+        coursePlanId: invalidCoursePlanIds,
+        coursePlanValid: true
+      }
+    })
     invalidCoursePlans.forEach(plan => {
       if (!affectedStudents[plan.studentId])
         affectedStudents[plan.studentId] = allInvalidItems.filter(item => item.coursePlanId === plan.coursePlanId)
@@ -222,6 +235,7 @@ async function uploadCourses(results, res, dept) {
     })
     affectedStudents[student] = itemSet
   }
+
   // Send effected students
   res.status(200).send(affectedStudents)
   return
@@ -287,10 +301,11 @@ async function deleteSemestersFromDB(courses, departments) {
         }
       })
       // Update course plan item validity back to true for deleted courses
-      await CoursePlanItem.update({
-        validity: true
-      }, {
+      await CoursePlanItem.update({ validity: true }, {
         where: {
+          courseId: { 
+            [Op.startsWith]: dept
+          },
           validity: false,
           semester: semyear[0],
           year: Number(semyear[1])

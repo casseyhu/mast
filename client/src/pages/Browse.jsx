@@ -13,7 +13,7 @@ class Browse extends Component {
   // for example, the GPD might want to list the students who plan to graduate 
   // in the coming semester and whose course plan is incomplete.
 
-  // We will always show the list in ascending lastName by default. 
+  // We will always show the list in ascending sbu id by default. 
   state = {
     students: [],
     sortBy: '',
@@ -113,41 +113,29 @@ class Browse extends Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.handleResize)
-    axios.get('student/', {
-      params: { department: this.props.user.department }
-    }).then(response => {
-      this.setState({
-        students: response.data,
-        numPerPage: Math.ceil((window.innerHeight - 350) / 30),
-        maxPage: Math.ceil(response.data.length / Math.ceil((window.innerHeight - 350) / 30))
-      }, ret => {
-        let savedState = localStorage.getItem('filters')
-        if (savedState) {
-          savedState = JSON.parse(savedState)
-          if (Object.keys(savedState.filters).length === 0) {
-            savedState.filters = {
-              nameId: '%',
-              track: '%',
-              entrySem: '%',
-              entryYear: '%',
-              gradSem: '%',
-              gradYear: '%',
-              graduated: '%',
-              valid: '%',
-              complete: '%'
-            }
-          }
-          this.setState({
-            sortBy: savedState.sortBy,
-            filters: savedState.filters,
-            page: savedState.page,
-            ascending: savedState.ascending
-          }, this.filter)
+    let savedState = localStorage.getItem('filters')
+    if (savedState) {
+      savedState = JSON.parse(savedState)
+      if (Object.keys(savedState.filters).length === 0) {
+        savedState.filters = {
+          nameId: '%',
+          track: '%',
+          entrySem: '%',
+          entryYear: '%',
+          gradSem: '%',
+          gradYear: '%',
+          graduated: '%',
+          valid: '%',
+          complete: '%'
         }
-      })
-    }).catch(err => {
-      console.log(err)
-    })
+      }
+      this.setState({
+        sortBy: savedState.sortBy,
+        filters: savedState.filters,
+        page: savedState.page,
+        ascending: savedState.ascending,
+      }, this.filter)
+    }
   }
 
   componentWillUnmount() {
