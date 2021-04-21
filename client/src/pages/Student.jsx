@@ -179,9 +179,6 @@ const Student = (props) => {
     })
   }
 
-  // if (mode !== 'Add' && (!studentInfoParams.requirements || !studentInfoParams.coursePlan || !studentInfoParams.student))
-  //   return <>BAD!!</>
-  // else
   return (
     <Container fluid='lg' className='container'>
       <StudentInfo
