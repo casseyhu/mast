@@ -23,9 +23,13 @@ const CenteredModal = (props) => {
       <Modal.Body className='flex-vertical center'>
         {props.body}
       </Modal.Body>
-      <Modal.Footer className='center'>
-        {props.footer}
-      </Modal.Footer>
+      {props.visibility !== 'hidden' && 
+        <Modal.Footer className='center'>
+          <small style={{ color: 'red', width: '100%' }}>
+            {props.footer}
+          </small>
+        </Modal.Footer>
+      }
         <div className='flex-horizontal justify-content-around pb-4'>
           {props.variant &&
             <Button
