@@ -14,7 +14,6 @@ const CourseOffering = database.CourseOffering
 const Degree = database.Degree
 const RequirementState = database.RequirementState
 
-
 const GRADES = {
   'A': 4,
   'A-': 3.67,
@@ -75,8 +74,7 @@ exports.uploadPlans = (req, res) => {
             res.status(500).send('Cannot parse course plan CSV file - headers do not match specifications')
             return
           }
-          let coursePlans = results.data
-          uploadCoursePlans(coursePlans, dept, res, deleted)
+          uploadCoursePlans(results.data, dept, res, deleted)
         }
       })
     })

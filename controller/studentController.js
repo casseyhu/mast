@@ -1,10 +1,9 @@
-const {
-  IncomingForm
-} = require('formidable')
+const { IncomingForm } = require('formidable')
 const fs = require('fs')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Papa = require('papaparse')
+const shared = require('./shared')
 const database = require('../config/database.js')
 const Op = database.Sequelize.Op
 
@@ -13,10 +12,6 @@ const CoursePlan = database.CoursePlan
 const CoursePlanItem = database.CoursePlanItem
 
 const Degree = database.Degree
-const GradeRequirement = database.GradeRequirement
-const GpaRequirement = database.GpaRequirement
-const CreditRequirement = database.CreditRequirement
-const CourseRequirement = database.CourseRequirement
 const RequirementState = database.RequirementState
 
 const semDict = {
@@ -142,7 +137,6 @@ exports.update = (req, res) => {
 /**
  * Checks if any required field are empty.
  * @param {*} student contains all information about the student.
- * 
  * @returns {Boolean} returns true if any of the required fields are empty, else return false.
  */
 function emptyFields(student) {
@@ -309,8 +303,6 @@ exports.filter = (req, res) => {
     .then(students => {
       // Filter these `students` by CP Completeness and CP Validity, if the query was given. 
       console.log('No complete/filter num students: ', students.length)
-      let completeFilter = req.query.complete
-      let validFilter = req.query.valid
       if (req.query.complete === '%' && req.query.valid === '%') {
         // If complete && valid queries were not given (user didn't apply this filter)...
         res.send(students)
@@ -447,10 +439,8 @@ exports.getStates = (req, res) => {
 
 /**
  * Helper function to uploading students' profiles based on a given department.
- * @param {*} students List of all students in a given department from the CSV.
+ * @param {Array<Object>} students List of all students in a given department from the CSV.
  * @param {*} res 
- * 
- * @returns
  */
 async function uploadStudents(students, res) {
   const degrees = await Degree.findAll()
@@ -469,7 +459,6 @@ async function uploadStudents(students, res) {
     degreeDict[degrees[i].dept + ' ' + degrees[i].track + ' ' + requirementSem + ' ' + requirementYear] = degrees[i].degreeId
   }
   let tot = 0
-
   for (let i = 0; i < students.length; i++) {
     studentInfo = students[i]
     let condition = {
@@ -503,19 +492,12 @@ async function uploadStudents(students, res) {
       studentComments: ''
     }
     tot += 1
-    let found = await Student.findOne({
-      where: condition
-    })
+    let found = await Student.findOne({ where: condition })
     if (found)
       await found.update(values)
     else
       await Student.create(values)
-    condition = {
-      studentId: studentInfo.sbu_id
-    }
-    found = await CoursePlan.findOne({
-      where: condition
-    })
+    found = await CoursePlan.findOne({ where: { studentId: studentInfo.sbu_id } })
     if (!found)
       await CoursePlan.create({
         studentId: studentInfo.sbu_id,
@@ -529,46 +511,9 @@ async function uploadStudents(students, res) {
 
 
 /**
- * Find all requirements for a degree as listed below.
- *  - GradeRequirement (B or higher)
- *  - GpaRequirement (Minimum of 3.0 or higher)
- *  - CreditRequirement (Minimum of 31 credits)
- *  - CourseRequirement (Required to take CSE523)
- * @param {*} degree the targeted degree to find all requirements.
- * 
- * @returns {Array<Object>} returns an array that contains all the degree's 
- * requirements 
- */
-async function findRequirements(degree) {
-  let gradeReq = await GradeRequirement.findOne({
-    where: {
-      requirementId: degree.gradeRequirement
-    }
-  })
-  let gpaReq = await GpaRequirement.findOne({
-    where: {
-      requirementId: degree.gpaRequirement
-    }
-  })
-  let creditReq = await CreditRequirement.findOne({
-    where: {
-      requirementId: degree.creditRequirement
-    }
-  })
-  let courseReq = await CourseRequirement.findAll({
-    where: {
-      requirementId: degree.courseRequirement
-    }
-  })
-  return [gradeReq, gpaReq, creditReq, courseReq]
-}
-
-
-/**
  * Checks to make sure all the fields that were entered are valid entries.
  * @param {Object} student contains all necessary information about the student.
  * @param {*} res
- * 
  * @returns {Boolean} returns true if all conditions are satisfied, else return false.
  */
 function checkFields(student, res) {
@@ -606,12 +551,10 @@ function checkFields(student, res) {
 
 /**
  * Attempts to add/create the student to the database.
- * @param {*} student information about the student to be added to the database
+ * @param {Object} student Information about the student to be added to the database
  * if all criterias are met.
- * @param {*} degree used to find requirements for the degree
+ * @param {Object} degree Used to find requirements for the degree
  * @param {*} res 
- * 
- * @returns
  */
 async function addStudent(student, degree, res) {
   if (!checkFields(student, res))
@@ -623,22 +566,17 @@ async function addStudent(student, degree, res) {
 
   // Get number of degree requirements and set initial state of each requirement to unsatisfied
   let requiredRequirements = []
-  let requirements = await findRequirements(degree)
-  if (requirements[0]) {
-    requiredRequirements.push('GR' + requirements[0].requirementId)
+  const [gradeReq, gpaReq, creditReq, courseReq] = await shared.findRequirements(degree)
+  if (gradeReq)
+    requiredRequirements.push('GR' + gradeReq.requirementId)
+  if (gpaReq)
+    requiredRequirements.push('G' + gpaReq.requirementId)
+  if (creditReq)
+    requiredRequirements.push('CR' + creditReq.requirementId)
+  for (let req of courseReq) {
+    if (req.type !== 0)
+      requiredRequirements.push('C' + req.requirementId)
   }
-  if (requirements[1]) {
-    requiredRequirements.push('G' + requirements[1].requirementId)
-  }
-  if (requirements[2]) {
-    requiredRequirements.push('CR' + requirements[2].requirementId)
-  }
-  for (let index in requirements[3]) {
-    let courseReq = requirements[3][index]
-    if (courseReq.type !== 0)
-      requiredRequirements.push('C' + courseReq.requirementId)
-  }
-
   // Tries to create the student with all fields. 
   let addedStudent = await Student.create({
     sbuId: student.sbuId,
@@ -679,10 +617,10 @@ async function addStudent(student, degree, res) {
     res.status(500).send('Error creating student course plan.')
     return
   }
-  for (let index in requiredRequirements) {
+  for (let req of requiredRequirements) {
     await RequirementState.create({
       sbuID: student.sbuId,
-      requirementId: requiredRequirements[index],
+      requirementId: req,
       state: 'unsatisfied',
       metaData: []
     })
