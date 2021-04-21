@@ -98,14 +98,14 @@ async function uploadCourses(results, res, dept) {
       grade: null
     }
   })
-  // const semCoursePlanIds = coursePlanItems.map((item) => item.coursePlanId)
+  const semCoursePlanIds = coursePlanItems.map((item) => item.coursePlanId)
 
-  // await CoursePlan.update({ coursePlanValid: true }, {
-  //   where: {
-  //     coursePlanId: semCoursePlanIds,
-  //     coursePlanValid: false
-  //   }
-  // })
+  await CoursePlan.update({ coursePlanValid: true }, {
+    where: {
+      coursePlanId: semCoursePlanIds,
+      coursePlanValid: false
+    }
+  })
 
   let affectedStudents = {}
   // Loop through every semester+year covered by the csv
