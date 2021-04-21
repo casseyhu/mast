@@ -116,9 +116,10 @@ class Browse extends Component {
     let savedState = localStorage.getItem('filters')
     if (savedState) {
       savedState = JSON.parse(savedState)
+      let filters = savedState.filters
       if (Object.keys(savedState.filters).length === 0) {
-        savedState.filters = {
-          nameId: '%',
+        filters = {
+          nameId: '',
           track: '%',
           entrySem: '%',
           entryYear: '%',
@@ -131,7 +132,7 @@ class Browse extends Component {
       }
       this.setState({
         sortBy: savedState.sortBy,
-        filters: savedState.filters,
+        filters: filters,
         page: savedState.page,
         ascending: savedState.ascending,
       }, this.filter)

@@ -149,7 +149,6 @@ const Student = (props) => {
       }
       console.log(requirementState)
       setStudentInfoParams({
-        // student: 'null',
         coursePlan: [],
         requirements: degree,
         requirementStates: requirementState
@@ -157,7 +156,6 @@ const Student = (props) => {
     }, [])
 
   const editCoursePlan = () => {
-    localStorage.removeItem('filters')
     history.push({
       pathname: '/courseplan',
       state: {
@@ -168,7 +166,6 @@ const Student = (props) => {
   }
 
   const suggestCoursePlan = () => {
-    localStorage.removeItem('filters')
     console.log('Suggesting course plan for student: ', studentInfoParams.student)
     history.push({
       pathname: '/suggest',
@@ -215,11 +212,8 @@ const Student = (props) => {
             <div>[Comments Changed] Send notification that comments have been changed to student?</div>
           </div>
         }
-        footer={
-          <small style={{ visibility: visible, color: 'red', width: '100%' }}>
-            Sending emails to students...
-          </small>
-        }
+        footer='Sending emails to students...'
+        visibility={visible}
       />
       <CenteredModal
         show={showEmailConf}

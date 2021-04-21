@@ -118,11 +118,8 @@ const Import = (props) => {
               </table>
             </div>
           }
-          footer={
-            <small style={{ visibility: visible, color: 'red', width: '100%' }}>
-              Sending emails to students...
-            </small>
-          }
+          footer='Sending emails to students...'
+          visibility={visible}
         />}
         <CenteredModal
           show={showEmailConf}
