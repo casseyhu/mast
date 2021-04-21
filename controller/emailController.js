@@ -13,8 +13,8 @@ exports.send = (req, res) => {
     service: 'gmail',
     ssl: true,
     auth: {
-      user: 'mastgrassjelly@gmail.com',
-      pass: 'cse416@stoller'
+      user: process.env.GMAIL,
+      pass: process.env.GMAIL_PASS
     }
   })
   // Set the receiver and the content of the email
