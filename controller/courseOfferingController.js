@@ -98,8 +98,9 @@ async function uploadCourses(results, res, dept) {
       grade: null
     }
   })
+  
+  //Mark all invalid course plans valid for semesters covered by csv file
   const semCoursePlanIds = coursePlanItems.map((item) => item.coursePlanId)
-
   await CoursePlan.update({ coursePlanValid: true }, {
     where: {
       coursePlanId: semCoursePlanIds,
