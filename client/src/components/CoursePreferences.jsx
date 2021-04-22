@@ -16,13 +16,19 @@ const CoursePreferences = (props) => {
     setDeptCourses(props.courses)
   }, [props])
 
+
+
   // Everytime user tries to add a course, we check if this course 
   // exists at all in this department. 
   const checkCourse = () => {
     let uCourse = course.toUpperCase()
-    if(!deptCourses[uCourse]) {
+    if(!(uCourse in deptCourses)) {
       console.log('Course doesnt exist')
       setErrMsg('Course ' + uCourse + ' does not exist.')
+      showError(true)
+    }
+    else if (props.preferred.includes(uCourse) || props.avoid.includes(uCourse)) {
+      setErrMsg('Course ' + uCourse + ' already added.')
       showError(true)
     }
     else {
@@ -36,7 +42,6 @@ const CoursePreferences = (props) => {
 
   return (
     <div className='flex-vertical wrap' style={{ maxWidth: '530px' }}>
-
       <div className='flex-horizontal justify-content-between'>
         <span style={{paddingRight:'2rem'}}>
           {mode === 'avoid' ? 'Avoid' : 'Preferred'} Courses: 

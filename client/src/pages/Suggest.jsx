@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import CoursePlan from '../components/CoursePlan'
-import SuggestPreferences from '../components/SuggestPreferences'
+import Preferences from '../components/Preferences'
+import SuggestCoursePlan from '../components/SuggestCoursePlan'
 import Container from 'react-bootstrap/Container'
 import Button from '../components/Button'
 import jwt_decode from 'jwt-decode'
@@ -41,9 +42,10 @@ const Suggest = (props) => {
       <h3 style={{marginBottom:'0', padding:'0'}}>Department: {student === undefined ? '' : student.department} </h3>
       </div>
       <hr style={{margin:'0 0 0.5rem 0'}}/>
-      <SuggestPreferences 
+      <Preferences 
         department={student === undefined ? '' : student.department}
       />
+      <SuggestCoursePlan/>
       {coursePlan && student && 
         <CoursePlan 
           heading='Current Course Plan'
