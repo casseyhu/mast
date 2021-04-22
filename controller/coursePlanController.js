@@ -94,12 +94,12 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
   let students = await Student.findAll({ where: { department: dept } })
   // Gets the list of only the sbuids for students of this department
   students = new Set(students.map(student => student.sbuId))
-  // Filters the course plan items from the csv for only the students of this department 
+  // 1. Filters the course plan items from the csv for only the students of this department 
   coursePlans = coursePlans.filter(coursePlan => students.has(coursePlan.sbu_id))
   students = coursePlans.map(item => item.sbu_id)
   // Find all existing course plan items for students of this department
   const existCoursePlans = await CoursePlan.findAll({ where: { studentId: students } })
-  // Delete all course plan items and requirement states for the list of students
+  // 2. Delete all course plan items and requirement states for the list of students
   if (deleted === 'true') {
     await CoursePlanItem.destroy({
       where: {
@@ -110,7 +110,7 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
   }
   let studentsPlanId = {}
   existCoursePlans.forEach(plan => studentsPlanId[plan.studentId] = plan.coursePlanId)
-  // Create/Update all the course plan items for students of this department
+  // 3. Create/Update all the course plan items for students of this department
   for (let i = 0; i < coursePlans.length; i++) {
     const item = coursePlans[i]
     if (!item.sbu_id)
@@ -348,7 +348,7 @@ async function calculateCourseRequirement(credits, states, courseReq, student, c
         coursesCount[course.courseId] = 1
     }
   }
-  // Each course requirement
+  // 1. Each course requirement which contains a list of courses that can be used to satify the requirement
   for (let requirement of courseReq) {
     if (requirement.type === 0) // Not required for the degree 
       continue
@@ -365,11 +365,11 @@ async function calculateCourseRequirement(credits, states, courseReq, student, c
         continue
       // Course plan contains the course
       let courseCredits = credits[course]
-      // Check if the course can be repeated multiple times for the requirement (min 2 courses but only 1 course in list)
+      // 2. Compare length of courses in list to the credit or course lower
       let coRepeat = requirement.courseLower ? (requirement.courseLower > courselen) : false
       let crRepeat = requirement.creditLower ? (requirement.creditLower / courseCredits > courselen) : false
       repeatFlag = coRepeat || crRepeat
-      // If course can be counted multiple times for the requirement
+      // 3. If course can be counted multiple times for the requirement
       if (repeatFlag) {
         let passed = passedCourses[course]
         // If they satisfy minimum course limit, check if they actually passed the course n times
@@ -385,7 +385,7 @@ async function calculateCourseRequirement(credits, states, courseReq, student, c
         coursesUsedForReq.push(course)
         break
       }
-      // Course was not used for another requirement: only count if passed or not taken yet
+      // 4. Not repeat course. Only count if student passed the course and keep track of future courses that satisfy requirement
       if (passedCourses[course]) {
         delete coursesCount[course]
         coursesUsedForReq.push(course)
@@ -402,7 +402,7 @@ async function calculateCourseRequirement(credits, states, courseReq, student, c
       const pendingCount = pendingCourses.length
       const expCourseLower = courseLower - pendingCount
       const expCreditLower = creditLower - pendingCredits
-      if (courseLower <= 0 || creditLower <= 0)
+      if (courseLower <= 0 || creditLower <= 0) // if satisfied with taken courses, then satisfied
         courseReqState = 'satisfied'
       else if (expCourseLower <= 0 || expCreditLower <= 0) {
         courseReqState = 'pending'
@@ -483,16 +483,16 @@ async function calculateCompletion(studentsPlanId, credits, res) {
       gpa: studentCumGpa ? studentCumGpa.toFixed(2) : 0
     })
     // If all course plan items are pending and satisfied (no unsatisfied), then the course plan is complete
-    const notTakenCourses = coursePlanItems.filter(item => item.grade === null)
-    const coursePlanValidity = await checkCoursePlanValidity(notTakenCourses)
     let studentCoursePlan = await CoursePlan.findOne({
       where: {
         coursePlanId: studentsPlanId[key]
       }
     })
+    const notTakenCourses = coursePlanItems.filter(item => item.grade === null)
+    const coursePlanValidity = await checkCoursePlanValidity(notTakenCourses)
     await studentCoursePlan.update({
       coursePlanComplete: (states['unsatisfied'] === 0) ? true : false,
-      coursePlanValid: coursePlanValidity
+      coursePlanValid: coursePlanValidity // added for sorting via browse
     })
   }
   console.log('Done calculating ' + tot + ' students course plan completion')

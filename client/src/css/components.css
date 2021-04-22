@@ -5,7 +5,8 @@ nav {
   background-color: var(--charcoal) !important;
 }
 
-.navbar-dark .navbar-nav .nav-link, .navbar-brand {
+.navbar-dark .navbar-nav .nav-link,
+.navbar-brand {
   color: white;
   /* color: var(--slate-black); */
   margin: 0 0.7rem;
@@ -18,10 +19,13 @@ nav {
 
 /* Buttons and Input CSS */
 
-.input, .round-button, .square-button, textarea {
+.input,
+.round-button,
+.square-button,
+textarea {
   padding: 5px 10px;
   margin: 4px auto;
-  border: 2px solid var(--primary);
+  border: 2px solid var(--dark-grey);
   border-radius: 0.5rem;
   width: 100%;
 }
@@ -47,11 +51,13 @@ nav {
   color: var(--primary);
 }
 
-.input, textarea {
+.input,
+textarea {
   background-color: rgba(255, 255, 255, 0.95);
 }
 
-.input:focus, textarea:focus {
+.input:focus,
+textarea:focus {
   outline-width: 1px;
 }
 
@@ -59,6 +65,7 @@ nav {
   background-color: white;
   color: var(--primary);
 }
+
 /* Dropdown CSS */
 
 .dd-wrapper-multi {
@@ -67,19 +74,17 @@ nav {
   max-width: 400px;
   margin: 4px auto;
 }
+
 .dd-wrapper-single {
   min-width: 120px;
   width: fit-content;
   margin: 4px auto;
 }
 
-.filler-text{
+.filler-text {
   background-color: #fff6c9;
-  /* border: 1.5px solid var(--dark); */
   border-radius: 7px;
-  width: 100%;
-  margin: 0.5rem 0;
-  margin-right: 0.5rem !important;
+  margin: 0.5rem 0.5rem 0.5rem 0;
   padding: 0.8rem 0;
   text-align: center;
 }
@@ -87,32 +92,32 @@ nav {
 
 /* BrowseSearchbar */
 .advancedButton {
-  /* padding-top: 1.2rem; */
   background-color: transparent;
   border: none;
   margin-right: 3rem;
   font-size: 14px;
 }
 
-.advancedButton:hover{
+.advancedButton:hover {
   text-decoration: underline;
 }
 
-.advancedFilters{
+.advancedFilters {
   height: auto;
-  /* padding: 0.5rem; */
-  /* background-color: var(--grey); */
 }
 
 .filter-span-reg {
   margin-right: 0.7rem;
 }
+
 .filter-span {
   width: 95px;
 }
+
 .trends-span {
   padding-right: 0.2rem;
 }
+
 .filter-component {
   width: 150px;
   margin-right: 1.5rem;
@@ -123,10 +128,12 @@ nav {
 .page-link {
   color: var(--primary);
 }
+
 .page-link:hover {
   background-color: rgba(197, 197, 197, 0);
   color: var(--primary);
 }
+
 .page-item.active .page-link {
   background-color: var(--primary);
   border-color: var(--primary);
@@ -137,12 +144,14 @@ nav {
 .parent {
   position: relative;
 }
+
 .checkmark {
   position: absolute !important;
   top: calc(50% - 75px);
   left: calc(50% - 48px);
   z-index: 2;
 }
+
 .loading {
   position: absolute !important;
   top: calc(50% - 50px);

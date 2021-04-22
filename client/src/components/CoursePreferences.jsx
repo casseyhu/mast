@@ -35,26 +35,23 @@ const CoursePreferences = (props) => {
 
 
   return (
-    <div className='flex-vertical wrap' style={{ maxWidth: '530px' }}>
-
+    <div className='flex-vertical' style={{ maxWidth: 'fit-content' }}>
       <div className='flex-horizontal justify-content-between'>
-        <span style={{paddingRight:'2rem'}}>
-          {mode === 'avoid' ? 'Avoid' : 'Preferred'} Courses: 
-        </span>
+        <span style={{width: '140px'}}> {mode} Courses: </span>
         <InputField
-            className='lr-padding'
-            type='text'
-            disabled={false}
-            placeholder={'Course'}
-            value={course}
-            onChange={e => setQuery(e.target.value)}
-            style={{ paddingRight: '0px', width: 'auto', flexShrink: '1' }}
-          />
+          className='lr-padding'
+          type='text'
+          placeholder='Course'
+          value={course}
+          onChange={e => setQuery(e.target.value)}
+          style={{flexShrink: '1', flexGrow: '1'}}
+        />
         <Button
+          divclassName='lr-padding'
           variant='round'
           text='Add Course'
           onClick={e => checkCourse()}
-          style={{margin:'0 0.5rem 0 0'}}
+          style={{width: '130px'}}
         />
       </div>
       {error && 
@@ -62,7 +59,6 @@ const CoursePreferences = (props) => {
           <span className='error'><strong>{errorMessage}</strong></span>
         </div>
       }
-
     </div>
   )
 }
