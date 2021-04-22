@@ -430,7 +430,7 @@ exports.getDeptCourses = (req, res) => {
       }
     }).then(result => {
       courseIds = {}
-      result.map(course => courseIds[course.dataValues.courseId] = true)
+      result.map(course => courseIds[course.dataValues.courseId] = false)
       res.status(200).send(courseIds)
     })
   }

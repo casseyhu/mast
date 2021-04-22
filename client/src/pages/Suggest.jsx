@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import CoursePlan from '../components/CoursePlan'
-import SuggestPreferences from '../components/SuggestPreferences'
+import Preferences from '../components/Preferences'
+import SuggestCoursePlan from '../components/SuggestCoursePlan'
 import Container from 'react-bootstrap/Container'
 import Button from '../components/Button'
 import axios from '../constants/axios'
@@ -36,9 +37,10 @@ const Suggest = (props) => {
         <h5>Student: {student.sbuId}</h5>
         <h5>Degree: {student.department} - {student.track}</h5>
       </div>
-      <h4>Preferences</h4>
-      <SuggestPreferences department={student.department} />
+      <h5 className='underline'>Preferences</h5>
+      <Preferences department={student.department} />
       <Button variant='round' text='Suggest' onClick={suggest} style={{width:'100px'}}/>
+      <SuggestCoursePlan/>
       {coursePlan && 
         <CoursePlan 
           heading='Current Course Plan'

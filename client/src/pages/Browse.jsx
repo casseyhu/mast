@@ -189,6 +189,9 @@ class Browse extends Component {
             <Pagination.First disabled={page === 1} onClick={() => this.setState({ page: 1 })} />
             <Pagination.Prev disabled={page === 1} onClick={() => this.setState({ page: Math.max(page - 1, 1) })} />
             {(page > 3) && <Pagination.Ellipsis />}
+            {(page > 4) && (page + 2 >= maxPage) && (
+              <Pagination.Item onClick={() => this.setState({ page: page - 3 })}>{page - 3}</Pagination.Item>
+            )}
             {(page - 2 > 0) && (
               <Pagination.Item onClick={() => this.setState({ page: page - 2 })}>{page - 2}</Pagination.Item>
             )}
@@ -208,7 +211,7 @@ class Browse extends Component {
             {!(page - 1 > 0) && (page + 4 <= maxPage) && (
               <Pagination.Item onClick={() => this.setState({ page: page + 4 })}>{page + 4}</Pagination.Item>
             )}
-            {(page + 5 < maxPage) && <Pagination.Ellipsis />}
+            {(page + 2 < maxPage) && <Pagination.Ellipsis />}
             <Pagination.Next disabled={page === maxPage} onClick={() => this.setState({ page: page + 1 })} />
             <Pagination.Last disabled={page === maxPage} onClick={() => this.setState({ page: maxPage })} />
           </Pagination>

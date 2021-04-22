@@ -16,13 +16,19 @@ const CoursePreferences = (props) => {
     setDeptCourses(props.courses)
   }, [props])
 
+
+
   // Everytime user tries to add a course, we check if this course 
   // exists at all in this department. 
   const checkCourse = () => {
     let uCourse = course.toUpperCase()
-    if(!deptCourses[uCourse]) {
+    if(!(uCourse in deptCourses)) {
       console.log('Course doesnt exist')
       setErrMsg('Course ' + uCourse + ' does not exist.')
+      showError(true)
+    }
+    else if (props.preferred.includes(uCourse) || props.avoid.includes(uCourse)) {
+      setErrMsg('Course ' + uCourse + ' already added.')
       showError(true)
     }
     else {
@@ -35,27 +41,27 @@ const CoursePreferences = (props) => {
 
 
   return (
-    <div className='flex-vertical' style={{ maxWidth: 'fit-content' }}>
-      <div className='flex-horizontal justify-content-between'>
-        <span style={{width: '140px'}}> {mode} Courses: </span>
+    <div style={{ maxWidth: '100%' }}>
+      <div className='flex-horizontal'>
+        <span style={{width: '150px'}}> {mode} Courses: </span>
         <InputField
           className='lr-padding'
           type='text'
           placeholder='Course'
           value={course}
           onChange={e => setQuery(e.target.value)}
-          style={{flexShrink: '1', flexGrow: '1'}}
+          style={{ width: '250px'}}
         />
         <Button
           divclassName='lr-padding'
           variant='round'
           text='Add Course'
           onClick={e => checkCourse()}
-          style={{width: '130px'}}
+          style={{width: '140px'}}
         />
       </div>
       {error && 
-        <div className='flex-horizontal wrap' style={{ marginBottom: '0.5rem', width: '100%' }}>
+        <div style={{ marginBottom: '0.5rem', width: '100%' }}>
           <span className='error'><strong>{errorMessage}</strong></span>
         </div>
       }

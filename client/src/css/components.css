@@ -89,6 +89,54 @@ textarea:focus {
   text-align: center;
 }
 
+.preference-col {
+  justify-content: space-between;
+}
+
+/* Suggest course plan courses preference table */
+.preference-table {
+  width: 100%;
+}
+
+.preference-table-th {
+  border: none;
+  padding: 0.5rem 1rem;
+  text-align: left;
+}
+
+.preference-table-th:nth-child(n+3) {
+  width: 10%;
+}
+
+.preference-table-th:nth-child(1) {
+  border-radius: .5rem 0 0 0;
+}
+
+.preference-table-th:nth-last-child(1) {
+  border-radius: 0 .5rem 0 0;
+}
+
+.preference-table-td {
+  padding: 0.2rem 0.2rem 0.2rem 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.preference-table-td:nth-child(n+3) {
+  padding-left: 0.5rem;
+}
+
+.preference-table-tr:hover {
+  background-color: transparent;
+}
+
+#icon {
+  padding: 0 1rem;
+  height: fit-content;
+}
+
+#icon:hover {
+  background: #727a8811;
+}
 
 /* BrowseSearchbar */
 .advancedButton {
