@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import InputField from './InputField'
 import Button from '../components/Button'
-import axios from '../constants/axios'
 
 const CoursePreferences = (props) => {
   const [mode, setMode] = useState('')
@@ -10,34 +9,27 @@ const CoursePreferences = (props) => {
   const [errorMessage, setErrMsg] = useState('')
   const [deptCourses, setDeptCourses] = useState({})
 
+  // When the CoursePreference props are changed, it will
+  // re-set the mode and the department's courses.
   useEffect(() => {
     setMode(props.mode)
-    console.log('axios getting dept courses')
-    axios.get('course/deptCourses', {
-      params: {
-        dept: props.department
-      }
-    }).then(response => {
-      setDeptCourses(response.data)
-    }).catch(err => {
-      console.log('Error in getting department courses: ', err)
-    })
-    return
+    setDeptCourses(props.courses)
   }, [props])
 
+  // Everytime user tries to add a course, we check if this course 
+  // exists at all in this department. 
   const checkCourse = () => {
-    // Everytime they try to add a course, we check if this course 
-    // exists at all in this department (that is, we don't have this course in DB)
-    console.log(deptCourses)
-    if(!deptCourses[course]) {
+    let uCourse = course.toUpperCase()
+    if(!deptCourses[uCourse]) {
       console.log('Course doesnt exist')
-      setErrMsg('Course ' + course + ' does not exist.')
+      setErrMsg('Course ' + uCourse + ' does not exist.')
       showError(true)
     }
     else {
       setErrMsg('')
       showError(false)
-      props.addCourse(mode, course)
+      props.addCourse(mode, uCourse)
+      setQuery('')
     }
   }
 
@@ -56,12 +48,13 @@ const CoursePreferences = (props) => {
             placeholder={'Course'}
             value={course}
             onChange={e => setQuery(e.target.value)}
-            style={{ paddingRight: '0px', width: '210px', flexShrink: '1' }}
+            style={{ paddingRight: '0px', width: 'auto', flexShrink: '1' }}
           />
         <Button
           variant='round'
           text='Add Course'
           onClick={e => checkCourse()}
+          style={{margin:'0 0.5rem 0 0'}}
         />
       </div>
       {error && 

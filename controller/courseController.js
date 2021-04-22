@@ -419,7 +419,6 @@ const insertUpdate = async (values, condition) => {
  * @param {*} res axios response.
  */
 exports.getDeptCourses = (req, res) => { 
-  console.log(req.query)
   if(req.query.dept !== '') {
     console.log(req.query.dept)
     Course.findAll({

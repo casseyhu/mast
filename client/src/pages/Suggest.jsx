@@ -40,7 +40,7 @@ const Suggest = (props) => {
       <h3 style={{marginBottom:'0', padding:'0'}}>Student: {student === undefined ? '' : student.sbuId}</h3>
       <h3 style={{marginBottom:'0', padding:'0'}}>Department: {student === undefined ? '' : student.department} </h3>
       </div>
-      <hr style={{marginTop:'0px'}}/>
+      <hr style={{margin:'0 0 0.5rem 0'}}/>
       <SuggestPreferences 
         department={student === undefined ? '' : student.department}
       />
