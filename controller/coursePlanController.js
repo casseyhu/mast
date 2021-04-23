@@ -2,7 +2,8 @@ const { IncomingForm } = require('formidable')
 const fs = require('fs')
 const Papa = require('papaparse')
 
-const shared = require('./shared')
+const { GRADES, SEMTONUM, currSem, currYear,
+  findRequirements, checkTimeConflict, findCoursePlanItems } = require('./shared')
 const database = require('../config/database.js')
 
 const Student = database.Student
@@ -13,26 +14,6 @@ const CourseOffering = database.CourseOffering
 
 const Degree = database.Degree
 const RequirementState = database.RequirementState
-
-const GRADES = {
-  'A': 4,
-  'A-': 3.67,
-  'B+': 3.33,
-  'B': 3,
-  'B-': 2.67,
-  'C+': 2.33,
-  'C': 2,
-  'C-': 1.67,
-  'F': 0
-}
-const semDict = {
-  'Fall': 8,
-  'Spring': 2,
-  'Winter': 1,
-  'Summer': 5
-}
-const currSem = 'Spring'
-const currYear = 2021
 
 
 /**
@@ -94,12 +75,12 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
   let students = await Student.findAll({ where: { department: dept } })
   // Gets the list of only the sbuids for students of this department
   students = new Set(students.map(student => student.sbuId))
-  // Filters the course plan items from the csv for only the students of this department 
+  // 1. Filters the course plan items from the csv for only the students of this department 
   coursePlans = coursePlans.filter(coursePlan => students.has(coursePlan.sbu_id))
   students = coursePlans.map(item => item.sbu_id)
   // Find all existing course plan items for students of this department
   const existCoursePlans = await CoursePlan.findAll({ where: { studentId: students } })
-  // Delete all course plan items and requirement states for the list of students
+  // 2. Delete all course plan items and requirement states for the list of students
   if (deleted === 'true') {
     await CoursePlanItem.destroy({
       where: {
@@ -110,7 +91,7 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
   }
   let studentsPlanId = {}
   existCoursePlans.forEach(plan => studentsPlanId[plan.studentId] = plan.coursePlanId)
-  // Create/Update all the course plan items for students of this department
+  // 3. Create/Update all the course plan items for students of this department
   for (let i = 0; i < coursePlans.length; i++) {
     const item = coursePlans[i]
     if (!item.sbu_id)
@@ -348,7 +329,7 @@ async function calculateCourseRequirement(credits, states, courseReq, student, c
         coursesCount[course.courseId] = 1
     }
   }
-  // Each course requirement
+  // 1. Each course requirement which contains a list of courses that can be used to satify the requirement
   for (let requirement of courseReq) {
     if (requirement.type === 0) // Not required for the degree 
       continue
@@ -365,11 +346,11 @@ async function calculateCourseRequirement(credits, states, courseReq, student, c
         continue
       // Course plan contains the course
       let courseCredits = credits[course]
-      // Check if the course can be repeated multiple times for the requirement (min 2 courses but only 1 course in list)
+      // 2. Compare length of courses in list to the credit or course lower
       let coRepeat = requirement.courseLower ? (requirement.courseLower > courselen) : false
       let crRepeat = requirement.creditLower ? (requirement.creditLower / courseCredits > courselen) : false
       repeatFlag = coRepeat || crRepeat
-      // If course can be counted multiple times for the requirement
+      // 3. If course can be counted multiple times for the requirement
       if (repeatFlag) {
         let passed = passedCourses[course]
         // If they satisfy minimum course limit, check if they actually passed the course n times
@@ -385,7 +366,7 @@ async function calculateCourseRequirement(credits, states, courseReq, student, c
         coursesUsedForReq.push(course)
         break
       }
-      // Course was not used for another requirement: only count if passed or not taken yet
+      // 4. Not repeat course. Only count if student passed the course and keep track of future courses that satisfy requirement
       if (passedCourses[course]) {
         delete coursesCount[course]
         coursesUsedForReq.push(course)
@@ -402,7 +383,7 @@ async function calculateCourseRequirement(credits, states, courseReq, student, c
       const pendingCount = pendingCourses.length
       const expCourseLower = courseLower - pendingCount
       const expCreditLower = creditLower - pendingCredits
-      if (courseLower <= 0 || creditLower <= 0)
+      if (courseLower <= 0 || creditLower <= 0) // if satisfied with taken courses, then satisfied
         courseReqState = 'satisfied'
       else if (expCourseLower <= 0 || expCreditLower <= 0) {
         courseReqState = 'pending'
@@ -456,7 +437,7 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     const student = await Student.findOne({ where: { sbuId: key } })
     const degree = await Degree.findOne({ where: { degreeId: student.degreeId } })
     if (!degrees[student.degreeId])
-      degrees[student.degreeId] = await shared.findRequirements(degree)
+      degrees[student.degreeId] = await findRequirements(degree)
     const [gradeReq, gpaReq, creditReq, courseReq] = degrees[student.degreeId]
     // Get this student's coursePlan to see what courses they've taken/currently taken/are going to take.
     const coursePlanItems = await CoursePlanItem.findAll({ where: { coursePlanId: studentsPlanId[key] } })
@@ -465,7 +446,7 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     // List of course plan items that the student has taken and currently taking
     const takenAndCurrent = coursePlanItems.filter(course => (
       (course.year < currYear) ||
-      ((course.year === currYear) && (semDict[course.semester] <= semDict[currSem]))
+      ((course.year === currYear) && (SEMTONUM[course.semester] <= SEMTONUM[currSem]))
     ))
     // CREDIT REQUIREMENT: Create and calculate credit requirement
     await calculateCreditRequirement(credits, states, creditReq, student, coursePlanItems, takenAndCurrent)
@@ -483,16 +464,16 @@ async function calculateCompletion(studentsPlanId, credits, res) {
       gpa: studentCumGpa ? studentCumGpa.toFixed(2) : 0
     })
     // If all course plan items are pending and satisfied (no unsatisfied), then the course plan is complete
-    const notTakenCourses = coursePlanItems.filter(item => item.grade === null)
-    const coursePlanValidity = await checkCoursePlanValidity(notTakenCourses)
     let studentCoursePlan = await CoursePlan.findOne({
       where: {
         coursePlanId: studentsPlanId[key]
       }
     })
+    const notTakenCourses = coursePlanItems.filter(item => item.grade === null)
+    const coursePlanValidity = await checkCoursePlanValidity(notTakenCourses)
     await studentCoursePlan.update({
       coursePlanComplete: (states['unsatisfied'] === 0) ? true : false,
-      coursePlanValid: coursePlanValidity
+      coursePlanValid: coursePlanValidity // added for sorting via browse
     })
   }
   console.log('Done calculating ' + tot + ' students course plan completion')
@@ -557,7 +538,7 @@ async function checkCoursePlanValidity(notTakenCourses) {
           continue
         }
         let second = courseOfferingMap[courses[j].courseId]
-        shared.checkTimeConflict(first, second, invalidItems)
+        checkTimeConflict(first, second, invalidItems)
       }
     }
     // update courseplanitem validty for invaliditems
@@ -630,12 +611,13 @@ async function updateOrCreate(student, requirementType, requirementId, state, me
  */
 exports.findItems = async (req, res) => {
   try {
-    const coursePlan = await CoursePlan.findOne({ where: req.query })
-    const coursePlanItems = await CoursePlanItem.findAll({
-      where: {
-        coursePlanId: coursePlan.coursePlanId
-      }
-    })
+    const coursePlanItems = await findCoursePlanItems(req.query.studentId)
+    // const coursePlan = await CoursePlan.findOne({ where: req.query })
+    // const coursePlanItems = await CoursePlanItem.findAll({
+    //   where: {
+    //     coursePlanId: coursePlan.coursePlanId
+    //   }
+    // })
     res.status(200).send(coursePlanItems)
   } catch (err) {
     console.log(err)

@@ -134,6 +134,10 @@ textarea {
   padding: 0.25rem 0.5rem;
 }
 
+.underline {
+  border-bottom: 0.5px solid lightgrey;
+}
+
 .error {
   color: #a8201a;
 }
@@ -145,7 +149,6 @@ textarea {
 
 i.fa {
   line-height: 3rem;
-  /* float: right; */
   color: rgba(52, 64, 85, 0.85);
   margin-right: 0;
 }
@@ -197,7 +200,6 @@ i.fa {
 .color-box {
   width: 30px;
   height: 30px;
-  /* display: inline-block; */
   vertical-align: middle;
   display: table-cell;
 }
@@ -243,6 +245,12 @@ i.fa {
 
   .textarea {
     width: calc(100vw - 6rem);
+  }
+}
+
+@media (max-width: 1200px) {
+  .preference-col {
+    justify-content: space-around !important;
   }
 }
 
