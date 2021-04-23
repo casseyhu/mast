@@ -14,10 +14,11 @@ const CenteredModal = (props) => {
       backdrop='static'
       animation={false}
       scrollable={props.scrollable}
+      title={props.title}
     >
       <Modal.Header closeButton>
         <Modal.Title id='contained-modal-title-vcenter'>
-          {props.variant === 'multi' ? 'Please Confirm' : 'Success'}
+          {props.variant === 'multi' ? 'Please Confirm' : (props.title ? props.title : "Success")}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className='flex-vertical center'>

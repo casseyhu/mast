@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom'
 
 const Student = (props) => {
   const history = useHistory()
-
+  const [showUpdateError, setShowUpdateError] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [showEmailBox, setShowEmailBox] = useState(false)
@@ -71,7 +71,7 @@ const Student = (props) => {
       history.push('/')
   }, [])
 
-  const modeHandler = (studentInfo) => {
+  const modeHandler = async (studentInfo) => {
     setErrorMsg('')
     console.log('Page mode: ', mode)
     if (mode === 'Add') {
@@ -92,6 +92,17 @@ const Student = (props) => {
     } else if (mode === 'View') {
       setMode('Edit')
     } else {
+      let newStudentInfo = await axios.get('/student/' + studentInfoParams.student.sbuId, {
+        params: studentInfoParams.student.sbuId
+      })
+      let isSame = true
+      Object.keys(newStudentInfo.data).map((info) =>
+        newStudentInfo.data[info] !== studentInfoParams.student[info] ? isSame = false : '')
+      // show update error modal if data has been edited by another user
+      if (!isSame) {
+        setShowUpdateError(true)
+        return
+      }
       let commentBefore = studentInfoParams.student.gpdComments
       let commentAfter = studentInfo.gpdComments
       let deptBefore = studentInfoParams.student.department
@@ -210,6 +221,13 @@ const Student = (props) => {
         onHide={() => setShowConfirmation(false)}
         onConfirm={changeMode}
         body='Student successfully saved'
+      />
+      <CenteredModal
+        show={showUpdateError}
+        onHide={() => { changeMode(); setShowUpdateError(false) }}
+        onConfirm={() => { changeMode(); setShowUpdateError(false) }}
+        body='Try again later.'
+        title='Error'
       />
       <CenteredModal
         show={showEmailBox}
