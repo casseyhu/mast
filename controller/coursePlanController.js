@@ -2,7 +2,8 @@ const { IncomingForm } = require('formidable')
 const fs = require('fs')
 const Papa = require('papaparse')
 
-const shared = require('./shared')
+const { GRADES, SEMTONUM, currSem, currYear,
+  findRequirements, checkTimeConflict, findCoursePlanItems } = require('./shared')
 const database = require('../config/database.js')
 
 const Student = database.Student
@@ -13,26 +14,6 @@ const CourseOffering = database.CourseOffering
 
 const Degree = database.Degree
 const RequirementState = database.RequirementState
-
-const GRADES = {
-  'A': 4,
-  'A-': 3.67,
-  'B+': 3.33,
-  'B': 3,
-  'B-': 2.67,
-  'C+': 2.33,
-  'C': 2,
-  'C-': 1.67,
-  'F': 0
-}
-const semDict = {
-  'Fall': 8,
-  'Spring': 2,
-  'Winter': 1,
-  'Summer': 5
-}
-const currSem = 'Spring'
-const currYear = 2021
 
 
 /**
@@ -456,7 +437,7 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     const student = await Student.findOne({ where: { sbuId: key } })
     const degree = await Degree.findOne({ where: { degreeId: student.degreeId } })
     if (!degrees[student.degreeId])
-      degrees[student.degreeId] = await shared.findRequirements(degree)
+      degrees[student.degreeId] = await findRequirements(degree)
     const [gradeReq, gpaReq, creditReq, courseReq] = degrees[student.degreeId]
     // Get this student's coursePlan to see what courses they've taken/currently taken/are going to take.
     const coursePlanItems = await CoursePlanItem.findAll({ where: { coursePlanId: studentsPlanId[key] } })
@@ -465,7 +446,7 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     // List of course plan items that the student has taken and currently taking
     const takenAndCurrent = coursePlanItems.filter(course => (
       (course.year < currYear) ||
-      ((course.year === currYear) && (semDict[course.semester] <= semDict[currSem]))
+      ((course.year === currYear) && (SEMTONUM[course.semester] <= SEMTONUM[currSem]))
     ))
     // CREDIT REQUIREMENT: Create and calculate credit requirement
     await calculateCreditRequirement(credits, states, creditReq, student, coursePlanItems, takenAndCurrent)
@@ -557,7 +538,7 @@ async function checkCoursePlanValidity(notTakenCourses) {
           continue
         }
         let second = courseOfferingMap[courses[j].courseId]
-        shared.checkTimeConflict(first, second, invalidItems)
+        checkTimeConflict(first, second, invalidItems)
       }
     }
     // update courseplanitem validty for invaliditems
@@ -630,12 +611,13 @@ async function updateOrCreate(student, requirementType, requirementId, state, me
  */
 exports.findItems = async (req, res) => {
   try {
-    const coursePlan = await CoursePlan.findOne({ where: req.query })
-    const coursePlanItems = await CoursePlanItem.findAll({
-      where: {
-        coursePlanId: coursePlan.coursePlanId
-      }
-    })
+    const coursePlanItems = await findCoursePlanItems(req.query.studentId)
+    // const coursePlan = await CoursePlan.findOne({ where: req.query })
+    // const coursePlanItems = await CoursePlanItem.findAll({
+    //   where: {
+    //     coursePlanId: coursePlan.coursePlanId
+    //   }
+    // })
     res.status(200).send(coursePlanItems)
   } catch (err) {
     console.log(err)

@@ -418,8 +418,8 @@ const insertUpdate = async (values, condition) => {
  * @param {*} req axios request.
  * @param {*} res axios response.
  */
-exports.getDeptCourses = (req, res) => { 
-  if(req.query.dept !== '') {
+exports.getDeptCourses = (req, res) => {
+  if (req.query.dept !== '') {
     Course.findAll({
       attributes: [
         [Sequelize.fn('DISTINCT', Sequelize.col('courseId')), 'courseId'],
