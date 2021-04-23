@@ -420,7 +420,6 @@ const insertUpdate = async (values, condition) => {
  */
 exports.getDeptCourses = (req, res) => { 
   if(req.query.dept !== '') {
-    console.log(req.query.dept)
     Course.findAll({
       attributes: [
         [Sequelize.fn('DISTINCT', Sequelize.col('courseId')), 'courseId'],

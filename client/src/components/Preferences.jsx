@@ -8,7 +8,7 @@ import Button from './Button'
 
 
 const Preferences = (props) => {
-  const [maxCourses, setMaxCourses] = useState('')
+  const [maxCourses, setMaxCourses] = useState(null)
   const [startTime, setStartTime] = useState(null)
   const [endTime, setEndTime] = useState(null)
   const [errorMessage, setErrorMsg] = useState('')
@@ -34,9 +34,9 @@ const Preferences = (props) => {
   }, [props])
 
   const setUpTimes = () => {
-    let startTime = moment('0:00', 'HH:mm')
-    let endTime = moment('24:00', 'HH:mm')
-    let timeSelect = []
+    let startTime = moment('7:00', 'HH:mm')
+    let endTime = moment('23:00', 'HH:mm')
+    let timeSelect = [{ value: null, label: 'N/A' }]
 
     while (startTime < endTime) {
       let time = startTime.format('hh:mm A')
@@ -97,10 +97,19 @@ const Preferences = (props) => {
   // Converts the time selection into military time for easy of use
   // when using time constraints for suggest course plan. 
   const parseTime = (type, time) => {
-    if (type === 'start')
-      setStartTime(moment(time, ['h:mm A']).format('HH:mm'))
-    else
-      setEndTime(moment(time, ['h:mm A']).format('HH:mm'))
+    if (type === 'start') {
+      if (time === null) 
+        setStartTime(null)
+      else 
+        setStartTime(moment(time, ['h:mm A']).format('HH:mm'))
+    }
+    else {
+      console.log('end time')
+      if (time === null) 
+        setEndTime(null)
+      else 
+        setEndTime(moment(time, ['h:mm A']).format('HH:mm'))
+    }
     showError(false)
     setErrorMsg('')
   }
@@ -108,10 +117,10 @@ const Preferences = (props) => {
   // User pressed 'Suggest' button. This will take all the current
   // preferences, do a quick check (for the time to make sure 
   // !(startTime later than endTime)), then send the preferences
-  // to the parent, where it will make the query to run the algo. 
+  // to the parent, where it will make the query to run the algo.
   const setPreferences = () => {
     // Check for valid time preferences
-    if(startTime >= endTime) {
+    if(startTime && endTime && startTime >= endTime) {
       setErrorMsg('Start time cannot be equal to or later than end time.')
       showError(true)
       return
@@ -119,12 +128,13 @@ const Preferences = (props) => {
     console.log('sending preferences')
     // Construct a dictionary of the preferences and pass to parent.
     let preferences = {
-      maxCourses: Number(maxCourses),
+      maxCourses: maxCourses !== null ? Number(maxCourses) : maxCourses,
       startTime: startTime,
       endTime: endTime, 
       preferred: preferred,
       avoid: avoid,
     }
+    console.log(preferences)
     props.suggest(preferences)
   }
 
@@ -203,7 +213,7 @@ const Preferences = (props) => {
           <Dropdown
             variant='single'
             items={timeSelect}
-            placeholder='12:00AM'
+            placeholder='7:00AM'
             onChange={(e) => parseTime('start', e.value)}
             style={{ width: '150px', margin: '2px 0.5rem 4px 0' }}
           />
@@ -211,7 +221,7 @@ const Preferences = (props) => {
           <Dropdown
             variant='single'
             items={timeSelect}
-            placeholder='12:00AM'
+            placeholder='11:00PM'
             onChange={(e) => parseTime('end', e.value)}
             style={{ width: '150px', margin: '2px 0.5rem 4px 0' }}
           />
