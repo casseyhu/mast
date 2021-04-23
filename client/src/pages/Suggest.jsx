@@ -35,16 +35,8 @@ const Suggest = (props) => {
     <Container fluid='lg' className='container'>
       <div className='flex-horizontal justify-content-between'>
         <h1>Suggest Course Plan</h1>
-<<<<<<< HEAD
-        <Button variant='round' text='Save Changes' onClick={suggest}/>
-      </div>
-      <div className='flex-horizontal justify-content-between'>
-        <h3 style={{fontSize: '20px'}}>Student Id: {student === undefined ? '' : student.sbuId}</h3>
-        <h3 style={{fontSize: '20px'}}>Track: {student === undefined ? '' : student.department + " " + student.track}</h3>
-=======
         <h5>Student: {student.sbuId}</h5>
         <h5>Degree: {student.department} - {student.track}</h5>
->>>>>>> d7cd9749e2f47439ddfec1cb1674edadfbdf67b9
       </div>
       <h5 className='underline'>Preferences</h5>
       <Preferences department={student.department} suggest={suggest} smartSuggest={smartSuggest}/>
