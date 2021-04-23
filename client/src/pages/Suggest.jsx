@@ -36,9 +36,9 @@ const Suggest = (props) => {
         <h1>Suggest Course Plan</h1>
         <Button variant='round' text='Save Changes' onClick={suggest}/>
       </div>
-      <div style={{marginBottom:'1rem'}}className='flex-horizontal justify-content-between'>
-      <h3 style={{marginBottom:'0', padding:'0'}}>Student: {student === undefined ? '' : student.sbuId}</h3>
-      <h3 style={{marginBottom:'0', padding:'0'}}>Department: {student === undefined ? '' : student.department} </h3>
+      <div className='flex-horizontal justify-content-between'>
+        <h3 style={{fontSize: '20px'}}>Student Id: {student === undefined ? '' : student.sbuId}</h3>
+        <h3 style={{fontSize: '20px'}}>Track: {student === undefined ? '' : student.department + " " + student.track}</h3>
       </div>
       <hr style={{marginTop:'0px'}}/>
       <SuggestPreferences 
