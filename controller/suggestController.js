@@ -120,7 +120,7 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses) {
 
 
 /**
- * Find the number of remaining credits needed for requirement and calcualte the average
+ * Find the number of remaining credits needed for requirement and calculate the average
  * number of course to take each semester if not supplied.
  * @param {Object} creditReq Credit requirement object
  * @param {String} gradSem Graduation semester of the student to calculate for

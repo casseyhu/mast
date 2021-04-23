@@ -213,6 +213,16 @@ async function calculateCreditRequirement(credits, states, creditReq, student, c
   await updateOrCreate(student, 'Credit', creditReq.requirementId, creditState, [actualCredits])
 }
 
+/**
+ * Recalculate all the requirement completion and update the requirement states when the degree of a 
+ * student has been altered.
+ * @param {Map<String, String>} studentsPlanId Mapping of sbuId to coursePlanId
+ * @param {Map<String, Number>} credits Credits mapping for each course in the department
+ * @param {*} res 
+*/
+exports.changeCompletion = async (studentsPlanId, credits, res) => {
+  calculateCompletion(studentsPlanId, credits, res)
+}
 
 /**
  * Calculates and updates a students grade requirement state.
@@ -477,7 +487,8 @@ async function calculateCompletion(studentsPlanId, credits, res) {
     })
   }
   console.log('Done calculating ' + tot + ' students course plan completion')
-  res.status(200).send('Success')
+  if (res)
+    res.status(200).send('Success')
 }
 
 

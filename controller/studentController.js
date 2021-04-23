@@ -4,10 +4,12 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Papa = require('papaparse')
 const shared = require('./shared')
+const coursePlanController = require('./coursePlanController')
 const database = require('../config/database.js')
 const Op = database.Sequelize.Op
 
 const Student = database.Student
+const Course = database.Course
 const CoursePlan = database.CoursePlan
 const CoursePlanItem = database.CoursePlanItem
 
@@ -81,7 +83,6 @@ exports.update = (req, res) => {
       }
       if (!checkFields(student, res))
         return
-
       // Update student information based on student id
       const condition = {
         sbuId: student.sbuId
@@ -110,8 +111,16 @@ exports.update = (req, res) => {
       Student.update(value, {
         where: condition
       })
-        .then(response => {
+        .then(async response => {
           //update retuned array [1]
+          await RequirementState.destroy({ where: { sbuId: student.sbuId }})
+          let coursePlan = await CoursePlan.findOne({ where: {studentId : student.sbuId }})
+          let studentsPlanId = {}
+          studentsPlanId[student.sbuId] = coursePlan.coursePlanId
+          const courses = await Course.findAll({ where: { department: student.dept } })
+          let credits = {}
+          courses.forEach(course => credits[course.courseId] = course.credits)
+          await coursePlanController.changeCompletion(studentsPlanId, credits, null)
           Student.findOne({
             where: condition
           }).then(student => {
