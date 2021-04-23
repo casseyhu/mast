@@ -96,6 +96,7 @@ textarea:focus {
 /* Suggest course plan courses preference table */
 .preference-table {
   width: 100%;
+  margin: 1rem 0 1rem 0;
 }
 
 .preference-table-th {

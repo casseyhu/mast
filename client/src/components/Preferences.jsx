@@ -11,6 +11,8 @@ const Preferences = (props) => {
   const [maxCourses, setMaxCourses] = useState('')
   const [startTime, setStartTime] = useState(null)
   const [endTime, setEndTime] = useState(null)
+  const [errorMessage, setErrorMsg] = useState('')
+  const [error, showError] = useState(false)
   const [preferred, setPreferred] = useState([])
   const [avoid, setAvoid] = useState([])
   const [deptCourses, setDeptCourses] = useState([])
@@ -99,13 +101,43 @@ const Preferences = (props) => {
       setStartTime(moment(time, ['h:mm A']).format('HH:mm'))
     else
       setEndTime(moment(time, ['h:mm A']).format('HH:mm'))
+    showError(false)
+    setErrorMsg('')
+  }
+
+  // User pressed 'Suggest' button. This will take all the current
+  // preferences, do a quick check (for the time to make sure 
+  // !(startTime later than endTime)), then send the preferences
+  // to the parent, where it will make the query to run the algo. 
+  const setPreferences = () => {
+    // Check for valid time preferences
+    if(startTime >= endTime) {
+      setErrorMsg('Start time cannot be equal to or later than end time.')
+      showError(true)
+      return
+    }
+    console.log('sending preferences')
+    // Construct a dictionary of the preferences and pass to parent.
+    let preferences = {
+      maxCourses: Number(maxCourses),
+      startTime: startTime,
+      endTime: endTime, 
+      preferred: preferred,
+      avoid: avoid,
+    }
+    props.suggest(preferences)
   }
 
   return (
     <div className='flex-horizontal wrap align-items-start preference-col'>
+      {error &&
+        <div style={{ marginBottom: '0.5rem', width: '100%' }}>
+          <span className='error'><strong>{errorMessage}</strong></span>
+        </div>
+      }
       <div className='flex-vertical' style={{ maxWidth: '530px' }}>
         <div className='flex-horizontal'>
-          <span style={{width: '180px'}}>Max courses/semester:</span>
+          <span style={{ width: '180px' }}>Max courses/semester:</span>
           <InputField
             className='lr-padding'
             type='text'
@@ -232,6 +264,10 @@ const Preferences = (props) => {
             </table>
           </div>
         }
+      </div>
+      <div className='flex-horizontal justify-content-center'>
+        <Button variant='round' text='Suggest' onClick={() => setPreferences()} style={{ width: '100px', marginRight: '2rem' }} />
+        <Button variant='round' text='Smart Suggest' onClick={props.smartSuggest} style={{ width: '150px' }} />
       </div>
     </div>
   )

@@ -10,24 +10,24 @@ const Suggest = (props) => {
   const [student, setStudent] = useState(props.location.state.student)
   const [coursePlan, setCoursePlan] = useState(props.location.state.coursePlan)
 
-  // useEffect(() => {
-  //   let token = localStorage.getItem('jwt-token')
-  //   let decoded = jwt_decode(token)
-  //   if (!decoded)
-  //     return
-  //   setStudent(props.location.state.student)
-  //   setCoursePlan(props.location.state.coursePlan)
-  // }, [props])
-
-  // useEffect(() => {
-  //   setStudent(props.location.state.student)
-  //   setCoursePlan(props.location.state.coursePlan)
-  // }, [])
-
-  const suggest = () => {
-    axios.get('/suggest/').then(res => {
+  const suggest = (preferences) => {
+    // console.log(preferences)
+    axios.get('/suggest/', {
+      params: preferences
+    }).then(res => {
       console.log('Done Suggest')
+      // Set the results of the suggest return into the state.
+      // Then, since the state of `suggestedPlans` got changed, 
+      // it'll rerender and the SuggestedCoursePlan component will
+      // show the suggested course plans. 
+      // TODO: make the SuggestCoursePlan component to show the results of algo. 
     })
+  }
+
+  const smartSuggest = () => {
+    console.log('Smart suggest mode')
+    // axios.get('/smartSuggest/')
+    //  .then(res => { console.log('Done smart suggest') })
   }
   
   return (
@@ -38,8 +38,7 @@ const Suggest = (props) => {
         <h5>Degree: {student.department} - {student.track}</h5>
       </div>
       <h5 className='underline'>Preferences</h5>
-      <Preferences department={student.department} />
-      <Button variant='round' text='Suggest' onClick={suggest} style={{width:'100px'}}/>
+      <Preferences department={student.department} suggest={suggest} smartSuggest={smartSuggest}/>
       <SuggestCoursePlan/>
       {coursePlan && 
         <CoursePlan 
