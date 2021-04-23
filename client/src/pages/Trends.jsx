@@ -10,7 +10,8 @@ import { SEMESTERS, YEARS, SEMESTER_MONTH } from '../constants'
 
 class Trends extends Component {
   state = {
-    courses: '',
+    courses: [],
+    items: [],
     fromSem: '',
     fromYear: '',
     toSem: '',
@@ -52,11 +53,18 @@ class Trends extends Component {
     },
   }
 
+  selectionHandler = (e) => {
+    let value = Array.from(e, option => option.value)
+    this.setState({
+      courses: value
+    })
+  }
+
   createGraph = async (e) => {
     const COURSE_LENGTH = 6
     let startYear = Number(this.state.fromYear)
     let endYear = Number(this.state.toYear)
-    if (this.state.courses === '' || this.state.fromSem === '' || this.state.fromYear === '' || this.state.toSem === '' || this.state.toYear === '') {
+    if (this.state.courses === [] || this.state.fromSem === '' || this.state.fromYear === '' || this.state.toSem === '' || this.state.toYear === '') {
       this.setState({
         errorMsg: 'Must enter all required fields.'
       })
@@ -101,7 +109,7 @@ class Trends extends Component {
       - For lower cases in legend, make them upper case (done)
       - Display default title and axis names (done)
     */
-    let courses = [...new Set(this.state.courses.replace(/\s+/g, ' ').trim().split(' '))]
+    let courses = this.state.courses
     for (let i = 0; i < courses.length; i++) {
       let data = []
       if (courses[i].length !== COURSE_LENGTH || isNaN(parseInt(courses[i].substring(3)))) {
@@ -199,11 +207,24 @@ class Trends extends Component {
     }
 
     this.setState({ series, options })
-    console.log(series)
+  }
+
+  componentDidMount = async () => {
+    if(this.props.dept) {
+      let courses = await axios.get('course/deptCourses', {
+        params: {
+          dept: this.props.dept
+        }
+      })
+      let items = [] 
+      Object.keys(courses.data).map((course) => items.push({ label: course, value: course}))
+      this.setState({
+        items
+      })
+    }
   }
 
   render() {
-    console.log(this.state.errorMsg)
     return (
       <Container fluid='lg' className='container'>
         <div className='flex-horizontal'>
@@ -212,14 +233,22 @@ class Trends extends Component {
         <div className='flex-horizontal wrap justify-content-between' style={{ width: '100%' }}>
           <div className='flex-horizontal' style={{ width: 'fit-content', flexGrow: '1' }}>
             <span style={{ width: '65px' }}>Courses</span>
-            <InputField
+            <Dropdown
+                variant='multi'
+                className='lr-padding rm-r-small'
+                items={this.state.items}
+                placeholder='Courses'
+                onChange={this.selectionHandler}
+                style={{ flexGrow: '1' }}
+              />
+            {/* <InputField
               className='lr-padding rm-r-small'
               type='text'
               value={this.state.courses}
               placeholder='Courses'
               onChange={e => this.setState({ courses: e.target.value })}
               style={{ flexGrow: '1' }}
-            />
+            /> */}
           </div>
           <div className='flex-horizontal wrap' style={{ width: 'fit-content', flexGrow: '1' }}>
             <div className='flex-horizontal' style={{ width: 'fit-content', flexGrow: '1' }}>

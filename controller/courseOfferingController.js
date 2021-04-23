@@ -98,7 +98,7 @@ async function uploadCourses(results, res, dept) {
       grade: null
     }
   })
-  
+
   //Mark all invalid course plans valid for semesters covered by csv file
   const semCoursePlanIds = coursePlanItems.map((item) => item.coursePlanId)
   await CoursePlan.update({ coursePlanValid: true }, {
@@ -304,7 +304,7 @@ async function deleteSemestersFromDB(courses, departments) {
       // Update course plan item validity back to true for deleted courses
       await CoursePlanItem.update({ validity: true }, {
         where: {
-          courseId: { 
+          courseId: {
             [Op.startsWith]: dept
           },
           validity: false,

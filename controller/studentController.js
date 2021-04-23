@@ -302,7 +302,6 @@ exports.filter = (req, res) => {
     })
     .then(students => {
       // Filter these `students` by CP Completeness and CP Validity, if the query was given. 
-      console.log('No complete/filter num students: ', students.length)
       if (req.query.complete === '%' && req.query.valid === '%') {
         // If complete && valid queries were not given (user didn't apply this filter)...
         res.send(students)

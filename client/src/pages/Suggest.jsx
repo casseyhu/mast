@@ -1,50 +1,47 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState } from 'react'
 import CoursePlan from '../components/CoursePlan'
-import SuggestPreferences from '../components/SuggestPreferences'
+import Preferences from '../components/Preferences'
+import SuggestCoursePlan from '../components/SuggestCoursePlan'
 import Container from 'react-bootstrap/Container'
 import Button from '../components/Button'
-import jwt_decode from 'jwt-decode'
 import axios from '../constants/axios'
 
 const Suggest = (props) => {
-  const [student, setStudent] = useState(undefined)
-  const [coursePlan, setCoursePlan] = useState([])
+  const [student, setStudent] = useState(props.location.state.student)
+  const [coursePlan, setCoursePlan] = useState(props.location.state.coursePlan)
 
-  useEffect(() => {
-    let token = localStorage.getItem('jwt-token')
-    let decoded = jwt_decode(token)
-    if (!decoded)
-      return
-    setStudent(props.location.state.student)
-    setCoursePlan(props.location.state.coursePlan)
-  }, [props])
-
-  useEffect(() => {
-    setStudent(props.location.state.student)
-    setCoursePlan(props.location.state.coursePlan)
-  }, [])
-
-  const suggest = () => {
-    axios.get('/suggest/').then(res => {
+  const suggest = (preferences) => {
+    // console.log(preferences)
+    preferences.student = student
+    axios.get('/suggest/', {
+      params: preferences
+    }).then(res => {
       console.log('Done Suggest')
+      // Set the results of the suggest return into the state.
+      // Then, since the state of `suggestedPlans` got changed, 
+      // it'll rerender and the SuggestedCoursePlan component will
+      // show the suggested course plans. 
+      // TODO: make the SuggestCoursePlan component to show the results of algo. 
     })
+  }
+
+  const smartSuggest = () => {
+    console.log('Smart suggest mode')
+    // axios.get('/smartSuggest/')
+    //  .then(res => { console.log('Done smart suggest') })
   }
   
   return (
     <Container fluid='lg' className='container'>
-      <div style={{marginBottom:'1rem'}} className='flex-horizontal justify-content-between'>
+      <div className='flex-horizontal justify-content-between'>
         <h1>Suggest Course Plan</h1>
-        <Button variant='round' text='Save Changes' onClick={suggest}/>
+        <h5>Student: {student.sbuId}</h5>
+        <h5>Degree: {student.department} - {student.track}</h5>
       </div>
-      <div style={{marginBottom:'1rem'}}className='flex-horizontal justify-content-between'>
-      <h3 style={{marginBottom:'0', padding:'0'}}>Student: {student === undefined ? '' : student.sbuId}</h3>
-      <h3 style={{marginBottom:'0', padding:'0'}}>Department: {student === undefined ? '' : student.department} </h3>
-      </div>
-      <hr style={{marginTop:'0px'}}/>
-      <SuggestPreferences 
-        department={student === undefined ? '' : student.department}
-      />
-      {coursePlan && student && 
+      <h5 className='underline'>Preferences</h5>
+      <Preferences department={student.department} suggest={suggest} smartSuggest={smartSuggest}/>
+      <SuggestCoursePlan/>
+      {coursePlan && 
         <CoursePlan 
           heading='Current Course Plan'
           coursePlan={coursePlan}
