@@ -27,7 +27,11 @@ const Suggest = (props) => {
     axios.get('/smartSuggest/', {
       params: {
         dept: student.department,
-        track: student.track
+        track: student.track,
+        degreeId: student.degreeId,
+        sbuId: student.sbuId,
+        gradSem: student.gradSem,
+        gradYear: student.gradYear
       }
     }).then(res => {
       console.log('Done smart suggest')

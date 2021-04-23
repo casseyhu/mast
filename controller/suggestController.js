@@ -1,5 +1,6 @@
 const { GRADES, SEMTONUM, NUMTOSEM, currSem, currYear, findRequirements, findCoursePlanItems, checkTimeConflict } = require('./shared')
 const database = require('../config/database.js')
+const student = require('../models/student')
 
 const Degree = database.Degree
 const RequirementState = database.RequirementState
@@ -56,10 +57,10 @@ exports.suggest = async (req, res) => {
   // Delete courses from requirements list that were taken
   const creditsCounter = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses)
   // Get credits remaining, semesters remaining, and number of courses per semester
-  let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student, creditsCounter, CPS)
+  let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student.gradSem, student.gradYear, creditsCounter, CPS)
 
   // Create course nodes
-  const nodesMap = createNodes(courses, courseReq, PREFERRED, AVOID)
+  const nodesMap = createNodes(courses, courseReq, PREFERRED, AVOID, [])
   let nodes = Object.values(nodesMap)
   nodes = sortNodes(nodes)
 
@@ -122,17 +123,18 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses) {
  * Find the number of remaining credits needed for requirement and calcualte the average
  * number of course to take each semester if not supplied.
  * @param {Object} creditReq Credit requirement object
- * @param {Object} student Student to calculate for
+ * @param {String} gradSem Graduation semester of the student to calculate for
+ * @param {Number} gradYear Graduation year of the student to calculate for
  * @param {Number} creditsCounter Number of credits student has taken
  * @param {Number} CPS Number of courses per semester, if supplied
  * @returns An array containing the credits remaining and number of courses per semester.
  */
-function getRemaining(creditReq, student, creditsCounter, CPS) {
+function getRemaining(creditReq, gradSem, gradYear, creditsCounter, CPS) {
   const creditsRemaining = (creditReq.minCredit - creditsCounter < 0) ? 0 : creditReq.minCredit - creditsCounter
   let semsRemaining = 0
   let sem = currSem
   let year = currYear
-  while (sem != student.gradSem || year != student.gradYear) {
+  while (sem != gradSem || year != gradYear) {
     semsRemaining++
     sem = (sem === 'Spring') ? 'Fall' : 'Spring'
     if (sem === 'Spring')
@@ -152,7 +154,7 @@ function getRemaining(creditReq, student, creditsCounter, CPS) {
  * @param {Set[String]} AVOID List of courses that student wants to avoid
  * @returns The mapping of course ID to course node
  */
-function createNodes(courses, courseReq, PREFERRED, AVOID) {
+function createNodes(courses, courseReq, PREFERRED, AVOID, popularCourses) {
   let preferenceMap = {}
   PREFERRED.forEach((course, i) => preferenceMap[course] = PREFERRED.length - i + 1)
   let keys = Object.keys(preferenceMap)
@@ -172,7 +174,7 @@ function createNodes(courses, courseReq, PREFERRED, AVOID) {
         reqNodes.push(nodes[course])
         continue
       }
-      const weight = preferenceMap[course] ? preferenceMap[course] : (AVOID.has(course) ? -1 : 1)
+      const weight = preferenceMap[course] ? preferenceMap[course] : (AVOID.has(course) ? -1 : (popularCourses.includes(course) ? 2: 1))
       // Repeat course multiple times
       if ((req.courseLower && req.courseLower > req.courses.length)
         || (req.creditLower && req.creditLower > req.courses.length * courses[course].credits)) {
@@ -433,12 +435,12 @@ exports.smartSuggest = async (req, res) => {
   /******************************COPIED FROM SET UP CODE IN SUGGEST******************************
   *******************************************START**********************************************/
   // Find the students degree requirements
-  const degree = await Degree.findOne({ where: { degreeId: student.degreeId } })
+  const degree = await Degree.findOne({ where: { degreeId: req.query.degreeId } })
   let [gradeReq, gpaReq, creditReq, courseReq] = await findRequirements(degree)
   // Find the students degree requirement states
-  let reqStates = await RequirementState.findAll({ where: { sbuID: SBUID } })
+  let reqStates = await RequirementState.findAll({ where: { sbuID: req.query.sbuId } })
   // Find the students course plan items
-  let coursePlanItems = await findCoursePlanItems(student.sbuId)
+  let coursePlanItems = await findCoursePlanItems(req.query.sbuId)
   // Create the course mapping for all courses required for degree
   const reqCourses = Array.from(new Set(courseReq.reduce((a, b) => b.courses.concat(a), [])))
   const foundCourses = await Course.findAll({ where: { courseId: reqCourses } })
@@ -465,8 +467,10 @@ exports.smartSuggest = async (req, res) => {
 
   // Delete courses from requirements list that were taken
   const creditsCounter = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses)
+  let gradSem = req.query.gradSem
+  let gradYear = req.query.gradYear
   // Get credits remaining, semesters remaining, and number of courses per semester
-  let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student, creditsCounter, CPS)
+  let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, gradSem, gradYear, creditsCounter, 0)
   /*******************************************END***********************************************/
 
 
@@ -478,8 +482,13 @@ exports.smartSuggest = async (req, res) => {
   delete courseCount['']
 
   // Sort courses by popularity
-  let popularCourses = Object.keys(courseCount).sort((c1, c2) => courseCount[c2] - courseCounts[c1])
-    
+  let popularCourses = Object.keys(courseCount).sort((c1, c2) => courseCount[c2] - courseCount[c1])
+
+  // Create course nodes
+  const nodesMap = createNodes(courses, courseReq, new Set(), new Set(), popularCourses)
+  let nodes = Object.values(nodesMap)
+  nodes = sortNodes(nodes)
+  console.log(nodes)
 
   res.status(200).send('good')
 }
