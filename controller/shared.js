@@ -8,6 +8,28 @@ const CourseRequirement = database.CourseRequirement
 const CoursePlan = database.CoursePlan
 const CoursePlanItem = database.CoursePlanItem
 
+exports.currSem = 'Spring'
+exports.currYear = 2021
+
+exports.GRADES = {
+  'A': 4,
+  'A-': 3.67,
+  'B+': 3.33,
+  'B': 3,
+  'B-': 2.67,
+  'C+': 2.33,
+  'C': 2,
+  'C-': 1.67,
+  'F': 0
+}
+exports.SEMTONUM = {
+  'Fall': 8,
+  'Spring': 2,
+  'Winter': 1,
+  'Summer': 5
+}
+
+
 /**
  * Checks if two course offerings have a conflict in day and time.
  * @param {Object} courseA First course offering object
@@ -78,6 +100,11 @@ exports.findRequirements = async (degree) => {
 }
 
 
+/**
+ * Finds all the course plan items for a given student.
+ * @param {Number} sbuId SBU ID to find course plan items for
+ * @returns List of course plan items for the student
+ */
 exports.findCoursePlanItems = async (sbuId) => {
   const coursePlan = await CoursePlan.findOne({ where: { studentId: sbuId } })
   const items = await CoursePlanItem.findAll({

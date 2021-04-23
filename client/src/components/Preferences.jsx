@@ -265,9 +265,9 @@ const Preferences = (props) => {
           </div>
         }
       </div>
-      <div className='flex-horizontal justify-content-center'>
-        <Button variant='round' text='Suggest' onClick={() => setPreferences()} style={{ width: '100px', marginRight: '2rem' }} />
-        <Button variant='round' text='Smart Suggest' onClick={props.smartSuggest} style={{ width: '150px' }} />
+      <div className='flex-horizontal justify-content-center align-content-middle'>
+        <Button divclassName="mr-3" variant='round' text='Suggest' onClick={() => setPreferences()} style={{ width: '140px' }} />
+        <Button divclassName="ml-3" variant='round' text='Smart Suggest' onClick={props.smartSuggest} style={{ width: '140px' }} />
       </div>
     </div>
   )

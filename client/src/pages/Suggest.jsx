@@ -12,6 +12,7 @@ const Suggest = (props) => {
 
   const suggest = (preferences) => {
     // console.log(preferences)
+    preferences.student = student
     axios.get('/suggest/', {
       params: preferences
     }).then(res => {
