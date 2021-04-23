@@ -191,8 +191,7 @@ const Student = (props) => {
       pathname: '/suggest',
       state: {
         student: studentInfoParams.student,
-        coursePlan: studentInfoParams.coursePlan,
-        requirements: studentInfoParams.requirements
+        coursePlan: studentInfoParams.coursePlan
       }
     })
   }

@@ -1,4 +1,4 @@
-const { GRADES, SEMTONUM, currSem, currYear, findRequirements, findCoursePlanItems } = require('./shared')
+const { GRADES, SEMTONUM, NUMTOSEM, currSem, currYear, findRequirements, findCoursePlanItems, checkTimeConflict } = require('./shared')
 const database = require('../config/database.js')
 
 const Degree = database.Degree
@@ -7,6 +7,7 @@ const Student = database.Student
 const Course = database.Course
 const CoursePlan = database.CoursePlan
 const CoursePlanItem = database.CoursePlanItem
+const CourseOffering = database.CourseOffering
 
 
 exports.suggest = async (req, res) => {
@@ -15,10 +16,10 @@ exports.suggest = async (req, res) => {
   console.log(student.sbuId)
   const SBUID = student.sbuId
   const CPS = req.query.maxCourses
-  // const PREFERRED = req.query.preferred
-  // const AVOID = new Set(req.query.avoid)
-  const PREFERRED = ['CSE526', 'CSE537']
-  const AVOID = new Set(['CSE509', 'CSE610', 'CSE624'])
+  const PREFERRED = req.query.preferred
+  const AVOID = new Set(req.query.avoid)
+  // const PREFERRED = ['CSE526', 'CSE537']
+  // const AVOID = new Set(['CSE509', 'CSE610', 'CSE624'])
   const TIME = [req.query.startTime, req.query.endTime] // times to avoid??
 
   // Find the students degree requirements
@@ -51,7 +52,7 @@ exports.suggest = async (req, res) => {
       courses: requirement.courses
     }
   ))
-
+  console.log("max courses:" + CPS)
   // Delete courses from requirements list that were taken
   const creditsCounter = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses)
   // Get credits remaining, semesters remaining, and number of courses per semester
@@ -62,7 +63,7 @@ exports.suggest = async (req, res) => {
   let nodes = Object.values(nodesMap)
   nodes = sortNodes(nodes)
 
-  suggestPlan(nodes)
+  suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, takenAndCurrentCourses)
   // console.log(nodes)
 
   res.status(200).send('good')
@@ -228,8 +229,180 @@ function sortNodes(nodes) {
 }
 
 
-async function suggestPlan(nodes) {
+//  * @param {Number} creditsRemaining Number of credits remaining 
+async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, takenAndCurrentCourses) {
+  let suggestions = {}
+  let offeringExists = false
+  let currSemyear = getNextSem(currYear * 100 + SEMTONUM[currSem])
+  let semester = NUMTOSEM[currSemyear % 100]
+  let year = Math.floor(currSemyear / 100)
+  let found = await CourseOffering.findOne({
+    where: {
+      identifier: {
+        [database.Sequelize.Op.like]: department + '%',
+      },
+      semester: semester,
+      year: year
+    }
+  })
+  if (found)
+    offeringExists = true
 
+  let semsOffered = {}
+  let currSemOfferings = {}
+  let currCoursesCount = 0
+  let currTaken = []
+  let done = false
+  let index = 0
+  let currCourse = nodes[index]
+  while (!done) {
+    currCourse = nodes[index]
+    // Check if we finished adding all required course nodes and satisfied credit requirement
+    if (creditsRemaining <= 0 && !nodes[0].required) {
+      // email student for extended grad date
+      break
+    }
+    // Check if we've added maximum courses per semester
+    if (!currCourse || currCoursesCount >= coursesPerSem) {
+      currSemyear = getNextSem(currSemyear)
+      semester = NUMTOSEM[currSemyear % 100]
+      year = Math.floor(currSemyear / 100)
+      found = await CourseOffering.findOne({
+        where: {
+          identifier: {
+            [database.Sequelize.Op.like]: department + '%',
+          },
+          semester: semester,
+          year: year
+        }
+      })
+      offeringExists = false
+      if (found)
+        offeringExists = true
+      currCoursesCount = 0
+      index = 0
+      currSemOfferings = {}
+      currTaken.forEach(item => takenAndCurrentCourses.add(item))
+      currTaken = []
+      continue
+    }
+
+    if (!currSemOfferings[currCourse.course]) {
+      let found = await CourseOffering.findAll({
+        where: {
+          identifier: currCourse.course,
+          semester: semester,
+          year: year
+        }
+      })
+      if (found)
+        currSemOfferings[currCourse.course] = found
+    }
+    if (!semsOffered[currCourse.course]) {
+      let found = await Course.findOne({
+        where: {
+          courseId: currCourse.course,
+          // semester: semester,
+          // year: year
+        }
+      })
+      if (found)
+        semsOffered[currCourse.course] = found.semestersOffered
+    }
+    // Check time conflicts and prereqs if course offering exists
+    let currSuggestions = suggestions[currSemyear]
+    let added = false
+    if (currSemOfferings[currCourse.course] && offeringExists && currSuggestions) {
+      // A list of course offerings for currCourse
+      let courseAList = currSemOfferings[currCourse.course]
+      shuffle(courseAList)
+      for (let i = 0; i < courseAList.length; i++) {
+        let courseA = courseAList[i]
+        for (let j = 0; j < currSuggestions.length; j++) {
+          let courseBList = currSemOfferings[currSuggestions[j].course]
+          shuffle(courseBList)
+          for (let k = 0; k < courseBList.length; k++) {
+            let courseB = courseBList[k]
+            if (!checkTimeConflict(courseA, courseB, []) && checkPrereq(currCourse, takenAndCurrentCourses)) {
+              console.log("added " + currCourse.course)
+              suggestions[currSemyear].push(currCourse)
+              added = true
+              i = j = k = Number.MAX_SAFE_INTEGER
+            }
+          }
+        }
+      }
+    }
+    // First course to add
+    else if (currSemOfferings[currCourse.course] && offeringExists && !currSuggestions) {
+      if (checkPrereq(currCourse, takenAndCurrentCourses)) {
+        suggestions[currSemyear] = [currCourse]
+        added = true
+      }
+    }
+    // Course offering for currSemyear doesnt exist yet
+    else {
+      if (semsOffered[currCourse.course].includes(semester)) {
+        if (checkPrereq(currCourse, takenAndCurrentCourses)) {
+          if (currSuggestions)
+            suggestions[currSemyear].push(currCourse)
+          else
+            suggestions[currSemyear] = [currCourse]
+          added = true
+        }
+      }
+    }
+    if (added) {
+      // takenAndCurrentCourses.add(currCourse.course)
+      currTaken.push(currCourse.course)
+      creditsRemaining -= currCourse.credits
+      currCoursesCount += 1
+      nodes.splice(index, 1)
+    } else
+      index++
+  }
+  console.log(suggestions)
+
+}
+
+
+/**
+ * Returns the next semester and year after a given semester and year.
+ * @param {Number} currSem Current semester and year
+ * @returns The next semester and year number.
+ */
+function getNextSem(currSem) {
+  if (currSem % 100 === 2)
+    return currSem + 6
+  else
+    return (Math.floor(currSem / 100) + 1) * 100 + 2
+}
+
+
+function shuffle(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+}
+
+function checkPrereq(courseA, takenAndCurrentCourses) {
+  let prereqs = courseA.prereqs
+  let passedPrereqs = true
+  // if (courseA.course === 'CSE507')
+  //   console.log(prereqs)
+  if (prereqs[0] === '')
+    return true
+  for (let l = 0; l < prereqs.length; l++) {
+    if (!takenAndCurrentCourses.has(prereqs[l])) {
+      return false
+    }
+  }
+  if (passedPrereqs)
+    return true
+  return false
 }
 
 
@@ -257,6 +430,8 @@ exports.smartSuggest = async (req, res) => {
     }
   })
 
+  /******************************COPIED FROM SET UP CODE IN SUGGEST******************************
+  *******************************************START**********************************************/
   // Find the students degree requirements
   const degree = await Degree.findOne({ where: { degreeId: student.degreeId } })
   let [gradeReq, gpaReq, creditReq, courseReq] = await findRequirements(degree)
@@ -292,19 +467,18 @@ exports.smartSuggest = async (req, res) => {
   const creditsCounter = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses)
   // Get credits remaining, semesters remaining, and number of courses per semester
   let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student, creditsCounter, CPS)
-
+  /*******************************************END***********************************************/
 
 
   // Find total number of students for each course in course requirements
   let courseCount = {}
-  req.query.courses.map((c) => 
+  reqCourses.map((c) => 
     courseCount[c] = allItems.filter((item) => item.courseId === c).length
   )
   delete courseCount['']
 
   // Sort courses by popularity
   let popularCourses = Object.keys(courseCount).sort((c1, c2) => courseCount[c2] - courseCounts[c1])
-
     
 
   res.status(200).send('good')

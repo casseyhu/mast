@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container'
 import axios from '../constants/axios'
 
 const Suggest = (props) => {
-  const { student, coursePlan, requirements } = props.location.state
+  const { student, coursePlan } = props.location.state
 
   const suggest = (preferences) => {
     preferences.student = student
@@ -24,14 +24,10 @@ const Suggest = (props) => {
 
   const smartSuggest = () => {
     console.log('Smart suggest mode')
-    let courses = []
-    requirements[3].map((requirement) => courses = courses.concat(requirement['courses']))
-    courses = Array.from(new Set(courses))
     axios.get('/smartSuggest/', {
       params: {
         dept: student.department,
-        track: student.track,
-        courses: courses
+        track: student.track
       }
     }).then(res => {
       console.log('Done smart suggest')
