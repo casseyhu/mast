@@ -1,17 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import CoursePlan from '../components/CoursePlan'
 import Preferences from '../components/Preferences'
 import SuggestCoursePlan from '../components/SuggestCoursePlan'
 import Container from 'react-bootstrap/Container'
-import Button from '../components/Button'
 import axios from '../constants/axios'
 
 const Suggest = (props) => {
-  const [student, setStudent] = useState(props.location.state.student)
-  const [coursePlan, setCoursePlan] = useState(props.location.state.coursePlan)
+  const { student, coursePlan, requirements } = props.location.state
 
   const suggest = (preferences) => {
-    // console.log(preferences)
     preferences.student = student
     axios.get('/suggest/', {
       params: preferences
@@ -27,8 +24,20 @@ const Suggest = (props) => {
 
   const smartSuggest = () => {
     console.log('Smart suggest mode')
-    // axios.get('/smartSuggest/')
-    //  .then(res => { console.log('Done smart suggest') })
+    let courses = []
+    requirements[3].map((requirement) => courses = courses.concat(requirement['courses']))
+    courses = Array.from(new Set(courses))
+    axios.get('/smartSuggest/', {
+      params: {
+        dept: student.department,
+        track: student.track,
+        courses: courses
+      }
+    }).then(res => {
+      console.log('Done smart suggest')
+    }).catch(err => {
+      console.log("Error smart suggest")
+    })
   }
   
   return (

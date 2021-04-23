@@ -71,7 +71,6 @@ textarea:focus {
 .dd-wrapper-multi {
   min-width: 200px;
   width: fit-content;
-  max-width: 400px;
   margin: 4px auto;
 }
 

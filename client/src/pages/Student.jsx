@@ -69,7 +69,7 @@ const Student = (props) => {
   useEffect(() => {
     if (student === 'Invalid')
       history.push('/')
-  }, [])
+  }, [student, history])
 
   const modeHandler = async (studentInfo) => {
     setErrorMsg('')
@@ -191,7 +191,8 @@ const Student = (props) => {
       pathname: '/suggest',
       state: {
         student: studentInfoParams.student,
-        coursePlan: studentInfoParams.coursePlan
+        coursePlan: studentInfoParams.coursePlan,
+        requirements: studentInfoParams.requirements
       }
     })
   }

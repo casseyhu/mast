@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import ReactApexChart from 'react-apexcharts'
 import Container from 'react-bootstrap/Container'
-import InputField from '../components/InputField'
 import Dropdown from '../components/Dropdown'
 import Button from '../components/Button'
 import axios from '../constants/axios'
@@ -217,10 +216,8 @@ class Trends extends Component {
         }
       })
       let items = [] 
-      Object.keys(courses.data).map((course) => items.push({ label: course, value: course}))
-      this.setState({
-        items
-      })
+      Object.keys(courses.data).map(course => items.push({ label: course, value: course}))
+      this.setState({ items })
     }
   }
 
@@ -235,20 +232,12 @@ class Trends extends Component {
             <span style={{ width: '65px' }}>Courses</span>
             <Dropdown
                 variant='multi'
-                className='lr-padding rm-r-small'
+                className='lr-padding'
                 items={this.state.items}
                 placeholder='Courses'
                 onChange={this.selectionHandler}
-                style={{ flexGrow: '1' }}
+                style={{ width: '400px', flexGrow: '1' }}
               />
-            {/* <InputField
-              className='lr-padding rm-r-small'
-              type='text'
-              value={this.state.courses}
-              placeholder='Courses'
-              onChange={e => this.setState({ courses: e.target.value })}
-              style={{ flexGrow: '1' }}
-            /> */}
           </div>
           <div className='flex-horizontal wrap' style={{ width: 'fit-content', flexGrow: '1' }}>
             <div className='flex-horizontal' style={{ width: 'fit-content', flexGrow: '1' }}>

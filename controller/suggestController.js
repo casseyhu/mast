@@ -3,8 +3,10 @@ const database = require('../config/database.js')
 
 const Degree = database.Degree
 const RequirementState = database.RequirementState
-
+const Student = database.Student
 const Course = database.Course
+const CoursePlan = database.CoursePlan
+const CoursePlanItem = database.CoursePlanItem
 
 
 exports.suggest = async (req, res) => {
@@ -231,8 +233,80 @@ async function suggestPlan(nodes) {
 }
 
 
-exports.smartSuggest = (req, res) => {
+exports.smartSuggest = async (req, res) => {
   console.log('Smart suggest')
+  // Find all students in the same dept and track
+  let students = await Student.findAll({ 
+    where: { 
+      department: req.query.dept, 
+      track: req.query.track
+    } 
+  })
+  // Find all completed course plans for students in same dept and track
+  let coursePlans = await CoursePlan.findAll({
+    where: {
+      studentId: students.map((student) => student.sbuId),
+      coursePlanComplete: 1
+    }
+  })
+
+  // Find all course plan entries for course plans found above
+  let allItems = await CoursePlanItem.findAll({
+    where: {
+      coursePlanId: coursePlans.map((cp) => cp.coursePlanId)
+    }
+  })
+
+  // Find the students degree requirements
+  const degree = await Degree.findOne({ where: { degreeId: student.degreeId } })
+  let [gradeReq, gpaReq, creditReq, courseReq] = await findRequirements(degree)
+  // Find the students degree requirement states
+  let reqStates = await RequirementState.findAll({ where: { sbuID: SBUID } })
+  // Find the students course plan items
+  let coursePlanItems = await findCoursePlanItems(student.sbuId)
+  // Create the course mapping for all courses required for degree
+  const reqCourses = Array.from(new Set(courseReq.reduce((a, b) => b.courses.concat(a), [])))
+  const foundCourses = await Course.findAll({ where: { courseId: reqCourses } })
+  let courses = {}
+  foundCourses.forEach(course => courses[course.courseId] = course)
+
+  // List of courses student has taken and currently taking that they didnt fail
+  const takenAndCurrent = coursePlanItems.filter(course => (
+    (100 * course.year + SEMTONUM[course.semester] <= 100 * currYear + SEMTONUM[currSem]) &&
+    (!course.grade || GRADES[course.grade] >= GRADES['C'])
+  ))
+  const takenAndCurrentCourses = new Set(takenAndCurrent.map(course => course.courseId))
+  // Local copy of all course requirements
+  courseReq = courseReq.map(requirement => (
+    {
+      type: requirement.type,
+      courseLower: requirement.courseLower,
+      courseUpper: requirement.courseUpper,
+      creditLower: requirement.creditLower,
+      creditUpper: requirement.creditUpper,
+      courses: requirement.courses
+    }
+  ))
+
+  // Delete courses from requirements list that were taken
+  const creditsCounter = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses)
+  // Get credits remaining, semesters remaining, and number of courses per semester
+  let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student, creditsCounter, CPS)
+
+
+
+  // Find total number of students for each course in course requirements
+  let courseCount = {}
+  req.query.courses.map((c) => 
+    courseCount[c] = allItems.filter((item) => item.courseId === c).length
+  )
+  delete courseCount['']
+
+  // Sort courses by popularity
+  let popularCourses = Object.keys(courseCount).sort((c1, c2) => courseCount[c2] - courseCounts[c1])
+
+    
+
   res.status(200).send('good')
 }
 
