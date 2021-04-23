@@ -69,7 +69,7 @@ const Student = (props) => {
   useEffect(() => {
     if (student === 'Invalid')
       history.push('/')
-  }, [])
+  }, [student, history])
 
   const modeHandler = (studentInfo) => {
     setErrorMsg('')

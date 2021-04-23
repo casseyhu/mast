@@ -28,6 +28,12 @@ exports.SEMTONUM = {
   'Winter': 1,
   'Summer': 5
 }
+exports.NUMTOSEM = {
+  8: 'Fall',
+  2: 'Spring',
+  1: 'Winter',
+  5: 'Summer'
+}
 
 
 /**
@@ -61,6 +67,7 @@ exports.checkTimeConflict = (courseA, courseB, invalidCourses) => {
       return true
     }
   }
+  return false
 }
 
 

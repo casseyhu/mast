@@ -1,17 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import CoursePlan from '../components/CoursePlan'
 import Preferences from '../components/Preferences'
 import SuggestCoursePlan from '../components/SuggestCoursePlan'
 import Container from 'react-bootstrap/Container'
-import Button from '../components/Button'
 import axios from '../constants/axios'
 
 const Suggest = (props) => {
-  const [student, setStudent] = useState(props.location.state.student)
-  const [coursePlan, setCoursePlan] = useState(props.location.state.coursePlan)
+  const { student, coursePlan } = props.location.state
 
   const suggest = (preferences) => {
-    // console.log(preferences)
     preferences.student = student
     axios.get('/suggest/', {
       params: preferences
