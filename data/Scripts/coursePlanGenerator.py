@@ -10,7 +10,7 @@ from pathlib import Path
 TRACKS = {
     'AMS': ['Computational Applied Mathematics', 'Computational Biology', 'Operations Research', 'Statistics',
             'Quantitative Finance'],
-    'CSE': ['Advanced Project Option', 'Special Project Option', 'Thesis Option'],
+    'CSE': ['Advanced Project Option', 'Special Project Option', 'Thesis Option', 'Advanced Project Proficiency', 'Special Project Proficiency', 'Thesis Proficiency'],
     'BMI': ['Imaging Informatics With Thesis', 'Imaging Informatics With Project', 'Clinical Informatics With Thesis',
             'Clinical Informatics With Project', 'Translational Bioinformatics With Thesis',
             'Translational Bioinformatics With Thesis'],
@@ -42,6 +42,7 @@ for i in range(1, len(TRACKS['AMS']) + 1):
     reqs = AMS_dreq['degree' + str(i)]['courseRequirements']
     track = AMS_dreq['degree' + str(i)]['track']
     requirements = []
+    reqs.pop()
     if track == 'Quantitative Finance':
         for i in range(len(reqs)):
             if i != 2 and i != 4 and i != 6:
@@ -76,16 +77,19 @@ for i in range(1, len(TRACKS['BMI']) + 1):
 # Fills the dictionary with requirements for each track in CSE
 for i in range(1, len(TRACKS['CSE']) + 1):
     reqs = CSE_dreq['degree' + str(i)]['courseRequirements']
-    track = CSE_dreq['degree' + str(i)]['track'] + ' Option'
+    track = CSE_dreq['degree' + str(i)]['track']
+    if 'proficiency' not in track:
+        track = track + ' Option'
     requirements = []
-    for req in reqs:
+    for j in range(len(reqs)):
+        req = reqs[j]
         if req[0] == '2:(2,2):(,)':
             requirements.append(['CSE523'])
             requirements.append(['CSE524'])
-        elif req[0] != '0:(,):(,6)':
+        elif req[0] != '0:(,):(,6)' and req[0] !='0:(,):(,)':
             requirements.append(req[1:])
-        if req[0] == '0:(,):(,)':
-            for x in range(6):
+        if j == 4:
+            for x in range(2):
                 requirements.append(req[1:])
     course_req[track] = requirements
 
@@ -94,17 +98,18 @@ for i in range(1, len(TRACKS['ESE']) + 1):
     reqs = ESE_dreq['degree' + str(i)]['courseRequirements']
     track = ESE_dreq['degree' + str(i)]['track']
     requirements = []
-    for req in reqs:
-        if req[0] != '0:(,):(,6)' and req[0] != '0:(,):(,3)':
+    for j in range(len(reqs)):
+        req = reqs[j]
+        if req[0] != '0:(,):(,6)' and req[0] != '0:(,):(,3)' and req[0] != '0:(,):(,)':
             requirements.append(req[1:])
-        if req[0] == '0:(,):(,)':
-            requirements.append(req[1:])
-            requirements.append(req[1:])
+        if j == 7:
+            for x in range(2):
+                requirements.append(req[1:])
     course_req[track] = requirements
 
 
 # Get prereqs for all courses
-prereq_df = pd.read_csv(path + '\Grades\prereqs.csv')
+prereq_df = pd.read_csv(path + '\Scripts\prereqs.csv')
 prereq_df = prereq_df[prereq_df['prereqs'].notna()]
 
 
@@ -114,7 +119,7 @@ profile_df = pd.read_csv(path + '\Students\student_profile_file.csv')
 df = profile_df
 for ind in df.index:
     track = df['track'][ind]
-    if df['department'][ind] == 'CSE':
+    if df['department'][ind] == 'CSE' and 'proficiency' not in track:
         track += ' Option'
     student = {
         'sbu_id': df['sbu_id'][ind],
@@ -295,21 +300,21 @@ for student in students:
                 'TH': [],
                 'F': []
             }
-            if student['track'] == 'Thesis':
-                if semester == 'Spring':
-                    student['num_courses'][semester + ' ' + str(year)] = 4
-                elif i >= 3:
-                    student['num_courses'][semester + ' ' + str(year)] = 2
-                else:
-                    student['num_courses'][semester + ' ' + str(year)] = 1
-            elif student['track'] == 'Non-Thesis':
-                if semester == 'Spring':
-                    student['num_courses'][semester + ' ' + str(year)] = 4
-                else:
-                    student['num_courses'][semester + ' ' + str(year)] = 2
-            else:
-                student['num_courses'][semester +' ' + str(year)] = num_courses[-1]
-                num_courses.pop()
+            # if student['track'] == 'Thesis':
+            #     if semester == 'Spring':
+            #         student['num_courses'][semester + ' ' + str(year)] = 4
+            #     elif i >= 3:
+            #         student['num_courses'][semester + ' ' + str(year)] = 2
+            #     else:
+            #         student['num_courses'][semester + ' ' + str(year)] = 1
+            # elif student['track'] == 'Non-Thesis':
+            #     if semester == 'Spring':
+            #         student['num_courses'][semester + ' ' + str(year)] = 4
+            #     else:
+            #         student['num_courses'][semester + ' ' + str(year)] = 2
+          
+            student['num_courses'][semester +' ' + str(year)] = num_courses[-1]
+            num_courses.pop()
             if student['degree'] == 'BMI':
                 student['num_courses'][semester + ' ' + str(year)] += 1
                 add_course_plan_item(['BMI592'], student, semester, year, course_df, GRADES, prereq_df)

@@ -6,11 +6,11 @@ from pathlib import Path
 
 NUM_STUDENTS = 300
 
-DEPARTMENTS = ['CSE', 'AMS', 'BMI', 'ESE']
+DEPARTMENTS = ['AMS', 'BMI', 'CSE', 'ESE']
 TRACKS = {
     'AMS': ['Computational Applied Mathematics', 'Computational Biology', 'Operations Research', 'Statistics',
             'Quantitative Finance'],
-    'CSE': ['Advanced Project', 'Special Project', 'Thesis'],
+    'CSE': ['Advanced Project', 'Special Project', 'Thesis', 'Advanced Project Proficiency', 'Special Project Proficiency', 'Thesis Proficiency'],
     'BMI': ['Imaging Informatics With Thesis', 'Imaging Informatics With Project', 'Clinical Informatics With Thesis',
             'Clinical Informatics With Project', 'Translational Bioinformatics With Thesis',
             'Translational Bioinformatics With Thesis'],
@@ -58,7 +58,7 @@ for j in range(NUM_STUDENTS):
         grad_sem_year = entry_sem_year + 194
     grad_sem = SEMESTERS[grad_sem_year % 100]
     grad_year = grad_sem_year // 100
-    grad_sem_year_index = entry_sem_years.index(grad_sem_year)
+    grad_sem_year_index = sem_years.index(grad_sem_year)
     req_sem_year = sem_years[random.randint(entry_sem_year_index, grad_sem_year_index)]
     req_year = req_sem_year // 100
     req_sem = SEMESTERS[req_sem_year % 100]

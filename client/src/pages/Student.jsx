@@ -94,6 +94,10 @@ const Student = (props) => {
     } else {
       let commentBefore = studentInfoParams.student.gpdComments
       let commentAfter = studentInfo.gpdComments
+      let deptBefore = studentInfoParams.student.department
+      let deptAfter = studentInfo.dept
+      let trackBefore = studentInfoParams.student.track
+      let trackAfter = studentInfo.track
       /* Saving student info, UPDATE student in the db*/
       axios.post('/student/update/', {
         params: studentInfo
@@ -102,6 +106,11 @@ const Student = (props) => {
           ...prevState,
           student: response.data
         }))
+        //Degree has changed, update requirement states
+        if (deptBefore !== deptAfter || trackBefore !== trackAfter) {
+          //update requirement states
+        }
+        //GPD comment has changed
         if (commentBefore !== commentAfter)
           setShowEmailBox(true)
         else

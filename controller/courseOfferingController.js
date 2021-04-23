@@ -40,11 +40,11 @@ exports.upload = (req, res) => {
         dynamicTyping: true,
         complete: (results) => {
           let header = results.meta['fields']
-          if (header[0] !== 'department' &&
-            header[1] !== 'course_num' &&
-            header[2] !== 'section' &&
-            header[3] !== 'semester' &&
-            header[4] !== 'year' &&
+          if (header[0] !== 'department' ||
+            header[1] !== 'course_num' ||
+            header[2] !== 'section' ||
+            header[3] !== 'semester' ||
+            header[4] !== 'year' ||
             header[5] !== 'timeslot') {
             console.log('invalid csv')
             res.status(500).send('Cannot parse CSV file - headers do not match specifications')

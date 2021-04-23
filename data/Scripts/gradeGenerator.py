@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 
 pd.options.mode.chained_assignment = None  # default='warn'
-department = 'ESE'
+department = 'AMS'
 GRADES = ['A', 'A-', 'B+', 'B', 'B-', 'C+', 'C']
 
 cp_df = pd.read_csv(str(Path(__file__).parent.parent.absolute()) + '/Students/student_course_plan_file.csv')
