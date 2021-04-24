@@ -50,7 +50,6 @@ exports.suggest = async (req, res) => {
       courses: requirement.courses
     }
   ))
-  console.log("max courses:" + CPS)
   // Delete courses from requirements list that were taken
   const creditsCounter = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses)
   // Get credits remaining, semesters remaining, and number of courses per semester
@@ -195,8 +194,9 @@ function createNodes(courses, courseReq, PREFERRED, AVOID) {
       }
       reqNodes.push(nodes[course])
     }
-    // If required course, sort the course list by weight and set the n highest weighted nodes as required
+    // If it is a required requirement, sort the course list by weight and set the n highest weighted nodes as required
     if (req.type !== 0) {
+      shuffle(reqNodes)
       reqNodes.sort((a, b) => b.weight - a.weight)
       let i = 0
       while ((req.courseLower && req.courseLower > 0) || (req.creditLower && req.creditLower > 0)) {
@@ -217,12 +217,12 @@ function createNodes(courses, courseReq, PREFERRED, AVOID) {
  * @returns The newly sorted array of course nodes.
  */
 function sortNodes(nodes) {
-  let nonrequired = nodes
-    .filter(course => course.required === false)
-    .sort((a, b) => b.weight - a.weight)
-  let required = nodes
-    .filter(course => course.required === true)
-    .sort((a, b) => b.weight - a.weight)
+  let nonrequired = nodes.filter(course => course.required === false)
+  shuffle(nonrequired)
+  nonrequired = nonrequired.sort((a, b) => b.weight - a.weight)
+  let required = nodes.filter(course => course.required === true)
+  shuffle(required)
+  required = required.sort((a, b) => b.weight - a.weight)
   return required.concat(nonrequired)
 }
 
@@ -284,7 +284,12 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, t
       currTaken = []
       continue
     }
-
+    // Check if student has taken all prereqs for this course, if any before adding
+    if (!checkPrereq(currCourse, takenAndCurrentCourses)) {
+      index++
+      continue
+    }
+    // Get all the course offerings for currCourse (multiple sections)
     if (!currSemOfferings[currCourse.course]) {
       let found = await CourseOffering.findAll({
         where: {
@@ -296,32 +301,34 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, t
       if (found)
         currSemOfferings[currCourse.course] = found
     }
+    // Get the list of semesters that the course is offered in (using current semester year data)
     if (!semsOffered[currCourse.course]) {
       let found = await Course.findOne({
         where: {
           courseId: currCourse.course,
-          // semester: semester,
-          // year: year
+          semester: currSem,
+          year: currYear
         }
       })
       if (found)
         semsOffered[currCourse.course] = found.semestersOffered
     }
-    // Check time conflicts and prereqs if course offering exists
+    // Check time conflicts if course offering exists
     let currSuggestions = suggestions[currSemyear]
     let added = false
     if (currSemOfferings[currCourse.course] && offeringExists && currSuggestions) {
-      // A list of course offerings for currCourse
+      // A list of course offerings for currCourse (may be a list of different sections)
       let courseAList = currSemOfferings[currCourse.course]
       shuffle(courseAList)
       for (let i = 0; i < courseAList.length; i++) {
         let courseA = courseAList[i]
         for (let j = 0; j < currSuggestions.length; j++) {
+          // A list of course offerings for a course plan course (may be a list of different sections)
           let courseBList = currSemOfferings[currSuggestions[j].course]
           shuffle(courseBList)
           for (let k = 0; k < courseBList.length; k++) {
             let courseB = courseBList[k]
-            if (!checkTimeConflict(courseA, courseB, []) && checkPrereq(currCourse, takenAndCurrentCourses)) {
+            if (!checkTimeConflict(courseA, courseB, [])) {
               console.log("added " + currCourse.course)
               suggestions[currSemyear].push(currCourse)
               added = true
@@ -331,24 +338,18 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, t
         }
       }
     }
-    // First course to add
+    // First course to add when course offering exists
     else if (currSemOfferings[currCourse.course] && offeringExists && !currSuggestions) {
-      if (checkPrereq(currCourse, takenAndCurrentCourses)) {
-        suggestions[currSemyear] = [currCourse]
-        added = true
-      }
+      suggestions[currSemyear] = [currCourse]
+      added = true
     }
     // Course offering for currSemyear doesnt exist yet
-    else {
-      if (semsOffered[currCourse.course].includes(semester)) {
-        if (checkPrereq(currCourse, takenAndCurrentCourses)) {
-          if (currSuggestions)
-            suggestions[currSemyear].push(currCourse)
-          else
-            suggestions[currSemyear] = [currCourse]
-          added = true
-        }
-      }
+    else if (semsOffered[currCourse.course].includes(semester)) {
+      if (currSuggestions)
+        suggestions[currSemyear].push(currCourse)
+      else
+        suggestions[currSemyear] = [currCourse]
+      added = true
     }
     if (added) {
       // takenAndCurrentCourses.add(currCourse.course)
@@ -388,19 +389,13 @@ function shuffle(array) {
 
 function checkPrereq(courseA, takenAndCurrentCourses) {
   let prereqs = courseA.prereqs
-  let passedPrereqs = true
-  // if (courseA.course === 'CSE507')
-  //   console.log(prereqs)
   if (prereqs[0] === '')
     return true
   for (let l = 0; l < prereqs.length; l++) {
-    if (!takenAndCurrentCourses.has(prereqs[l])) {
+    if (!takenAndCurrentCourses.has(prereqs[l]))
       return false
-    }
   }
-  if (passedPrereqs)
-    return true
-  return false
+  return true
 }
 
 
