@@ -177,12 +177,12 @@ function createNodes(courses, courseReq, preferred, avoid, popularCourses) {
   let nodes = {}
   for (let req of courseReq) {
     let reqNodes = []
+    let repeat = false
     for (let course of req.courses) {
       if (nodes[course]) {
         reqNodes.push(nodes[course])
         continue
       }
-      let repeat = false
       const weight = preferenceMap[course] ? preferenceMap[course] : (avoid.has(course) ? -1 : (popularCourses.includes(course) ? 2 : 1))
       // Repeat course multiple times
       if ((req.courseLower && req.courseLower > req.courses.length)
