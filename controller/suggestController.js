@@ -54,12 +54,13 @@ exports.suggest = async (req, res) => {
     }
   ))
   // Delete courses from requirements list that were taken
-  const creditsCounter = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses)
+  const creditsCounter = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, takenAndCurrent)
   // Get credits remaining, semesters remaining, and number of courses per semester
   let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student.gradSem, student.gradYear, creditsCounter, CPS)
-
+  console.log('Credits remaining ', creditsRemaining, 'CPS:', coursesPerSem)
   // Create course nodes
-  const nodesMap = createNodes(courses, courseReq, PREFERRED, AVOID, TIME, [])
+  const nodesMap = createNodes(courses, courseReq, PREFERRED, AVOID, TIME, [], takenAndCurrent)
+  // console.log('Taken and current', takenAndCurrent.filter(item => item.courseId === 'BMI592').length)
   let nodes = Object.values(nodesMap)
   nodes = sortNodes(nodesMap)
   // console.log(nodes)
@@ -77,7 +78,7 @@ exports.suggest = async (req, res) => {
  * @param {Array[String]} takenAndCurrentCourses 
  * @returns 
  */
-async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses) {
+async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, takenAndCurrent) {
   let creditsCounter = 0
   let nonrequired = new Set()
   let allUsed = new Set()
@@ -87,9 +88,22 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses) {
     let used = []
     // Go through the list of courses required for course requirement
     for (let course of requirement.courses) {
+      let maxCourses = requirement.courseLower ? requirement.courseLower : requirement.creditLower / courses[course].credits
       // Student did not take the course yet (or failed)
       if (!takenAndCurrentCourses.has(course))
         notTaken.push(course)
+      else if (requirement.courses.length < maxCourses) {
+        // Is a repeat course 
+        let timesTaken = takenAndCurrent.filter(item => item.courseId === course).length
+        creditsCounter += courses[course].credits * timesTaken
+        if(timesTaken >= maxCourses) {
+          // Satisfied the amount of times they needed to take this course (BMI592)
+          used.push(course)
+        }
+        else
+          notTaken.push(course)
+        break
+      }
       // Student has passed / currently taking the course
       else {
         if (requirement.courseLower)
@@ -97,8 +111,8 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses) {
         if (requirement.creditLower)
           requirement.creditLower -= courses[course].credits
         // Course cannot be counted for multiple requirements
-        if (!allUsed.has(course) && (requirement.courseLower !== null && requirement.courseLower >= 0)
-          || (requirement.creditLower && requirement.creditLower > 0)) {
+        if (requirement.type === 0 || (!allUsed.has(course) && ((requirement.courseLower !== null && requirement.courseLower >= 0)
+          || (requirement.creditLower !== null && requirement.creditLower >= 0)))) {
           creditsCounter += courses[course].credits
           used.push(course)
         }
@@ -139,7 +153,7 @@ function getRemaining(creditReq, gradSem, gradYear, creditsCounter, CPS) {
     if (sem === 'Spring')
       year++
   }
-  const coursesPerSem = CPS ? CPS : Math.ceil(creditsRemaining / (3 * semsRemaining))
+  const coursesPerSem = CPS ? CPS : Math.max(Math.ceil(creditsRemaining / (3 * semsRemaining)), 4)
   return [creditsRemaining, coursesPerSem]
 }
 
@@ -153,7 +167,7 @@ function getRemaining(creditReq, gradSem, gradYear, creditsCounter, CPS) {
  * @param {Set[String]} avoid List of courses that student wants to avoid
  * @returns The mapping of course ID to course node
  */
-function createNodes(courses, courseReq, preferred, avoid, popularCourses) {
+function createNodes(courses, courseReq, preferred, avoid, time, popularCourses, takenAndCurrent) {
   let preferenceMap = {}
   preferred.forEach((course, i) => preferenceMap[course] = preferred.length - i + 1)
   let keys = Object.keys(preferenceMap)
@@ -187,13 +201,14 @@ function createNodes(courses, courseReq, preferred, avoid, popularCourses) {
       // Repeat course multiple times
       if ((req.courseLower && req.courseLower > req.courses.length)
         || (req.creditLower && req.creditLower > req.courses.length * courses[course].credits)) {
+          let timesTaken = takenAndCurrent.filter(item => item.courseId === course).length
         nodes[course] = {
           course: course,
           required: req.type !== 0,
           credits: courses[course].credits,
           weight: weight,
           prereqs: courses[course].prereqs,
-          count: req.courseLower ? req.courseLower : Math.floor(req.creditLower / courses[course].credits)
+          count: (req.courseLower ? req.courseLower : Math.floor(req.creditLower / courses[course].credits)) - timesTaken
         }
         reqNodes.push(nodes[course])
         repeat = true
@@ -210,7 +225,7 @@ function createNodes(courses, courseReq, preferred, avoid, popularCourses) {
       reqNodes.push(nodes[course])
     }
     // If it is a required requirement, sort the course list by weight and set the n highest weighted nodes as required
-    if (!repeat && req.type !== 0) {
+    if (!repeat && req.type !== 0 && reqNodes.length) {
       shuffle(reqNodes)
       reqNodes.sort((a, b) => b.weight - a.weight)
       let i = 0
@@ -393,7 +408,12 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, t
       currTaken.push(currCourse.course)
       creditsRemaining -= currCourse.credits
       currCoursesCount += 1
-      nodes.splice(index, 1)
+      if (currCourse.count > 1) {
+        currCourse.count -= 1
+        index++
+      }
+      else
+        nodes.splice(index, 1)
     } else
       index++
   }
@@ -532,7 +552,7 @@ exports.smartSuggest = async (req, res) => {
   let popularCourses = Object.keys(courseCount).sort((c1, c2) => courseCount[c2] - courseCount[c1])
 
   // Create course nodes
-  const nodesMap = createNodes(courses, courseReq, new Set(), new Set(), popularCourses)
+  const nodesMap = createNodes(courses, courseReq, new Set(), new Set(), TIME, popularCourses, takenAndCurrent)
   let nodes = Object.values(nodesMap)
   nodes = sortNodes(nodes)
   // console.log(nodes)
