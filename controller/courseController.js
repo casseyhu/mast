@@ -116,7 +116,7 @@ const scrapeCourses = (filePath, depts, semester, year, res) => {
   let checkOthers = false
   let others = ''
   let exceptionDepts = []
-  let exceptions = ['CHE541', 'JRN565', 'MEC539', 'MCB520', 'PHY558', 'ESE533', 'CSE529']
+  let exceptions = ['CHE541', 'CHE523', 'CHE528', 'JRN565', 'MEC539', 'MCB520', 'PHY558', 'ESE533', 'CSE529']
   if (depts.includes('ESE')) {
     exceptionDepts = ['CSE']
     exceptions = ['CSE506', 'CSE526', 'CSE548']

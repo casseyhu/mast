@@ -22,17 +22,11 @@ const Suggest = (props) => {
     })
   }
 
-  const smartSuggest = () => {
+  const smartSuggest = (preferences) => {
     console.log('Smart suggest mode')
+    preferences.student = student
     axios.get('/smartSuggest/', {
-      params: {
-        dept: student.department,
-        track: student.track,
-        degreeId: student.degreeId,
-        sbuId: student.sbuId,
-        gradSem: student.gradSem,
-        gradYear: student.gradYear
-      }
+      params: preferences
     }).then(res => {
       console.log('Done smart suggest')
     }).catch(err => {

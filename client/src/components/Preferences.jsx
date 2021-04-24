@@ -136,6 +136,29 @@ const Preferences = (props) => {
     }
     console.log(preferences)
     props.suggest(preferences)
+    props.smartSuggest(preferences)
+  }
+
+  // User pressed 'Smart Suggest' button. This will take all the current
+  // preferences, do a quick check (for the time to make sure 
+  // !(startTime later than endTime)), then send the preferences
+  // to the parent, where it will make the query to run the algo.
+  const setSmartPreferences = () => {
+    // Check for valid time preferences
+    if(startTime && endTime && startTime >= endTime) {
+      setErrorMsg('Start time cannot be equal to or later than end time.')
+      showError(true)
+      return
+    }
+    console.log('sending preferences')
+    // Construct a dictionary of the preferences and pass to parent.
+    let preferences = {
+      maxCourses: maxCourses !== null ? Number(maxCourses) : maxCourses,
+      startTime: startTime,
+      endTime: endTime
+    }
+    console.log(preferences)
+    props.smartSuggest(preferences)
   }
 
   return (
@@ -277,7 +300,7 @@ const Preferences = (props) => {
       </div>
       <div className='flex-horizontal justify-content-center align-content-middle'>
         <Button divclassName="mr-3" variant='round' text='Suggest' onClick={() => setPreferences()} style={{ width: '140px' }} />
-        <Button divclassName="ml-3" variant='round' text='Smart Suggest' onClick={props.smartSuggest} style={{ width: '140px' }} />
+        <Button divclassName="ml-3" variant='round' text='Smart Suggest' onClick={() => setSmartPreferences()} style={{ width: '140px' }} />
       </div>
     </div>
   )
