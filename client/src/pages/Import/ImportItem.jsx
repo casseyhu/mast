@@ -118,7 +118,7 @@ const ImportItem = (props) => {
 
   return (
     <div style={{ margin: '1rem 0' }}>
-      <h4>{props.header}</h4>
+      <h4 className='underline'>{props.header}</h4>
       {props.first
         && (
           <div className='flex-horizontal'>

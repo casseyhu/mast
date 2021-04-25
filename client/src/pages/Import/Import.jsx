@@ -67,7 +67,7 @@ const Import = (props) => {
         <ImportItem header='Course Offerings' setOverlay={setOverlay} type='CSV' dept={props.dept} setStudents={setAffectedStudents} setShowInvalid={setShowInvalid} />
         <ImportItem header='Student Data' setOverlay={setOverlay} first='Profile CSV' type='Course Plan CSV' dept={props.dept} />
         <ImportItem header='Grades' setOverlay={setOverlay} type='CSV' dept={props.dept} />
-        <h4 style={{ margin: '1rem 0' }}>Other</h4>
+        <h4 className='underline mt-3'>Other</h4>
         <Button
           variant='round'
           text='Delete Student Data'

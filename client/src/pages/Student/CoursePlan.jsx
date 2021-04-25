@@ -1,4 +1,7 @@
 import React from 'react'
+import Badge from 'react-bootstrap/Badge'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import Tooltip from 'react-bootstrap/Tooltip'
 import Button from '../../components/Button'
 
 const CoursePlan = (props) => {
@@ -8,14 +11,29 @@ const CoursePlan = (props) => {
     return aSemYear - bSemYear
   }
 
+  const hasConflicts = props.coursePlan && props.coursePlan.filter(course => course.validity === false).length > 0
+
   return (
     <div >
       <div className='flex-horizontal justify-content-between' style={{ width: '100%' }}>
-        <h3>{props.heading ? props.heading : 'Course Plan'}</h3>
+        <h4>
+          {props.heading ? props.heading : 'Course Plan'} 
+          {hasConflicts && (
+            <OverlayTrigger
+            placement='right'
+            overlay={
+              <Tooltip id='tooltip-right'>
+                Course plan contains conflicts. Please review.
+              </Tooltip>
+            }
+            >
+              <Badge className="ml-3" pill variant="warning">&nbsp;!&nbsp;</Badge>
+            </OverlayTrigger>
+          )}
+        </h4>
         <div className='flex-horizontal' style={{ width: 'fit-content' }}>
           {props.suggestCoursePlan &&
             <Button
-              // className='bg-white'
               variant='round'
               text='Suggest'
               onClick={props.suggestCoursePlan}
@@ -23,7 +41,6 @@ const CoursePlan = (props) => {
             />}
           {props.editCoursePlan &&
             <Button
-              // className='bg-white'
               variant='round'
               text='Edit'
               onClick={props.editCoursePlan}

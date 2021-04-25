@@ -63,10 +63,17 @@ exports.suggest = async (req, res) => {
   let minScore = Number.MAX_SAFE_INTEGER
   let counter = 0
   while (generated.length < 5 && counter < 50) {
+    // const takenAndCurrent = coursePlanItems.filter(course => (
+    //   (100 * course.year + SEMTONUM[course.semester] <= 100 * currYear + SEMTONUM[currSem]) &&
+    //   (!course.grade || GRADES[course.grade] >= GRADES['C'])
+    // ))
+    // const takenAndCurrentCourses = new Set(takenAndCurrent.map(course => course.courseId))
+    const courseReqs = JSON.parse(JSON.stringify(courseReq))
     // Create course nodes
-    const nodesMap = createNodes(courses, courseReq, PREFERRED, AVOID, TIME, [], takenAndCurrent)
+    const nodesMap = createNodes(courses, courseReqs, PREFERRED, AVOID, TIME, [], takenAndCurrent)
     let nodes = Object.values(nodesMap)
     nodes = sortNodes(nodesMap)
+
     let [score, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, takenAndCurrentCourses)
     if (score < minScore) {
       generated = [suggested]
@@ -76,9 +83,10 @@ exports.suggest = async (req, res) => {
       generated.push(suggested)
     counter++
   }
-  console.log(generated[0])
-  console.log(generated)
-  res.status(200).send('good')
+  // console.log(generated[0])
+  // console.log(generated)
+  console.log('done')
+  res.status(200).send(generated)
 }
 
 

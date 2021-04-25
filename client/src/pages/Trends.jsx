@@ -241,7 +241,7 @@ class Trends extends Component {
           </div>
           <div className='flex-horizontal wrap' style={{ width: 'fit-content', flexGrow: '1' }}>
             <div className='flex-horizontal' style={{ width: 'fit-content', flexGrow: '1' }}>
-              <span className='trends-span'>From:</span>
+              <span className='pr-1'>From:</span>
               <Dropdown
                 className='lr-padding'
                 variant='single'
@@ -260,7 +260,7 @@ class Trends extends Component {
               />
             </div>
             <div className='flex-horizontal' style={{ width: 'fit-content', flexGrow: '1' }}>
-              <span className='trends-span'>To:</span>
+              <span className='pr-1'>To:</span>
               <Dropdown
                 className='lr-padding'
                 variant='single'
