@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import Container from 'react-bootstrap/Container'
 import Pagination from 'react-bootstrap/Pagination'
-import Button from '../components/Button'
-import axios from '../constants/axios'
-import BrowseSearchbar from '../components/BrowseSearchbar'
+import Button from '../../components/Button'
+import axios from '../../constants/axios'
+import BrowseSearchbar from './BrowseSearchbar'
 
 
 class Browse extends Component {

@@ -1,9 +1,10 @@
 import React from 'react'
-import CoursePlan from '../components/CoursePlan'
-import Preferences from '../components/Preferences'
-import SuggestCoursePlan from '../components/SuggestCoursePlan'
 import Container from 'react-bootstrap/Container'
-import axios from '../constants/axios'
+import axios from '../../constants/axios'
+import CoursePlan from './CoursePlan'
+import Preferences from './Preferences'
+import SuggestCoursePlan from './SuggestCoursePlan'
+
 
 const Suggest = (props) => {
   const { student, coursePlan } = props.location.state

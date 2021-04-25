@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import InputField from './InputField'
-import Dropdown from './Dropdown'
-import Button from '../components/Button'
-import { BOOLEAN, DEPARTMENTS_REQ, SEMESTERS, MONTH_SEMESTER, YEARS, TRACKS } from '../constants'
+import InputField from '../../components/InputField'
+import Dropdown from '../../components/Dropdown'
+import Button from '../../components/Button'
+import { BOOLEAN, DEPARTMENTS_REQ, SEMESTERS, MONTH_SEMESTER, YEARS, TRACKS } from '../../constants'
 import { useHistory } from 'react-router-dom'
-import axios from '../constants/axios'
+import axios from '../../constants/axios'
 
 
 const StudentInfo = ({ student, mode, errorMessage, userType, setDegreeReq, onSubmit }) => {

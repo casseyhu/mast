@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import InputField from './InputField'
-import Button from './Button'
-import axios from '../constants/axios'
+import InputField from '../../components/InputField'
+import Button from '../../components/Button'
+import axios from '../../constants/axios'
 
 class LoginContainer extends Component {
   state = {

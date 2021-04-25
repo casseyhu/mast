@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import Button from './Button'
-import Dropdown from './Dropdown'
-import axios from '../constants/axios'
 import { Checkmark } from 'react-checkmark'
 import PulseLoader from 'react-spinners/PulseLoader'
+import axios from '../../constants/axios'
+import Button from '../../components/Button'
+import Dropdown from '../../components/Dropdown'
+
 
 const ImportItem = (props) => {
 

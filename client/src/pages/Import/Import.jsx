@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import Container from 'react-bootstrap/Container'
-import ImportItem from '../components/ImportItem'
-import Button from '../components/Button'
-import CenteredModal from '../components/Modal'
-import axios from '../constants/axios'
-import { SEMESTERS, YEARS, DEPARTMENTS_REQ } from '../constants'
+import axios from '../../constants/axios'
+import { SEMESTERS, YEARS, DEPARTMENTS_REQ } from '../../constants'
+import ImportItem from './ImportItem'
+import Button from '../../components/Button'
+import CenteredModal from '../../components/Modal'
+
 
 const Import = (props) => {
   const [showConfirmation, setShowConfirmation] = useState(false)
