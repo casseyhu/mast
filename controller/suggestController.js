@@ -28,7 +28,7 @@ exports.suggest = async (req, res) => {
   // // Find the students degree requirement states
   // let reqStates = await RequirementState.findAll({ where: { sbuID: SBUID } })
   // Find the students course plan items
-  let coursePlanItems = await findCoursePlanItems(student.sbuId)
+  let coursePlanItems = await findCoursePlanItems(SBUID)
   // Create the course mapping for all courses required for degree
   const reqCourses = Array.from(new Set(courseReq.reduce((a, b) => b.courses.concat(a), [])))
   const foundCourses = await Course.findAll({ where: { courseId: reqCourses } })
@@ -77,6 +77,7 @@ exports.suggest = async (req, res) => {
     counter++
   }
   console.log(generated[0])
+  console.log(generated)
   res.status(200).send('good')
 }
 
@@ -141,7 +142,7 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
   // Move all remaining courses into last nonrequired course requirement (0:(,):(,))
   nonrequired = Array.from(nonrequired).filter(item => item !== '')
   courseReq[courseReq.length - 1].courses = nonrequired
-  console.log("nonrequired: ", nonrequired)
+  // console.log("nonrequired: ", nonrequired)
   return creditsCounter
 }
 

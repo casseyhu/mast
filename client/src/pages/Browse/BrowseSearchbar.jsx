@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import Button from './Button'
-import Dropdown from './Dropdown'
-import InputField from './InputField'
-import { BOOLEAN, COMPLETENESS, VALIDITY, SEMESTERS, YEARS, TRACKS } from '../constants'
+import Button from '../../components/Button'
+import Dropdown from '../../components/Dropdown'
+import InputField from '../../components/InputField'
+import { BOOLEAN, COMPLETENESS, VALIDITY, SEMESTERS, YEARS, TRACKS } from '../../constants'
 
 const BrowseSearchbar = (props) => {
   const [expanded, setExpanded] = useState(false)

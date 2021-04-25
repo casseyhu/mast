@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import InputField from './InputField'
-import CoursePreferences from '../components/CoursePreferences'
-import Dropdown from '../components/Dropdown'
-import axios from '../constants/axios'
 import moment from 'moment'
-import Button from './Button'
+import axios from '../../constants/axios'
+import InputField from '../../components/InputField'
+import Dropdown from '../../components/Dropdown'
+import Button from '../../components/Button'
+import CoursePreferences from './CoursePreferences'
 
 
 const Preferences = (props) => {
@@ -192,40 +192,38 @@ const Preferences = (props) => {
           </div>
         }
         {preferred.length !== 0 &&
-          <div className='flex-horizontal'>
-            <table className='preference-table'>
-              <tbody>
-                <tr>
-                  <th className='preference-table-th'>No.</th>
-                  <th className='preference-table-th'>Preferred Courses</th>
-                  <th className='preference-table-th'></th>
-                  <th className='preference-table-th'></th>
-                  <th className='preference-table-th'></th>
-                </tr>
-                {preferred.map(course => {
-                  return (
-                    <tr className='preference-table-tr' key={course}>
-                      <td className='preference-table-td'>
-                        {preferred.indexOf(course) + 1}
-                      </td>
-                      <td className='preference-table-td'>
-                        {course}
-                      </td>
-                      <td className='preference-table-td'>
-                        <i id='icon' className='fa fa-angle-up fa-lg' onClick={() => moveUp('Preferred', course)} />
-                      </td>
-                      <td className='preference-table-td'>
-                        <i id='icon' className='fa fa-angle-down fa-lg' onClick={() => moveDown('Preferred', course)} />
-                      </td>
-                      <td className='preference-table-td'>
-                        <i id='icon' className="fa fa-trash" onClick={() => deleteCourse('Preferred', course)}></i>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
+          <table className='preference-table'>
+            <tbody>
+              <tr>
+                <th className='preference-table-th'>No.</th>
+                <th className='preference-table-th'>Preferred Courses</th>
+                <th className='preference-table-th'></th>
+                <th className='preference-table-th'></th>
+                <th className='preference-table-th'></th>
+              </tr>
+              {preferred.map(course => {
+                return (
+                  <tr className='preference-table-tr' key={course}>
+                    <td className='preference-table-td'>
+                      {preferred.indexOf(course) + 1}
+                    </td>
+                    <td className='preference-table-td'>
+                      {course}
+                    </td>
+                    <td className='preference-table-td'>
+                      <i id='icon' className='fa fa-angle-up fa-lg' onClick={() => moveUp('Preferred', course)} />
+                    </td>
+                    <td className='preference-table-td'>
+                      <i id='icon' className='fa fa-angle-down fa-lg' onClick={() => moveDown('Preferred', course)} />
+                    </td>
+                    <td className='preference-table-td'>
+                      <i id='icon' className="fa fa-trash" onClick={() => deleteCourse('Preferred', course)}></i>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
         }
       </div>
 
@@ -261,40 +259,38 @@ const Preferences = (props) => {
           </div>
         }
         {avoid.length !== 0 &&
-          <div className='flex-horizontal'>
-            <table className='preference-table'>
-              <tbody>
-                <tr>
-                  <th className='preference-table-th'>No.</th>
-                  <th className='preference-table-th'>Avoid Courses</th>
-                  <th className='preference-table-th'></th>
-                  <th className='preference-table-th'></th>
-                  <th className='preference-table-th'></th>
-                </tr>
-                {avoid.map(course => {
-                  return (
-                    <tr className='preference-table-tr' key={course}>
-                      <td className='preference-table-td'>
-                        {avoid.indexOf(course) + 1}
-                      </td>
-                      <td className='preference-table-td'>
-                        {course}
-                      </td>
-                      <td className='preference-table-td'>
-                        <i id='icon' className='fa fa-angle-up fa-lg' onClick={() => moveUp('avoid', course)} />
-                      </td>
-                      <td className='preference-table-td'>
-                        <i id='icon' className='fa fa-angle-down fa-lg' onClick={() => moveDown('avoid', course)} />
-                      </td>
-                      <td className='preference-table-td'>
-                        <i id='icon' className="fa fa-trash" onClick={() => deleteCourse('avoid', course)}></i>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
+          <table className='preference-table'>
+            <tbody>
+              <tr>
+                <th className='preference-table-th'>No.</th>
+                <th className='preference-table-th'>Avoid Courses</th>
+                <th className='preference-table-th'></th>
+                <th className='preference-table-th'></th>
+                <th className='preference-table-th'></th>
+              </tr>
+              {avoid.map(course => {
+                return (
+                  <tr className='preference-table-tr' key={course}>
+                    <td className='preference-table-td'>
+                      {avoid.indexOf(course) + 1}
+                    </td>
+                    <td className='preference-table-td'>
+                      {course}
+                    </td>
+                    <td className='preference-table-td'>
+                      <i id='icon' className='fa fa-angle-up fa-lg' onClick={() => moveUp('avoid', course)} />
+                    </td>
+                    <td className='preference-table-td'>
+                      <i id='icon' className='fa fa-angle-down fa-lg' onClick={() => moveDown('avoid', course)} />
+                    </td>
+                    <td className='preference-table-td'>
+                      <i id='icon' className="fa fa-trash" onClick={() => deleteCourse('avoid', course)}></i>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
         }
       </div>
       <div className='flex-horizontal justify-content-center align-content-middle'>
