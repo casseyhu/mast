@@ -2,7 +2,7 @@
     "degree1": {
         "dept": "BMI",
         "track": "Imaging Informatics With Thesis",
-        "requirementVersion": 201808, 
+        "requirementVersion": 201808,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -10,24 +10,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree2": {
         "dept": "BMI",
         "track": "Imaging Informatics With Project",
-        "requirementVersion": 201808, 
+        "requirementVersion": 201808,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -35,24 +35,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree3": {
         "dept": "BMI",
         "track": "Clinical Informatics With Thesis",
-        "requirementVersion": 201808, 
+        "requirementVersion": 201808,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -60,23 +60,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree4": {
         "dept": "BMI",
         "track": "Clinical Informatics With Project",
-        "requirementVersion": 201808, 
+        "requirementVersion": 201808,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -84,23 +84,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree5": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Thesis",
-        "requirementVersion": 201808, 
+        "requirementVersion": 201808,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -108,23 +108,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree6": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Project",
-        "requirementVersion": 201808, 
+        "requirementVersion": 201808,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -132,23 +132,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree7": {
         "dept": "BMI",
         "track": "Imaging Informatics With Thesis",
-        "requirementVersion": 201908, 
+        "requirementVersion": 201908,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -156,24 +156,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree8": {
         "dept": "BMI",
         "track": "Imaging Informatics With Project",
-        "requirementVersion": 201908, 
+        "requirementVersion": 201908,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -181,24 +181,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree9": {
         "dept": "BMI",
         "track": "Clinical Informatics With Thesis",
-        "requirementVersion": 201908, 
+        "requirementVersion": 201908,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -206,23 +206,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree10": {
         "dept": "BMI",
         "track": "Clinical Informatics With Project",
-        "requirementVersion": 201908, 
+        "requirementVersion": 201908,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -230,23 +230,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree11": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Thesis",
-        "requirementVersion": 201908, 
+        "requirementVersion": 201908,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -254,23 +254,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree12": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Project",
-        "requirementVersion": 201908, 
+        "requirementVersion": 201908,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -278,23 +278,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree13": {
         "dept": "BMI",
         "track": "Imaging Informatics With Thesis",
-        "requirementVersion": 202008, 
+        "requirementVersion": 202008,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -302,24 +302,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree14": {
         "dept": "BMI",
         "track": "Imaging Informatics With Project",
-        "requirementVersion": 202008, 
+        "requirementVersion": 202008,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -327,24 +327,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree15": {
         "dept": "BMI",
         "track": "Clinical Informatics With Thesis",
-        "requirementVersion": 202008, 
+        "requirementVersion": 202008,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -352,23 +352,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree16": {
         "dept": "BMI",
         "track": "Clinical Informatics With Project",
-        "requirementVersion": 202008, 
+        "requirementVersion": 202008,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -376,23 +376,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree17": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Thesis",
-        "requirementVersion": 202008, 
+        "requirementVersion": 202008,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -400,23 +400,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree18": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Project",
-        "requirementVersion": 202008, 
+        "requirementVersion": 202008,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -424,23 +424,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree19": {
         "dept": "BMI",
         "track": "Imaging Informatics With Thesis",
-        "requirementVersion": 202108, 
+        "requirementVersion": 202108,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -448,24 +448,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree20": {
         "dept": "BMI",
         "track": "Imaging Informatics With Project",
-        "requirementVersion": 202108, 
+        "requirementVersion": 202108,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -473,24 +473,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree21": {
         "dept": "BMI",
         "track": "Clinical Informatics With Thesis",
-        "requirementVersion": 202108, 
+        "requirementVersion": 202108,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -498,23 +498,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree22": {
         "dept": "BMI",
         "track": "Clinical Informatics With Project",
-        "requirementVersion": 202108, 
+        "requirementVersion": 202108,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -522,23 +522,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree23": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Thesis",
-        "requirementVersion": 202108, 
+        "requirementVersion": 202108,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -546,23 +546,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree24": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Project",
-        "requirementVersion": 202108, 
+        "requirementVersion": 202108,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -570,23 +570,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree25": {
         "dept": "BMI",
         "track": "Imaging Informatics With Thesis",
-        "requirementVersion": 202208, 
+        "requirementVersion": 202208,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -594,24 +594,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree26": {
         "dept": "BMI",
         "track": "Imaging Informatics With Project",
-        "requirementVersion": 202208, 
+        "requirementVersion": 202208,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -619,24 +619,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree27": {
         "dept": "BMI",
         "track": "Clinical Informatics With Thesis",
-        "requirementVersion": 202208, 
+        "requirementVersion": 202208,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -644,23 +644,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree28": {
         "dept": "BMI",
         "track": "Clinical Informatics With Project",
-        "requirementVersion": 202208, 
+        "requirementVersion": 202208,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -668,23 +668,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree29": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Thesis",
-        "requirementVersion": 202208, 
+        "requirementVersion": 202208,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -692,23 +692,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree30": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Project",
-        "requirementVersion": 202208, 
+        "requirementVersion": 202208,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -716,23 +716,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree31": {
         "dept": "BMI",
         "track": "Imaging Informatics With Thesis",
-        "requirementVersion": 201802, 
+        "requirementVersion": 201802,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -740,24 +740,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree32": {
         "dept": "BMI",
         "track": "Imaging Informatics With Project",
-        "requirementVersion": 201802, 
+        "requirementVersion": 201802,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -765,24 +765,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree33": {
         "dept": "BMI",
         "track": "Clinical Informatics With Thesis",
-        "requirementVersion": 201802, 
+        "requirementVersion": 201802,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -790,23 +790,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree34": {
         "dept": "BMI",
         "track": "Clinical Informatics With Project",
-        "requirementVersion": 201802, 
+        "requirementVersion": 201802,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -814,23 +814,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree35": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Thesis",
-        "requirementVersion": 201802, 
+        "requirementVersion": 201802,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -838,23 +838,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree36": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Project",
-        "requirementVersion": 201802, 
+        "requirementVersion": 201802,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -862,23 +862,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree37": {
         "dept": "BMI",
         "track": "Imaging Informatics With Thesis",
-        "requirementVersion": 201902, 
+        "requirementVersion": 201902,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -886,24 +886,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree38": {
         "dept": "BMI",
         "track": "Imaging Informatics With Project",
-        "requirementVersion": 201902, 
+        "requirementVersion": 201902,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -911,24 +911,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree39": {
         "dept": "BMI",
         "track": "Clinical Informatics With Thesis",
-        "requirementVersion": 201902, 
+        "requirementVersion": 201902,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -936,23 +936,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree40": {
         "dept": "BMI",
         "track": "Clinical Informatics With Project",
-        "requirementVersion": 201902, 
+        "requirementVersion": 201902,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -960,23 +960,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degre41": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Thesis",
-        "requirementVersion": 201902, 
+        "requirementVersion": 201902,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -984,23 +984,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree42": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Project",
-        "requirementVersion": 201902, 
+        "requirementVersion": 201902,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -1008,23 +1008,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree43": {
         "dept": "BMI",
         "track": "Imaging Informatics With Thesis",
-        "requirementVersion": 202002, 
+        "requirementVersion": 202002,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -1032,24 +1032,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree44": {
         "dept": "BMI",
         "track": "Imaging Informatics With Project",
-        "requirementVersion": 202002, 
+        "requirementVersion": 202002,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -1057,24 +1057,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree45": {
         "dept": "BMI",
         "track": "Clinical Informatics With Thesis",
-        "requirementVersion": 202002, 
+        "requirementVersion": 202002,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -1082,23 +1082,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree46": {
         "dept": "BMI",
         "track": "Clinical Informatics With Project",
-        "requirementVersion": 202002, 
+        "requirementVersion": 202002,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -1106,23 +1106,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree47": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Thesis",
-        "requirementVersion": 202002, 
+        "requirementVersion": 202002,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -1130,23 +1130,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree48": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Project",
-        "requirementVersion": 202002, 
+        "requirementVersion": 202002,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -1154,23 +1154,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree49": {
         "dept": "BMI",
         "track": "Imaging Informatics With Thesis",
-        "requirementVersion": 202102, 
+        "requirementVersion": 202102,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -1178,24 +1178,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree50": {
         "dept": "BMI",
         "track": "Imaging Informatics With Project",
-        "requirementVersion": 202102, 
+        "requirementVersion": 202102,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -1203,24 +1203,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree51": {
         "dept": "BMI",
         "track": "Clinical Informatics With Thesis",
-        "requirementVersion": 202102, 
+        "requirementVersion": 202102,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -1228,23 +1228,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree52": {
         "dept": "BMI",
         "track": "Clinical Informatics With Project",
-        "requirementVersion": 202102, 
+        "requirementVersion": 202102,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -1252,23 +1252,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree53": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Thesis",
-        "requirementVersion": 202102, 
+        "requirementVersion": 202102,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -1276,23 +1276,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree54": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Project",
-        "requirementVersion": 202102, 
+        "requirementVersion": 202102,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -1300,23 +1300,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree55": {
         "dept": "BMI",
         "track": "Imaging Informatics With Thesis",
-        "requirementVersion": 202202, 
+        "requirementVersion": 202202,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -1324,24 +1324,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree56": {
         "dept": "BMI",
         "track": "Imaging Informatics With Project",
-        "requirementVersion": 202202, 
+        "requirementVersion": 202202,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -1349,24 +1349,24 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI513"],
             ["2:(1,1):(,)", "BMI514"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree57": {
         "dept": "BMI",
         "track": "Clinical Informatics With Thesis",
-        "requirementVersion": 202202, 
+        "requirementVersion": 202202,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -1374,23 +1374,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree58": {
         "dept": "BMI",
         "track": "Clinical Informatics With Project",
-        "requirementVersion": 202202, 
+        "requirementVersion": 202202,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -1398,23 +1398,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI512"],
             ["2:(1,1):(,)", "BMI550"],
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree59": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Thesis",
-        "requirementVersion": 202202, 
+        "requirementVersion": 202202,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -1422,23 +1422,23 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree60": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Project",
-        "requirementVersion": 202202, 
+        "requirementVersion": 202202,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -1446,17 +1446,17 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
-            ["1:(4,4):(,)", "BMI592"],
+            ["1:(4,-1):(,)", "BMI592"],
             ["2:(1,1):(,)", "BMI511"],
             ["2:(1,1):(,)", "BMI520"],
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     }
 }

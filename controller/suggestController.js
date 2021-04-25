@@ -58,19 +58,22 @@ exports.suggest = async (req, res) => {
   let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student.gradSem, student.gradYear, creditsCounter, CPS)
   console.log('Credits remaining ', creditsRemaining, 'CPS:', coursesPerSem)
 
+  if (creditsRemaining <= 0) {
+    res.status(200).send([])
+  }
   // List of course plans with lowest score
   let generated = []
   let minScore = Number.MAX_SAFE_INTEGER
   let counter = 0
   while (generated.length < 5 && counter < 50) {
-    // const takenAndCurrent = coursePlanItems.filter(course => (
-    //   (100 * course.year + SEMTONUM[course.semester] <= 100 * currYear + SEMTONUM[currSem]) &&
-    //   (!course.grade || GRADES[course.grade] >= GRADES['C'])
-    // ))
-    // const takenAndCurrentCourses = new Set(takenAndCurrent.map(course => course.courseId))
+    const takenAndCurrent = coursePlanItems.filter(course => (
+      (100 * course.year + SEMTONUM[course.semester] <= 100 * currYear + SEMTONUM[currSem]) &&
+      (!course.grade || GRADES[course.grade] >= GRADES['C'])
+    ))
+    const takenAndCurrentCourses = new Set(takenAndCurrent.map(course => course.courseId))
     const courseReqs = JSON.parse(JSON.stringify(courseReq))
     // Create course nodes
-    const nodesMap = createNodes(courses, courseReqs, PREFERRED, AVOID, TIME, [], takenAndCurrent)
+    const nodesMap = createNodes(courses, courseReqs, PREFERRED, AVOID, [creditsRemaining, coursesPerSem], [], takenAndCurrent)
     let nodes = Object.values(nodesMap)
     nodes = sortNodes(nodesMap)
 
@@ -190,7 +193,7 @@ function getRemaining(creditReq, gradSem, gradYear, creditsCounter, CPS) {
  * @param {Set[String]} avoid List of courses that student wants to avoid
  * @returns The mapping of course ID to course node
  */
-function createNodes(courses, courseReq, preferred, avoid, time, popularCourses, takenAndCurrent) {
+function createNodes(courses, courseReq, preferred, avoid, [creditsRemaining, coursesPerSem], popularCourses, takenAndCurrent) {
   let preferenceMap = {}
   preferred.forEach((course, i) => preferenceMap[course] = preferred.length - i + 1)
   let keys = Object.keys(preferenceMap)
@@ -219,18 +222,27 @@ function createNodes(courses, courseReq, preferred, avoid, time, popularCourses,
         reqNodes.push(nodes[course])
         continue
       }
+      courses[course].prereqs = courses[course].prereqs.map(prereq => prereq.replace(' ', ''))
       const weight = preferenceMap[course] ? preferenceMap[course] : (avoid.has(course) ? -1 : (popularCourses.includes(course) ? 2 : 1))
+      const repeatSem = req.courseUpper == -1
       // Repeat course multiple times
-      if ((req.courseLower && req.courseLower > req.courses.length)
+      if (repeatSem || (req.courseLower && req.courseLower > req.courses.length)
         || (req.creditLower && req.creditLower > req.courses.length * courses[course].credits)) {
         let timesTaken = takenAndCurrent.filter(item => item.courseId === course).length
+        let count = repeatSem ? Math.floor(creditsRemaining / (coursesPerSem * courses[course].credits)) - 1 : 0
+        // console.log(count, course, coursesPerSem, courses[course].credits)
+        // if (repeatSem)
+        //   count = Math.min(count, (req.courseLower ? req.courseLower : Math.floor(req.creditLower / courses[course].credits)) - timesTaken)
+        // else
+        count = Math.max(count, (req.courseLower ? req.courseLower : Math.floor(req.creditLower / courses[course].credits)) - timesTaken)
+
         nodes[course] = {
           course: course,
           required: req.type !== 0,
           credits: courses[course].credits,
           weight: weight,
           prereqs: courses[course].prereqs,
-          count: (req.courseLower ? req.courseLower : Math.floor(req.creditLower / courses[course].credits)) - timesTaken
+          count: count
         }
         reqNodes.push(nodes[course])
         repeat = true
@@ -270,6 +282,7 @@ function createNodes(courses, courseReq, preferred, avoid, time, popularCourses,
  */
 function sortNodes(nodesMap) {
   let nodes = Object.values(nodesMap)
+  // console.log(nodes)
   // Sort the required course nodes
   let required = nodes.filter(course => course.required === true)
   for (let course of required) {
@@ -324,9 +337,9 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, t
   let currCourse = null
   let done = false
   while (!done) {
-    currCourse = { ...nodes[index], section: null }
+    currCourse = nodes[index]
     // Check if we finished adding all required course nodes and satisfied credit requirement
-    if (creditsRemaining <= 0 && !nodes[0].required) {
+    if (creditsRemaining <= 0 && (!nodes[0] || !nodes[0].required)) {
       // email student for extended grad date
       break
     }
@@ -360,6 +373,7 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, t
       index++
       continue
     }
+    currCourse = { ...nodes[index], section: null }
     // Get all the course offerings for currCourse (multiple sections)
     if (offeringExists && !currSemOfferings[currCourse.course]) {
       let found = await CourseOffering.findAll({
@@ -433,17 +447,17 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, t
       creditsRemaining -= currCourse.credits
       currCoursesCount += 1
       if (currCourse.count > 1) {
+        nodes[index].count -= 1
         currCourse.count -= 1
         index++
-      }
-      else
+      } else
         nodes.splice(index, 1)
     } else
       index++
   }
   // console.log(suggestions)
   console.log(creditsRemaining)
-  console.log(coursesPerSem)
+  // console.log(coursesPerSem)
   let score = calculateScore(suggestions)
   return [score, suggestions]
 }
@@ -536,7 +550,7 @@ exports.smartSuggest = async (req, res) => {
   *******************************************START**********************************************/
   // Find the students degree requirements
   const degree = await Degree.findOne({ where: { degreeId: student.degreeId } })
-  let [gradeReq, gpaReq, creditReq, courseReq] = await findRequirements(degree)
+  let [, , creditReq, courseReq] = await findRequirements(degree)
   // Find the students degree requirement states
   let reqStates = await RequirementState.findAll({ where: { sbuID: student.sbuId } })
   // Find the students course plan items

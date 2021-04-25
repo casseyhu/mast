@@ -50,6 +50,8 @@ const SuggestedPlans = (props) => {
                   <th>Semester</th>
                   <th>Year</th>
                   <th>Section</th>
+                  <th>Credits</th>
+                  <th>Prereqs</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -61,6 +63,8 @@ const SuggestedPlans = (props) => {
                       <td>{MONTH_SEMESTER[semester.substring(4,)]}</td>
                       <td>{semester.substring(0,4)}</td>
                       <td>{course.section ? course.section : 'N/A'}</td>
+                      <td>{course.credits}</td>
+                      <td>{course.prereqs}</td>
                       <td>Suggested</td>
                     </tr>
                   ))
