@@ -17,8 +17,12 @@ const CourseRequirement = database.CourseRequirement
  */
 exports.upload = (req, res) => {
   var form = new IncomingForm()
+  let dept = ''
   form
     .parse(req)
+    .on('field', (name, field) => {
+      if (name === 'dept') dept = field
+    })
     .on('file', (field, file) => {
       if (file.type != 'application/json') {
         res.status(500).send('File must be *.json')
@@ -27,6 +31,13 @@ exports.upload = (req, res) => {
       fs.readFile(file.path, 'utf-8', async (err, results) => {
         try {
           const jsonFile = JSON.parse(results)
+          // Check if any of the degrees in the JSON !== this.department.
+          for (let degree of Object.keys(jsonFile)) {
+            if (jsonFile[degree].dept !== dept) {
+              res.status(500).send('No degrees scraped: file contains degrees not of this department.')
+              return
+            }
+          }
           for (let degAndTrack of Object.keys(jsonFile)) {
             const degree = jsonFile[degAndTrack]
             // Query to find if a degree with dept, track, and version exists
