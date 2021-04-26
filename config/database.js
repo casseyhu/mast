@@ -1,4 +1,7 @@
 const Sequelize = require('sequelize')
+const cls = require('cls-hooked')
+const namespace = cls.createNamespace('cse416mast')
+Sequelize.useCLS(namespace)
 
 let sequelize
 // Creating new Object of Sequelize 
