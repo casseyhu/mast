@@ -16,7 +16,7 @@ const SuggestedPlans = (props) => {
       <Accordion className='accordian' defaultActiveKey="0">
         {props.suggestions && props.suggestions.map((coursePlan, key) => (
           <Card key={key}>
-            <Accordion.Toggle as={Card.Header} eventKey={`${key}`}>
+            <Accordion.Toggle as={Card.Header} eventKey={`${key}`} style={{ padding: '0.25rem 1.5rem' }}>
               <div className='flex-horizontal justify-content-between'>
                 <div>
                   <b className='mr-3'>Course Plan {key + 1}</b>

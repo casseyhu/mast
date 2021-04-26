@@ -1,7 +1,7 @@
 const database = require('../config/database.js')
 const IncomingForm = require('formidable').IncomingForm
 const PDFExtract = require('pdf.js-extract').PDFExtract
-const { SEMTONUM } = require('./shared')
+const { SEMTONUM, currSem, currYear } = require('./shared')
 const pdfExtract = new PDFExtract()
 const Sequelize = database.Sequelize
 
@@ -138,10 +138,10 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
       requirementId: requirementId
     }
   })
-  courseRequirements.forEach(courseRequirement => 
+  courseRequirements.forEach(courseRequirement =>
     exceptions = exceptions.concat(courseRequirement.courses.filter(course => course && !(depts.includes(course.substring(0, 3))))))
 
-    exceptions = Array.from(new Set(exceptions))
+  exceptions = Array.from(new Set(exceptions))
   exceptions.forEach(exceptionCourse => exceptionDepts.add(exceptionCourse.substring(0, 3)))
   exceptionDepts = Array.from(exceptionDepts)
   console.log(exceptionDepts, exceptions)
@@ -449,18 +449,35 @@ const insertUpdate = async (values, condition) => {
  * @param {*} res axios response.
  */
 exports.getDeptCourses = (req, res) => {
-  if (req.query.dept !== '') {
-    Course.findAll({
-      attributes: [
-        [Sequelize.fn('DISTINCT', Sequelize.col('courseId')), 'courseId'],
-      ],
-      where: {
-        department: req.query.dept
-      }
-    }).then(result => {
-      courseIds = {}
-      result.map(course => courseIds[course.dataValues.courseId] = false)
-      res.status(200).send(courseIds)
-    })
-  }
+  Course.findAll({
+    attributes: [
+      [Sequelize.fn('DISTINCT', Sequelize.col('courseId')), 'courseId'],
+    ],
+    where: {
+      department: req.query.dept
+    }
+  }).then(result => {
+    courseIds = {}
+    result.map(course => courseIds[course.dataValues.courseId] = false)
+    res.status(200).send(courseIds)
+  })
+}
+
+
+/**
+ * Finds all the courses for the current semester and year and returns
+ * the entire course entry to the client.
+ * @param {*} req Contains department to look for
+ * @param {*} res 
+ */
+exports.getAllDeptCourses = (req, res) => {
+  Course.findAll({
+    where: {
+      department: req.query.dept,
+      semester: currSem,
+      year: currYear
+    }
+  }).then(result => {
+    res.status(200).send(result)
+  })
 }

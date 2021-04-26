@@ -35,7 +35,7 @@ const Suggest = (props) => {
     }).then(res => {
       console.log('Done smart suggest')
     }).catch(err => {
-      console.log("Error smart suggest")
+      console.log('Error smart suggest')
     })
   }
 
@@ -44,7 +44,7 @@ const Suggest = (props) => {
       <div className='flex-horizontal justify-content-between'>
         <h1>Suggest Course Plan</h1>
         <h5>Student: {student.sbuId}</h5>
-        <h5>Degree: {student.department} - {student.track}</h5>
+        <h5>Degree: {student.department} {student.track}</h5>
       </div>
       <h4 className='underline'>Preferences</h4>
       <Preferences department={student.department} suggest={suggest} smartSuggest={smartSuggest} />

@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Badge from 'react-bootstrap/Badge'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
-import InputGroup from 'react-bootstrap/InputGroup'
 import Table from 'react-bootstrap/Table'
 import Button from '../../components/Button'
 
@@ -21,8 +20,8 @@ const CoursePlan = (props) => {
   return (
     <div >
       <div className='flex-horizontal justify-content-between mb-2' style={{ width: '100%' }}>
-        <h4>
-          {props.heading ? props.heading : 'Course Plan'}
+        <h4 className='flex-horizontal align-items-center'>
+          {!props.mode && (props.heading ? props.heading : 'Course Plan')}
           {hasConflicts && (
             <OverlayTrigger
               placement='right'
@@ -32,7 +31,7 @@ const CoursePlan = (props) => {
                 </Tooltip>
               }
             >
-              <Badge className="ml-3" pill variant="warning">&nbsp;!&nbsp;</Badge>
+              <Badge className='ml-3' pill variant='warning'>&nbsp;!&nbsp;</Badge>
             </OverlayTrigger>
           )}
         </h4>
@@ -53,40 +52,44 @@ const CoursePlan = (props) => {
             />}
         </div>
       </div>
-      <Table hover size='sm'>
-        <thead>
-          <tr style={{ cursor: 'pointer' }}>
-            <th scope='col' style={{ width: width }} >Course</th>
-            <th scope='col' style={{ width: width }} >Section</th>
-            <th scope='col' style={{ width: width }} >Semester</th>
-            <th scope='col' style={{ width: width }} >Year</th>
-            <th scope='col' style={{ width: width }} >Grade</th>
-            <th scope='col' style={{ width: width }} >Status</th>
-            {props.mode && <th scope='col' style={{ width: '4%' }} >
-              <input type="checkbox" id='select-all' onClick={e => setselectAll(true)} />
-              <label for='select-all'></label>
-            </th>}
-          </tr>
-        </thead>
-        <tbody>
-          {props.coursePlan && props.coursePlan.sort((a, b) => sortBySem(a, b)).map((course, i) => {
-            return <tr key={i} style={{ cursor: 'pointer', backgroundColor: course.validity === false ? '#FFAAAA' : '' }}>
-              <td className='center'>{course.courseId}</td>
-              <td className='center'>{course.section ? course.section : 'N/A'}</td>
-              <td className='center'>{course.semester}</td>
-              <td className='center'>{course.year}</td>
-              <td className='center'>{course.grade ? course.grade : 'N/A'}</td>
-              <td className='center'>{course.status ? 'In Plan' : 'Suggested'}</td>
-              {props.mode &&
-                <td className='center'>
-                  <input type="checkbox" id={i} />
-                  <label for={i}></label>
-                </td>
-              }
+      {props.coursePlan && props.coursePlan.length > 0 ?
+        <Table hover size='sm'>
+          <thead>
+            <tr style={{ cursor: 'pointer' }}>
+              <th scope='col' style={{ width: width }} >Course</th>
+              <th scope='col' style={{ width: width }} >Section</th>
+              <th scope='col' style={{ width: width }} >Semester</th>
+              <th scope='col' style={{ width: width }} >Year</th>
+              <th scope='col' style={{ width: width }} >Grade</th>
+              <th scope='col' style={{ width: width }} >Status</th>
+              {props.mode && <th scope='col' style={{ width: '4%' }} >
+                <input type='checkbox' id='select-all' onClick={e => setselectAll(true)} />
+                <label htmlFor='select-all'></label>
+              </th>}
             </tr>
-          })}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {props.coursePlan && props.coursePlan.sort((a, b) => sortBySem(a, b)).map((course, i) => {
+              return <tr key={i} style={{ cursor: 'pointer', backgroundColor: course.validity === false ? '#FFAAAA' : '' }}>
+                <td className='center'>{course.courseId}</td>
+                <td className='center'>{course.section ? course.section : 'N/A'}</td>
+                <td className='center'>{course.semester}</td>
+                <td className='center'>{course.year}</td>
+                <td className='center'>{course.grade ? course.grade : 'N/A'}</td>
+                <td className='center'>{course.status ? 'In Plan' : 'Suggested'}</td>
+                {props.mode &&
+                  <td className='center'>
+                    <input type='checkbox' id={i} />
+                    <label htmlFor={i}></label>
+                  </td>
+                }
+              </tr>
+            })}
+          </tbody>
+        </Table> :
+        <div className='filler-text'>
+          <span className='filler-text'>Empty Course Plan</span>
+        </div>}
     </div>
   )
 }

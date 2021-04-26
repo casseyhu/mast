@@ -4,10 +4,12 @@ module.exports = function (app) {
 
   // Upload course information
   app.post('/api/course/upload', Course.upload)
-  
+
   app.get('/api/course/findOne', Course.findOne)
 
   app.get('/api/course/deptCourses', Course.getDeptCourses)
+
+  app.get('/api/course/allDeptCourses', Course.getAllDeptCourses)
 
   app.get('/api/course', Course.findAll)
 

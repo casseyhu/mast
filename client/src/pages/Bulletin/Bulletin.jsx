@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import Container from 'react-bootstrap/Container'
-import Dropdown from '../components/Dropdown'
-import { SEMESTERS, YEARS, CURRENT_SEMESTER, CURRENT_YEAR } from '../constants'
-import axios from '../constants/axios'
+import Dropdown from '../../components/Dropdown'
+import CourseInfo from './CourseInfo'
+import { SEMESTERS, YEARS, CURRENT_SEMESTER, CURRENT_YEAR } from '../../constants'
+import axios from '../../constants/axios'
 
 class Bulletin extends Component {
 
@@ -81,13 +82,7 @@ class Bulletin extends Component {
         <div className=''>
           {this.state.courses.map((course, key) => {
             return <div key={key}>
-              <b className='underline'>
-                {course.department + ' ' + course.courseNum}: {course.name}
-              </b>
-              <br />{course.description}<br />
-              <br /><b>Semesters:</b>{' ' + course.semestersOffered.join(', ')}<br />
-              <b>Prerequisites:</b>{course.prereqs[0] !== '' ? ' ' + course.prereqs.toString().replace(',', ', ') : ' None'} <br />
-              {course.credits} {(course.credits !== 1) ? 'credits' : 'credit'}
+              <CourseInfo course={course} />
               <br /> <br />
             </div>
           })}
