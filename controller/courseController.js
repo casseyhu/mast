@@ -199,7 +199,8 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
                 semestersOffered: ['Fall', 'Spring'],
                 name: name,
                 description: '',
-                credits: 3,
+                minCredits: 3,
+                maxCredits: 3,
                 prereqs: [],
                 repeat: 0
               }, {
@@ -214,9 +215,11 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
               // others = others.replace(' or permission of the, instructor', '')
               // others = others.replace(' or permission of, instructor,', '')
               //console.log(chosenDept + courseNum)
-              var foundSem = []
-              var tot = 0
-              var creds = ''
+              let foundSem = []
+              let tot = 0
+              let creds = ''
+              let minCredits = 0
+              let maxCredits = 0
               // The semesters mentioned in the pdf for each course
               for (let k = 0; k < sem.length; k++) {
                 if (others.includes(sem[k]) || desc.includes(sem[k])) {
@@ -300,15 +303,27 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
                   index = others.indexOf(' credits') - 1
                 else if (others.includes(' credit'))
                   index = others.indexOf(' credit') - 1
-                while (index >= 0 &&
-                  isNaN(parseInt(others.substring(index, index + 1))) ==
-                  false && Number(others.substring(index, index + 1) + creds) <= 12) {
+                while (index >= 0 && others.substring(index, index + 1) !== ' ') {
                   creds = others.substring(index, index + 1) + creds
                   index--
                 }
+                if (creds.includes('-')) {
+                  let creditInfo = creds.split('-')
+                  minCredits = creditInfo[0]
+                  maxCredits = creditInfo[1]
+                }
+                else if(!isNaN(parseInt(creds))) {
+                  minCredits = creds
+                  maxCredits = creds
+                }
+                else {
+                  creds = ''
+                }
               }
-              if (creds === '')
-                creds = 3
+              if (creds === '') {
+                minCredits = 3
+                maxCredits = 3
+              }
               totCourses += 1
               await insertUpdate({
                 courseId: chosenDept + courseNum,
@@ -319,7 +334,8 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
                 semestersOffered: foundSem,
                 name: name,
                 description: desc,
-                credits: Number(creds),
+                minCredits: Number(minCredits),
+                maxCredits: Number(maxCredits),
                 prereqs: prereqs,
                 repeat: 0
               }, {

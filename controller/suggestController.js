@@ -125,7 +125,7 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
     for (let course of requirement.courses) {
       let maxCourses = requirement.courseLower
         ? requirement.courseLower
-        : (requirement.creditLower ? requirement.creditLower / courses[course].credits : 1)
+        : (requirement.creditLower ? requirement.creditLower / courses[course].minCredits : 1)
       // Student did not take the course yet (or failed)
       if (!takenAndCurrentCourses.has(course)) {
         notTaken.push(course)
@@ -133,7 +133,7 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
         // Is a repeat course 
         if (requirement.courses.length < maxCourses) {
           let timesTaken = takenAndCurrent.filter(item => item.courseId === course).length
-          creditsCounter += courses[course].credits * timesTaken
+          creditsCounter += courses[course].minCredits * timesTaken
           if (timesTaken >= maxCourses) {
             // Satisfied the amount of times they needed to take this course (BMI592)
             used.push(course)
@@ -147,11 +147,11 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
           if (requirement.courseLower)
             requirement.courseLower -= 1
           if (requirement.creditLower)
-            requirement.creditLower -= courses[course].credits
+            requirement.creditLower -= courses[course].minCredits
           // Course cannot be counted for multiple requirements
           if (requirement.type === 0 || (requirement.courseLower !== null && requirement.courseLower >= 0)
             || (requirement.creditLower !== null && requirement.creditLower >= 0)) {
-            creditsCounter += courses[course].credits
+            creditsCounter += courses[course].minCredits
             used.push(course)
           }
         }
@@ -246,12 +246,12 @@ function createNodes(courses, courseReq, preferred, avoid, [creditsRemaining, co
       const weight = preferenceMap[course] ? preferenceMap[course] : (avoid.has(course) ? -1 : (popularCourses.includes(course) ? 2 : 1))
       // Repeat course multiple times
       if ((req.courseLower && req.courseLower > req.courses.length)
-        || (req.creditLower && req.creditLower > req.courses.length * courses[course].credits)) {
+        || (req.creditLower && req.creditLower > req.courses.length * courses[course].minCredits)) {
         let timesTaken = takenAndCurrent.filter(item => item.courseId === course).length
         nodes[course] = {
           course: course,
           required: req.type !== 0,
-          credits: courses[course].credits,
+          credits: courses[course].minCredits,
           weight: weight,
           prereqs: courses[course].prereqs,
           count: (req.courseLower ? req.courseLower : Math.floor(req.creditLower / courses[course].credits)) - timesTaken
@@ -263,7 +263,7 @@ function createNodes(courses, courseReq, preferred, avoid, [creditsRemaining, co
       nodes[course] = {
         course: course,
         required: false,
-        credits: courses[course].credits,
+        credits: courses[course].minCredits,
         weight: weight,
         prereqs: courses[course].prereqs,
         count: 1
@@ -278,7 +278,7 @@ function createNodes(courses, courseReq, preferred, avoid, [creditsRemaining, co
       while ((req.courseLower && req.courseLower > 0) || (req.creditLower && req.creditLower > 0)) {
         nodes[reqNodes[i].course].required = true
         req.courseLower -= 1
-        req.creditLower -= nodes[reqNodes[i++].course].credits
+        req.creditLower -= nodes[reqNodes[i++].course].minCredits
 
       }
     }
@@ -461,6 +461,7 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, t
     if (added) {
       // console.log("added " + currCourse.course)
       currTaken.push(currCourse.course)
+      console.log(currCourse)
       creditsRemaining -= currCourse.credits
       currCoursesCount += 1
       if (currCourse.count > 1) {

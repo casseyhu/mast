@@ -87,7 +87,8 @@ class Bulletin extends Component {
               <br />{course.description}<br />
               <br /><b>Semesters:</b>{' ' + course.semestersOffered.join(', ')}<br />
               <b>Prerequisites:</b>{course.prereqs[0] !== '' ? ' ' + course.prereqs.toString().replace(',', ', ') : ' None'} <br />
-              {course.credits} {(course.credits !== 1) ? 'credits' : 'credit'}
+              {course.minCredits !== course.maxCredits ? course.minCredits + '-' + course.maxCredits + ' credits'
+              : (course.minCredits !== 1) ? course.minCredits +  ' credits' : course.minCredits + ' credit'}
               <br /> <br />
             </div>
           })}
