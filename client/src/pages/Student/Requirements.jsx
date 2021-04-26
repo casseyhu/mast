@@ -46,18 +46,24 @@ const Requirements = (props) => {
       hasCreditBounds = true
     }
     if (req.courseUpper || req.courseLower) {
-      if (hasCreditBounds)
-        text += ' and '
-      if (req.courseUpper && req.courseLower) {
-        if (req.courseUpper === req.courseLower)
-          text += req.courseLower + ' course(s)'
-        else
-          text += req.courseLower + ' to ' + req.courseUpper + ' course(s)'
+      if (req.courseUpper === -1) {
+        text += ' Take every semester: '
+        return text;
       }
-      else if (req.courseUpper)
-        text += ' up to ' + req.courseUpper + ' course(s)'
-      else
-        text += ' at least ' + req.courseLower + ' course(s)'
+      else {
+        if (hasCreditBounds)
+          text += ' and '
+        if (req.courseUpper && req.courseLower) {
+          if (req.courseUpper === req.courseLower)
+            text += req.courseLower + ' course(s)'
+          else
+            text += req.courseLower + ' to ' + req.courseUpper + ' course(s)'
+        }
+        else if (req.courseUpper)
+          text += ' up to ' + req.courseUpper + ' course(s)'
+        else
+          text += ' at least ' + req.courseLower + ' course(s)'
+      }
     }
     return text + ' in: '
   }

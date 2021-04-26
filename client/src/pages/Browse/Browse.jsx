@@ -120,7 +120,7 @@ class Browse extends Component {
       if (Object.keys(savedState.filters).length === 0) {
         filters = {
           nameId: '',
-          department: '%',
+          department: this.props.user.department,
           track: '%',
           entrySem: '%',
           entryYear: '%',
