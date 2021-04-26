@@ -96,7 +96,7 @@ const Student = (props) => {
         params: studentInfoParams.student.sbuId
       })
       let isSame = true
-      Object.keys(newStudentInfo.data).map((info) =>
+      Object.keys(newStudentInfo.data).map(info =>
         newStudentInfo.data[info] !== studentInfoParams.student[info] ? isSame = false : '')
       // show update error modal if data has been edited by another user
       if (!isSame) {
