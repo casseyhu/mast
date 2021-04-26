@@ -31,15 +31,10 @@ exports.upload = (req, res) => {
       fs.readFile(file.path, 'utf-8', async (err, results) => {
         try {
           const jsonFile = JSON.parse(results)
-          // Check if any of the degrees in the JSON !== this.department.
-          for (let degree of Object.keys(jsonFile)) {
-            if (jsonFile[degree].dept !== dept) {
-              res.status(500).send('No degrees scraped: file contains degrees not of this department.')
-              return
-            }
-          }
           for (let degAndTrack of Object.keys(jsonFile)) {
             const degree = jsonFile[degAndTrack]
+            if (degree.dept !== dept)
+              continue
             // Query to find if a degree with dept, track, and version exists
             const found = await Degree.findOne({
               where: {

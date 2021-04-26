@@ -6,10 +6,10 @@ import NavigationBar from './components/Navbar'
 import Browse from './pages/Browse/Browse'
 import Trends from './pages/Trends'
 import Import from './pages/Import/Import'
-import Bulletin from './pages/Bulletin'
+import Bulletin from './pages/Bulletin/Bulletin'
 import Suggest from './pages/Suggest/Suggest'
 import Student from './pages/Student/Student'
-import CoursePlan from './pages/CoursePlan'
+import CoursePlan from './pages/EditPlan/CoursePlan'
 import jwt_decode from 'jwt-decode'
 
 class App extends Component {

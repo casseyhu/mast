@@ -195,7 +195,7 @@ textarea:focus {
 }
 
 .card-header {
-  padding: 0.25rem 1.5rem;
+  cursor: pointer;
 }
 
 

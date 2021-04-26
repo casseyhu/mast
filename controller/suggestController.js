@@ -46,7 +46,7 @@ exports.suggest = async (req, res) => {
   const foundCourses = await Course.findAll({ where: { courseId: reqCourses } })
   let courses = {}
   foundCourses.forEach(course => courses[course.courseId] = course)
-  Object.keys(courses).forEach(course => courses[course].credits = ((courses[course].minCredits <= 3 
+  Object.keys(courses).forEach(course => courses[course].credits = ((courses[course].minCredits <= 3
     && courses[course].maxCredits >= 3) ? 3 : courses[course].minCredits))
   // List of courses student has taken and currently taking that they didnt fail
   const takenAndCurrent = coursePlanItems.filter(course => (
@@ -326,7 +326,7 @@ function sortNodes(nodesMap) {
 async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, prefTimes, takenAndCurrentCourses) {
   // Mapping of semester+year to course nodes for that semester and year
   const MAX_ITERATIONS = 1500
-  let num_iterations = 0 
+  let num_iterations = 0
   let suggestions = {}
   let currSemyear = currYear * 100 + SEMTONUM[currSem]
   let offeringExists = false
@@ -344,7 +344,7 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
   while (!done) {
     // Early fail for when no course plans can be generated so no infinite loop. 
     num_iterations++
-    if(num_iterations > MAX_ITERATIONS)
+    if (num_iterations > MAX_ITERATIONS)
       return {}
     currCourse = nodes[index]
     // Check if we finished adding all required course nodes and satisfied credit requirement
