@@ -89,11 +89,11 @@ const NavigationBar = (props) => {
       </Navbar.Collapse>
       <Navbar.Collapse id='basic-navbar-nav'>
         <Nav className='ml-auto'>
-          <OverlayTrigger 
+          <OverlayTrigger
             trigger={['hover', 'focus']}
             placement='bottom'
             overlay={
-              <Popover style={{maxWidth: '100%'}}>
+              <Popover style={{ maxWidth: '100%' }}>
                 <Popover.Title as='h3' className='center'>
                   <b>{userType === 'gpd' ? 'Graduate Program Director' : 'Student'}</b>
                   <br />{userInfo.firstName} {userInfo.lastName}
