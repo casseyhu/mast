@@ -38,7 +38,7 @@ const Suggest = (props) => {
       console.log("Error smart suggest")
     })
   }
-  
+
   return (
     <Container fluid='lg' className='container'>
       <div className='flex-horizontal justify-content-between'>
@@ -47,10 +47,10 @@ const Suggest = (props) => {
         <h5>Degree: {student.department} - {student.track}</h5>
       </div>
       <h4 className='underline'>Preferences</h4>
-      <Preferences department={student.department} suggest={suggest} smartSuggest={smartSuggest}/>
-      <SuggestedPlans suggestions={suggestions}/>
-      {coursePlan && 
-        <CoursePlan 
+      <Preferences department={student.department} suggest={suggest} smartSuggest={smartSuggest} />
+      <SuggestedPlans suggestions={suggestions} />
+      {coursePlan &&
+        <CoursePlan
           heading='Current Course Plan'
           coursePlan={coursePlan}
         />

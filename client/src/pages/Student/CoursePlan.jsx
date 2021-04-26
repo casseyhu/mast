@@ -15,17 +15,17 @@ const CoursePlan = (props) => {
 
   return (
     <div >
-      <div className='flex-horizontal justify-content-between' style={{ width: '100%' }}>
+      <div className='flex-horizontal justify-content-between mb-2' style={{ width: '100%' }}>
         <h4>
-          {props.heading ? props.heading : 'Course Plan'} 
+          {props.heading ? props.heading : 'Course Plan'}
           {hasConflicts && (
             <OverlayTrigger
-            placement='right'
-            overlay={
-              <Tooltip id='tooltip-right'>
-                Course plan contains conflicts. Please review.
+              placement='right'
+              overlay={
+                <Tooltip id='tooltip-right'>
+                  Course plan contains conflicts. Please review.
               </Tooltip>
-            }
+              }
             >
               <Badge className="ml-3" pill variant="warning">&nbsp;!&nbsp;</Badge>
             </OverlayTrigger>

@@ -79,8 +79,8 @@ class Bulletin extends Component {
           </div>
         </div>
         <div className=''>
-          {this.state.courses.map(course => {
-            return <div>
+          {this.state.courses.map((course, key) => {
+            return <div key={key}>
               <b className='underline'>
                 {course.department + ' ' + course.courseNum}: {course.name}
               </b>

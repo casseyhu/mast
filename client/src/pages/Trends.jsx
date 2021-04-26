@@ -209,14 +209,14 @@ class Trends extends Component {
   }
 
   componentDidMount = async () => {
-    if(this.props.dept) {
+    if (this.props.dept) {
       let courses = await axios.get('course/deptCourses', {
         params: {
           dept: this.props.dept
         }
       })
-      let items = [] 
-      Object.keys(courses.data).map(course => items.push({ label: course, value: course}))
+      let items = []
+      Object.keys(courses.data).map(course => items.push({ label: course, value: course }))
       this.setState({ items })
     }
   }
@@ -231,13 +231,13 @@ class Trends extends Component {
           <div className='flex-horizontal' style={{ width: 'fit-content', flexGrow: '1' }}>
             <span style={{ width: '65px' }}>Courses</span>
             <Dropdown
-                variant='multi'
-                className='lr-padding'
-                items={this.state.items}
-                placeholder='Courses'
-                onChange={this.selectionHandler}
-                style={{ width: '400px', flexGrow: '1' }}
-              />
+              variant='multi'
+              className='lr-padding'
+              items={this.state.items}
+              placeholder='Courses'
+              onChange={this.selectionHandler}
+              style={{ width: '400px', flexGrow: '1' }}
+            />
           </div>
           <div className='flex-horizontal wrap' style={{ width: 'fit-content', flexGrow: '1' }}>
             <div className='flex-horizontal' style={{ width: 'fit-content', flexGrow: '1' }}>
