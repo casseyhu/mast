@@ -120,6 +120,7 @@ class Browse extends Component {
       if (Object.keys(savedState.filters).length === 0) {
         filters = {
           nameId: '',
+          department: '%',
           track: '%',
           entrySem: '%',
           entryYear: '%',
@@ -136,6 +137,19 @@ class Browse extends Component {
         page: savedState.page,
         ascending: savedState.ascending,
       }, this.filter)
+    }
+    else {
+      axios.get('student', {
+        params: { department: this.props.user.department }
+      }).then(response => {
+        this.setState({
+          students: response.data,
+          numPerPage: Math.ceil((window.innerHeight - 350) / 30),
+          maxPage: Math.ceil(response.data.length / Math.ceil((window.innerHeight - 350) / 30)),
+        })
+      }).catch(err => {
+        console.log(err)
+      });
     }
   }
 
