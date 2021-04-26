@@ -45,7 +45,8 @@ exports.suggest = async (req, res) => {
   const foundCourses = await Course.findAll({ where: { courseId: reqCourses } })
   let courses = {}
   foundCourses.forEach(course => courses[course.courseId] = course)
-
+  Object.keys(courses).forEach(course => courses[course].credits = ((courses[course].minCredits <= 3 
+    && courses[course].maxCredits >= 3) ? 3 : courses[course].minCredits))
   // List of courses student has taken and currently taking that they didnt fail
   const takenAndCurrent = coursePlanItems.filter(course => (
     (100 * course.year + SEMTONUM[course.semester] <= 100 * currYear + SEMTONUM[currSem]) &&
@@ -125,7 +126,7 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
     for (let course of requirement.courses) {
       let maxCourses = requirement.courseLower
         ? requirement.courseLower
-        : (requirement.creditLower ? requirement.creditLower / courses[course].minCredits : 1)
+        : (requirement.creditLower ? requirement.creditLower / courses[course].credits : 1)
       // Student did not take the course yet (or failed)
       if (!takenAndCurrentCourses.has(course)) {
         notTaken.push(course)
@@ -133,7 +134,7 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
         // Is a repeat course 
         if (requirement.courses.length < maxCourses) {
           let timesTaken = takenAndCurrent.filter(item => item.courseId === course).length
-          creditsCounter += courses[course].minCredits * timesTaken
+          creditsCounter += courses[course].credits * timesTaken
           if (timesTaken >= maxCourses) {
             // Satisfied the amount of times they needed to take this course (BMI592)
             used.push(course)
@@ -147,11 +148,11 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
           if (requirement.courseLower)
             requirement.courseLower -= 1
           if (requirement.creditLower)
-            requirement.creditLower -= courses[course].minCredits
+            requirement.creditLower -= courses[course].credits
           // Course cannot be counted for multiple requirements
           if (requirement.type === 0 || (requirement.courseLower !== null && requirement.courseLower >= 0)
             || (requirement.creditLower !== null && requirement.creditLower >= 0)) {
-            creditsCounter += courses[course].minCredits
+            creditsCounter += courses[course].credits
             used.push(course)
           }
         }
@@ -246,12 +247,12 @@ function createNodes(courses, courseReq, preferred, avoid, [creditsRemaining, co
       const weight = preferenceMap[course] ? preferenceMap[course] : (avoid.has(course) ? -1 : (popularCourses.includes(course) ? 2 : 1))
       // Repeat course multiple times
       if ((req.courseLower && req.courseLower > req.courses.length)
-        || (req.creditLower && req.creditLower > req.courses.length * courses[course].minCredits)) {
+        || (req.creditLower && req.creditLower > req.courses.length * courses[course].credits)) {
         let timesTaken = takenAndCurrent.filter(item => item.courseId === course).length
         nodes[course] = {
           course: course,
           required: req.type !== 0,
-          credits: courses[course].minCredits,
+          credits: courses[course].credits,
           weight: weight,
           prereqs: courses[course].prereqs,
           count: (req.courseLower ? req.courseLower : Math.floor(req.creditLower / courses[course].credits)) - timesTaken
@@ -263,7 +264,7 @@ function createNodes(courses, courseReq, preferred, avoid, [creditsRemaining, co
       nodes[course] = {
         course: course,
         required: false,
-        credits: courses[course].minCredits,
+        credits: courses[course].credits,
         weight: weight,
         prereqs: courses[course].prereqs,
         count: 1
@@ -278,7 +279,7 @@ function createNodes(courses, courseReq, preferred, avoid, [creditsRemaining, co
       while ((req.courseLower && req.courseLower > 0) || (req.creditLower && req.creditLower > 0)) {
         nodes[reqNodes[i].course].required = true
         req.courseLower -= 1
-        req.creditLower -= nodes[reqNodes[i++].course].minCredits
+        req.creditLower -= nodes[reqNodes[i++].course].credits
 
       }
     }
