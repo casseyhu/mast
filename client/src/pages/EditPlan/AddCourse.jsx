@@ -42,6 +42,8 @@ const AddCourse = (props) => {
     } else if (!course.semestersOffered.includes(semester)) {
       seterror(`Course is not offered in the ${semester}`)
       return
+    } else {
+      seterror('')
     }
     // else if ()
   }

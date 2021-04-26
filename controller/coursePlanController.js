@@ -191,8 +191,8 @@ async function calculateCreditRequirement(credits, states, creditReq, student, c
     let courseName = coursePlanItems[j].courseId
     if (!credits[courseName]) {
       let course = await Course.findOne({ where: { courseId: courseName } })
-      if (course && course.credits != null)
-        credits[courseName] = course.credits
+      if (course && course.minCredits !== null && course.maxCredits !== null)
+        credits[courseName] = (course.minCredits <= 3 && course.maxCredits >= 3) ? 3 : course.minCredits
       else { // should not get to here...
         console.log('course doesnt exist: ' + courseName)
         credits[courseName] = 3

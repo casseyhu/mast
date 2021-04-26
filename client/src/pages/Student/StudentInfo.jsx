@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react'
 import InputField from '../../components/InputField'
 import Dropdown from '../../components/Dropdown'
 import Button from '../../components/Button'
-import { BOOLEAN, DEPARTMENTS_REQ, SEMESTERS, MONTH_SEMESTER, YEARS, TRACKS } from '../../constants'
+import { BOOLEAN, SEMESTERS, MONTH_SEMESTER, YEARS, TRACKS } from '../../constants'
 import { useHistory } from 'react-router-dom'
 import axios from '../../constants/axios'
-
+import jwt_decode from 'jwt-decode'
 
 const StudentInfo = ({ student, mode, errorMessage, userType, setDegreeReq, onSubmit }) => {
   const history = useHistory()
   const [userInfo, setUserInfo] = useState({})
 
+  const [department, setDepartment] = useState()
   // let { student, mode, errorMessage, userType, setDegreeReq, onSubmit } = props
 
   const handleSelection = (name, e) => {
@@ -19,6 +20,8 @@ const StudentInfo = ({ student, mode, errorMessage, userType, setDegreeReq, onSu
       [name]: e.value
     }))
   }
+
+
 
   useEffect(() => {
     setUserInfo(prevState => ({
@@ -44,18 +47,23 @@ const StudentInfo = ({ student, mode, errorMessage, userType, setDegreeReq, onSu
   }, [student])
 
   useEffect(() => {
+    let token = localStorage.getItem('jwt-token')
+    if (!token)
+      return
+    var decoded = jwt_decode(token)
+    setDepartment(decoded.userInfo.department)
     const semDict = {
       'Fall': 8,
       'Spring': 2,
       'Winter': 1,
       'Summer': 5
     }
-    if (!student && userInfo.dept && userInfo.track && userInfo.degreeSem && userInfo.degreeYear) {
+    if (!student && userInfo.track && userInfo.degreeSem && userInfo.degreeYear) {
       // console.log(userInfo['dept'] , userInfo['track'] , userInfo['degreeSem'] , userInfo['degreeYear'])
       console.log('Degree information sufficient. Querying backend to get this degree information.')
       axios.get('/newStudentRequirements/', {
         params: {
-          department: userInfo.dept,
+          department: department,
           track: userInfo.track,
           reqVersion: Number(userInfo.degreeYear + '0' + semDict[userInfo.degreeSem])
         }
@@ -63,7 +71,7 @@ const StudentInfo = ({ student, mode, errorMessage, userType, setDegreeReq, onSu
         setDegreeReq(results.data)
       })
     }
-  }, [student, userInfo.dept, userInfo.track, userInfo.degreeSem, userInfo.degreeYear, setDegreeReq])
+  }, [student, userInfo.track, userInfo.degreeSem, userInfo.degreeYear, setDegreeReq])
 
   return (
     <div className='flex-horizontal wrap'>
@@ -202,14 +210,11 @@ const StudentInfo = ({ student, mode, errorMessage, userType, setDegreeReq, onSu
           <span className='filter-span'>Degree:</span>
           <Dropdown
             className='all-padding'
-            items={DEPARTMENTS_REQ}
-            placeholder='Dept'
-            value={userInfo.dept && { label: userInfo.dept, value: userInfo.dept }}
-            disabled={mode === 'View' || userType === 'student'}
-            onChange={e => handleSelection('dept', e)} />
+            disabled
+            value={{ label: department, value: department }} />
           <Dropdown
             className='all-padding'
-            items={TRACKS[userInfo.dept]}
+            items={TRACKS[department]}
             placeholder='Track'
             value={userInfo.track && { label: userInfo.track, value: userInfo.track }}
             disabled={mode === 'View' || userType === 'student'}
