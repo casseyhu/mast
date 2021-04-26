@@ -47,8 +47,10 @@ const ImportItem = (props) => {
       formData.append('semester', semester)
       formData.append('year', year)
     }
-    else if (props.header === 'Degree Requirements')
+    else if (props.header === 'Degree Requirements') {
       upload_path = 'degree/upload/'
+      formData.append('dept', props.dept)
+    }
     else if (props.header === 'Course Offerings') {
       upload_path = 'courseoffering/upload/'
       formData.append('dept', props.dept)

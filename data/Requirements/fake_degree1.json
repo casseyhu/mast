@@ -1,0 +1,19 @@
+{
+    "degree1": { 
+        "track": "Computational Applied Mathematics",
+        "requirementVersion": 201808, 
+        "gradeRequirement": {
+            "atLeastCredits": 18,
+            "minGrade": 3.0
+        },
+        "creditRequirement": 30,
+        "gpaRequirements": {
+            "cumulGpa": 3.0,
+            "deptGpa": null,
+            "coreGpa": 3.0
+        },
+        "courseRequirements": [ 
+            ["1:(1,1):(,)", "AMS501"]
+        ]   
+    }
+}
