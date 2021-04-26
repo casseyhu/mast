@@ -65,7 +65,7 @@ const BrowseSearchbar = (props) => {
       {/* Main search bar fields */}
       <div className='flex-horizontal wrap justify-content-between' style={{ width: '100%' }}>
         <div className='flex-horizontal' style={{ width: 'fit-content', flexGrow: '1' }}>
-          <span className='filter-span-reg'>Search</span>
+          <span className='mr-3'>Search</span>
           <InputField
             type='text'
             placeholder='Name or SBU ID'

@@ -25,7 +25,7 @@ nav {
 textarea {
   padding: 5px 10px;
   margin: 4px auto;
-  border: 2px solid var(--dark-grey);
+  border: 2px solid var(--dark);
   border-radius: 0.5rem;
   width: 100%;
 }
@@ -129,6 +129,10 @@ textarea:focus {
   background-color: transparent;
 }
 
+
+
+
+/* Icons */
 #icon {
   padding: 0 1rem;
   height: fit-content;
@@ -154,16 +158,8 @@ textarea:focus {
   height: auto;
 }
 
-.filter-span-reg {
-  margin-right: 0.7rem;
-}
-
 .filter-span {
   width: 95px;
-}
-
-.trends-span {
-  padding-right: 0.2rem;
 }
 
 .filter-component {
@@ -185,6 +181,21 @@ textarea:focus {
 .page-item.active .page-link {
   background-color: var(--primary);
   border-color: var(--primary);
+}
+
+
+/* Suggested Plans Accordian */
+.accordian {
+  margin: 0.5rem 0 1rem 0;
+}
+
+/* Suggested Plans Table */
+.suggested-table>tbody>tr>td {
+  text-align: center;
+}
+
+.card-header {
+  padding: 0.25rem 1.5rem;
 }
 
 

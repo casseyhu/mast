@@ -1,10 +1,13 @@
 const database = require('../config/database.js')
 const IncomingForm = require('formidable').IncomingForm
 const PDFExtract = require('pdf.js-extract').PDFExtract
+const { SEMTONUM } = require('./shared')
 const pdfExtract = new PDFExtract()
 const Sequelize = database.Sequelize
 
 const Course = database.Course
+const Degree = database.Degree
+const CourseRequirement = database.CourseRequirement
 
 /**
  * Upload course information (name, description, credits, etc..) to the database.
@@ -97,7 +100,7 @@ exports.findAll = (req, res) => {
  * @param {String} year Year to scrape for
  * @param {*} res
  */
-const scrapeCourses = (filePath, depts, semester, year, res) => {
+const scrapeCourses = async (filePath, depts, semester, year, res) => {
   const options = {}
   let sem = ['Fall', 'Winter', 'Spring', 'Summer']
   let target = ''
@@ -115,16 +118,43 @@ const scrapeCourses = (filePath, depts, semester, year, res) => {
   /* other requirements i.e prerequisites, credits */
   let checkOthers = false
   let others = ''
-  let exceptionDepts = []
-  let exceptions = ['CHE541', 'CHE523', 'CHE528', 'JRN565', 'MEC539', 'MEC651', 'MCB520', 'PHY558', 'ESE533', 'CSE529']
-  if (depts.includes('ESE')) {
-    exceptionDepts = ['CSE']
-    exceptions = ['CSE506', 'CSE526', 'CSE548']
-  }
-  if (depts.includes('AMS')) {
-    exceptionDepts = ['CHE', 'JRN', 'MEC', 'MCB', 'PHY', 'CSE', 'ESE']
-    exceptions = exceptions.concat(['CHE541', 'JRN565', 'MEC539', 'MCB520', 'PHY558', 'ESE533', 'CSE529'])
-  }
+  let requirementId = []
+  let exceptionDepts = new Set()
+  let exceptions = []
+
+  depts = depts.split(',')
+  // retrieve all courses from the degree requirements
+  let degrees = await Degree.findAll({
+    where: {
+      dept: depts,
+      requirementVersion: Number(year * 100) + SEMTONUM[String(semester)]
+    }
+  })
+  console.log(depts)
+  degrees.forEach(degree => requirementId = requirementId.concat(degree.courseRequirement))
+
+  let courseRequirements = await CourseRequirement.findAll({
+    where: {
+      requirementId: requirementId
+    }
+  })
+  courseRequirements.forEach(courseRequirement => 
+    exceptions = exceptions.concat(courseRequirement.courses.filter(course => course && !(depts.includes(course.substring(0, 3))))))
+
+    exceptions = Array.from(new Set(exceptions))
+  exceptions.forEach(exceptionCourse => exceptionDepts.add(exceptionCourse.substring(0, 3)))
+  exceptionDepts = Array.from(exceptionDepts)
+  console.log(exceptionDepts, exceptions)
+  // console.log(exceptions, exceptionDepts)
+  // let exceptions = ['CHE541', 'CHE523', 'CHE528', 'JRN565', 'MEC539', 'MCB520', 'PHY558', 'ESE533', 'CSE529']
+  // if (depts.includes('ESE')) {
+  //   exceptionDepts = ['CSE']
+  //   exceptions = ['CSE506', 'CSE526', 'CSE548']
+  // }
+  // if (depts.includes('AMS')) {
+  //   exceptionDepts = ['CHE', 'JRN', 'MEC', 'MCB', 'PHY', 'CSE', 'ESE']
+  //   exceptions = exceptions.concat(['CHE541', 'JRN565', 'MEC539', 'MCB520', 'PHY558', 'ESE533', 'CSE529', 'CHE523', 'CHE528', 'MEC651'])
+  // }
   pdfExtract.extract(filePath, options, async (err, data) => {
     if (err) {
       res.status(500).send('Error parsing pdf file')

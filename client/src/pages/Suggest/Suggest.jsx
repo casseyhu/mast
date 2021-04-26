@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Container from 'react-bootstrap/Container'
 import axios from '../../constants/axios'
-import CoursePlan from './CoursePlan'
+import CoursePlan from '../Student/CoursePlan'
 import Preferences from './Preferences'
-import SuggestCoursePlan from './SuggestCoursePlan'
+import SuggestedPlans from './Suggested'
 
 
 const Suggest = (props) => {
+  const [suggestions, setsuggestions] = useState([])
+
   const { student, coursePlan } = props.location.state
 
   const suggest = (preferences) => {
@@ -15,6 +17,8 @@ const Suggest = (props) => {
       params: preferences
     }).then(res => {
       console.log('Done Suggest')
+      console.log(res.data)
+      setsuggestions(res.data)
       // Set the results of the suggest return into the state.
       // Then, since the state of `suggestedPlans` got changed, 
       // it'll rerender and the SuggestedCoursePlan component will
@@ -34,7 +38,7 @@ const Suggest = (props) => {
       console.log("Error smart suggest")
     })
   }
-  
+
   return (
     <Container fluid='lg' className='container'>
       <div className='flex-horizontal justify-content-between'>
@@ -42,11 +46,11 @@ const Suggest = (props) => {
         <h5>Student: {student.sbuId}</h5>
         <h5>Degree: {student.department} - {student.track}</h5>
       </div>
-      <h5 className='underline'>Preferences</h5>
-      <Preferences department={student.department} suggest={suggest} smartSuggest={smartSuggest}/>
-      <SuggestCoursePlan/>
-      {coursePlan && 
-        <CoursePlan 
+      <h4 className='underline'>Preferences</h4>
+      <Preferences department={student.department} suggest={suggest} smartSuggest={smartSuggest} />
+      <SuggestedPlans suggestions={suggestions} />
+      {coursePlan &&
+        <CoursePlan
           heading='Current Course Plan'
           coursePlan={coursePlan}
         />
