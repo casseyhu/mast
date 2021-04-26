@@ -30,7 +30,7 @@ const SuggestedPlans = (props) => {
                         {Object.keys(coursePlan)
                           .map(sem => coursePlan[sem].reduce((a, b) => b.credits + a, 0))
                           .reduce((a, b) => a + b, 0)} credits
-                  </Tooltip>
+                      </Tooltip>
                     }
                   >
                     <Badge className='mr-3' pill variant='secondary'>&nbsp;i&nbsp;</Badge>
