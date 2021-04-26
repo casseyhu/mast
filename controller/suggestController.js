@@ -31,7 +31,8 @@ exports.suggest = async (req, res) => {
   const AVOID = new Set(req.query.avoid)
   // const PREFERRED = ['CSE526', 'CSE537']
   // const AVOID = new Set(['CSE509', 'CSE610', 'CSE624'])
-  const TIME = [req.query.startTime, req.query.endTime] // 
+  const TIME = [req.query.startTime ? req.query.startTime + ':00' : '7:00:00',
+  req.query.endTime ? req.query.endTime + ':00' : '23:59:00']
   console.log(TIME)
   // Find the students degree requirements
   const degree = await Degree.findOne({ where: { degreeId: student.degreeId } })
@@ -89,7 +90,7 @@ exports.suggest = async (req, res) => {
     let nodes = Object.values(nodesMap)
     nodes = sortNodes(nodesMap)
     // console.log(nodes)
-    let [score, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, takenAndCurrentCourses)
+    let [score, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, TIME, takenAndCurrentCourses)
     if (score < minScore) {
       generated = [suggested]
       minScore = score
@@ -321,8 +322,10 @@ function sortNodes(nodesMap) {
 
 
 //  * @param {Number} creditsRemaining Number of credits remaining 
-async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, takenAndCurrentCourses) {
+async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, prefTimes, takenAndCurrentCourses) {
   // Mapping of semester+year to course nodes for that semester and year
+  const MAX_ITERATIONS = 1500
+  let num_iterations = 0 
   let suggestions = {}
   let currSemyear = currYear * 100 + SEMTONUM[currSem]
   let offeringExists = false
@@ -337,8 +340,11 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, t
   // let index = 0
   let index = Number.MAX_SAFE_INTEGER
   let currCourse = null
-  let done = false
   while (!done) {
+    // Early fail for when no course plans can be generated so no infinite loop. 
+    num_iterations++
+    if(num_iterations > MAX_ITERATIONS)
+      return {}
     currCourse = nodes[index]
     // Check if we finished adding all required course nodes and satisfied credit requirement
     if (creditsRemaining <= 0 && (!nodes[0] || !nodes[0].required)) {
@@ -381,7 +387,6 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, t
         currTaken.forEach(item => takenAndCurrentCourses.add(item))
         currTaken = []
       }
-
       // console.log("Next sem. " + currSemyear + "  currCoursesCount: " + currCoursesCount)
       continue
     }
@@ -425,12 +430,17 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, t
         shuffle(courseAList)
         for (let i = 0; i < courseAList.length; i++) {
           let courseA = courseAList[i]
+          // If the course isn't in the time preference, skip it. 
+          if (!inTimePreference(courseA, prefTimes))
+            continue
           for (let j = 0; j < currSuggestions.length; j++) {
             // A list of course offerings for a course plan course (may be a list of different sections)
             let courseBList = currSemOfferings[currSuggestions[j].course]
             shuffle(courseBList)
             for (let k = 0; k < courseBList.length; k++) {
               let courseB = courseBList[k]
+              if (!inTimePreference(courseB, prefTimes))
+                continue
               if (!checkTimeConflict(courseA, courseB, [])) {
                 currCourse.section = courseA.section
                 suggestions[currSemyear].push(currCourse)
@@ -480,6 +490,20 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, t
   return [score, suggestions]
 }
 
+
+/**
+ * Checks if a course is in the user speficied time preference range.  
+ * @param {Object} course Course object returned from Sequelize. 
+ * @returns true if course falls in user time range, false otherwise.
+ */
+function inTimePreference(course, preferredTime) {
+  if (course.startTime && course.endTime) {
+    if (preferredTime[0] > course.startTime || course.endTime > preferredTime[1])
+      return false // not in time preference range 
+  }
+  // If the course has no specific startTime & endTime, or course in range
+  return true
+}
 
 /**
  * Returns the next semester and year after a given semester and year.
