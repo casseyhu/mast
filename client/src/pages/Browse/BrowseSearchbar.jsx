@@ -25,6 +25,7 @@ const BrowseSearchbar = (props) => {
       ...prevState,
       [name]: e.value
     }))
+    console.log(filters)
   }
 
   const applyFilters = (e) => {
@@ -36,10 +37,10 @@ const BrowseSearchbar = (props) => {
       graduated = (filters.graduated === 'True' ? 1 : 0) + '%'
     let valid = '%'
     if (filters.valid !== '')
-      valid = (filters.valid === 'True' ? 1 : 0) + '%'
+      valid = (filters.valid === 'Valid' ? 1 : 0) + '%'
     let complete = '%'
     if (filters.complete !== '')
-      complete = (filters.complete === 'True' ? 1 : 0) + '%'
+      complete = (filters.complete === 'Complete' ? 1 : 0) + '%'
 
     let filteredConditions = {
       nameId: filters.nameId,
@@ -59,6 +60,34 @@ const BrowseSearchbar = (props) => {
     console.log('Query DB with all filters (all states).')
   }
 
+  const resetFilters = () => {
+    setFilters({
+      nameId: '',
+      track: '',
+      entrySem: '',
+      entryYear: '',
+      gradSem: '',
+      gradYear: '',
+      graduated: '',
+      valid: '',
+      complete: ''
+    })
+    console.log(filters)
+    let filteredConditions = {
+      nameId: '',
+      department: '%',
+      entrySem: '%',
+      entryYear: '%',
+      gradSem: '%',
+      gradYear: '%',
+      track: '%',
+      graduated: '%',
+      valid: '%',
+      complete: '%'
+    }
+    props.filter(filteredConditions)
+  }
+
 
   return (
     <div style={{ margin: '0.2rem 0 0.5rem 0' }}>
@@ -76,13 +105,20 @@ const BrowseSearchbar = (props) => {
           />
           <button className='advancedButton' onClick={e => setExpanded(!expanded)}>Advanced Options</button>
         </div>
-        <div className='flex-horizontal' style={{ width: 'fit-content' }}>
+        <div className='flex-horizontal justify-content-between' style={{ width: 'fit-content' }}>
           <Button
             variant='round'
             text='Apply'
             onClick={applyFilters}
+            style={{ width: '70px', margin: '0 1rem 0 0' }}
+          />
+          <Button
+            variant='round'
+            text='Reset'
+            onClick={resetFilters}
             style={{ width: '70px' }}
           />
+
         </div>
       </div>
       {/* Advanced dropdown filters */}
@@ -95,6 +131,8 @@ const BrowseSearchbar = (props) => {
                 className='filter-component'
                 variant='single'
                 items={SEMESTERS}
+                value={filters.entrySem === '' ? 'Select...'
+                  : { label: filters.entrySem, value: filters.entrySem }}
                 onChange={e => handleSelection('entrySem', e)}
               />
             </div>
@@ -104,6 +142,8 @@ const BrowseSearchbar = (props) => {
                 className='filter-component'
                 variant='single'
                 items={YEARS}
+                value={filters.entryYear === '' ? 'Select...'
+                  : { label: filters.entryYear, value: filters.entrySem }}
                 onChange={e => handleSelection('entryYear', e)}
               />
             </div>
@@ -113,6 +153,8 @@ const BrowseSearchbar = (props) => {
                 className='filter-component'
                 variant='single'
                 items={SEMESTERS}
+                value={ filters.gradSem === '' ? null
+                  : { label: filters.gradSem, value: filters.gradSem }}
                 onChange={e => handleSelection('gradSem', e)}
               />
             </div>
@@ -122,6 +164,8 @@ const BrowseSearchbar = (props) => {
                 className='filter-component'
                 variant='single'
                 items={YEARS}
+                value={ filters.gradYear === '' ? null 
+                  : { label: filters.gradYear, value: filters.gradYear }}
                 onChange={e => handleSelection('gradYear', e)}
               />
             </div>
@@ -131,8 +175,10 @@ const BrowseSearchbar = (props) => {
               <Dropdown
                 className='filter-component'
                 variant='single'
-                placeholder='Track'
+                // placeholder='Track'
                 items={TRACKS[department]}
+                value={ filters.track === '' ? null
+                  : { label: filters.track, value: filters.track }}
                 onChange={e => handleSelection('track', e)}
               />
             </div>
@@ -142,6 +188,8 @@ const BrowseSearchbar = (props) => {
                 className='filter-component'
                 variant='single'
                 items={BOOLEAN}
+                value={ filters.graduated === '' ? null 
+                  : { label: filters.graduated, value: filters.graduated }}
                 onChange={e => handleSelection('graduated', e)}
               />
             </div>
@@ -151,6 +199,8 @@ const BrowseSearchbar = (props) => {
                 className='filter-component'
                 variant='single'
                 items={VALIDITY}
+                value={ filters.valid === '' ? null
+                  : { label: filters.valid, value: filters.valid }}
                 onChange={e => handleSelection('valid', e)}
               />
             </div>
@@ -160,6 +210,8 @@ const BrowseSearchbar = (props) => {
                 className='filter-component'
                 variant='single'
                 items={COMPLETENESS}
+                value={ filters.complete === '' ? null 
+                  : { label: filters.complete, value: filters.complete }}
                 onChange={e => handleSelection('complete', e)}
               />
             </div>
