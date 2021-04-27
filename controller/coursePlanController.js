@@ -622,7 +622,7 @@ async function updateOrCreate(student, requirementType, requirementId, state, me
  */
 exports.findItems = async (req, res) => {
   try {
-    const coursePlanItems = await findCoursePlanItems(req.query.studentId)
+    const coursePlanItems = await findCoursePlanItems(req.query.sbuId)
     // const coursePlan = await CoursePlan.findOne({ where: req.query })
     // const coursePlanItems = await CoursePlanItem.findAll({
     //   where: {

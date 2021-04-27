@@ -22,28 +22,28 @@ const rnodes = [
 ]
 
 exports.suggest = async (req, res) => {
-  console.log('Regular suggest')
   const student = JSON.parse(req.query.student)
-  console.log(student.sbuId)
+  console.log('Regular suggest' + student.sbuId)
   const SBUID = student.sbuId
   const CPS = req.query.maxCourses
   const PREFERRED = req.query.preferred ? req.query.preferred : []
   const AVOID = new Set(req.query.avoid)
-  // const PREFERRED = ['CSE526', 'CSE537']
-  // const AVOID = new Set(['CSE509', 'CSE610', 'CSE624'])
   const TIME = [req.query.startTime ? req.query.startTime + ':00' : '07:00:00',
   req.query.endTime ? req.query.endTime + ':00' : '23:59:00']
   console.log(TIME)
   // Find the students degree requirements
   const degree = await Degree.findOne({ where: { degreeId: student.degreeId } })
   let [, , creditReq, courseReq] = await findRequirements(degree)
-  // // Find the students degree requirement states
+  // Find the students degree requirement states
   // let reqStates = await RequirementState.findAll({ where: { sbuID: SBUID } })
   // Find the students course plan items
   let coursePlanItems = await findCoursePlanItems(SBUID)
   // Create the course mapping for all courses required for degree
-  const reqCourses = Array.from(new Set(courseReq.reduce((a, b) => b.courses.concat(a), [])))
-  const foundCourses = await Course.findAll({ where: { courseId: reqCourses } })
+  const foundCourses = await Course.findAll({
+    where: {
+      courseId: Array.from(new Set(courseReq.reduce((a, b) => b.courses.concat(a), [])))
+    }
+  })
   let courses = {}
   foundCourses.forEach(course => courses[course.courseId] = course)
   Object.keys(courses).forEach(course => courses[course].credits = ((courses[course].minCredits <= 3
@@ -72,8 +72,10 @@ exports.suggest = async (req, res) => {
   let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student, creditsCounter, CPS)
   console.log('Credits remaining ', creditsRemaining, 'CPS:', coursesPerSem)
 
+  // Student has no more remaining credits
   if (creditsRemaining <= 0) {
     res.status(200).send([])
+    return
   }
   // List of course plans with lowest score
   let generated = []
