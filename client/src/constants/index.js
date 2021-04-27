@@ -54,13 +54,13 @@ export const BOOLEAN = [
 ]
 
 export const COMPLETENESS = [
-  { value: 'True', label: 'Complete' },
-  { value: 'False', label: 'Incomplete' }
+  { value: 'Complete', label: 'Complete' },
+  { value: 'Incomplete', label: 'Incomplete' }
 ]
 
 export const VALIDITY = [
-  { value: 'True', label: 'Valid' },
-  { value: 'False', label: 'Invalid' }
+  { value: 'Valid', label: 'Valid' },
+  { value: 'Invalid', label: 'Invalid' }
 ]
 
 export const TRACKS = {
