@@ -567,8 +567,11 @@ function calculateScore(coursePlan) {
 exports.smartSuggest = async (req, res) => {
   console.log('Smart suggest')
   const student = JSON.parse(req.query.student)
+  const SBUID = student.sbuId
   const CPS = req.query.maxCourses
-  const TIME = [req.query.startTime, req.query.endTime] // times to avoid??
+  const TIME = [req.query.startTime ? req.query.startTime + ':00' : '07:00:00',
+  req.query.endTime ? req.query.endTime + ':00' : '23:59:00']
+
   // Find all students in the same dept and track
   let students = await Student.findAll({
     where: {
@@ -596,16 +599,14 @@ exports.smartSuggest = async (req, res) => {
   // Find the students degree requirements
   const degree = await Degree.findOne({ where: { degreeId: student.degreeId } })
   let [, , creditReq, courseReq] = await findRequirements(degree)
-  // Find the students degree requirement states
-  let reqStates = await RequirementState.findAll({ where: { sbuID: student.sbuId } })
-  // Find the students course plan items
-  let coursePlanItems = await findCoursePlanItems(student.sbuId)
+  let coursePlanItems = await findCoursePlanItems(SBUID)
   // Create the course mapping for all courses required for degree
   const reqCourses = Array.from(new Set(courseReq.reduce((a, b) => b.courses.concat(a), [])))
   const foundCourses = await Course.findAll({ where: { courseId: reqCourses } })
   let courses = {}
   foundCourses.forEach(course => courses[course.courseId] = course)
-
+  Object.keys(courses).forEach(course => courses[course].credits = ((courses[course].minCredits <= 3
+    && courses[course].maxCredits >= 3) ? 3 : courses[course].minCredits))
   // List of courses student has taken and currently taking that they didnt fail
   const takenAndCurrent = coursePlanItems.filter(course => (
     (100 * course.year + SEMTONUM[course.semester] <= 100 * currYear + SEMTONUM[currSem]) &&
@@ -620,16 +621,19 @@ exports.smartSuggest = async (req, res) => {
       courseUpper: requirement.courseUpper,
       creditLower: requirement.creditLower,
       creditUpper: requirement.creditUpper,
-      courses: requirement.courses
+      courses: requirement.courses.filter(course => course !== '')
     }
   ))
+  let courseReqs = JSON.parse(JSON.stringify(courseReq))
   // Delete courses from requirements list that were taken
-  const creditsCounter = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses)
-  console.log("CrrEDits", creditsCounter)
-  let gradSem = student.gradSem
-  let gradYear = student.gradYear
+  const creditsCounter = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, takenAndCurrent)
   // Get credits remaining, semesters remaining, and number of courses per semester
-  let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, gradSem, gradYear, creditsCounter, CPS)
+  let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student, creditsCounter, CPS)
+  console.log('Credits remaining ', creditsRemaining, 'CPS:', coursesPerSem)
+
+  if (creditsRemaining <= 0) {
+    res.status(200).send([])
+  }
   /*******************************************END***********************************************/
 
   // Find total number of students for each course in course requirements
@@ -641,12 +645,12 @@ exports.smartSuggest = async (req, res) => {
   // Sort courses by popularity
   let popularCourses = Object.keys(courseCount).sort((c1, c2) => courseCount[c2] - courseCount[c1])
   // Create course nodes
-  const nodesMap = createNodes(courses, courseReq, new Set(), new Set(), TIME, popularCourses, takenAndCurrent)
+  const nodesMap = createNodes(courses, courseReqs, new Set(), new Set(), [creditsRemaining, coursesPerSem], popularCourses, takenAndCurrent)
   let nodes = Object.values(nodesMap)
-  nodes = sortNodes(nodes)
-  // console.log(nodes)
-
-  suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, takenAndCurrentCourses)
-  res.status(200).send('good')
+  nodes = sortNodes(nodesMap)
+  console.log(nodes)
+  
+  let [, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, TIME, takenAndCurrentCourses)
+  res.status(200).send([suggested])
 }
 
