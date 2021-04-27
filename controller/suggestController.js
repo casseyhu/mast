@@ -67,9 +67,9 @@ exports.suggest = async (req, res) => {
   ))
   // Delete courses from requirements list that were taken
   // let courseReqs = JSON.parse(JSON.stringify(courseReq))
-  const creditsCounter = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, takenAndCurrent)
+  const [creditsCounter, coursesRemaining] = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, takenAndCurrent)
   // Get credits remaining, semesters remaining, and number of courses per semester
-  let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student, creditsCounter, CPS)
+  let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student, creditsCounter, coursesRemaining, CPS)
   console.log('Credits remaining ', creditsRemaining, 'CPS:', coursesPerSem)
 
   // Student has no more remaining credits
@@ -119,8 +119,10 @@ exports.suggest = async (req, res) => {
  */
 async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, takenAndCurrent) {
   let creditsCounter = 0
+  let coursesCounter = 0
   let nonrequired = new Set()
   let allUsed = new Set()
+  let copy = courseReq.map(req => ( req ))
   // Go through list of course requirements
   for (let requirement of courseReq) {
     let notTaken = []
@@ -152,11 +154,15 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
             requirement.courseLower -= 1
           if (requirement.creditLower)
             requirement.creditLower -= courses[course].credits
-          // Course cannot be counted for multiple requirements
+          // Course cannot be counted for multiple requirements)
           if (requirement.type === 0 || (requirement.courseLower !== null && requirement.courseLower >= 0)
             || (requirement.creditLower !== null && requirement.creditLower >= 0)) {
             creditsCounter += courses[course].credits
             used.push(course)
+          }
+          if (requirement.type !== 0 && ((requirement.courseLower !== null && requirement.courseLower <= 0)
+          || (requirement.creditLower !== null && requirement.creditLower <= 0))) {
+            break
           }
         }
       }
@@ -167,12 +173,21 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
       notTaken.forEach(course => nonrequired.add(course))
     else
       requirement.courses = notTaken
+    if ((!requirement.courseLower || requirement.courseLower <= 0)
+      && (!requirement.creditLower || requirement.creditLower <= 0)) {
+        console.log('sat', requirement)
+      coursesCounter++
+    }
+    else{
+      console.log('not sat', requirement)
+    }
   }
+  console.log('course counter', coursesCounter)
   // Move all remaining courses into last nonrequired course requirement (0:(,):(,))
   nonrequired = Array.from(nonrequired).filter(item => item !== '')
   courseReq[courseReq.length - 1].courses = nonrequired
   // console.log("nonrequired: ", nonrequired)
-  return creditsCounter
+  return [creditsCounter, courseReq.length - coursesCounter]
 }
 
 
@@ -186,7 +201,7 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
  * @param {Number} CPS Number of courses per semester, if supplied
  * @returns An array containing the credits remaining and number of courses per semester.
  */
-function getRemaining(creditReq, student, creditsCounter, CPS) {
+function getRemaining(creditReq, student, creditsCounter, coursesRemaining, CPS) {
   const creditsRemaining = (creditReq.minCredit - creditsCounter < 0) ? 0 : creditReq.minCredit - creditsCounter
   let semsRemaining = 0
   let sem = currSem
@@ -197,7 +212,8 @@ function getRemaining(creditReq, student, creditsCounter, CPS) {
     if (sem === 'Spring')
       year++
   }
-  let coursesPerSem = CPS ? CPS : Math.ceil(creditsRemaining / (3 * semsRemaining))
+  console.log(coursesRemaining, semsRemaining, creditsRemaining)
+  let coursesPerSem = CPS ? CPS : Math.max(Math.ceil(creditsRemaining / (3 * semsRemaining)), Math.ceil(coursesRemaining/semsRemaining))
   if (student.department === 'BMI')
     coursesPerSem--
   return [creditsRemaining, coursesPerSem]
@@ -626,12 +642,12 @@ exports.smartSuggest = async (req, res) => {
     }
   ))
   // Delete courses from requirements list that were taken
-  const creditsCounter = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses)
+  const [creditsCounter, coursesRemaining] = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses)
   console.log("CrrEDits", creditsCounter)
   let gradSem = student.gradSem
   let gradYear = student.gradYear
   // Get credits remaining, semesters remaining, and number of courses per semester
-  let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, gradSem, gradYear, creditsCounter, CPS)
+  let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, gradSem, gradYear, creditsCounter, coursesRemaining, CPS)
   /*******************************************END***********************************************/
 
   // Find total number of students for each course in course requirements

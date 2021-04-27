@@ -78,7 +78,7 @@ class Student extends Component {
           errorMsg: '',
           showConfirmation: true
         }, () => this.setStudentInfo())
-      }).catch(function (err) {
+      }).catch((err) => {
         this.setState({ errorMsg: err.response.data })
       })
     } else if (mode === 'View') {
@@ -101,13 +101,14 @@ class Student extends Component {
       axios.post('/student/update/', {
         params: studentInfo
       }).then(response => {
-        this.setState(prevState => ({ studentInfoParams: { ...prevState, student: response.data } }))
+        this.setState(prevState => ({ studentInfoParams: { ...prevState.studentInfoParams, student: response.data } }), this.setStudentInfo)
         //GPD comment has changed
-        if (commentBefore !== commentAfter)
+        if (commentBefore !== commentAfter) {
           this.setState({ showEmailBox: true })
+        }
         else
           this.setState({ showConfirmation: true })
-      }).catch(function (err) {
+      }).catch((err) => {
         console.log(err.response.data)
         this.setState({ errorMsg: err.response.data })
       })
@@ -209,20 +210,20 @@ class Student extends Component {
           suggestCoursePlan={this.suggestCoursePlan}
         />
         <CenteredModal
-          show={showConfirmation}
+          show={this.state.showConfirmation}
           onHide={() => this.setState({ showConfirmation: false })}
           onConfirm={this.changeMode}
           body='Student successfully saved'
         />
         <CenteredModal
-          show={this.showUpdateError}
+          show={this.state.showUpdateError}
           onHide={() => { this.changeMode(); this.setState({ showUpdateError: false }) }}
           onConfirm={() => { this.changeMode(); this.setState({ showUpdateError: false }) }}
           body='Try again later.'
           title='Error'
         />
         <CenteredModal
-          show={this.showEmailBox}
+          show={this.state.showEmailBox}
           onHide={() => this.setState({ showEmailBox: false })}
           onConfirm={this.notify}
           variant='multi'

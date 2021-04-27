@@ -75,7 +75,7 @@ const BrowseSearchbar = (props) => {
     console.log(filters)
     let filteredConditions = {
       nameId: '',
-      department: '%',
+      department: props.user.department,
       entrySem: '%',
       entryYear: '%',
       gradSem: '%',

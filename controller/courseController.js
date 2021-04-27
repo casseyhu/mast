@@ -253,10 +253,11 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
                     fullPrereqs = fullPrereqs.substring(0, fullPrereqs.indexOf(' or'))
                   }
                   fullPrereqs = fullPrereqs.replace('Prerequisites: ', '')
+                  console.log(fullPrereqs)
                   fullPrereqs = fullPrereqs.replace(' ', '')
                   fullPrereqs = fullPrereqs.replace(' and', ',')
+                  console.log(chosenDept + courseNum, fullPrereqs)
                   prereqs = fullPrereqs.split(', ')
-                  console.log(chosenDept + courseNum)
                 } else {
                   fullPrereqs = fullPrereqs.replace('Prerequisites: ', '')
                   fullPrereqs = fullPrereqs.replace(' ', '')
