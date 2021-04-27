@@ -179,8 +179,9 @@ class Student extends Component {
     this.props.history.push({
       pathname: '/suggest',
       state: {
-        student: this.state.studentInfoParams.student,
-        coursePlan: this.state.studentInfoParams.coursePlan
+        // student: this.state.studentInfoParams.student,
+        // coursePlan: this.state.studentInfoParams.coursePlan,
+        studentInfoParams: this.state.studentInfoParams
       }
     })
   }

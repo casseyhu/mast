@@ -49,7 +49,7 @@ const AddCourse = (props) => {
   }
 
   return (
-    <Accordion>
+    <Accordion defaultActiveKey="0" >
       <Card>
         <Accordion.Toggle as={Card.Header} eventKey='0'>
           <div className='flex-horizontal align-items-center' >

@@ -66,7 +66,6 @@ exports.suggest = async (req, res) => {
     }
   ))
   // Delete courses from requirements list that were taken
-  // let courseReqs = JSON.parse(JSON.stringify(courseReq))
   const creditsCounter = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, takenAndCurrent)
   // Get credits remaining, semesters remaining, and number of courses per semester
   let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student, creditsCounter, CPS)
@@ -138,10 +137,9 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
         if (requirement.courses.length < maxCourses) {
           let timesTaken = takenAndCurrent.filter(item => item.courseId === course).length
           creditsCounter += courses[course].credits * timesTaken
-          if (timesTaken >= maxCourses) {
-            // Satisfied the amount of times they needed to take this course (BMI592)
+          // Satisfied the amount of times they needed to take this course (BMI592)
+          if (timesTaken >= maxCourses)
             used.push(course)
-          }
           else
             notTaken.push(course)
           break
@@ -198,7 +196,7 @@ function getRemaining(creditReq, student, creditsCounter, CPS) {
       year++
   }
   let coursesPerSem = CPS ? CPS : Math.ceil(creditsRemaining / (3 * semsRemaining))
-  if (student.department === 'BMI')
+  if (CPS && student.department === 'BMI')
     coursesPerSem--
   return [creditsRemaining, coursesPerSem]
 }
