@@ -7,7 +7,7 @@ import SuggestedPlans from './Suggested'
 
 
 const Suggest = (props) => {
-  const [suggestions, setsuggestions] = useState([])
+  const [suggestions, setSuggestions] = useState([])
 
   const { student, coursePlan } = props.location.state
 
@@ -18,7 +18,7 @@ const Suggest = (props) => {
     }).then(res => {
       console.log('Done Suggest')
       console.log(res.data)
-      setsuggestions(res.data)
+      setSuggestions(res.data)
       // Set the results of the suggest return into the state.
       // Then, since the state of `suggestedPlans` got changed, 
       // it'll rerender and the SuggestedCoursePlan component will
@@ -34,6 +34,7 @@ const Suggest = (props) => {
       params: preferences
     }).then(res => {
       console.log('Done smart suggest')
+      setSuggestions(res.data)
     }).catch(err => {
       console.log('Error smart suggest')
     })
