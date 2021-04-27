@@ -31,7 +31,7 @@ exports.suggest = async (req, res) => {
   const AVOID = new Set(req.query.avoid)
   // const PREFERRED = ['CSE526', 'CSE537']
   // const AVOID = new Set(['CSE509', 'CSE610', 'CSE624'])
-  const TIME = [req.query.startTime ? req.query.startTime + ':00' : '7:00:00',
+  const TIME = [req.query.startTime ? req.query.startTime + ':00' : '07:00:00',
   req.query.endTime ? req.query.endTime + ':00' : '23:59:00']
   console.log(TIME)
   // Find the students degree requirements
@@ -330,6 +330,8 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
   let suggestions = {}
   let currSemyear = currYear * 100 + SEMTONUM[currSem]
   let offeringExists = false
+  if (takenAndCurrentCourses.length > 0)
+    currSemyear = getNextSem(currSemyear)
   // let currSemyear = getNextSem(currYear * 100 + SEMTONUM[currSem])
   let semester = NUMTOSEM[currSemyear % 100]
   let year = Math.floor(currSemyear / 100)
@@ -338,9 +340,9 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
   let currSemOfferings = {}
   let currCoursesCount = 0
   let currTaken = []
-  // let index = 0
   let index = Number.MAX_SAFE_INTEGER
   let currCourse = null
+  let done = false
   while (!done) {
     // Early fail for when no course plans can be generated so no infinite loop. 
     num_iterations++
@@ -351,7 +353,6 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
     if (creditsRemaining <= 0 && (!nodes[0] || !nodes[0].required)) {
       // email student for extended grad date
       if (suggestions[currSemyear] && department === 'BMI') {
-        console.log(currSemyear)
         const creditsInPlan = suggestions[currSemyear].reduce((a, b) => b.credits + a, 0)
         if (creditsInPlan >= 12)
           suggestions[currSemyear].push(rnodes[0])
@@ -361,7 +362,6 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
     // Check if we've added maximum courses per semester
     if (!currCourse || currCoursesCount >= coursesPerSem) {
       if (suggestions[currSemyear] && department === 'BMI') {
-        console.log(currSemyear)
         const creditsInPlan = suggestions[currSemyear].reduce((a, b) => b.credits + a, 0)
         if (creditsInPlan >= 12)
           suggestions[currSemyear].push(rnodes[0])
@@ -432,8 +432,9 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
         for (let i = 0; i < courseAList.length; i++) {
           let courseA = courseAList[i]
           // If the course isn't in the time preference, skip it. 
-          if (!inTimePreference(courseA, prefTimes))
+          if (!inTimePreference(courseA, prefTimes)) {
             continue
+          }
           for (let j = 0; j < currSuggestions.length; j++) {
             // A list of course offerings for a course plan course (may be a list of different sections)
             let courseBList = currSemOfferings[currSuggestions[j].course]
@@ -459,7 +460,7 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
       }
     }
     else if (offeringExists && !currSemOfferings[currCourse.course]) {
-      // console.log("offerings imported but not for this course, cannot add")
+      console.log("offerings imported but not for this course, cannot add")
     }
     // Course offering for currSemyear doesnt exist yet
     else if (semsOffered[currCourse.course].includes(semester)) {
@@ -472,7 +473,7 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
     if (added) {
       // console.log("added " + currCourse.course)
       currTaken.push(currCourse.course)
-      console.log(currCourse)
+      //console.log(currCourse)
       creditsRemaining -= currCourse.credits
       currCoursesCount += 1
       if (currCourse.count > 1) {
