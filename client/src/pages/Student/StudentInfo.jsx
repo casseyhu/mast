@@ -2,26 +2,23 @@ import React, { useState, useEffect } from 'react'
 import InputField from '../../components/InputField'
 import Dropdown from '../../components/Dropdown'
 import Button from '../../components/Button'
-import { BOOLEAN, SEMESTERS, MONTH_SEMESTER, YEARS, TRACKS } from '../../constants'
+import { BOOLEAN, SEMESTERS, MONTH_SEMESTER, SEMESTER_MONTH, YEARS, TRACKS } from '../../constants'
 import { useHistory } from 'react-router-dom'
 import axios from '../../constants/axios'
-import jwt_decode from 'jwt-decode'
 
-const StudentInfo = ({ student, mode, errorMessage, userType, setDegreeReq, onSubmit }) => {
+const StudentInfo = (props) => {
   const history = useHistory()
   const [userInfo, setUserInfo] = useState({})
 
-  const [department, setDepartment] = useState()
-  // let { student, mode, errorMessage, userType, setDegreeReq, onSubmit } = props
+  let { student, mode, department, errorMessage, userType, setDegreeReq, onSubmit } = props
 
   const handleSelection = (name, e) => {
     setUserInfo(prevState => ({
       ...prevState,
-      [name]: e.value
+      [name]: e.value,
+      dept: department
     }))
   }
-
-
 
   useEffect(() => {
     setUserInfo(prevState => ({
@@ -32,7 +29,7 @@ const StudentInfo = ({ student, mode, errorMessage, userType, setDegreeReq, onSu
       email: student ? student.email : '',
       gpa: student ? student.gpa : '',
       graduated: student ? (student.graduated ? 'True' : 'False') : '',
-      dept: student ? student.department : null,
+      dept: department,
       track: student ? student.track : null,
       entrySem: student ? student.entrySem : null,
       entryYear: student ? student.entryYear.toString() : null,
@@ -44,20 +41,9 @@ const StudentInfo = ({ student, mode, errorMessage, userType, setDegreeReq, onSu
       studentComments: student ? student.studentComments : '',
       updatedAt: student ? new Date(student.updatedAt).toLocaleString() : ''
     }))
-  }, [student])
+  }, [department, student])
 
   useEffect(() => {
-    let token = localStorage.getItem('jwt-token')
-    if (!token)
-      return
-    var decoded = jwt_decode(token)
-    setDepartment(decoded.userInfo.department)
-    const semDict = {
-      'Fall': 8,
-      'Spring': 2,
-      'Winter': 1,
-      'Summer': 5
-    }
     if (!student && userInfo.track && userInfo.degreeSem && userInfo.degreeYear) {
       // console.log(userInfo['dept'] , userInfo['track'] , userInfo['degreeSem'] , userInfo['degreeYear'])
       console.log('Degree information sufficient. Querying backend to get this degree information.')
@@ -65,13 +51,13 @@ const StudentInfo = ({ student, mode, errorMessage, userType, setDegreeReq, onSu
         params: {
           department: department,
           track: userInfo.track,
-          reqVersion: Number(userInfo.degreeYear + '0' + semDict[userInfo.degreeSem])
+          reqVersion: Number(userInfo.degreeYear + '0' + SEMESTER_MONTH[userInfo.degreeSem])
         }
       }).then(results => {
         setDegreeReq(results.data)
       })
     }
-  }, [student, userInfo.track, userInfo.degreeSem, userInfo.degreeYear, setDegreeReq])
+  }, [student, department, userInfo.track, userInfo.degreeSem, userInfo.degreeYear, setDegreeReq])
 
   return (
     <div className='flex-horizontal wrap'>

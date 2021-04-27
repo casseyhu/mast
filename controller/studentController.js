@@ -113,8 +113,8 @@ exports.update = (req, res) => {
       })
         .then(async response => {
           //update retuned array [1]
-          await RequirementState.destroy({ where: { sbuId: student.sbuId }})
-          let coursePlan = await CoursePlan.findOne({ where: {studentId : student.sbuId }})
+          await RequirementState.destroy({ where: { sbuId: student.sbuId } })
+          let coursePlan = await CoursePlan.findOne({ where: { studentId: student.sbuId } })
           let studentsPlanId = {}
           studentsPlanId[student.sbuId] = coursePlan.coursePlanId
           const courses = await Course.findAll({ where: { department: student.dept } })
