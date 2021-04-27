@@ -101,7 +101,7 @@ exports.suggest = async (req, res) => {
       generated.push(suggested)
     counter++
   }
-  console.log(generated[0])
+  // console.log(generated[0])
   // console.log(generated)
   console.log('done')
   res.status(200).send(generated)
@@ -325,7 +325,6 @@ function sortNodes(nodesMap) {
 //  * @param {Number} creditsRemaining Number of credits remaining 
 async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, prefTimes, takenAndCurrentCourses) {
   // Mapping of semester+year to course nodes for that semester and year
-  const MAX_ITERATIONS = 1500
   let num_iterations = 0
   let suggestions = {}
   let currSemyear = currYear * 100 + SEMTONUM[currSem]
@@ -346,7 +345,7 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
   while (!done) {
     // Early fail for when no course plans can be generated so no infinite loop. 
     num_iterations++
-    if (num_iterations > MAX_ITERATIONS)
+    if (num_iterations > 1500)
       return {}
     currCourse = nodes[index]
     // Check if we finished adding all required course nodes and satisfied credit requirement
@@ -360,7 +359,7 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
       break
     }
     // Check if we've added maximum courses per semester
-    if (!currCourse || currCoursesCount >= coursesPerSem) {
+    if (num_iterations % 80 === 0 || !currCourse || currCoursesCount >= coursesPerSem) {
       if (suggestions[currSemyear] && department === 'BMI') {
         const creditsInPlan = suggestions[currSemyear].reduce((a, b) => b.credits + a, 0)
         if (creditsInPlan >= 12)
@@ -406,8 +405,16 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
           year: year
         }
       })
-      if (found.length > 0)
+      let timeConflict = false
+      if (found.length > 0) {
+        for (let i = 0; i < found.length; i++) {
+          if (!inTimePreference(found[i], prefTimes))
+            timeConflict = true
+        }
+        if (timeConflict)
+          continue
         currSemOfferings[currCourse.course] = found
+      }
     }
     // Get the list of semesters that the course is offered in (using current semester year data)
     if (!semsOffered[currCourse.course]) {
@@ -431,18 +438,12 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
         shuffle(courseAList)
         for (let i = 0; i < courseAList.length; i++) {
           let courseA = courseAList[i]
-          // If the course isn't in the time preference, skip it. 
-          if (!inTimePreference(courseA, prefTimes)) {
-            continue
-          }
           for (let j = 0; j < currSuggestions.length; j++) {
             // A list of course offerings for a course plan course (may be a list of different sections)
             let courseBList = currSemOfferings[currSuggestions[j].course]
             shuffle(courseBList)
             for (let k = 0; k < courseBList.length; k++) {
               let courseB = courseBList[k]
-              if (!inTimePreference(courseB, prefTimes))
-                continue
               if (!checkTimeConflict(courseA, courseB, [])) {
                 currCourse.section = courseA.section
                 suggestions[currSemyear].push(currCourse)
@@ -496,15 +497,18 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
 
 /**
  * Checks if a course is in the user speficied time preference range.  
- * @param {Object} course Course object returned from Sequelize. 
+ * @param {Object} course Course Offering object returned from Sequelize. 
  * @returns true if course falls in user time range, false otherwise.
  */
 function inTimePreference(course, preferredTime) {
   if (course.startTime && course.endTime) {
-    if (preferredTime[0] > course.startTime || course.endTime > preferredTime[1])
+    if (preferredTime[0] > course.endTime || preferredTime[1] < course.startTime
+      || preferredTime[0] > course.startTime || preferredTime[1] < course.endTime) {
       return false // not in time preference range 
+    }
   }
   // If the course has no specific startTime & endTime, or course in range
+  console.log("good")
   return true
 }
 
@@ -649,7 +653,7 @@ exports.smartSuggest = async (req, res) => {
   let nodes = Object.values(nodesMap)
   nodes = sortNodes(nodesMap)
   console.log(nodes)
-  
+
   let [, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, TIME, takenAndCurrentCourses)
   res.status(200).send([suggested])
 }
