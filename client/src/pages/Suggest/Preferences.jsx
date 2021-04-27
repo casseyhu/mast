@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import moment from 'moment'
+import Accordion from 'react-bootstrap/Accordion'
+import Card from 'react-bootstrap/Card'
 import axios from '../../constants/axios'
 import InputField from '../../components/InputField'
 import Dropdown from '../../components/Dropdown'
@@ -122,61 +124,80 @@ const Preferences = (props) => {
   }
 
   return (
-    <div className='flex-horizontal wrap align-items-start preference-col'>
-      {error && <span className='error mb-1 w-100'><b>{errorMessage}</b></span>}
-      <div className='flex-vertical' style={{ maxWidth: '530px' }}>
-        <div className='flex-horizontal'>
-          <span style={{ width: '180px' }}>Max courses/semester:</span>
-          <InputField
-            className='lr-padding'
-            type='text'
-            placeholder='5'
-            value={maxCourses}
-            onChange={e => setMaxCourses(e.target.value)}
-            style={{ width: '350px', flexShrink: '1' }}
-          />
-        </div>
-        <CoursePreferences
-          mode={'Preferred'}
-          preferred={preferred}
-          avoid={avoid}
-          courses={deptCourses}
-          addCourse={addCourse}
-          move={move}
-          deleteCourse={deleteCourse}
-        />
-      </div>
-
-      <div className='flex-vertical' style={{ maxWidth: '530px' }}>
-        <div className='flex-horizontal justify-content-between'>
-          <span>Start Time:</span>
-          <Dropdown
-            variant='single'
-            items={timeSelect}
-            placeholder='7:00AM'
-            onChange={(e) => parseTime(setStartTime, e.value)}
-            style={{ width: '150px', margin: '2px 0.5rem 4px 0' }}
-          />
-          <span>End Time:</span>
-          <Dropdown
-            variant='single'
-            items={timeSelect}
-            placeholder='11:00PM'
-            onChange={(e) => parseTime(setEndTime, e.value)}
-            style={{ width: '150px', margin: '2px 0.5rem 4px 0' }}
-          />
-        </div>
-        <CoursePreferences
-          mode={'Avoid'}
-          preferred={preferred}
-          avoid={avoid}
-          courses={deptCourses}
-          addCourse={addCourse}
-          move={move}
-          deleteCourse={deleteCourse}
-        />
-      </div>
-      <div className='flex-horizontal justify-content-center align-content-middle'>
+    <div>
+      <Accordion defaultActiveKey="0" className='mb-2 mt-3'>
+        <Card>
+          <Accordion.Toggle
+            className='pt-1 pb-0'
+            as={Card.Header}
+            eventKey='0'
+            style={{ cursor: 'pointer', backgroundColor: 'transparent' }}>
+            <div className='flex-horizontal justify-content-between' >
+              <h4 >Preferences</h4>
+              <i className="fa fa-chevron-down" aria-hidden="true"></i>
+            </div>
+          </Accordion.Toggle>
+          <Accordion.Collapse eventKey='0'>
+            <Card.Body>
+              <div className='flex-horizontal wrap align-items-start preference-col'>
+                {error && <span className='error mb-1 w-100'><b>{errorMessage}</b></span>}
+                <div className='flex-vertical' style={{ maxWidth: '510px' }}>
+                  <div className='flex-horizontal'>
+                    <span style={{ width: '180px' }}>Max courses/semester:</span>
+                    <InputField
+                      className='lr-padding'
+                      type='text'
+                      placeholder='5'
+                      value={maxCourses}
+                      onChange={e => setMaxCourses(e.target.value)}
+                      style={{ width: '350px', flexShrink: '1' }}
+                    />
+                  </div>
+                  <CoursePreferences
+                    mode={'Preferred'}
+                    preferred={preferred}
+                    avoid={avoid}
+                    courses={deptCourses}
+                    addCourse={addCourse}
+                    move={move}
+                    deleteCourse={deleteCourse}
+                  />
+                </div>
+                <div className='flex-vertical' style={{ maxWidth: '510px' }}>
+                  <div className='flex-horizontal justify-content-between'>
+                    <span>Start Time:</span>
+                    <Dropdown
+                      variant='single'
+                      items={timeSelect}
+                      placeholder='7:00AM'
+                      onChange={(e) => parseTime(setStartTime, e.value)}
+                      style={{ width: '150px', margin: '2px 0.5rem 4px 0' }}
+                    />
+                    <span>End Time:</span>
+                    <Dropdown
+                      variant='single'
+                      items={timeSelect}
+                      placeholder='11:00PM'
+                      onChange={(e) => parseTime(setEndTime, e.value)}
+                      style={{ width: '150px', margin: '2px 0.5rem 4px 0' }}
+                    />
+                  </div>
+                  <CoursePreferences
+                    mode={'Avoid'}
+                    preferred={preferred}
+                    avoid={avoid}
+                    courses={deptCourses}
+                    addCourse={addCourse}
+                    move={move}
+                    deleteCourse={deleteCourse}
+                  />
+                </div>
+              </div>
+            </Card.Body>
+          </Accordion.Collapse>
+        </Card>
+      </Accordion>
+      <div className='flex-horizontal justify-content-center '>
         <Button
           divclassName="mr-3"
           variant='round'
