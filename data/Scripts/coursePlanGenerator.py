@@ -13,7 +13,7 @@ TRACKS = {
     'CSE': ['Advanced Project Option', 'Special Project Option', 'Thesis Option', 'Advanced Project Proficiency', 'Special Project Proficiency', 'Thesis Proficiency'],
     'BMI': ['Imaging Informatics With Thesis', 'Imaging Informatics With Project', 'Clinical Informatics With Thesis',
             'Clinical Informatics With Project', 'Translational Bioinformatics With Thesis',
-            'Translational Bioinformatics With Thesis'],
+            'Translational Bioinformatics With Project'],
     'ESE': ['Non-Thesis', 'Thesis']
 }
 
@@ -70,7 +70,9 @@ for i in range(1, len(TRACKS['BMI']) + 1):
     track = BMI_dreq['degree' + str(i)]['track']
     requirements = []
     for req in reqs:
-        if req[0] != '1:(4,4):(,)' and req[0] != '0:(,):(,6)':
+        if req[0] == '2:(,):(6,6)':
+            requirements.append(req[1:])
+        if req[0] != '1:(4,-1):(,)' and req[0] != '0:(,):(,6)':
             requirements.append(req[1:])
     course_req[track] = requirements
 
@@ -79,11 +81,14 @@ for i in range(1, len(TRACKS['CSE']) + 1):
     reqs = CSE_dreq['degree' + str(i)]['courseRequirements']
     track = CSE_dreq['degree' + str(i)]['track']
     if 'proficiency' not in track:
-        track = track + ' Option'
+        track += ' Option'
     requirements = []
     for j in range(len(reqs)):
         req = reqs[j]
-        if req[0] == '2:(2,2):(,)':
+        if req[0] == '2:(1,):(6,9)':
+            for x in range(3):
+                requirements.append(req[1:])
+        elif req[0] == '2:(2,2):(,)':
             requirements.append(['CSE523'])
             requirements.append(['CSE524'])
         elif req[0] != '0:(,):(,6)' and req[0] !='0:(,):(,)':
@@ -100,6 +105,8 @@ for i in range(1, len(TRACKS['ESE']) + 1):
     requirements = []
     for j in range(len(reqs)):
         req = reqs[j]
+        if req[0] == '2:(,):(6,)':
+            requirements.append(req[1:])
         if req[0] != '0:(,):(,6)' and req[0] != '0:(,):(,3)' and req[0] != '0:(,):(,)':
             requirements.append(req[1:])
         if j == 7:
@@ -257,7 +264,7 @@ def add_course_plan_item(requirement, student, semester, year, course_df, GRADES
         course = requirement[i]
         count += 1
         # Skip duplicates
-        if course != 'BMI592' and course != 'AMS532' and course in student['courses']:
+        if course != 'BMI592' and course != 'BMI598' and course != 'CSE599' and course != 'BMI599' and course != 'ESE599' and course != 'AMS532' and course in student['courses']:
             continue
         # Skip if prereqs are not already in course plan
         if not prereq_satisfied(course, student, prereq_df, semester, year):
@@ -300,19 +307,6 @@ for student in students:
                 'TH': [],
                 'F': []
             }
-            # if student['track'] == 'Thesis':
-            #     if semester == 'Spring':
-            #         student['num_courses'][semester + ' ' + str(year)] = 4
-            #     elif i >= 3:
-            #         student['num_courses'][semester + ' ' + str(year)] = 2
-            #     else:
-            #         student['num_courses'][semester + ' ' + str(year)] = 1
-            # elif student['track'] == 'Non-Thesis':
-            #     if semester == 'Spring':
-            #         student['num_courses'][semester + ' ' + str(year)] = 4
-            #     else:
-            #         student['num_courses'][semester + ' ' + str(year)] = 2
-          
             student['num_courses'][semester +' ' + str(year)] = num_courses[-1]
             num_courses.pop()
             if student['degree'] == 'BMI':

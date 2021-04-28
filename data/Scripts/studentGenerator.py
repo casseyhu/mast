@@ -4,7 +4,7 @@ import bcrypt
 import csv
 from pathlib import Path
 
-NUM_STUDENTS = 300
+NUM_STUDENTS = 3000
 
 DEPARTMENTS = ['AMS', 'BMI', 'CSE', 'ESE']
 TRACKS = {
@@ -13,7 +13,7 @@ TRACKS = {
     'CSE': ['Advanced Project', 'Special Project', 'Thesis', 'Advanced Project Proficiency', 'Special Project Proficiency', 'Thesis Proficiency'],
     'BMI': ['Imaging Informatics With Thesis', 'Imaging Informatics With Project', 'Clinical Informatics With Thesis',
             'Clinical Informatics With Project', 'Translational Bioinformatics With Thesis',
-            'Translational Bioinformatics With Thesis'],
+            'Translational Bioinformatics With Project'],
     'ESE': ['Non-Thesis', 'Thesis']
 }
 YEARS = [2018, 2019, 2020, 2021]
@@ -45,7 +45,7 @@ for j in range(NUM_STUDENTS):
     first_name = names.get_first_name()
     last_name = names.get_last_name()
     email = (first_name + last_name + '@stonybrook.edu').lower()
-    dept = DEPARTMENTS[random.randint(0, 4)]
+    dept = DEPARTMENTS[random.randint(0, len(DEPARTMENTS))]
     track = TRACKS[dept][random.randint(0, len(TRACKS[dept]))]
     entry_sem_year = entry_sem_years[random.randint(0, len(entry_sem_years))]
     entry_year = entry_sem_year // 100
@@ -68,7 +68,7 @@ for j in range(NUM_STUDENTS):
 
 student_list.pop(0)
 
-file_name = str(Path(__file__).parent.parent.absolute()) + '/student_profile_file.csv'
+file_name = str(Path(__file__).parent.parent.absolute()) + '/large_student_file.csv'
 print(file_name)
 with open(file_name, 'a+', newline='') as file:
     csv_writer = csv.writer(file)
