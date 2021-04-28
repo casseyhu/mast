@@ -47,15 +47,15 @@ class Student extends Component {
       reqStateMap[req.requirementId] = [req.state, req.metaData]
 
     this.setState({
+      student: studentRes.data,
       studentInfoParams: {
-        student: studentRes.data,
+        // student: studentRes.data,
         coursePlan: coursePlanItems.data,
         requirements: requirements.data,
         requirementStates: reqStateMap
       }
     })
   }
-  // Sets the information for degree for the student
 
   componentDidMount = () => {
     if (this.state.student === 'Invalid')
@@ -65,37 +65,50 @@ class Student extends Component {
     this.setStudentInfo()
   }
 
+  createStudent = (studentInfo) => {
+    /* Add new student into the db */
+    axios.post('/student/create/', {
+      params: studentInfo
+    }).then(response => {
+      this.setState({
+        student: response.data,
+        errorMsg: '',
+        showConfirmation: true
+      }, () => this.setStudentInfo())
+    }).catch((err) => {
+      this.setState({ errorMsg: err.response.data })
+    })
+  }
+
   modeHandler = async (studentInfo) => {
     this.setState({ errorMsg: '' })
-    const { mode, studentInfoParams } = this.state
-    if (mode === 'Add') {
-      /* Add new student into the db */
-      axios.post('/student/create/', {
-        params: studentInfo
-      }).then(response => {
-        this.setState({
-          student: response.data,
-          errorMsg: '',
-          showConfirmation: true
-        }, () => this.setStudentInfo())
-      }).catch(function (err) {
-        this.setState({ errorMsg: err.response.data })
-      })
-    } else if (mode === 'View') {
+    const { mode, student } = this.state
+    if (mode === 'Add')
+      this.createStudent(studentInfo)
+    else if (mode === 'View')
       this.setState({ mode: 'Edit' })
-    } else {
-      let newStudentInfo = await axios.get('/student/' + studentInfoParams.student.sbuId, {
-        params: studentInfoParams.student.sbuId
+    else {
+      // Gets the student's inforation that we have in the database. 
+      let dbStudentInfo = await axios.get('/student/' + student.sbuId, {
+        params: student.sbuId
       })
       let isSame = true
-      Object.keys(newStudentInfo.data).map(info =>
-        newStudentInfo.data[info] !== studentInfoParams.student[info] ? isSame = false : '')
+
+      console.log(dbStudentInfo.data)
+
+      console.log(student)
+
+      console.log(studentInfo)
+
+      Object.keys(dbStudentInfo.data).map(info =>
+        (info === 'updatedAt') ? '' :
+          dbStudentInfo.data[info] !== student[info] ? isSame = false : '')
       // show update error modal if data has been edited by another user
       if (!isSame) {
-        this.setState({ showUpdateError: true })
+        this.setState({ showUpdateError: true }, this.setStudentInfo)
         return
       }
-      let commentBefore = studentInfoParams.student.gpdComments
+      let commentBefore = student.gpdComments
       let commentAfter = studentInfo.gpdComments
       /* Saving student info, UPDATE student in the db*/
       axios.post('/student/update/', {
@@ -103,17 +116,10 @@ class Student extends Component {
       }).then(response => {
         //GPD comment has changed
         if (commentBefore !== commentAfter)
-          this.setState({
-            showEmailBox: true,
-            student: response.data
-          })
+          this.setState({ showEmailBox: true })
         else
-          this.setState({
-            showConfirmation: true,
-            student: response.data
-          })
-      }).catch(function (err) {
-        console.log(err.response.data)
+          this.setState({ showConfirmation: true })
+      }).catch((err) => {
         this.setState({ errorMsg: err.response.data })
       })
     }
@@ -123,7 +129,7 @@ class Student extends Component {
     this.setState({
       showConfirmation: false,
       mode: 'View'
-    })
+    }, this.setStudentInfo)
   }
 
   notify = () => {
@@ -132,7 +138,6 @@ class Student extends Component {
     }, () => {
       axios.post('/email/send/', {
         params: {
-          // email: studentInfoParams.student.email,
           email: 'sooyeon.kim.2@stonybrook.edu',
           subject: 'GPD updated comments',
           text: 'Check GPD\'s comments'
@@ -159,7 +164,7 @@ class Student extends Component {
       if (course.type !== 0)
         requirementState['C' + course.requirementId] = ['unsatisfied', []]
     }
-    console.log(requirementState)
+    // console.log(requirementState)
     this.setState({
       studentInfoParams: {
         coursePlan: [],
@@ -173,18 +178,19 @@ class Student extends Component {
     this.props.history.push({
       pathname: '/courseplan',
       state: {
-        student: this.state.studentInfoParams.student,
+        student: this.state.student,
         coursePlan: this.state.studentInfoParams.coursePlan
       }
     })
   }
 
+
   suggestCoursePlan = () => {
-    console.log('Suggesting course plan for student: ', this.state.studentInfoParams.student)
+    console.log('Suggesting course plan for student: ', this.state.student)
     this.props.history.push({
       pathname: '/suggest',
       state: {
-        // student: this.state.studentInfoParams.student,
+        student: this.state.student,
         // coursePlan: this.state.studentInfoParams.coursePlan,
         studentInfoParams: this.state.studentInfoParams
       }
@@ -192,7 +198,7 @@ class Student extends Component {
   }
 
   render() {
-    const { mode, department, studentInfoParams, errorMsg, visible, showConfirmation, showEmailConf } = this.state
+    const { mode, department, studentInfoParams, errorMsg, visible, showConfirmation, showEmailConf, showUpdateError, showEmailBox } = this.state
     return (
       <Container fluid='lg' className='container' >
         <StudentInfo
@@ -216,20 +222,28 @@ class Student extends Component {
         />
         <CenteredModal
           show={showConfirmation}
-          onHide={() => this.setState({ showConfirmation: false })}
+          onHide={() => {
+            this.setState({ showConfirmation: false })
+          }}
           onConfirm={this.changeMode}
           body='Student successfully saved'
         />
         <CenteredModal
-          show={this.showUpdateError}
-          onHide={() => { this.changeMode(); this.setState({ showUpdateError: false }) }}
-          onConfirm={() => { this.changeMode(); this.setState({ showUpdateError: false }) }}
+          show={showUpdateError}
+          onHide={() => {
+            this.changeMode()
+            this.setState({ showUpdateError: false })
+          }}
+          onConfirm={() => {
+            this.changeMode()
+            this.setState({ showUpdateError: false })
+          }}
           body='Try again later.'
           title='Error'
         />
         <CenteredModal
-          show={this.showEmailBox}
-          onHide={() => this.setState({ showEmailBox: false })}
+          show={showEmailBox}
+          onHide={() => this.setState({ showEmailBox: false, showConfirmation: true })}
           onConfirm={this.notify}
           variant='multi'
           body={
