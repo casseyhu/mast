@@ -73,12 +73,20 @@ class Student extends Component {
       axios.post('/student/create/', {
         params: studentInfo
       }).then(response => {
-        this.setState({
-          student: response.data,
-          errorMsg: '',
-          showConfirmation: true
-        }, () => this.setStudentInfo())
-      }).catch(function (err) {
+        //GPD added a comment
+        if (studentInfo.gpdComments.length)
+          this.setState({ 
+            student: response.data,
+            errorMsg: '',
+            showEmailBox: true 
+          }, () => this.setStudentInfo())
+        else
+          this.setState({
+            student: response.data,
+            errorMsg: '',
+            showConfirmation: true
+          }, () => this.setStudentInfo())
+      }).catch(err => {
         this.setState({ errorMsg: err.response.data })
       })
     } else if (mode === 'View') {
@@ -192,7 +200,7 @@ class Student extends Component {
   }
 
   render() {
-    const { mode, department, studentInfoParams, errorMsg, visible, showConfirmation, showEmailConf } = this.state
+    const { mode, department, studentInfoParams, errorMsg, visible, showConfirmation, showEmailConf, showUpdateError, showEmailBox } = this.state
     return (
       <Container fluid='lg' className='container' >
         <StudentInfo
@@ -221,14 +229,14 @@ class Student extends Component {
           body='Student successfully saved'
         />
         <CenteredModal
-          show={this.showUpdateError}
+          show={showUpdateError}
           onHide={() => { this.changeMode(); this.setState({ showUpdateError: false }) }}
           onConfirm={() => { this.changeMode(); this.setState({ showUpdateError: false }) }}
           body='Try again later.'
           title='Error'
         />
         <CenteredModal
-          show={this.showEmailBox}
+          show={showEmailBox}
           onHide={() => this.setState({ showEmailBox: false })}
           onConfirm={this.notify}
           variant='multi'

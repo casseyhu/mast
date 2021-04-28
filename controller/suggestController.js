@@ -649,7 +649,7 @@ exports.smartSuggest = async (req, res) => {
   // Sort courses by popularity
   let popularCourses = Object.keys(courseCount).sort((c1, c2) => courseCount[c2] - courseCount[c1])
   // Create course nodes
-  const nodesMap = createNodes(courses, courseReqs, new Set(), new Set(), [creditsRemaining, coursesPerSem], popularCourses, takenAndCurrent)
+  const nodesMap = createNodes(courses, courseReqs, [], new Set(), [creditsRemaining, coursesPerSem], popularCourses, takenAndCurrent)
   let nodes = Object.values(nodesMap)
   nodes = sortNodes(nodesMap)
   console.log(nodes)

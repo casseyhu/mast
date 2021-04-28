@@ -38,12 +38,18 @@ textarea {
   transition: background 0.4s, border-radius 0.4s;
 }
 
-.round-button:hover {
+.round-button:hover:enabled {
   background: var(--white);
   color: var(--primary);
   transition: background 0.4s, border-radius 1s;
   border: 2px solid rgba(30, 61, 107, 0.95);
   border-radius: 2rem;
+}
+
+.round-button:disabled {
+  cursor: not-allowed;
+  background-color: #e7e7e7d2 !important;
+  transition: none !important;
 }
 
 .square-button {
