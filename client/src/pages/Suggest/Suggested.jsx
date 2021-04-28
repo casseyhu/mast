@@ -15,7 +15,8 @@ const SuggestedPlans = (props) => {
       <h4 className='underline'>Suggested Course Plans</h4>
       <Accordion className='accordian' defaultActiveKey="0">
         {props.suggestions && props.suggestions.map((coursePlan, key) => (
-          <Card key={key}>
+          < Card key={key} >
+            { console.log(coursePlan)}
             <Accordion.Toggle as={Card.Header} eventKey={`${key}`} style={{ padding: '0.25rem 1.5rem' }}>
               <div className='flex-horizontal justify-content-between'>
                 <div>
@@ -25,7 +26,7 @@ const SuggestedPlans = (props) => {
                     overlay={
                       <Tooltip id='tooltip-right'>
                         {Object.keys(coursePlan)
-                          .map(sem => coursePlan[sem].reduce((a, b) => b.weight + a, 0))
+                          .map(sem => coursePlan[sem].reduce((a, b) => 1 + a, 0))
                           .reduce((a, b) => a + b, 0)} courses and {' '}
                         {Object.keys(coursePlan)
                           .map(sem => coursePlan[sem].reduce((a, b) => b.credits + a, 0))
@@ -75,7 +76,7 @@ const SuggestedPlans = (props) => {
         ))}
       </Accordion>
 
-    </div>
+    </div >
   )
 }
 

@@ -225,6 +225,14 @@ i.fa {
   padding: 0.1rem 0.3rem 0.1rem 0.7rem;
 }
 
+.Spring {
+  background-color: rgba(148, 148, 148, 0.082);
+}
+
+.Fall {
+  background-color: white;
+}
+
 
 /* Media queries CSS */
 @media (max-width: 990px) {

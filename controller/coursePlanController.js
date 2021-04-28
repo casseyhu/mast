@@ -114,17 +114,17 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
       grade: item.grade,
       validity: true
     }
-    let course = ''
     if (deleted === 'true') {
       try {
-        course = await CoursePlanItem.create(values)
+        await CoursePlanItem.create(values)
       } catch (err) {
         console.log(item.department + item.course_num + ' for ' + item.sbu_id + ' Already Created')
       }
     } else {
-      let found = await CoursePlanItem.findOne({ where: condition })
-      if (found)
-        course = await CoursePlanItem.update(values, { where: condition })
+      await updateOrCreate(CoursePlanItem, condition, values, true, false)
+      // let found = await CoursePlanItem.findOne({ where: condition })
+      // if (found)
+      //   await CoursePlanItem.update(values, { where: condition })
     }
   }
   calculateCompletion(studentsPlanId, dept, res)

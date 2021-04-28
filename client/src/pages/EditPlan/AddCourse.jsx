@@ -25,7 +25,7 @@ const AddCourse = (props) => {
       if (!token)
         return
       var decoded = jwt_decode(token)
-      let courses = await axios.get('course/fullDeptCourses', {
+      let courses = await axios.get('/course/', {
         params: {
           dept: decoded.userInfo.department,
         }

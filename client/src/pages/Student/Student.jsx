@@ -9,10 +9,10 @@ import axios from '../../constants/axios'
 class Student extends Component {
   state = {
     showUpdateError: false,
-    errorMsg: '',
     showConfirmation: false,
     showEmailBox: false,
     showEmailConf: false,
+    errorMsg: '',
     visible: 'hidden',
     mode: this.props.location.state ? this.props.location.state.mode : this.props.mode,
     studentInfoParams: {},
@@ -49,7 +49,6 @@ class Student extends Component {
     this.setState({
       student: studentRes.data,
       studentInfoParams: {
-        // student: studentRes.data,
         coursePlan: coursePlanItems.data,
         requirements: requirements.data,
         requirementStates: reqStateMap
@@ -93,13 +92,6 @@ class Student extends Component {
         params: student.sbuId
       })
       let isSame = true
-
-      console.log(dbStudentInfo.data)
-
-      console.log(student)
-
-      console.log(studentInfo)
-
       Object.keys(dbStudentInfo.data).map(info =>
         (info === 'updatedAt') ? '' :
           dbStudentInfo.data[info] !== student[info] ? isSame = false : '')
@@ -191,7 +183,6 @@ class Student extends Component {
       pathname: '/suggest',
       state: {
         student: this.state.student,
-        // coursePlan: this.state.studentInfoParams.coursePlan,
         studentInfoParams: this.state.studentInfoParams
       }
     })
