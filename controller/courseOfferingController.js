@@ -2,7 +2,8 @@ const Papa = require('papaparse')
 const fs = require('fs')
 const IncomingForm = require('formidable').IncomingForm
 const moment = require('moment')
-const shared = require('./shared')
+const { currSem, currYear } = require('./constants')
+const { getDepartmentalCourses, checkTimeConflict } = require('./shared')
 const database = require('../config/database.js')
 
 const Op = database.Sequelize.Op
@@ -18,7 +19,7 @@ const Student = database.Student
  * for and a CSV file containing a list of course offerings
  * @param {*} res
  */
-exports.upload = (req, res) => {
+exports.upload = async (req, res) => {
   // console.log(req.query.department)
   let form = new IncomingForm()
   let dept = ''
@@ -50,16 +51,13 @@ exports.upload = (req, res) => {
             res.status(500).send('Cannot parse CSV file - headers do not match specifications')
             return
           }
-          let courses = []
-          let exceptionDepts = ['AMS', 'CHE', 'JRN', 'MEC', 'MCB', 'PHY']
-          if (dept === 'AMS') {
-            courses = results.data.filter(course => exceptionDepts.includes(course.department))
-            dept = exceptionDepts
-          } else {
-            courses = results.data.filter(course => course.department === dept)
-            dept = [dept]
-          }
-          uploadCourses(courses, res, dept)
+          getDepartmentalCourses([dept], currSem, currYear)
+            .then(([exceptionDepts, exceptions]) => {
+              let courses = []
+              courses = results.data.filter(course => course.department === dept || exceptions.includes(course.department + course.course_num))
+              exceptionDepts.push(dept)
+              uploadCourses(courses, res, exceptionDepts)
+            })
         }
       })
     })
@@ -141,7 +139,7 @@ async function uploadCourses(results, res, dept) {
         for (let l = k + 1; l < toCheck.length; l++) {
           let invalidCourses = []
           // If the 2 courses have a conflict, update the validity of the courses
-          if (shared.checkTimeConflict(toCheck[k], toCheck[l], invalidCourses)) {
+          if (checkTimeConflict(toCheck[k], toCheck[l], invalidCourses)) {
             // Mark first conflicting course plan item to invalid
             await CoursePlanItem.update({ validity: false }, {
               where: {

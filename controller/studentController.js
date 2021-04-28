@@ -3,25 +3,18 @@ const fs = require('fs')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Papa = require('papaparse')
-const shared = require('./shared')
+const { SEMDICT } = require('./constants')
+const { updateOrCreate, findRequirements } = require('./shared')
 const coursePlanController = require('./coursePlanController')
 const database = require('../config/database.js')
 const Op = database.Sequelize.Op
 
 const Student = database.Student
-const Course = database.Course
 const CoursePlan = database.CoursePlan
 const CoursePlanItem = database.CoursePlanItem
 
 const Degree = database.Degree
 const RequirementState = database.RequirementState
-
-const semDict = {
-  'Fall': '08',
-  'Spring': '02',
-  'Winter': '01',
-  'Summer': '05'
-}
 
 
 /**
@@ -36,7 +29,7 @@ exports.create = (req, res) => {
     res.status(500).send(errMsg)
     return
   }
-  let requirementVersion = Number(student.degreeYear + semDict[student.degreeSem])
+  let requirementVersion = Number(student.degreeYear + SEMDICT[student.degreeSem])
   Degree
     .findOne({
       where: {
@@ -69,7 +62,7 @@ exports.update = async (req, res) => {
     res.status(500).send(errMsg)
     return
   }
-  let requirementVersion = Number(student.degreeYear) * 100 + Number(semDict[student.degreeSem])
+  let requirementVersion = Number(student.degreeYear + SEMDICT[student.degreeSem])
   try {
     const degree = await Degree.findOne({
       where: {
@@ -92,11 +85,10 @@ exports.update = async (req, res) => {
       email: student.email,
       firstName: student.firstName,
       lastName: student.lastName,
-      // password: student.password,
       gpa: student.gpa,
       entrySem: student.entrySem,
       entryYear: Number(student.entryYear),
-      entrySemYear: Number(student.entryYear.concat(semDict[student.entrySem])),
+      entrySemYear: Number(student.entryYear.concat(SEMDICT[student.entrySem])),
       gradSem: student.gradSem,
       gradYear: Number(student.gradYear),
       department: student.dept,
@@ -108,21 +100,17 @@ exports.update = async (req, res) => {
       studentComments: student.studentComments
     }
     // Update the student
-    let result = await Student.update(value, {
+    await Student.update(value, {
       where: {
         sbuId: student.sbuId
       }
     })
-
-    // 
+    // Recalculate completion
     await RequirementState.destroy({ where: { sbuId: student.sbuId } })
     let coursePlan = await CoursePlan.findOne({ where: { studentId: student.sbuId } })
     let studentsPlanId = {}
     studentsPlanId[student.sbuId] = coursePlan.coursePlanId
-    const courses = await Course.findAll({ where: { department: student.dept } })
-    let credits = {}
-    courses.forEach(course => credits[course.courseId] = course.credits)
-    await coursePlanController.changeCompletion(studentsPlanId, credits, null)
+    await coursePlanController.changeCompletion(studentsPlanId, student.dept, null)
     const updatedStudent = await Student.findOne({
       where: {
         sbuId: student.sbuId
@@ -450,9 +438,9 @@ async function uploadStudents(students, res) {
   let tot = 0
   for (let i = 0; i < students.length; i++) {
     studentInfo = students[i]
-    let semYear = Number(studentInfo.entry_year + semDict[studentInfo.entry_semester])
-    let graduated = Number(studentInfo.graduation_year + semDict[studentInfo.graduation_semester]) <= currentGradYear ? 1 : 0
-    let requirementVersion = Number(studentInfo.requirement_version_year) * 100 + Number(semDict[studentInfo.requirement_version_semester])
+    let semYear = Number(studentInfo.entry_year + SEMDICT[studentInfo.entry_semester])
+    let graduated = Number(studentInfo.graduation_year + SEMDICT[studentInfo.graduation_semester]) <= currentGradYear ? 1 : 0
+    let requirementVersion = Number(studentInfo.requirement_version_year + SEMDICT[studentInfo.requirement_version_semester])
     let values = {
       sbuId: studentInfo.sbu_id,
       firstName: studentInfo.first_name,
@@ -478,18 +466,13 @@ async function uploadStudents(students, res) {
       studentComments: ''
     }
     tot += 1
-    let found = await Student.findOne({ where: { sbuId: studentInfo.sbu_id } })
-    if (found)
-      await found.update(values)
-    else
-      await Student.create(values)
-    found = await CoursePlan.findOne({ where: { studentId: studentInfo.sbu_id } })
-    if (!found)
-      await CoursePlan.create({
-        studentId: studentInfo.sbu_id,
-        coursePlanComplete: false,
-        coursePlanValid: false
-      })
+    await updateOrCreate(Student, { sbuId: studentInfo.sbu_id }, values, true, true)
+    values = {
+      studentId: studentInfo.sbu_id,
+      coursePlanComplete: false,
+      coursePlanValid: false
+    }
+    await updateOrCreate(CoursePlan, { studentId: studentInfo.sbu_id }, values, false, true)
   }
   console.log('Done importing ' + tot + ' students from csv')
   res.status(200).send('Success')
@@ -504,9 +487,9 @@ async function uploadStudents(students, res) {
  */
 function checkFields(student, res) {
   // Check for valid graduation date. If EntryDate == GradDate, it's valid for now.
-  let gradDate = Number(student.gradYear + semDict[student.gradSem])
-  let entryDate = Number(student.entryYear + semDict[student.entrySem])
-  let degreeVersion = Number(student.degreeYear + semDict[student.degreeSem])
+  let gradDate = Number(student.gradYear + SEMDICT[student.gradSem])
+  let entryDate = Number(student.entryYear + SEMDICT[student.entrySem])
+  let degreeVersion = Number(student.degreeYear + SEMDICT[student.degreeSem])
   if (gradDate < entryDate) {
     res.status(500).send('Graduation date cannot be earlier than entry date.')
     return false
@@ -552,7 +535,7 @@ async function addStudent(student, degree, res) {
 
   // Get number of degree requirements and set initial state of each requirement to unsatisfied
   let requiredRequirements = []
-  const [gradeReq, gpaReq, creditReq, courseReq] = await shared.findRequirements(degree)
+  const [gradeReq, gpaReq, creditReq, courseReq] = await findRequirements(degree)
   if (gradeReq)
     requiredRequirements.push('GR' + gradeReq.requirementId)
   if (gpaReq)
@@ -573,7 +556,7 @@ async function addStudent(student, degree, res) {
     gpa: null,
     entrySem: student.entrySem,
     entryYear: Number(student.entryYear),
-    entrySemYear: Number(student.entryYear.concat(semDict[student.entrySem])),
+    entrySemYear: Number(student.entryYear.concat(SEMDICT[student.entrySem])),
     gradSem: student.gradSem,
     gradYear: Number(student.gradYear),
     department: student.dept,

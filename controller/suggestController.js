@@ -1,4 +1,5 @@
-const { GRADES, SEMTONUM, NUMTOSEM, currSem, currYear, findRequirements, findCoursePlanItems, checkTimeConflict } = require('./shared')
+const { GRADES, SEMTONUM, NUMTOSEM, currSem, currYear } = require('./constants')
+const { findRequirements, findCoursePlanItems, checkTimeConflict } = require('./shared')
 const database = require('../config/database.js')
 
 const Degree = database.Degree
@@ -146,16 +147,16 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
         }
         // Student has passed / currently taking the course
         else {
-          if (requirement.courseLower)
-            requirement.courseLower -= 1
-          if (requirement.creditLower)
-            requirement.creditLower -= courses[course].credits
           // Course cannot be counted for multiple requirements
-          if (requirement.type === 0 || (requirement.courseLower !== null && requirement.courseLower >= 0)
-            || (requirement.creditLower !== null && requirement.creditLower >= 0)) {
+          if (requirement.type === 0 || (requirement.courseLower !== null && requirement.courseLower > 0)
+            || (requirement.creditLower !== null && requirement.creditLower > 0)) {
             creditsCounter += courses[course].credits
             used.push(course)
           }
+          if (requirement.courseLower !== null)
+            requirement.courseLower -= 1
+          if (requirement.creditLower !== null)
+            requirement.creditLower -= courses[course].credits
         }
       }
     }
@@ -244,6 +245,7 @@ function createNodes(courses, courseReq, preferred, avoid, [creditsRemaining, co
       }
       if (course === 'BMI592')
         continue
+      // || !courses[course]
       courses[course].prereqs = courses[course].prereqs.map(prereq => prereq.replace(' ', ''))
       const weight = preferenceMap[course] ? preferenceMap[course] : (avoid.has(course) ? -1 : (popularCourses.includes(course) ? 2 : 1))
       // Repeat course multiple times
@@ -303,7 +305,7 @@ function sortNodes(nodesMap) {
     let queue = [course]
     while (queue.length > 0) {
       let popped = queue.shift()
-      if (popped.prereqs[0] === '')
+      if (!nodesMap[popped] || popped.prereqs[0] === '')
         continue
       for (let i = 0; i < popped.prereqs.length; i++) {
         let prereq = popped.prereqs[i]
@@ -353,8 +355,10 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
       // email student for extended grad date
       if (suggestions[currSemyear] && department === 'BMI') {
         const creditsInPlan = suggestions[currSemyear].reduce((a, b) => b.credits + a, 0)
-        if (creditsInPlan >= 12)
+        if (creditsInPlan >= 12) {
           suggestions[currSemyear].push(rnodes[0])
+          creditsRemaining -= rnodes[0].credits
+        }
       }
       break
     }
@@ -362,8 +366,10 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
     if (num_iterations % 80 === 0 || !currCourse || currCoursesCount >= coursesPerSem) {
       if (suggestions[currSemyear] && department === 'BMI') {
         const creditsInPlan = suggestions[currSemyear].reduce((a, b) => b.credits + a, 0)
-        if (creditsInPlan >= 12)
+        if (creditsInPlan >= 12) {
           suggestions[currSemyear].push(rnodes[0])
+          creditsRemaining -= rnodes[0].credits
+        }
       }
       currSemyear = getNextSem(currSemyear)
       semester = NUMTOSEM[currSemyear % 100]
@@ -457,6 +463,9 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
       // First course to add when course offering exists
       else {
         suggestions[currSemyear] = [currCourse]
+        let courseAList = currSemOfferings[currCourse.course]
+        shuffle(courseAList)
+        currCourse.section = courseAList[0].section
         added = true
       }
     }
@@ -508,7 +517,6 @@ function inTimePreference(course, preferredTime) {
     }
   }
   // If the course has no specific startTime & endTime, or course in range
-  console.log("good")
   return true
 }
 

@@ -1,5 +1,6 @@
 const database = require('../config/database.js')
-
+const constants = require('./constants.js')
+const Degree = database.Degree
 const GradeRequirement = database.GradeRequirement
 const GpaRequirement = database.GpaRequirement
 const CreditRequirement = database.CreditRequirement
@@ -7,34 +8,6 @@ const CourseRequirement = database.CourseRequirement
 
 const CoursePlan = database.CoursePlan
 const CoursePlanItem = database.CoursePlanItem
-
-exports.currSem = 'Spring'
-exports.currYear = 2021
-
-exports.GRADES = {
-  'A': 4,
-  'A-': 3.67,
-  'B+': 3.33,
-  'B': 3,
-  'B-': 2.67,
-  'C+': 2.33,
-  'C': 2,
-  'C-': 1.67,
-  'F': 0
-}
-exports.SEMTONUM = {
-  'Fall': 8,
-  'Spring': 2,
-  'Winter': 1,
-  'Summer': 5
-}
-exports.NUMTOSEM = {
-  8: 'Fall',
-  2: 'Spring',
-  1: 'Winter',
-  5: 'Summer'
-}
-
 
 /**
  * Checks if two course offerings have a conflict in day and time.
@@ -121,4 +94,45 @@ exports.findCoursePlanItems = async (sbuId) => {
     }
   })
   return items
+}
+
+
+/**
+ * Updates or creates a new entry in a database table.
+ * @param {Model} model The database table to use
+ * @param {Map<String, Object>} condition Condition to find by
+ * @param {Map<String, Object>} values Values to update or create
+ * @param {Boolean} update Update if it exists?
+ * @param {Boolean} create Create if it doesnt exist?
+ */
+exports.updateOrCreate = async (model, condition, values, update, create) => {
+  let found = await model.findOne({ where: condition })
+  if (found && update)
+    await found.update(values)
+  else if (!found && create)
+    await model.create(values)
+}
+
+
+exports.getDepartmentalCourses = async (depts, semester, year) => {
+  let degrees = await Degree.findAll({
+    where: {
+      dept: depts,
+      requirementVersion: year * 100 + constants.SEMTONUM[semester]
+    }
+  })
+  console.log('depts:' + depts + year * 100 + constants.SEMTONUM[semester])
+  let courseRequirements = await CourseRequirement.findAll({
+    where: {
+      requirementId: degrees.reduce((a, b) => b.courseRequirement.concat(a), [])
+    }
+  })
+
+  let exceptions = new Set(courseRequirements
+    .reduce((a, b) => b.courses.filter(course => course && !(depts.includes(course.substring(0, 3))))
+      .concat(a), []))
+  exceptions = Array.from(exceptions)
+  let exceptionDepts = new Set(exceptions.map(course => course.substring(0, 3)))
+  exceptionDepts = Array.from(exceptionDepts)
+  return [exceptionDepts, exceptions]
 }

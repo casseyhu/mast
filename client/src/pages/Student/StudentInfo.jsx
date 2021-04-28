@@ -9,8 +9,9 @@ import axios from '../../constants/axios'
 const StudentInfo = (props) => {
   const history = useHistory()
   const [userInfo, setUserInfo] = useState({})
+  const [errorMessage, setErrorMessage] = useState(props.errorMessage)
 
-  let { student, mode, department, errorMessage, userType, setDegreeReq, onSubmit } = props
+  let { student, mode, department, userType, setDegreeReq, onSubmit } = props
 
   const handleSelection = (name, e) => {
     setUserInfo(prevState => ({
@@ -45,9 +46,9 @@ const StudentInfo = (props) => {
 
   useEffect(() => {
     if (!student && userInfo.track && userInfo.degreeSem && userInfo.degreeYear) {
-      // console.log(userInfo['dept'] , userInfo['track'] , userInfo['degreeSem'] , userInfo['degreeYear'])
+      console.log(userInfo['dept'], userInfo['track'], userInfo['degreeSem'], userInfo['degreeYear'])
       console.log('Degree information sufficient. Querying backend to get this degree information.')
-      axios.get('/newStudentRequirements/', {
+      axios.get('/requirements/', {
         params: {
           department: department,
           track: userInfo.track,
@@ -55,7 +56,8 @@ const StudentInfo = (props) => {
         }
       }).then(results => {
         setDegreeReq(results.data)
-      })
+        setErrorMessage()
+      }).catch(err => setErrorMessage(err.response.data))
     }
   }, [student, department, userInfo.track, userInfo.degreeSem, userInfo.degreeYear, setDegreeReq])
 
