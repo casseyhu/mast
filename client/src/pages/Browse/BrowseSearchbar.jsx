@@ -25,7 +25,6 @@ const BrowseSearchbar = (props) => {
       ...prevState,
       [name]: e.value
     }))
-    console.log(filters)
   }
 
   const applyFilters = (e) => {

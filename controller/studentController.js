@@ -65,6 +65,7 @@ exports.create = (req, res) => {
 exports.update = async (req, res) => {
   const student = req.body.params
   if (emptyFields(student)) {
+    console.log('Fields are empty')
     let errMsg = 'Error in updating student. Please check that all necessary student information are filled out.'
     res.status(500).send(errMsg)
     return
@@ -130,6 +131,7 @@ exports.update = async (req, res) => {
     })
     res.status(200).send(updatedStudent)
   } catch (err) {
+    console.log(err)
     errMsg = 'Error in updating student. Please check student information type (i.e. SBUID must be numbers 0-9).'
     if (err.parent && err.parent.code !== undefined && err.parent.code === 'ER_DUP_ENTRY')
       errMsg = 'Student with ID: ' + student.sbuId + ' exists already.'

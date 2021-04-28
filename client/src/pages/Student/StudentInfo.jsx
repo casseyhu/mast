@@ -45,8 +45,6 @@ const StudentInfo = (props) => {
 
   useEffect(() => {
     if (!student && userInfo.track && userInfo.degreeSem && userInfo.degreeYear) {
-      // console.log(userInfo['dept'] , userInfo['track'] , userInfo['degreeSem'] , userInfo['degreeYear'])
-      console.log('Degree information sufficient. Querying backend to get this degree information.')
       axios.get('/newStudentRequirements/', {
         params: {
           department: department,
