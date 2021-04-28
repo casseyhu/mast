@@ -1,8 +1,8 @@
 {
-    "degree1": { 
-        "dept": "CSE",
+    "degree1": {
+        "dept": "BMI",
         "track": "Computational Applied Mathematics",
-        "requirementVersion": 201808, 
+        "requirementVersion": 201808,
         "gradeRequirement": {
             "atLeastCredits": 18,
             "minGrade": 3.0
@@ -13,14 +13,14 @@
             "deptGpa": null,
             "coreGpa": 3.0
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "AMS501"]
-        ]   
-    }, 
-    "degree2": { 
+        ]
+    },
+    "degree2": {
         "dept": "Fake Department",
         "track": "Computational Applied Mathematics",
-        "requirementVersion": 201808, 
+        "requirementVersion": 201808,
         "gradeRequirement": {
             "atLeastCredits": 18,
             "minGrade": 3.0
@@ -31,8 +31,8 @@
             "deptGpa": null,
             "coreGpa": 3.0
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "AMS501"]
-        ]   
+        ]
     }
 }

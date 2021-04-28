@@ -1,6 +1,6 @@
 const { IncomingForm } = require('formidable')
 const fs = require('fs')
-const shared = require('./shared')
+const { findRequirements } = require('./shared')
 const database = require('../config/database.js')
 
 const Degree = database.Degree
@@ -64,36 +64,17 @@ exports.upload = (req, res) => {
  * @param {*} res 
  */
 exports.findRequirements = async (req, res) => {
-  const degree = await Degree.findOne({
-    where: {
-      dept: req.query.department,
-      track: req.query.track,
-      degreeId: req.query.degreeId
-    }
-  })
-  const results = await shared.findRequirements(degree)
-  if (results.length === [])
-    res.status(500).send('Could not find degree requirement version.')
-  else
-    res.status(200).send(results)
-}
-
-
-/**
- * Finds all degree requirements for a given department, track, and requirementVersion.
- * @param {*} req Contains parameters for department, track, and requirementVersion
- * @param {*} res 
- */
-exports.newStudentRequirements = async (req, res) => {
-  const degree = await Degree.findOne({
-    where: {
-      dept: req.query.department,
-      track: req.query.track,
-      requirementVersion: req.query.reqVersion
-    }
-  })
-  const results = await shared.findRequirements(degree)
-  if (results.length === [])
+  let condition = {
+    dept: req.query.department,
+    track: req.query.track,
+  }
+  if (req.query.reqVersion)
+    condition['requirementVersion'] = req.query.reqVersion
+  if (req.query.degreeId)
+    condition['degreeId'] = req.query.degreeId
+  const degree = await Degree.findOne({ where: condition })
+  const results = await findRequirements(degree)
+  if (results.length === 0)
     res.status(500).send('Could not find degree requirement version.')
   else
     res.status(200).send(results)

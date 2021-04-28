@@ -59,7 +59,7 @@ class App extends Component {
           {!type && <Route exact path='/' component={(props) => <MainPage {...props} setLoggedIn={this.setLoggedIn} />} />}
           {type === 'gpd' && <Route exact path='/' component={(props) => <Browse {...props} user={user} />} />}
 
-          {type === 'student' && <Route exact path='/' component={(props) => <Student {...props} mode='View' type={type} student={user} />} />}
+          {type === 'student' && <Route exact path='/' component={(props) => <Student {...props} mode='View' type={type} student={user} department={user.department} />} />}
           {type === 'gpd' && <Route path='/student' component={(props) => <Student {...props} mode='View' type={type} />} />}
 
           {type === 'gpd' && <Route path='/trends' component={(props) => <Trends {...props} dept={user.department} />} />}

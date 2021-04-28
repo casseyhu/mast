@@ -1,9 +1,8 @@
-
 {
     "degree1": {
         "dept": "BMI",
         "track": "Imaging Informatics With Thesis",
-        "requirementVersion": 201808, 
+        "requirementVersion": 201808,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -11,7 +10,7 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
@@ -22,13 +21,13 @@
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree2": {
         "dept": "BMI",
         "track": "Imaging Informatics With Project",
-        "requirementVersion": 201808, 
+        "requirementVersion": 201808,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -36,7 +35,7 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
@@ -47,13 +46,13 @@
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree3": {
         "dept": "BMI",
         "track": "Clinical Informatics With Thesis",
-        "requirementVersion": 201808, 
+        "requirementVersion": 201808,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -61,7 +60,7 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
@@ -71,13 +70,13 @@
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree4": {
         "dept": "BMI",
         "track": "Clinical Informatics With Project",
-        "requirementVersion": 201808, 
+        "requirementVersion": 201808,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -85,7 +84,7 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
@@ -95,13 +94,13 @@
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree5": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Thesis",
-        "requirementVersion": 201808, 
+        "requirementVersion": 201808,
         "gradeRequirement": null,
         "creditRequirement": 21,
         "gpaRequirements": {
@@ -109,7 +108,7 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
@@ -119,13 +118,13 @@
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     },
     "degree6": {
         "dept": "BMI",
         "track": "Translational Bioinformatics With Project",
-        "requirementVersion": 201808, 
+        "requirementVersion": 201808,
         "gradeRequirement": null,
         "creditRequirement": 30,
         "gpaRequirements": {
@@ -133,7 +132,7 @@
             "deptGpa": null,
             "coreGpa": null
         },
-        "courseRequirements": [ 
+        "courseRequirements": [
             ["1:(1,1):(,)", "BMI501"],
             ["1:(1,1):(,)", "BMI502", "BMI503"],
             ["1:(1,1):(,)", "BMI540"],
@@ -143,8 +142,8 @@
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
-        ]   
+            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691", "BMI695", "BMI696"]
+        ]
     }
 
 }
