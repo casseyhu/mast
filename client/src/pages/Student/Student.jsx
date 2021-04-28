@@ -93,6 +93,13 @@ class Student extends Component {
         params: student.sbuId
       })
       let isSame = true
+
+      console.log(dbStudentInfo.data)
+
+      console.log(student)
+
+      console.log(studentInfo)
+
       Object.keys(dbStudentInfo.data).map(info =>
         (info === 'updatedAt') ? '' :
           dbStudentInfo.data[info] !== student[info] ? isSame = false : '')
@@ -109,15 +116,9 @@ class Student extends Component {
       }).then(response => {
         //GPD comment has changed
         if (commentBefore !== commentAfter)
-          this.setState({
-            showEmailBox: true,
-            student: response.data
-          })
+          this.setState({ showEmailBox: true })
         else
-          this.setState({
-            showConfirmation: true,
-            student: response.data
-          })
+          this.setState({ showConfirmation: true })
       }).catch((err) => {
         this.setState({ errorMsg: err.response.data })
       })
@@ -128,7 +129,7 @@ class Student extends Component {
     this.setState({
       showConfirmation: false,
       mode: 'View'
-    })
+    }, this.setStudentInfo)
   }
 
   notify = () => {
@@ -183,13 +184,6 @@ class Student extends Component {
     })
   }
 
-  reloadStudent = async () => {
-    const { student } = this.state
-    let dbStudentInfo = await axios.get('/student/' + student.sbuId, {
-      params: student.sbuId
-    })
-    this.setState({ student : dbStudentInfo.data })
-  }
 
   suggestCoursePlan = () => {
     console.log('Suggesting course plan for student: ', this.state.student)
