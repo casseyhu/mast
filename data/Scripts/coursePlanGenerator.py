@@ -55,10 +55,6 @@ for i in range(1, len(TRACKS['AMS']) + 1):
         for i in range(len(reqs)):
             if i < 2 or i > 7:
                 requirements.append(reqs[i][1:])
-    # elif track == 'Operations Research':
-    #     for i in range(len(reqs)):
-    #         if i != 0 and i != 3:
-    #             requirements.append(reqs[i][1:])
     else:
         for req in reqs:
             requirements.append(req[1:])
@@ -122,7 +118,7 @@ prereq_df = prereq_df[prereq_df['prereqs'].notna()]
 
 # Get all students and their relevant information from student_profile_file.csv
 students = []
-profile_df = pd.read_csv(path + '\Students\student_profile_file.csv')
+profile_df = pd.read_csv(path + '\Students\large_profile_file.csv')
 df = profile_df
 for ind in df.index:
     track = df['track'][ind]
@@ -263,9 +259,19 @@ def add_course_plan_item(requirement, student, semester, year, course_df, GRADES
     for i in range(len(requirement)):
         course = requirement[i]
         count += 1
-        # Skip duplicates
-        if course != 'BMI592' and course != 'BMI598' and course != 'CSE599' and course != 'BMI599' and course != 'ESE599' and course != 'AMS532' and course in student['courses']:
-            continue
+        if course in student['courses']:
+            # Skip duplicates in course plan
+            if course != 'BMI592' and course != 'BMI598' and course != 'CSE599' and course != 'BMI599' and course != 'ESE599' and course != 'AMS532':
+                continue
+            cp = student['course_plan'].split('\n')
+            # Skip duplicates in current semesters for repeat courses
+            skip = False
+            for item in cp:
+                if course[:3] in item and ',' + course[3:] + ',' in item and semester in item and ',' + str(year) in item:
+                    skip = True
+                    break
+            if skip:
+                continue
         # Skip if prereqs are not already in course plan
         if not prereq_satisfied(course, student, prereq_df, semester, year):
             continue

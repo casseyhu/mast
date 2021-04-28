@@ -64,26 +64,33 @@ class Student extends Component {
     this.setStudentInfo()
   }
 
-  createStudent = (studentInfo) => {
+  createStudent = (studentInfo, commentAdded) => {
     /* Add new student into the db */
     axios.post('/student/create/', {
       params: studentInfo
     }).then(response => {
+      let field = commentAdded ? 'showEmailBox' : 'showConfirmation'
       this.setState({
         student: response.data,
         errorMsg: '',
-        showConfirmation: true
+        [field]: true
       }, () => this.setStudentInfo())
     }).catch((err) => {
       this.setState({ errorMsg: err.response.data })
+      console.log(err.response.data)
     })
   }
 
   modeHandler = async (studentInfo) => {
     this.setState({ errorMsg: '' })
     const { mode, student } = this.state
-    if (mode === 'Add')
-      this.createStudent(studentInfo)
+    if (mode === 'Add') {
+      // GPD added a comment
+      if (studentInfo.gpdComments.length)
+        this.createStudent(studentInfo, true)
+      else
+        this.createStudent(studentInfo, false)
+    }
     else if (mode === 'View')
       this.setState({ mode: 'Edit' })
     else {
