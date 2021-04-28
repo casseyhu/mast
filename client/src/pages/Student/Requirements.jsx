@@ -105,7 +105,7 @@ const Requirements = (props) => {
       </div>
 
       {display && <div className='flex-vertical' style={{ width: '100%' }}>
-        {console.log('Display is true now, requirements are: ', requirements)}
+        {/* {console.log('Display is true now, requirements are: ', requirements)} */}
         {requirements[1] && (
           <div className={getReqColor('G', requirements[1])}>
             Minimum Cumulative GPA:

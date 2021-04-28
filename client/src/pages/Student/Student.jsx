@@ -101,12 +101,17 @@ class Student extends Component {
       axios.post('/student/update/', {
         params: studentInfo
       }).then(response => {
-        this.setState(prevState => ({ studentInfoParams: { ...prevState, student: response.data } }))
         //GPD comment has changed
         if (commentBefore !== commentAfter)
-          this.setState({ showEmailBox: true })
+          this.setState({
+            showEmailBox: true,
+            student: response.data
+          })
         else
-          this.setState({ showConfirmation: true })
+          this.setState({
+            showConfirmation: true,
+            student: response.data
+          })
       }).catch(function (err) {
         console.log(err.response.data)
         this.setState({ errorMsg: err.response.data })
@@ -194,7 +199,7 @@ class Student extends Component {
           mode={mode}
           errorMessage={errorMsg}
           userType={this.props.type}
-          student={studentInfoParams.student}
+          student={this.state.student}
           department={department}
           onSubmit={(e) => this.modeHandler(e)}
           setDegreeReq={this.showDegree}
