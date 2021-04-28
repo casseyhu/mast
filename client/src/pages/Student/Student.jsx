@@ -21,12 +21,14 @@ class Student extends Component {
   }
 
   setStudentInfo = async () => {
+    console.log('set')
     const { student, department } = this.state
     if (department === '')
       return
     let studentRes = await axios.get('/student/' + student.sbuId, {
       params: { sbuId: student.sbuId }
     })
+    console.log(studentRes)
     let coursePlanItems = await axios.get('/courseplanitem/findItems/', {
       params: {
         sbuId: student.sbuId
@@ -47,6 +49,7 @@ class Student extends Component {
       reqStateMap[req.requirementId] = [req.state, req.metaData]
 
     this.setState({
+      student: studentRes.data,
       studentInfoParams: {
         student: studentRes.data,
         coursePlan: coursePlanItems.data,
@@ -101,14 +104,18 @@ class Student extends Component {
       axios.post('/student/update/', {
         params: studentInfo
       }).then(response => {
-        this.setState(prevState => ({ studentInfoParams: { ...prevState.studentInfoParams, student: response.data } }), this.setStudentInfo)
         //GPD comment has changed
-        if (commentBefore !== commentAfter) {
-          this.setState({ showEmailBox: true })
-        }
+        if (commentBefore !== commentAfter)
+          this.setState({
+            showEmailBox: true,
+            student: response.data
+          }, this.setStudentInfo)
         else
-          this.setState({ showConfirmation: true })
-      }).catch((err) => {
+          this.setState({
+            student: response.data,
+            showConfirmation: true,
+          }, this.setStudentInfo)
+      }).catch(function (err) {
         console.log(err.response.data)
         this.setState({ errorMsg: err.response.data })
       })
@@ -188,14 +195,14 @@ class Student extends Component {
   }
 
   render() {
-    const { mode, department, studentInfoParams, errorMsg, visible, showConfirmation, showEmailConf } = this.state
+    const { mode, department, studentInfoParams, errorMsg, visible, showConfirmation, showEmailConf, showUpdateError, showEmailBox } = this.state
     return (
       <Container fluid='lg' className='container' >
         <StudentInfo
           mode={mode}
           errorMessage={errorMsg}
           userType={this.props.type}
-          student={studentInfoParams.student}
+          student={this.state.student}
           department={department}
           onSubmit={(e) => this.modeHandler(e)}
           setDegreeReq={this.showDegree}
@@ -211,20 +218,20 @@ class Student extends Component {
           suggestCoursePlan={this.suggestCoursePlan}
         />
         <CenteredModal
-          show={this.state.showConfirmation}
+          show={showConfirmation}
           onHide={() => this.setState({ showConfirmation: false })}
           onConfirm={this.changeMode}
           body='Student successfully saved'
         />
         <CenteredModal
-          show={this.state.showUpdateError}
+          show={showUpdateError}
           onHide={() => { this.changeMode(); this.setState({ showUpdateError: false }) }}
           onConfirm={() => { this.changeMode(); this.setState({ showUpdateError: false }) }}
           body='Try again later.'
           title='Error'
         />
         <CenteredModal
-          show={this.state.showEmailBox}
+          show={showEmailBox}
           onHide={() => this.setState({ showEmailBox: false })}
           onConfirm={this.notify}
           variant='multi'

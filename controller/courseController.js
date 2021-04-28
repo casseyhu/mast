@@ -145,16 +145,7 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
   exceptions.forEach(exceptionCourse => exceptionDepts.add(exceptionCourse.substring(0, 3)))
   exceptionDepts = Array.from(exceptionDepts)
   console.log(exceptionDepts, exceptions)
-  // console.log(exceptions, exceptionDepts)
-  // let exceptions = ['CHE541', 'CHE523', 'CHE528', 'JRN565', 'MEC539', 'MCB520', 'PHY558', 'ESE533', 'CSE529']
-  // if (depts.includes('ESE')) {
-  //   exceptionDepts = ['CSE']
-  //   exceptions = ['CSE506', 'CSE526', 'CSE548']
-  // }
-  // if (depts.includes('AMS')) {
-  //   exceptionDepts = ['CHE', 'JRN', 'MEC', 'MCB', 'PHY', 'CSE', 'ESE']
-  //   exceptions = exceptions.concat(['CHE541', 'JRN565', 'MEC539', 'MCB520', 'PHY558', 'ESE533', 'CSE529', 'CHE523', 'CHE528', 'MEC651'])
-  // }
+
   pdfExtract.extract(filePath, options, async (err, data) => {
     if (err) {
       res.status(500).send('Error parsing pdf file')
@@ -313,13 +304,12 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
                   minCredits = creditInfo[0]
                   maxCredits = creditInfo[1]
                 }
-                else if(!isNaN(parseInt(creds))) {
+                else if (!isNaN(parseInt(creds))) {
                   minCredits = creds
                   maxCredits = creds
                 }
-                else {
+                else
                   creds = ''
-                }
               }
               if (creds === '') {
                 minCredits = 3
@@ -466,18 +456,21 @@ const insertUpdate = async (values, condition) => {
  * @param {*} res axios response.
  */
 exports.getDeptCourses = (req, res) => {
-  Course.findAll({
-    attributes: [
-      [Sequelize.fn('DISTINCT', Sequelize.col('courseId')), 'courseId'],
-    ],
-    where: {
-      department: req.query.dept
-    }
-  }).then(result => {
-    courseIds = {}
-    result.map(course => courseIds[course.dataValues.courseId] = false)
-    res.status(200).send(courseIds)
-  })
+  Course
+    .findAll({
+      attributes: [
+        [Sequelize.fn('DISTINCT', Sequelize.col('courseId')), 'courseId'],
+      ],
+      where: {
+        department: req.query.dept
+      }
+    })
+    .then(result => {
+      courseIds = {}
+      result.map(course => courseIds[course.dataValues.courseId] = false)
+      res.status(200).send(courseIds)
+    })
+    .catch(err => res.status(500).send('Error: ' + err))
 }
 
 
@@ -487,14 +480,15 @@ exports.getDeptCourses = (req, res) => {
  * @param {*} req Contains department to look for
  * @param {*} res 
  */
-exports.getAllDeptCourses = (req, res) => {
-  Course.findAll({
-    where: {
-      department: req.query.dept,
-      semester: currSem,
-      year: currYear
-    }
-  }).then(result => {
-    res.status(200).send(result)
-  })
+exports.getFullDeptCourses = (req, res) => {
+  Course
+    .findAll({
+      where: {
+        department: req.query.dept,
+        semester: currSem,
+        year: currYear
+      }
+    })
+    .then(result => res.status(200).send(result))
+    .catch(err => res.status(500).send('Error: ' + err))
 }

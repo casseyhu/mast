@@ -68,7 +68,7 @@ for j in range(NUM_STUDENTS):
 
 student_list.pop(0)
 
-file_name = str(Path(__file__).parent.parent.absolute()) + '/large_student_file.csv'
+file_name = str(Path(__file__).parent.parent.absolute()) + '/student_profile_file.csv'
 print(file_name)
 with open(file_name, 'a+', newline='') as file:
     csv_writer = csv.writer(file)
