@@ -7,26 +7,42 @@ import CoursePlan from '../Student/CoursePlan'
 import { useHistory } from 'react-router-dom'
 
 const EditCoursePlan = (props) => {
-  const [unmetPrereqs, setUnmetPrereqs] = useState([])
-  const [showUnmet, showUnmetPrereqs] = useState(false)
-  const [confirmation, showConfirmation] = useState(false)
-  const [emailBox, showEmailBox] = useState(false)
-  const [emailConfirm, showEmailConfirm] = useState(false)
-  const [waive, setWaive] = useState(false)
-  const [visible, setVisible] = useState('hidden')
   const history = useHistory()
   const { student, coursePlan } = props.location.state
 
-  const addCourse = (course, semester, year) => {
-    checkPrerequisites(course, semester, year)
-    axios.post('student/addCourse/', {
-      params: {
-        sbuId: student.sbuId,
-        course: course,
-        semester: semester,
-        year: year
+  const addCourse = async (course, semester, year) => {
+    try {
+      let newCoursePlanItems = await axios.post('student/addCourse/', {
+        params: {
+          sbuId: student.sbuId,
+          course: course,
+          semester: semester,
+          year: year
+        }
+      })
+      if (newCoursePlanItems) {
+        history.replace({
+          ...history.location,
+          state: {
+            ...history.location.state,
+            coursePlan: newCoursePlanItems.data
+          }
+        })
+        return true
       }
-    }).then((response) => {
+    } catch (error) {
+      console.log('error')
+      return false
+    }
+  }
+
+  const saveItem = (values) => {
+    axios.post('/courseplanitem/update/', {
+      params: {
+        ...values,
+        student: student
+      }
+    }).then(response => {
       history.replace({
         ...history.location,
         state: {
@@ -34,36 +50,11 @@ const EditCoursePlan = (props) => {
           coursePlan: response.data
         }
       })
-    }).catch((err) => {
-      console.log(err)
-      console.log('addCourse courseplan.jsx error')
+    }).catch(err => {
+      console.log(err.response.data)
     })
   }
 
-  const checkPrerequisites = (course, semester, year) => {
-    axios.get('student/checkPrerequisites', {
-      params: {
-        sbuId: student.sbuId,
-        course: course,
-        semester: semester,
-        year: year
-      }
-    }).then((response) => {
-      // response.data == list of unsatisfied prereqs, if any. 
-      if (response.data.length > 0) {
-        setUnmetPrereqs(response.data)
-        showUnmetPrereqs(true)
-        return false
-      }
-    }).catch((err) => {
-      console.log('Error when checking prerequisites')
-    })
-  }
-
-  const emailing = () => {
-    console.log('waiving')
-    setVisible('visible')
-  }
 
   return (
     <Container fluid='lg' className='container'>
@@ -73,7 +64,7 @@ const EditCoursePlan = (props) => {
         <h5><b>Degree:</b> {student.department} {student.track}</h5>
         {/* <Button variant='round' text='Add Course' /> */}
       </div>
-      <CoursePlan mode coursePlan={coursePlan} />
+      <CoursePlan mode saveItem={saveItem} coursePlan={coursePlan} />
       <AddCourse add={addCourse} student={student} />
     </Container>
   )
