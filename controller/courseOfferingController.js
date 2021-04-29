@@ -80,7 +80,7 @@ async function uploadCourses(results, res, dept) {
   // Upload all the new course offerings
   const coursesAdded = await uploadNewOfferings(results)
   // Find all students for this specific department and their respective coursePlans.
-  const deptStudents = await Student.findAll({ where: { department: dept } })
+  const deptStudents = await Student.findAll({ where: { department: dept[dept.length-1] } })
   const coursePlans = await CoursePlan.findAll({
     where: {
       studentId: deptStudents.map(student => student.sbuId)

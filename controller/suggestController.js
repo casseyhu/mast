@@ -102,11 +102,11 @@ exports.suggest = async (req, res) => {
     nodes = sortNodes(nodesMap)
     // console.log(nodes)
     let [score, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, TIME, takenAndCurrentCourses)
-    if (score < minScore) {
+    if (score != null && score < minScore) {
       generated = [suggested]
       minScore = score
     }
-    else if (score === minScore)
+    else if (score != null && score === minScore)
       generated.push(suggested)
     counter++
   }
@@ -388,7 +388,7 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
     // Early fail for when no course plans can be generated so no infinite loop. 
     num_iterations++
     if (num_iterations > 1500)
-      return {}
+      return [null, {}]
     currCourse = nodes[index]
     // Check if we finished adding all required course nodes and satisfied credit requirement
     if (creditsRemaining <= 0 && (!nodes[0] || !nodes[0].required)) {
