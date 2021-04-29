@@ -23,12 +23,14 @@ class Student extends Component {
   }
 
   setStudentInfo = async () => {
+    console.log('set')
     const { student, department } = this.state
     if (department === '')
       return
     let studentRes = await axios.get('/student/' + student.sbuId, {
       params: { sbuId: student.sbuId }
     })
+    console.log(studentRes)
     let coursePlanItems = await axios.get('/courseplanitem/findItems/', {
       params: {
         sbuId: student.sbuId
@@ -75,8 +77,8 @@ class Student extends Component {
       this.setState({
         student: response.data,
         errorMsg: '',
-        [field]: true
-      }, () => this.setStudentInfo())
+        showConfirmation: true
+      },this.setStudentInfo)
     }).catch((err) => {
       this.setState({ errorMsg: err.response.data })
       console.log(err.response.data)
@@ -223,6 +225,7 @@ class Student extends Component {
         <hr />
         <Requirements
           studentInfo={studentInfoParams}
+          track={this.state.student.track}
         />
         <hr />
         <CoursePlan

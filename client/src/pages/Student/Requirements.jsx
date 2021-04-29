@@ -91,9 +91,12 @@ const Requirements = (props) => {
 
 
   return (
-    <div className='flex-vertical' style={{ width: '100%' }}>
-      <div className='flex-horizontal wrap justify-content-between  mb-2'>
-        <h4>Degree Requirements</h4>
+    <div className='flex-vertical w-100'>
+      <div className='flex-horizontal wrap justify-content-between mb-2'>
+        <div className='flex-vertical' style={{ width: 'fit-content' }}>
+          <h4>Degree Requirements</h4>
+          {props.track && <span>Track: {props.track}</span>}
+        </div>
         <div className='flex-horizontal' style={{ display: 'table', maxWidth: '500px' }}>
           <div className='green color-box' />
           <p className='req-state'>Satisfied</p>
@@ -105,7 +108,6 @@ const Requirements = (props) => {
       </div>
 
       {display && <div className='flex-vertical' style={{ width: '100%' }}>
-        {/* {console.log('Display is true now, requirements are: ', requirements)} */}
         {requirements[1] && (
           <div className={getReqColor('G', requirements[1])}>
             Minimum Cumulative GPA:

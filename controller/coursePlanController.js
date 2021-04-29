@@ -2,7 +2,7 @@ const { IncomingForm } = require('formidable')
 const fs = require('fs')
 const Papa = require('papaparse')
 const { currSem, currYear, GRADES, SEMTONUM } = require('./constants')
-const { findRequirements, checkTimeConflict, findCoursePlanItems, updateOrCreate } = require('./shared')
+const { findRequirements, checkTimeConflict, findCoursePlanItems, updateOrCreate, beforeCurrent } = require('./shared')
 const database = require('../config/database.js')
 
 const Student = database.Student
@@ -89,15 +89,29 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
     await RequirementState.destroy({ where: { sbuID: students } })
   }
   let studentsPlanId = {}
+  let courses = {}
   existCoursePlans.forEach(plan => studentsPlanId[plan.studentId] = plan.coursePlanId)
   // 3. Create/Update all the course plan items for students of this department
   for (let i = 0; i < coursePlans.length; i++) {
     const item = coursePlans[i]
-    if (!item.sbu_id)
+    if (!item.sbu_id || !studentsPlanId[item.sbu_id] || !SEMTONUM[item.semester]
+      || Number(item.year) < 2000 || Number(item.year) > 2500 || (item.grade && !GRADES[item.grade])) {
+      console.log('Error: Invalid fields')
       continue
-    if (!studentsPlanId[item.sbu_id]) {
-      console.log('Error: Course plan not found for student: ' + item.sbu_id)
-      continue
+    }
+    // Check if course is a valid course
+    if (!courses[item.department + item.course_num]) {
+      const before = beforeCurrent(item.semester, Number(item.year))
+      let found = await Course.findOne({
+        where: {
+          courseId: item.department + item.course_num,
+          semester: before ? item.semester : currSem,
+          year: before ? item.year : currYear
+        }
+      })
+      if (!found)
+        continue
+      courses[item.department + item.course_num] = found
     }
     condition = {
       coursePlanId: studentsPlanId[item.sbu_id],
@@ -120,12 +134,8 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
       } catch (err) {
         console.log(item.department + item.course_num + ' for ' + item.sbu_id + ' Already Created')
       }
-    } else {
+    } else
       await updateOrCreate(CoursePlanItem, condition, values, true, false)
-      // let found = await CoursePlanItem.findOne({ where: condition })
-      // if (found)
-      //   await CoursePlanItem.update(values, { where: condition })
-    }
   }
   calculateCompletion(studentsPlanId, dept, res)
 }
@@ -199,6 +209,8 @@ async function calculateCreditRequirement(credits, states, creditReq, student, c
   let creditState = ''
   let totalCredits = 0
   for (let j = 0; j < coursePlanItems.length; j++) {
+    if (coursePlanItems[j].grade && GRADES[coursePlanItems[j].grade] < GRADES['C'])
+      continue
     // Create the course credits mapping and get total credits for their entire course plan
     let courseName = coursePlanItems[j].courseId
     if (!credits[courseName]) {
@@ -212,7 +224,7 @@ async function calculateCreditRequirement(credits, states, creditReq, student, c
     }
     totalCredits += credits[courseName]
   }
-  const actualCredits = takenAndCurrent.reduce((a, b) => a + credits[b.courseId], 0)
+  const actualCredits = takenAndCurrent.reduce((a, b) => a + (GRADES[b.grade] >= GRADES['C'] && credits[b.courseId]), 0)
   // Students entire course plan will not satify the requirement
   if (totalCredits < creditReq.minCredit) {
     creditState = 'unsatisfied'
@@ -292,13 +304,9 @@ async function calculateGpaRequirement(credits, states, gpaReq, courseReq, stude
   studentCumGpa = calculateGPA(gradedCoursePlan, credits)
   cumGpaState = getReqState(studentCumGpa, gpaReq.cumulative)
   // 4. Set the state of the GPA requirement. 
-  if ((deptGpaState === 'unsatisfied') ||
-    (coreGpaState === 'unsatisfied') ||
-    (cumGpaState === 'unsatisfied'))
+  if (deptGpaState === 'unsatisfied' || coreGpaState === 'unsatisfied' || cumGpaState === 'unsatisfied')
     gpaState = 'unsatisfied'
-  else if ((deptGpaState === 'pending') ||
-    (coreGpaState === 'pending') ||
-    (cumGpaState === 'pending'))
+  else if (deptGpaState === 'pending' || coreGpaState === 'pending' || cumGpaState === 'pending')
     gpaState = 'pending'
   else
     gpaState = 'satisfied'

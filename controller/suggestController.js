@@ -1,5 +1,5 @@
 const { GRADES, SEMTONUM, NUMTOSEM, currSem, currYear } = require('./constants')
-const { findRequirements, findCoursePlanItems, checkTimeConflict } = require('./shared')
+const { findRequirements, findCoursePlanItems, checkTimeConflict, checkPrereq } = require('./shared')
 const database = require('../config/database.js')
 
 const Degree = database.Degree
@@ -46,9 +46,15 @@ exports.suggest = async (req, res) => {
     }
   })
   let courses = {}
+  let coursesSem = {}
+  // credits dictionary for courses in future semester
   foundCourses.forEach(course => courses[course.courseId] = course)
+  // credits dictionary for courses in previous semester
+  foundCourses.forEach(course => coursesSem[course.courseId + ' ' + course.semester + ' ' + course.year] = course)
   Object.keys(courses).forEach(course => courses[course].credits = ((courses[course].minCredits <= 3
     && courses[course].maxCredits >= 3) ? 3 : courses[course].minCredits))
+  Object.keys(coursesSem).forEach(course => coursesSem[course].credits = ((coursesSem[course].minCredits <= 3
+      && coursesSem[course].maxCredits >= 3) ? 3 : coursesSem[course].minCredits))
   // List of courses student has taken and currently taking that they didnt fail
   const takenAndCurrent = coursePlanItems.filter(course => (
     (100 * course.year + SEMTONUM[course.semester] <= 100 * currYear + SEMTONUM[currSem]) &&
@@ -67,13 +73,15 @@ exports.suggest = async (req, res) => {
     }
   ))
   // Delete courses from requirements list that were taken
-  const creditsCounter = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, takenAndCurrent)
+  let courseReqs = JSON.parse(JSON.stringify(courseReq))
+  const coursesRemaining = await remainingRequirements(courses, courseReqs, takenAndCurrent)
+  const creditsCounter = await deleteTakenCourses(coursesSem, courseReq, takenAndCurrentCourses, takenAndCurrent)
+  console.log(courseReq)
   // Get credits remaining, semesters remaining, and number of courses per semester
-  let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student, creditsCounter, CPS)
-  console.log('Credits remaining ', creditsRemaining, 'CPS:', coursesPerSem)
-
+  let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student, creditsCounter, coursesRemaining, CPS)
+  console.log('Credits remaining ', creditsRemaining, 'Courses remaining: ', coursesRemaining, 'CPS:', coursesPerSem)
   // Student has no more remaining credits
-  if (creditsRemaining <= 0) {
+  if (creditsRemaining <= 0 && coursesRemaining <= 0) {
     res.status(200).send([])
     return
   }
@@ -87,7 +95,7 @@ exports.suggest = async (req, res) => {
       (!course.grade || GRADES[course.grade] >= GRADES['C'])
     ))
     const takenAndCurrentCourses = new Set(takenAndCurrent.map(course => course.courseId))
-    let courseReqs = JSON.parse(JSON.stringify(courseReq))
+    courseReqs = JSON.parse(JSON.stringify(courseReq))
     // Create course nodes
     const nodesMap = createNodes(courses, courseReqs, PREFERRED, AVOID, [creditsRemaining, coursesPerSem], [], takenAndCurrent)
     let nodes = Object.values(nodesMap)
@@ -129,15 +137,16 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
     for (let course of requirement.courses) {
       let maxCourses = requirement.courseLower
         ? requirement.courseLower
-        : (requirement.creditLower ? requirement.creditLower / courses[course].credits : 1)
+        : (requirement.creditLower ? requirement.creditLower / 3 : 1)
       // Student did not take the course yet (or failed)
-      if (!takenAndCurrentCourses.has(course)) {
+      if (!takenAndCurrentCourses.has(course))
         notTaken.push(course)
-      } else if (!allUsed.has(course)) {
+      else if (!allUsed.has(course)) {
         // Is a repeat course 
         if (requirement.courses.length < maxCourses) {
           let timesTaken = takenAndCurrent.filter(item => item.courseId === course).length
-          creditsCounter += courses[course].credits * timesTaken
+          let courseInPlan = takenAndCurrent.filter(item => (item.courseId === course))[0]
+          creditsCounter += courses[courseInPlan.courseId + ' ' + courseInPlan.semester + ' ' + courseInPlan.year].credits * timesTaken
           // Satisfied the amount of times they needed to take this course (BMI592)
           if (timesTaken >= maxCourses)
             used.push(course)
@@ -148,15 +157,16 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
         // Student has passed / currently taking the course
         else {
           // Course cannot be counted for multiple requirements
+          let courseInPlan = takenAndCurrent.filter(item => (item.courseId === course))[0]
           if (requirement.type === 0 || (requirement.courseLower !== null && requirement.courseLower > 0)
             || (requirement.creditLower !== null && requirement.creditLower > 0)) {
-            creditsCounter += courses[course].credits
+            creditsCounter += courses[courseInPlan.courseId + ' ' + courseInPlan.semester + ' ' + courseInPlan.year].credits
             used.push(course)
           }
           if (requirement.courseLower !== null)
             requirement.courseLower -= 1
           if (requirement.creditLower !== null)
-            requirement.creditLower -= courses[course].credits
+            requirement.creditLower -= courses[courseInPlan.courseId + ' ' + courseInPlan.semester + ' ' + courseInPlan.year].credits
         }
       }
     }
@@ -168,6 +178,7 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
       requirement.courses = notTaken
   }
   // Move all remaining courses into last nonrequired course requirement (0:(,):(,))
+  creditsCounter += takenAndCurrent.reduce((a, b) => !allUsed.has(b.courseId) && (courses[b.courseId + ' ' + b.semester + ' ' + b.year] ? courses[b.courseId + ' ' + b.semester + ' ' + b.year].credits : 0) + a, 0)
   nonrequired = Array.from(nonrequired).filter(item => item !== '')
   courseReq[courseReq.length - 1].courses = nonrequired
   // console.log("nonrequired: ", nonrequired)
@@ -185,7 +196,7 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
  * @param {Number} CPS Number of courses per semester, if supplied
  * @returns An array containing the credits remaining and number of courses per semester.
  */
-function getRemaining(creditReq, student, creditsCounter, CPS) {
+function getRemaining(creditReq, student, creditsCounter, coursesRemaining, CPS) {
   const creditsRemaining = (creditReq.minCredit - creditsCounter < 0) ? 0 : creditReq.minCredit - creditsCounter
   let semsRemaining = 0
   let sem = currSem
@@ -196,7 +207,7 @@ function getRemaining(creditReq, student, creditsCounter, CPS) {
     if (sem === 'Spring')
       year++
   }
-  let coursesPerSem = CPS ? CPS : Math.ceil(creditsRemaining / (3 * semsRemaining))
+  let coursesPerSem = CPS ? CPS : Math.max(Math.ceil(creditsRemaining / (3 * semsRemaining)), Math.ceil(coursesRemaining/semsRemaining))
   if (CPS && student.department === 'BMI')
     coursesPerSem--
   return [creditsRemaining, coursesPerSem]
@@ -243,7 +254,7 @@ function createNodes(courses, courseReq, preferred, avoid, [creditsRemaining, co
         reqNodes.push(nodes[course])
         continue
       }
-      if (course === 'BMI592')
+      if (!courses[course] || course === 'BMI592')
         continue
       // || !courses[course]
       courses[course].prereqs = courses[course].prereqs.map(prereq => prereq.replace(' ', ''))
@@ -289,7 +300,35 @@ function createNodes(courses, courseReq, preferred, avoid, [creditsRemaining, co
   }
   return nodes
 }
-
+/**
+ * Traverse through all the requirements and their courses and determine the number
+ * of requirements left in the degree and track.
+ * @param {Map<String, Object>} courses Mapping of course ID to course object
+ * @param {Array[Object]} courseReq List of remaining course requirements for degree with taken
+ * courses removed
+ * @param {Array[Object]} takenAndCurrent 
+ * @returns the number of requirements left
+ */
+async function remainingRequirements(courses, courseReq, takenAndCurrent) {
+  let timesTaken = {}
+  takenAndCurrent.forEach(course => timesTaken[course.courseId] = takenAndCurrent.filter(item => item.courseId === course.courseId).length)
+  for (let requirement of courseReq) {
+    for (let course of requirement.courses) {
+      //course does not exist in the dictionary or has satisifed amount
+      if (!timesTaken[course] || timesTaken[course] <= 0)
+        continue
+      if (requirement.courseLower)
+        requirement.courseLower--
+      if (requirement.creditLower)
+        requirement.creditLower -= courses[course].credits
+      timesTaken[course]--
+      if ((requirement.courseLower || requirement.courseLower <= 0) && (requirement.creditLower || requirement.creditLower <= 0)) {
+        break
+      }
+    }
+  }
+  return courseReq.reduce((a, b) => (b.courseLower ? b.courseLower : 0) + a, 0)
+}
 
 /**
  * First sort the required courses then sort the nonrequired courses and concatenate 
@@ -327,6 +366,7 @@ function sortNodes(nodesMap) {
 //  * @param {Number} creditsRemaining Number of credits remaining 
 async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, prefTimes, takenAndCurrentCourses) {
   // Mapping of semester+year to course nodes for that semester and year
+  // nodes = nodes.filter(node => !takenAndCurrentCourses.has(node.course))
   let num_iterations = 0
   let suggestions = {}
   let currSemyear = currYear * 100 + SEMTONUM[currSem]
@@ -470,7 +510,7 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
       }
     }
     else if (offeringExists && !currSemOfferings[currCourse.course]) {
-      console.log("offerings imported but not for this course, cannot add")
+      console.log('offerings imported for ' + currSemyear + ' but not for ' + currCourse.course + ', cannot add')
     }
     // Course offering for currSemyear doesnt exist yet
     else if (semsOffered[currCourse.course].includes(semester)) {
@@ -547,25 +587,6 @@ function shuffle(array) {
 }
 
 
-/**
- * Determines if the student has taken the pre-requisites for a course.
- * @param {Object} courseA A course node object
- * @param {Array[String]} takenAndCurrentCourses List of courses that the student has taken
- * and currently taking
- * @returns Boolean value indicating whether they have taken/currently taking pre-requisites
- * for the course.
- */
-function checkPrereq(courseA, takenAndCurrentCourses) {
-  let prereqs = courseA.prereqs
-  if (prereqs[0] === '')
-    return true
-  for (let l = 0; l < prereqs.length; l++) {
-    if (!takenAndCurrentCourses.has(prereqs[l]))
-      return false
-  }
-  return true
-}
-
 
 function calculateScore(coursePlan) {
   return Object.keys(coursePlan)
@@ -616,9 +637,15 @@ exports.smartSuggest = async (req, res) => {
   const reqCourses = Array.from(new Set(courseReq.reduce((a, b) => b.courses.concat(a), [])))
   const foundCourses = await Course.findAll({ where: { courseId: reqCourses } })
   let courses = {}
+  let coursesSem = {}
+  // credits dictionary for courses in future semester
   foundCourses.forEach(course => courses[course.courseId] = course)
+  // credits dictionary for courses in previous semester
+  foundCourses.forEach(course => coursesSem[course.courseId + ' ' + course.semester + ' ' + course.year] = course)
   Object.keys(courses).forEach(course => courses[course].credits = ((courses[course].minCredits <= 3
     && courses[course].maxCredits >= 3) ? 3 : courses[course].minCredits))
+  Object.keys(coursesSem).forEach(course => coursesSem[course].credits = ((coursesSem[course].minCredits <= 3
+    && coursesSem[course].maxCredits >= 3) ? 3 : coursesSem[course].minCredits))
   // List of courses student has taken and currently taking that they didnt fail
   const takenAndCurrent = coursePlanItems.filter(course => (
     (100 * course.year + SEMTONUM[course.semester] <= 100 * currYear + SEMTONUM[currSem]) &&
@@ -638,12 +665,12 @@ exports.smartSuggest = async (req, res) => {
   ))
   let courseReqs = JSON.parse(JSON.stringify(courseReq))
   // Delete courses from requirements list that were taken
-  const creditsCounter = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, takenAndCurrent)
+  const creditsCounter = await deleteTakenCourses(foundCourses, courseReq, takenAndCurrentCourses, takenAndCurrent)
   // Get credits remaining, semesters remaining, and number of courses per semester
   let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student, creditsCounter, CPS)
   console.log('Credits remaining ', creditsRemaining, 'CPS:', coursesPerSem)
-
-  if (creditsRemaining <= 0) {
+    
+  if (creditsRemaining <= 0 && remainingCourses <= 0) {
     res.status(200).send([])
   }
   /*******************************************END***********************************************/
@@ -665,4 +692,3 @@ exports.smartSuggest = async (req, res) => {
   let [, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, TIME, takenAndCurrentCourses)
   res.status(200).send([suggested])
 }
-
