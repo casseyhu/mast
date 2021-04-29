@@ -1,13 +1,10 @@
-const database = require('../config/database.js')
 const IncomingForm = require('formidable').IncomingForm
 const PDFExtract = require('pdf.js-extract').PDFExtract
-const { SEMTONUM, currSem, currYear } = require('./shared')
 const pdfExtract = new PDFExtract()
-const Sequelize = database.Sequelize
-
+const { currSem, currYear } = require('./constants')
+const { getDepartmentalCourses } = require('./shared')
+const database = require('../config/database.js')
 const Course = database.Course
-const Degree = database.Degree
-const CourseRequirement = database.CourseRequirement
 
 /**
  * Upload course information (name, description, credits, etc..) to the database.
@@ -42,6 +39,7 @@ exports.upload = (req, res) => {
         res.status(500).send('Must specify semester and departments to scrape for.')
         return
       }
+      depts = depts.split(',')
       console.log('Scraping for: ', depts, semester, year)
       scrapeCourses(file.path, depts, semester, year, res)
     })
@@ -118,33 +116,9 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
   /* other requirements i.e prerequisites, credits */
   let checkOthers = false
   let others = ''
-  let requirementId = []
-  let exceptionDepts = new Set()
-  let exceptions = []
-
-  depts = depts.split(',')
   // retrieve all courses from the degree requirements
-  let degrees = await Degree.findAll({
-    where: {
-      dept: depts,
-      requirementVersion: Number(year * 100) + SEMTONUM[String(semester)]
-    }
-  })
-  console.log(depts)
-  degrees.forEach(degree => requirementId = requirementId.concat(degree.courseRequirement))
-
-  let courseRequirements = await CourseRequirement.findAll({
-    where: {
-      requirementId: requirementId
-    }
-  })
-  courseRequirements.forEach(courseRequirement =>
-    exceptions = exceptions.concat(courseRequirement.courses.filter(course => course && !(depts.includes(course.substring(0, 3))))))
-
-  exceptions = Array.from(new Set(exceptions))
-  exceptions.forEach(exceptionCourse => exceptionDepts.add(exceptionCourse.substring(0, 3)))
-  exceptionDepts = Array.from(exceptionDepts)
-  console.log(exceptionDepts, exceptions)
+  let [exceptionDepts, exceptions] = await getDepartmentalCourses(depts, semester, Number(year))
+  // console.log(exceptionDepts, exceptions)
 
   pdfExtract.extract(filePath, options, async (err, data) => {
     if (err) {
@@ -459,7 +433,7 @@ exports.getDeptCourses = (req, res) => {
   Course
     .findAll({
       attributes: [
-        [Sequelize.fn('DISTINCT', Sequelize.col('courseId')), 'courseId'],
+        [database.Sequelize.fn('DISTINCT', database.Sequelize.col('courseId')), 'courseId'],
       ],
       where: {
         department: req.query.dept

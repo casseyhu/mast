@@ -1,9 +1,8 @@
 const { IncomingForm } = require('formidable')
 const fs = require('fs')
 const Papa = require('papaparse')
-
-const { GRADES, SEMTONUM, currSem, currYear,
-  findRequirements, checkTimeConflict, findCoursePlanItems } = require('./shared')
+const { currSem, currYear, GRADES, SEMTONUM } = require('./constants')
+const { findRequirements, checkTimeConflict, findCoursePlanItems, updateOrCreate } = require('./shared')
 const database = require('../config/database.js')
 
 const Student = database.Student
@@ -96,7 +95,7 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
     const item = coursePlans[i]
     if (!item.sbu_id)
       continue
-    if (!(item.sbu_id in studentsPlanId)) {
+    if (!studentsPlanId[item.sbu_id]) {
       console.log('Error: Course plan not found for student: ' + item.sbu_id)
       continue
     }
@@ -115,19 +114,32 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
       grade: item.grade,
       validity: true
     }
-    if (deleted === 'true')
-      course = await CoursePlanItem.create(values)
-    else {
+    let course = ''
+    if (deleted === 'true') {
+      try {
+        course = await CoursePlanItem.create(values)
+      } catch (err) {
+        console.log(item.department + item.course_num + ' for ' + item.sbu_id + ' Already Created')
+      }
+    } else {
       let found = await CoursePlanItem.findOne({ where: condition })
       if (found)
         course = await CoursePlanItem.update(values, { where: condition })
     }
   }
-  // Credits mapping for each course in the department
-  const courses = await Course.findAll({ where: { department: dept } })
-  let credits = {}
-  courses.forEach(course => credits[course.courseId] = course.credits)
-  calculateCompletion(studentsPlanId, credits, res)
+  calculateCompletion(studentsPlanId, dept, res)
+}
+
+
+/**
+ * Recalculate all the requirement completion and update the requirement states when the degree of a 
+ * student has been altered.
+ * @param {Map<String, String>} studentsPlanId Mapping of sbuId to coursePlanId
+ * @param {String} department Department to calcualte for
+ * @param {*} res 
+*/
+exports.changeCompletion = async (studentsPlanId, department, res) => {
+  calculateCompletion(studentsPlanId, department, res)
 }
 
 
@@ -210,19 +222,9 @@ async function calculateCreditRequirement(credits, states, creditReq, student, c
     creditState = getReqState(actualCredits, creditReq.minCredit)
     states[creditState]++
   }
-  await updateOrCreate(student, 'Credit', creditReq.requirementId, creditState, [actualCredits])
+  await updateOrCreateReq(student, 'CR', creditReq.requirementId, creditState, [actualCredits])
 }
 
-/**
- * Recalculate all the requirement completion and update the requirement states when the degree of a 
- * student has been altered.
- * @param {Map<String, String>} studentsPlanId Mapping of sbuId to coursePlanId
- * @param {Map<String, Number>} credits Credits mapping for each course in the department
- * @param {*} res 
-*/
-exports.changeCompletion = async (studentsPlanId, credits, res) => {
-  calculateCompletion(studentsPlanId, credits, res)
-}
 
 /**
  * Calculates and updates a students grade requirement state.
@@ -243,7 +245,7 @@ async function calculateGradeRequirement(credits, states, gradeReq, student, gra
       .reduce((a, b) => a + credits[b.courseId], 0)
     gradeState = getReqState(numCredits, gradeReq.atLeastCredits)
     states[gradeState]++
-    await updateOrCreate(student, 'Grade', gradeReq.requirementId, gradeState, [numCredits])
+    await updateOrCreateReq(student, 'GR', gradeReq.requirementId, gradeState, [numCredits])
   }
 }
 
@@ -301,7 +303,7 @@ async function calculateGpaRequirement(credits, states, gpaReq, courseReq, stude
   else
     gpaState = 'satisfied'
   states[gpaState]++
-  await updateOrCreate(student, 'Gpa', gpaReq.requirementId, gpaState,
+  await updateOrCreateReq(student, 'G', gpaReq.requirementId, gpaState,
     [studentCumGpa.toFixed(2), studentCoreGpa.toFixed(2), studentDeptGpa.toFixed(2)])
   return studentCumGpa
 }
@@ -419,7 +421,7 @@ async function calculateCourseRequirement(credits, states, courseReq, student, c
         courseReqState = 'unsatisfied'
     }
     states[courseReqState]++
-    await updateOrCreate(student, 'Course', requirement.requirementId, courseReqState, coursesUsedForReq)
+    await updateOrCreateReq(student, 'C', requirement.requirementId, courseReqState, coursesUsedForReq)
   }
 }
 
@@ -428,11 +430,16 @@ async function calculateCourseRequirement(credits, states, courseReq, student, c
  * Updates students course plan completion and requirement states by recalculating
  * all degree requirement states (gpa, grade, credit, course).
  * @param {Map<String, String>} studentsPlanId Mapping of sbuId to coursePlanId
- * @param {Map<String, Number>} credits Credits mapping for each course in the department
+ * @param {String} department Department to calculate for
  * @param {*} res 
  */
-async function calculateCompletion(studentsPlanId, credits, res) {
+async function calculateCompletion(studentsPlanId, department, res) {
   console.log('Calculating student CoursePlan completion...')
+  // Credits mapping for each course in the department
+  const courses = await Course.findAll({ where: { department: department } })
+  let credits = {}
+  courses.forEach(course => credits[course.courseId] = course.credits)
+
   let tot = 0
   let degrees = {}
   // Loop through each student (key = sbu ID)
@@ -577,41 +584,18 @@ async function checkCoursePlanValidity(notTakenCourses) {
  * @param {String} state State to set requirement (unsatisfied, pending, satisfied)
  * @param {Array<String>} metaData List of metadata information to store with requirement state
  */
-async function updateOrCreate(student, requirementType, requirementId, state, metaData) {
-  let reqStr = ''
-  switch (requirementType) {
-    case 'Grade':
-      reqStr = 'GR'
-      break
-    case 'Gpa':
-      reqStr = 'G'
-      break
-    case 'Credit':
-      reqStr = 'CR'
-      break
-    case 'Course':
-      reqStr = 'C'
-      break
+async function updateOrCreateReq(student, requirementType, requirementId, state, metaData) {
+  let condition = {
+    sbuID: student.sbuId,
+    requirementId: requirementType + requirementId
   }
-  let found = await RequirementState.findOne({
-    where: {
-      sbuID: student.sbuId,
-      requirementId: reqStr + requirementId
-    }
-  })
-  if (found) {
-    await found.update({
-      state: state,
-      metaData: metaData
-    })
-  } else {
-    await RequirementState.create({
-      sbuID: student.sbuId,
-      requirementId: reqStr + requirementId,
-      state: state,
-      metaData: metaData
-    })
+  let values = {
+    sbuID: student.sbuId,
+    requirementId: requirementType + requirementId,
+    state: state,
+    metaData: metaData
   }
+  await updateOrCreate(RequirementState, condition, values, true, true)
 }
 
 
@@ -623,12 +607,6 @@ async function updateOrCreate(student, requirementType, requirementId, state, me
 exports.findItems = async (req, res) => {
   try {
     const coursePlanItems = await findCoursePlanItems(req.query.sbuId)
-    // const coursePlan = await CoursePlan.findOne({ where: req.query })
-    // const coursePlanItems = await CoursePlanItem.findAll({
-    //   where: {
-    //     coursePlanId: coursePlan.coursePlanId
-    //   }
-    // })
     res.status(200).send(coursePlanItems)
   } catch (err) {
     console.log(err)

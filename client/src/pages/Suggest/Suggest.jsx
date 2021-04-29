@@ -13,7 +13,8 @@ const Suggest = (props) => {
   const [suggestions, setSuggestions] = useState([])
   const [degreeexpanded, setDegreeExpanded] = useState(false)
   const [planexpanded, setPlanExpanded] = useState(true)
-  const { student, coursePlan } = props.location.state.studentInfoParams
+  const { coursePlan } = props.location.state.studentInfoParams
+  const student = props.location.state.student
 
   const suggest = (preferences) => {
     preferences.student = student
