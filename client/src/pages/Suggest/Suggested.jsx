@@ -16,7 +16,6 @@ const SuggestedPlans = (props) => {
       <Accordion className='accordian' defaultActiveKey="0">
         {props.suggestions && props.suggestions.map((coursePlan, key) => (
           < Card key={key} >
-            { console.log(coursePlan)}
             <Accordion.Toggle as={Card.Header} eventKey={`${key}`} style={{ padding: '0.25rem 1.5rem' }}>
               <div className='flex-horizontal justify-content-between'>
                 <div>
@@ -63,7 +62,7 @@ const SuggestedPlans = (props) => {
                           <td>{semester.substring(0, 4)}</td>
                           <td>{course.section ? course.section : 'N/A'}</td>
                           <td>{course.credits}</td>
-                          <td>{course.prereqs}</td>
+                          <td>{course.prereqs.join(', ')}</td>
                           <td>Suggested</td>
                         </tr>
                       ))

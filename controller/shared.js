@@ -46,6 +46,26 @@ exports.checkTimeConflict = (courseA, courseB, invalidCourses) => {
 
 
 /**
+ * Determines if the student has taken the pre-requisites for a course.
+ * @param {Object} courseA A course node or Course object
+ * @param {Array[String]} takenAndCurrentCourses List of courses that the student has taken
+ * and currently taking
+ * @returns Boolean value indicating whether they have taken/currently taking pre-requisites
+ * for the course.
+ */
+exports.checkPrereq = (course, takenAndCurrentCourses) => {
+  let prereqs = course.prereqs
+  if (prereqs[0] === '')
+    return true
+  for (let l = 0; l < prereqs.length; l++) {
+    if (!takenAndCurrentCourses.has(prereqs[l]))
+      return false
+  }
+  return true
+}
+
+
+/**
  * Finds all the requirement objects for a given degree.
  * @param {Object} degree Degree object to find requirements for
  * @returns An array of all the requirement objects.
@@ -114,6 +134,13 @@ exports.updateOrCreate = async (model, condition, values, update, create) => {
 }
 
 
+/**
+ * Finds and returns a list of exception courses and departments.
+ * @param {Array[String]} depts List of departments to get courses for
+ * @param {String} semester Semester to get courses for
+ * @param {Number} year Year to get courses for
+ * @returns A list of exception departments and exception courses for given departments
+ */
 exports.getDepartmentalCourses = async (depts, semester, year) => {
   let degrees = await Degree.findAll({
     where: {

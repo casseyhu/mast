@@ -72,7 +72,10 @@ const Suggest = (props) => {
             <Card.Body>
               {props.location.state.studentInfoParams &&
                 <div className='mt-1 mb-4'>
-                  <Requirements studentInfo={props.location.state.studentInfoParams} />
+                  <Requirements
+                    studentInfo={props.location.state.studentInfoParams}
+                    track={student.track}
+                  />
                 </div>
               }
             </Card.Body>

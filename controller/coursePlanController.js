@@ -199,6 +199,8 @@ async function calculateCreditRequirement(credits, states, creditReq, student, c
   let creditState = ''
   let totalCredits = 0
   for (let j = 0; j < coursePlanItems.length; j++) {
+    if (coursePlanItems[j].grade && GRADES[coursePlanItems[j].grade] < GRADES['C'])
+      continue
     // Create the course credits mapping and get total credits for their entire course plan
     let courseName = coursePlanItems[j].courseId
     if (!credits[courseName]) {
@@ -212,7 +214,7 @@ async function calculateCreditRequirement(credits, states, creditReq, student, c
     }
     totalCredits += credits[courseName]
   }
-  const actualCredits = takenAndCurrent.reduce((a, b) => a + credits[b.courseId], 0)
+  const actualCredits = takenAndCurrent.reduce((a, b) => a + (GRADES[b.grade] >= GRADES['C'] && credits[b.courseId]), 0)
   // Students entire course plan will not satify the requirement
   if (totalCredits < creditReq.minCredit) {
     creditState = 'unsatisfied'
@@ -292,13 +294,9 @@ async function calculateGpaRequirement(credits, states, gpaReq, courseReq, stude
   studentCumGpa = calculateGPA(gradedCoursePlan, credits)
   cumGpaState = getReqState(studentCumGpa, gpaReq.cumulative)
   // 4. Set the state of the GPA requirement. 
-  if ((deptGpaState === 'unsatisfied') ||
-    (coreGpaState === 'unsatisfied') ||
-    (cumGpaState === 'unsatisfied'))
+  if (deptGpaState === 'unsatisfied' || coreGpaState === 'unsatisfied' || cumGpaState === 'unsatisfied')
     gpaState = 'unsatisfied'
-  else if ((deptGpaState === 'pending') ||
-    (coreGpaState === 'pending') ||
-    (cumGpaState === 'pending'))
+  else if (deptGpaState === 'pending' || coreGpaState === 'pending' || cumGpaState === 'pending')
     gpaState = 'pending'
   else
     gpaState = 'satisfied'

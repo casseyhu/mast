@@ -211,6 +211,7 @@ class Student extends Component {
         <hr />
         <Requirements
           studentInfo={studentInfoParams}
+          track={this.state.student.track}
         />
         <hr />
         <CoursePlan

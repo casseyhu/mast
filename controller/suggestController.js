@@ -1,5 +1,5 @@
 const { GRADES, SEMTONUM, NUMTOSEM, currSem, currYear } = require('./constants')
-const { findRequirements, findCoursePlanItems, checkTimeConflict } = require('./shared')
+const { findRequirements, findCoursePlanItems, checkTimeConflict, checkPrereq } = require('./shared')
 const database = require('../config/database.js')
 
 const Degree = database.Degree
@@ -546,25 +546,6 @@ function shuffle(array) {
   }
 }
 
-
-/**
- * Determines if the student has taken the pre-requisites for a course.
- * @param {Object} courseA A course node object
- * @param {Array[String]} takenAndCurrentCourses List of courses that the student has taken
- * and currently taking
- * @returns Boolean value indicating whether they have taken/currently taking pre-requisites
- * for the course.
- */
-function checkPrereq(courseA, takenAndCurrentCourses) {
-  let prereqs = courseA.prereqs
-  if (prereqs[0] === '')
-    return true
-  for (let l = 0; l < prereqs.length; l++) {
-    if (!takenAndCurrentCourses.has(prereqs[l]))
-      return false
-  }
-  return true
-}
 
 
 function calculateScore(coursePlan) {
