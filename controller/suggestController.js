@@ -76,6 +76,7 @@ exports.suggest = async (req, res) => {
   let courseReqs = JSON.parse(JSON.stringify(courseReq))
   const coursesRemaining = await remainingRequirements(courses, courseReqs, takenAndCurrent)
   const creditsCounter = await deleteTakenCourses(coursesSem, courseReq, takenAndCurrentCourses, takenAndCurrent)
+  console.log(courseReq)
   // Get credits remaining, semesters remaining, and number of courses per semester
   let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student, creditsCounter, coursesRemaining, CPS)
   console.log('Credits remaining ', creditsRemaining, 'Courses remaining: ', coursesRemaining, 'CPS:', coursesPerSem)
@@ -176,7 +177,6 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
     else
       requirement.courses = notTaken
   }
-  creditsCounter += takenAndCurrent.reduce((a, b) => !allUsed.has(b.courseId) && courses[b.courseId].credits + a, 0)
   // Move all remaining courses into last nonrequired course requirement (0:(,):(,))
   creditsCounter += takenAndCurrent.reduce((a, b) => !allUsed.has(b.courseId) && (courses[b.courseId + ' ' + b.semester + ' ' + b.year] ? courses[b.courseId + ' ' + b.semester + ' ' + b.year].credits : 0) + a, 0)
   nonrequired = Array.from(nonrequired).filter(item => item !== '')
@@ -366,7 +366,7 @@ function sortNodes(nodesMap) {
 //  * @param {Number} creditsRemaining Number of credits remaining 
 async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, prefTimes, takenAndCurrentCourses) {
   // Mapping of semester+year to course nodes for that semester and year
-  nodes = nodes.filter(node => !takenAndCurrentCourses.has(node.course))
+  // nodes = nodes.filter(node => !takenAndCurrentCourses.has(node.course))
   let num_iterations = 0
   let suggestions = {}
   let currSemyear = currYear * 100 + SEMTONUM[currSem]

@@ -157,7 +157,7 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
   let others = ''
   // retrieve all courses from the degree requirements
   let [exceptionDepts, exceptions] = await getDepartmentalCourses(depts, semester, Number(year))
-  // console.log(exceptionDepts, exceptions)
+  console.log(exceptionDepts, exceptions)
 
   pdfExtract.extract(filePath, options, async (err, data) => {
     if (err) {
