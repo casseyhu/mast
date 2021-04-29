@@ -23,6 +23,9 @@ module.exports = function (app) {
   // Get student requirement states
   app.get('/api/student/requirementStates', Student.getStates)
 
+  // Check if student has satisfied prereqs for a course 
+  app.get('/api/student/checkPrerequisites', Student.checkPrerequisites)
+
   // Get a Student
   app.get('/api/student/:sbuId', Student.findById)
 

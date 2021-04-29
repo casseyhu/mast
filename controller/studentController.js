@@ -3,8 +3,10 @@ const fs = require('fs')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Papa = require('papaparse')
-const { SEMDICT, TRACKS } = require('./constants')
-const { updateOrCreate, findRequirements, findCoursePlanItems, titleCase } = require('./shared')
+
+const { SEMDICT, TRACKS, currSem, currYear, SEMTONUM } = require('./constants')
+const { updateOrCreate, findRequirements, findCoursePlanItems, checkPrereq, titleCase } = require('./shared')
+
 const coursePlanController = require('./coursePlanController')
 const database = require('../config/database.js')
 const Op = database.Sequelize.Op
@@ -416,6 +418,38 @@ exports.getStates = (req, res) => {
 }
 
 
+/**
+ * Checks if a student has satisfied the prerequisites to a course.
+ * @param {*} req Contains information (sbuId, course, ...) which is used to find
+ * the student's course plan items and for the course's prerequisites.
+ * @param {*} res 
+ */
+exports.checkPrerequisites = async (req, res) => {
+  // Get student's course plan, and get their taken and current courses.
+  try {
+    console.log(req.query)
+    let cpItems = await findCoursePlanItems(req.query.sbuId)
+    const takenAndCurrent = cpItems.filter(course => (
+      (course.year < currYear) ||
+      ((course.year === currYear) && (SEMTONUM[course.semester] <= SEMTONUM[currSem]))
+    ))
+    const takenAndCurrentCourses = new Set(takenAndCurrent.map(course => course.courseId))
+    let unsatisfiedPrereqs = checkPrereq(JSON.parse(req.query.course), takenAndCurrentCourses, true)
+    res.status(200).send(unsatisfiedPrereqs)
+  } catch(err) {
+    console.log(err)
+    res.status(500).send('Error in checking prerequisites for add course.')
+  }
+}
+
+
+/**
+ * Adds a course to a student's course plan items. 
+ * @param {*} req Contains information (i.e student's id), which is used to find the
+ * course plan for the student, to add the new course to. 
+ * @param {*} res 
+ * @returns 
+ */
 exports.addCourse = async (req, res) => {
   let query = req.body.params
   // Find student's courseplanId by getting their coursePlan first.
@@ -441,13 +475,11 @@ exports.addCourse = async (req, res) => {
   if (insert) {
     // Send the courseplan items back to the front end.
     let cpItems = await findCoursePlanItems(query.sbuId)
-    console.log('successfully added')
     // console.log(cpItems)
     res.status(200).send(cpItems)
-    return
   }
-  res.status(500).send('Unable to add course to course plan.')
-  return
+  else 
+    res.status(500).send('Unable to add course to course plan.')
 }
 
 

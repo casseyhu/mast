@@ -437,7 +437,7 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
       continue
     }
     // Check if student has taken all prereqs for this course, if any before adding
-    if (!checkPrereq(currCourse, takenAndCurrentCourses)) {
+    if (!checkPrereq(currCourse, takenAndCurrentCourses, false)) {
       index++
       continue
     }
