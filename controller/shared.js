@@ -53,15 +53,19 @@ exports.checkTimeConflict = (courseA, courseB, invalidCourses) => {
  * @returns Boolean value indicating whether they have taken/currently taking pre-requisites
  * for the course.
  */
-exports.checkPrereq = (course, takenAndCurrentCourses) => {
+exports.checkPrereq = (course, takenAndCurrentCourses, returnPrereqs) => {
   let prereqs = course.prereqs
+  let unsatisfiedPrereqs = []
   if (prereqs[0] === '')
-    return true
+    return returnPrereqs ? unsatisfiedPrereqs : true
   for (let l = 0; l < prereqs.length; l++) {
-    if (!takenAndCurrentCourses.has(prereqs[l]))
-      return false
+    if (!takenAndCurrentCourses.has(prereqs[l])) {
+      unsatisfiedPrereqs.push(prereqs[l])
+      if(!returnPrereqs)
+        return false
+    }
   }
-  return true
+  return returnPrereqs ? unsatisfiedPrereqs : true
 }
 
 
