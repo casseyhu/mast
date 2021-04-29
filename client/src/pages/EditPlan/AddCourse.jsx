@@ -36,6 +36,7 @@ const AddCourse = (props) => {
   }, [])
 
   const checkAdd = (course, semester, year) => {
+    console.log(courses)
     if (!course || !semester || !year) {
       setError('All fields are required')
       return
@@ -45,7 +46,8 @@ const AddCourse = (props) => {
     } else {
       setError('')
     }
-    // else if ()
+    // If it passes all checks, add this course to the student's schedule. 
+    props.add(course, semester, year)
   }
 
   return (

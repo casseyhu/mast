@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Papa = require('papaparse')
 const { SEMDICT } = require('./constants')
-const { updateOrCreate, findRequirements } = require('./shared')
+const { updateOrCreate, findRequirements, findCoursePlanItems } = require('./shared')
 const coursePlanController = require('./coursePlanController')
 const database = require('../config/database.js')
 const Op = database.Sequelize.Op
@@ -413,6 +413,41 @@ exports.getStates = (req, res) => {
     })
     .then(reqStates => res.status(200).send(reqStates))
     .catch(err => res.status(500).send('Error ' + err))
+}
+
+
+exports.addCourse = async (req, res) => {
+  let query = req.body.params
+  // Find student's courseplanId by getting their coursePlan first.
+  let coursePlan = await CoursePlan.findOne({
+    where: {
+      studentId: query.sbuId
+    }
+  })
+  // Insert the course into the student's courseplanitems. 
+  let insert = await CoursePlanItem.create({
+    coursePlanId: coursePlan.coursePlanId,
+    courseId: query.course.courseId,
+    semester: query.semester,
+    year: query.year,
+    section: null,
+    grade: null,
+    // Since null section, assume no conflicts, so validity = 1.
+    // Status = 0 bc not taken yet. 
+    validity: true,
+    status: true
+  })
+  console.log(insert)
+  if (insert) {
+    // Send the courseplan items back to the front end.
+    let cpItems = await findCoursePlanItems(query.sbuId)
+    console.log('successfully added')
+    // console.log(cpItems)
+    res.status(200).send(cpItems)
+    return
+  }
+  res.status(500).send('Unable to add course to course plan.')
+  return
 }
 
 

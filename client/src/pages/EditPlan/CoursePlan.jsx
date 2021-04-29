@@ -1,14 +1,37 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Container from 'react-bootstrap/Container'
 // import Button from '../components/Button'
 import AddCourse from './AddCourse'
+import axios from '../../constants/axios'
 import CoursePlan from '../Student/CoursePlan'
+import { useHistory } from 'react-router-dom'
 
 const EditCoursePlan = (props) => {
+  const history = useHistory()
   const { student, coursePlan } = props.location.state
 
   const addCourse = (course, semester, year) => {
     console.log('adding course ')
+    console.log(student)
+    axios.post('student/addCourse/', {
+      params: {
+        sbuId: student.sbuId,
+        course: course,
+        semester: semester,
+        year: year
+      }
+    }).then((response) => {
+      history.replace({ 
+        ...history.location,
+        state: {
+          ...history.location.state,
+          coursePlan: response.data
+        }
+      })
+    }).catch((err) => {
+      console.log(err)
+      console.log('addCourse courseplan.jsx error')
+    })
 
   }
 
