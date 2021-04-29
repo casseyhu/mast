@@ -492,9 +492,9 @@ async function uploadStudents(students, res) {
   const degrees = await Degree.findAll()
   let degreeDict = {}
   const monthsDict = {
-    '01': 'Winter',
     '02': 'Spring',
-    '05': 'Summer',
+    '05': 'SummerI',
+    '07': 'SummerII',
     '08': 'Fall'
   }
   const currentGradYear = 202101
@@ -535,7 +535,7 @@ async function uploadStudents(students, res) {
       studentComments: ''
     }
     if (!checkFields(values, null)) {
-      console.log("invalid stuednt")
+      console.log('invalid student')
       continue
     }
     tot += 1

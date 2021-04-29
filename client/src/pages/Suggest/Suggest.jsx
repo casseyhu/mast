@@ -65,7 +65,7 @@ const Suggest = (props) => {
             style={{ cursor: 'pointer', backgroundColor: 'transparent' }}>
             <div className='flex-horizontal justify-content-between' >
               <h4 >{`${degreeexpanded ? 'Hide' : 'View'}`} Student Degree Requirements</h4>
-              <i className="fa fa-chevron-down" aria-hidden="true"></i>
+              <i className='fa fa-chevron-down' aria-hidden='true'></i>
             </div>
           </Accordion.Toggle>
           <Accordion.Collapse eventKey='0'>
@@ -83,7 +83,7 @@ const Suggest = (props) => {
         </Card>
       </Accordion>
 
-      <Accordion defaultActiveKey="0" className='mb-1 mt-3'>
+      <Accordion defaultActiveKey='0' className='mb-1 mt-3'>
         <Card>
           <Accordion.Toggle
             className='pt-1 pb-0'
@@ -93,7 +93,7 @@ const Suggest = (props) => {
             style={{ cursor: 'pointer', backgroundColor: 'transparent' }}>
             <div className='flex-horizontal justify-content-between' >
               <h4 >{`${planExpanded ? 'Hide' : 'View'}`} Student Course Plan</h4>
-              <i className="fa fa-chevron-down" aria-hidden="true"></i>
+              <i className='fa fa-chevron-down' aria-hidden='true'></i>
             </div>
           </Accordion.Toggle>
           <Accordion.Collapse eventKey='0'>
