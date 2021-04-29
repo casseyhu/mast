@@ -163,3 +163,28 @@ exports.getDepartmentalCourses = async (depts, semester, year) => {
   exceptionDepts = Array.from(exceptionDepts)
   return [exceptionDepts, exceptions]
 }
+
+
+/**
+ * Checks if a semester and year combo is before current semester and year
+ * @param {String} semester 
+ * @param {Number} year 
+ */
+exports.beforeCurrent = (semester, year) => {
+  const before = year * 100 + constants.SEMTONUM[semester]
+  const curr = constants.currYear * 100 + constants.SEMTONUM[constants.currSem]
+  return before < curr
+}
+
+
+/**
+ * Converts a string to title case
+ * @param {String} str String to convert
+ * @returns Title-cased string
+ */
+exports.titleCase = (str) => {
+  var arr = str.toLowerCase().split(' ')
+  for (var i = 0; i < arr.length; i++)
+    arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].substring(1)
+  return arr.join(' ')
+}

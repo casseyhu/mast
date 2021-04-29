@@ -131,9 +131,9 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
         ? requirement.courseLower
         : (requirement.creditLower ? requirement.creditLower / courses[course].credits : 1)
       // Student did not take the course yet (or failed)
-      if (!takenAndCurrentCourses.has(course)) {
+      if (!takenAndCurrentCourses.has(course))
         notTaken.push(course)
-      } else if (!allUsed.has(course)) {
+      else if (!allUsed.has(course)) {
         // Is a repeat course 
         if (requirement.courses.length < maxCourses) {
           let timesTaken = takenAndCurrent.filter(item => item.courseId === course).length
@@ -167,6 +167,7 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
     else
       requirement.courses = notTaken
   }
+  creditsCounter += takenAndCurrent.reduce((a, b) => !allUsed.has(b.courseId) && courses[b.courseId].credits + a, 0)
   // Move all remaining courses into last nonrequired course requirement (0:(,):(,))
   nonrequired = Array.from(nonrequired).filter(item => item !== '')
   courseReq[courseReq.length - 1].courses = nonrequired

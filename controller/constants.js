@@ -17,18 +17,28 @@ exports.SEMTONUM = {
   'Fall': 8,
   'Spring': 2,
   'Winter': 1,
-  'Summer': 5
+  'SummerI': 5,
+  'SummerII': 7
 }
 exports.NUMTOSEM = {
   8: 'Fall',
   2: 'Spring',
   1: 'Winter',
-  5: 'Summer'
+  5: 'SummerI',
+  7: 'SummerII'
 }
 
 exports.SEMDICT = {
   'Fall': '08',
   'Spring': '02',
   'Winter': '01',
-  'Summer': '05'
+  'SummerI': '05',
+  'SummerII': '07'
+}
+
+exports.TRACKS = {
+  'AMS': ['Computational Applied Mathematics', 'Computational Biology', 'Operations Research', 'Statistics', 'Quantitative Finance'],
+  'BMI': ['Imaging Informatics With Thesis', 'Imaging Informatics With Project', 'Clinical Informatics With Thesis', 'Clinical Informatics With Project', 'Translational Bioinformatics With Thesis', 'Translational Bioinformatics With Project'],
+  'CSE': ['Advanced Project', 'Special Project', 'Thesis', 'Advanced Project Proficiency', 'Special Project Proficiency', 'Thesis Proficiency'],
+  'ESE': ['Non-Thesis', 'Thesis']
 }
