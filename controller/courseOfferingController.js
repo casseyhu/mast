@@ -13,6 +13,22 @@ const CoursePlan = database.CoursePlan
 const CoursePlanItem = database.CoursePlanItem
 const Student = database.Student
 
+
+exports.findOne = async (req, res) => {
+  CourseOffering
+    .findAll({
+      where: {
+        identifier: req.query.courseId,
+        semester: req.query.semester,
+        year: req.query.year
+      }
+    })
+    .then(offerings => res.status(200).send(offerings))
+    .catch(err => res.status(500).send('Could not find course offerings'))
+}
+
+
+
 /**
  * Uploads course offering information (time, location, etc..) for a given department.
  * @param {*} req Contains a FormData containing the department to import course offerings

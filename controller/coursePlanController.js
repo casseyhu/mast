@@ -62,6 +62,40 @@ exports.uploadPlans = (req, res) => {
 
 
 /**
+ * Updates a students course plan item (grade and/or section) and recalculates their course
+ * plan completion.
+ * @param {*} req Contains information about the student and their updated course plan values
+ * @param {*} res 
+ */
+exports.updateItem = async (req, res) => {
+  const info = req.body.params
+  // console.log(info)
+  try {
+    await CoursePlanItem.update({
+      grade: info.grade,
+      section: info.section ? info.section : info.planItem.section
+    }, {
+      where: {
+        coursePlanId: info.planItem.coursePlanId,
+        courseId: info.planItem.courseId,
+        semester: info.planItem.semester,
+        year: info.planItem.year
+      }
+    })
+
+    let studentsPlanId = {}
+    studentsPlanId[info.student.sbuId] = info.planItem.coursePlanId
+    await calculateCompletion(studentsPlanId, info.student.department, null)
+    const items = await CoursePlanItem.findAll({ where: { coursePlanId: info.planItem.coursePlanId } })
+    res.status(200).send(items)
+  } catch (err) {
+    console.log(err)
+    res.status(500).send('Could not update course plan entry')
+  }
+}
+
+
+/**
  * Helper function to uploading course plan items for a given department
  * @param {*} coursePlans List of course plan item entries from the CSV
  * @param {*} dept Department to import course plan items for
