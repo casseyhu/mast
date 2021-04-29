@@ -42,7 +42,8 @@ export const GRADES = [
   { value: 'C+', label: 'C+' },
   { value: 'C', label: 'C' },
   { value: 'C-', label: 'C-' },
-  { value: 'F', label: 'F' }
+  { value: 'F', label: 'F' },
+  { value: null, label: 'N/A' }
 ]
 
 export const DEPARTMENTS = [
