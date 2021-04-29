@@ -14,6 +14,8 @@ class Student extends Component {
     showEmailConf: false,
     errorMsg: '',
     visible: 'hidden',
+    suggestErr: '',
+    showSuggestErr: false,
     mode: this.props.location.state ? this.props.location.state.mode : this.props.mode,
     studentInfoParams: {},
     department: this.props.location.state ? this.props.location.state.department : this.props.department,
@@ -21,12 +23,14 @@ class Student extends Component {
   }
 
   setStudentInfo = async () => {
+    console.log('set')
     const { student, department } = this.state
     if (department === '')
       return
     let studentRes = await axios.get('/student/' + student.sbuId, {
       params: { sbuId: student.sbuId }
     })
+    console.log(studentRes)
     let coursePlanItems = await axios.get('/courseplanitem/findItems/', {
       params: {
         sbuId: student.sbuId
@@ -73,8 +77,8 @@ class Student extends Component {
       this.setState({
         student: response.data,
         errorMsg: '',
-        [field]: true
-      }, () => this.setStudentInfo())
+        showConfirmation: true
+      },this.setStudentInfo)
     }).catch((err) => {
       this.setState({ errorMsg: err.response.data })
       console.log(err.response.data)
@@ -185,6 +189,16 @@ class Student extends Component {
 
 
   suggestCoursePlan = () => {
+    /* Prevent redirecting to suggest page for those who have satisfied all requirments */
+    let reqStates = this.state.studentInfoParams.requirementStates
+    let satisfiedCount = Object.values(reqStates).filter((req) => req[0] === 'satisfied').length
+    if (satisfiedCount === Object.keys(reqStates).length) {
+      this.setState({ showSuggestErr: true })
+      this.setState({ suggestErr: 'Cannot suggest course plans for students who have satisfied all requirements' })
+      console.log('this person DONe with MaSTERs!!!! dont botHER THEM')
+      return
+    }
+
     console.log('Suggesting course plan for student: ', this.state.student)
     this.props.history.push({
       pathname: '/suggest',
@@ -196,7 +210,7 @@ class Student extends Component {
   }
 
   render() {
-    const { mode, department, studentInfoParams, errorMsg, visible, showConfirmation, showEmailConf, showUpdateError, showEmailBox } = this.state
+    const { mode, department, studentInfoParams, errorMsg, visible, suggestErr, showSuggestErr, showConfirmation, showEmailConf, showUpdateError, showEmailBox } = this.state
     return (
       <Container fluid='lg' className='container' >
         <StudentInfo
@@ -238,7 +252,7 @@ class Student extends Component {
             this.setState({ showUpdateError: false })
           }}
           body='Try again later.'
-          title='Error'
+          title={<small style={{ color: 'red' }}>Error!</small>}
         />
         <CenteredModal
           show={showEmailBox}
@@ -258,6 +272,13 @@ class Student extends Component {
           onHide={() => this.setState({ showEmailConf: false })}
           onConfirm={() => { this.setState({ showEmailConf: false, showConfirmation: true }) }}
           body='Sent email successfully '
+        />
+        <CenteredModal
+          show={showSuggestErr}
+          onHide={() => this.setState({ showSuggestErr: false })}
+          onConfirm={() => { this.setState({ showSuggestErr: false })}}
+          title={<small style={{ color: 'red' }}>Error!</small>}
+          body={suggestErr}
         />
       </Container>
     )

@@ -5,7 +5,7 @@
         "track": "Imaging Informatics With Thesis",
         "requirementVersion": 201802, 
         "gradeRequirement": null,
-        "creditRequirement": 21,
+        "creditRequirement": 24,
         "gpaRequirements": {
             "cumulGpa": 3.0,
             "deptGpa": null,
@@ -22,7 +22,7 @@
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
+            ["0:(,):(,)", "BMI511", "BMI512", "BMI517", "BMI550", "BMI551", "BMI552", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI598", "BMI620", "BMI622", "BMI625", "BMI690", "BMI691", "BMI692", "BMI695", "BMI696", "BMI697", "BMI698", "BMI699", "BMI700"]
         ]   
     },
     "degree2": {
@@ -47,7 +47,7 @@
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI590", "BMI591", "BMI595", "BMI596", "BMI625", "BMI690", "BMI691","BMI695","BMI696"]
+            ["0:(,):(,)", "BMI511", "BMI512", "BMI517", "BMI550", "BMI551", "BMI552", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI599", "BMI620", "BMI622", "BMI625", "BMI690", "BMI691", "BMI692", "BMI695", "BMI696", "BMI697", "BMI698", "BMI699", "BMI700"]
         ]   
     },
     "degree3": {
@@ -55,7 +55,7 @@
         "track": "Clinical Informatics With Thesis",
         "requirementVersion": 201802, 
         "gradeRequirement": null,
-        "creditRequirement": 21,
+        "creditRequirement": 24,
         "gpaRequirements": {
             "cumulGpa": 3.0,
             "deptGpa": null,
@@ -71,7 +71,7 @@
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
+            ["0:(,):(,)", "BMI511", "BMI513", "BMI514", "BMI517", "BMI520", "BMI530", "BMI552", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI598", "BMI620", "BMI622", "BMI625", "BMI690", "BMI691", "BMI692", "BMI695", "BMI696", "BMI697", "BMI698", "BMI699", "BMI700"]
         ]   
     },
     "degree4": {
@@ -95,7 +95,7 @@
             ["2:(1,1):(,)", "BMI551"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI520", "BMI530", "BMI552", "BMI590", "BMI591", "BMI595", "BMI596", "BMI620", "BMI690", "BMI691","BMI695","BMI696"]
+            ["0:(,):(,)", "BMI511", "BMI513", "BMI514", "BMI517", "BMI520", "BMI530", "BMI552", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI599", "BMI620", "BMI622", "BMI625", "BMI690", "BMI691", "BMI692", "BMI695", "BMI696", "BMI697", "BMI698", "BMI699", "BMI700"]
         ]   
     },
     "degree5": {
@@ -103,7 +103,7 @@
         "track": "Translational Bioinformatics With Thesis",
         "requirementVersion": 201802, 
         "gradeRequirement": null,
-        "creditRequirement": 21,
+        "creditRequirement": 24,
         "gpaRequirements": {
             "cumulGpa": 3.0,
             "deptGpa": null,
@@ -119,7 +119,7 @@
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(1,12)", "BMI599"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
+            ["0:(,):(,)", "BMI512", "BMI513", "BMI514", "BMI517", "BMI550", "BMI551", "BMI552", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI598", "BMI620", "BMI622", "BMI625", "BMI690", "BMI691", "BMI692", "BMI695", "BMI696", "BMI697", "BMI698", "BMI699", "BMI700"]
         ]   
     },
     "degree6": {
@@ -143,7 +143,7 @@
             ["2:(1,1):(,)", "BMI530"],
             ["2:(,):(6,6)", "BMI598"],
             ["0:(,):(,6)", "BMI596", "BMI696"],
-            ["0:(,):(,)", "BMI517", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI622", "BMI690", "BMI691","BMI695","BMI696"]
+            ["0:(,):(,)", "BMI512", "BMI513", "BMI514", "BMI517", "BMI550", "BMI551", "BMI552", "BMI560", "BMI590", "BMI591", "BMI595", "BMI596", "BMI599", "BMI620", "BMI622", "BMI625", "BMI690", "BMI691", "BMI692", "BMI695", "BMI696", "BMI697", "BMI698", "BMI699", "BMI700"]
         ]   
     }
 
