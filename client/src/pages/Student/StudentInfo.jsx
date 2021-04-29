@@ -63,7 +63,7 @@ const StudentInfo = (props) => {
     <div className='flex-horizontal wrap'>
       <div className='flex-horizontal justify-content-between'>
         <h1>{mode} Student</h1>
-        <small>Last Updated: {userInfo.updatedAt}</small>
+        <small style={{ width: '210px' }}>Last Updated: {userInfo.updatedAt}</small>
         <div className='flex-horizontal' style={{ width: 'fit-content' }}>
           {userType === 'gpd' && (
             <Button
@@ -122,7 +122,7 @@ const StudentInfo = (props) => {
           <span className='filter-span' style={{ marginLeft: '0.6rem' }}>GPA:</span>
           <InputField
             className='lr-padding'
-            type='text'
+            type='number'
             placeholder='GPA'
             onChange={e => handleSelection('gpa', e.target)}
             value={userInfo.gpa}

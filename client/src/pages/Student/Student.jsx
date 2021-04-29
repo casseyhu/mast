@@ -9,10 +9,10 @@ import axios from '../../constants/axios'
 class Student extends Component {
   state = {
     showUpdateError: false,
-    errorMsg: '',
     showConfirmation: false,
     showEmailBox: false,
     showEmailConf: false,
+    errorMsg: '',
     visible: 'hidden',
     mode: this.props.location.state ? this.props.location.state.mode : this.props.mode,
     studentInfoParams: {},
@@ -51,7 +51,6 @@ class Student extends Component {
     this.setState({
       student: studentRes.data,
       studentInfoParams: {
-        // student: studentRes.data,
         coursePlan: coursePlanItems.data,
         requirements: requirements.data,
         requirementStates: reqStateMap
@@ -67,11 +66,12 @@ class Student extends Component {
     this.setStudentInfo()
   }
 
-  createStudent = (studentInfo) => {
+  createStudent = (studentInfo, commentAdded) => {
     /* Add new student into the db */
     axios.post('/student/create/', {
       params: studentInfo
     }).then(response => {
+      let field = commentAdded ? 'showEmailBox' : 'showConfirmation'
       this.setState({
         student: response.data,
         errorMsg: '',
@@ -79,14 +79,20 @@ class Student extends Component {
       },this.setStudentInfo)
     }).catch((err) => {
       this.setState({ errorMsg: err.response.data })
+      console.log(err.response.data)
     })
   }
 
   modeHandler = async (studentInfo) => {
     this.setState({ errorMsg: '' })
     const { mode, student } = this.state
-    if (mode === 'Add')
-      this.createStudent(studentInfo)
+    if (mode === 'Add') {
+      // GPD added a comment
+      if (studentInfo.gpdComments.length)
+        this.createStudent(studentInfo, true)
+      else
+        this.createStudent(studentInfo, false)
+    }
     else if (mode === 'View')
       this.setState({ mode: 'Edit' })
     else {
@@ -95,13 +101,6 @@ class Student extends Component {
         params: student.sbuId
       })
       let isSame = true
-
-      console.log(dbStudentInfo.data)
-
-      console.log(student)
-
-      console.log(studentInfo)
-
       Object.keys(dbStudentInfo.data).map(info =>
         (info === 'updatedAt') ? '' :
           dbStudentInfo.data[info] !== student[info] ? isSame = false : '')
@@ -193,7 +192,6 @@ class Student extends Component {
       pathname: '/suggest',
       state: {
         student: this.state.student,
-        // coursePlan: this.state.studentInfoParams.coursePlan,
         studentInfoParams: this.state.studentInfoParams
       }
     })
@@ -215,6 +213,7 @@ class Student extends Component {
         <hr />
         <Requirements
           studentInfo={studentInfoParams}
+          track={this.state.student.track}
         />
         <hr />
         <CoursePlan

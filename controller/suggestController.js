@@ -1,5 +1,5 @@
 const { GRADES, SEMTONUM, NUMTOSEM, currSem, currYear } = require('./constants')
-const { findRequirements, findCoursePlanItems, checkTimeConflict } = require('./shared')
+const { findRequirements, findCoursePlanItems, checkTimeConflict, checkPrereq } = require('./shared')
 const database = require('../config/database.js')
 
 const Degree = database.Degree
@@ -138,9 +138,9 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
         ? requirement.courseLower
         : (requirement.creditLower ? requirement.creditLower / 3 : 1)
       // Student did not take the course yet (or failed)
-      if (!takenAndCurrentCourses.has(course)) {
+      if (!takenAndCurrentCourses.has(course))
         notTaken.push(course)
-      } else if (!allUsed.has(course)) {
+      else if (!allUsed.has(course)) {
         // Is a repeat course 
         if (requirement.courses.length < maxCourses) {
           let timesTaken = takenAndCurrent.filter(item => item.courseId === course).length
@@ -176,6 +176,7 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
     else
       requirement.courses = notTaken
   }
+  creditsCounter += takenAndCurrent.reduce((a, b) => !allUsed.has(b.courseId) && courses[b.courseId].credits + a, 0)
   // Move all remaining courses into last nonrequired course requirement (0:(,):(,))
   creditsCounter += takenAndCurrent.reduce((a, b) => !allUsed.has(b.courseId) && (courses[b.courseId + ' ' + b.semester + ' ' + b.year] ? courses[b.courseId + ' ' + b.semester + ' ' + b.year].credits : 0) + a, 0)
   nonrequired = Array.from(nonrequired).filter(item => item !== '')
@@ -586,25 +587,6 @@ function shuffle(array) {
 }
 
 
-/**
- * Determines if the student has taken the pre-requisites for a course.
- * @param {Object} courseA A course node object
- * @param {Array[String]} takenAndCurrentCourses List of courses that the student has taken
- * and currently taking
- * @returns Boolean value indicating whether they have taken/currently taking pre-requisites
- * for the course.
- */
-function checkPrereq(courseA, takenAndCurrentCourses) {
-  let prereqs = courseA.prereqs
-  if (prereqs[0] === '')
-    return true
-  for (let l = 0; l < prereqs.length; l++) {
-    if (!takenAndCurrentCourses.has(prereqs[l]))
-      return false
-  }
-  return true
-}
-
 
 function calculateScore(coursePlan) {
   return Object.keys(coursePlan)
@@ -702,7 +684,7 @@ exports.smartSuggest = async (req, res) => {
   // Sort courses by popularity
   let popularCourses = Object.keys(courseCount).sort((c1, c2) => courseCount[c2] - courseCount[c1])
   // Create course nodes
-  const nodesMap = createNodes(courses, courseReqs, new Set(), new Set(), [creditsRemaining, coursesPerSem], popularCourses, takenAndCurrent)
+  const nodesMap = createNodes(courses, courseReqs, [], new Set(), [creditsRemaining, coursesPerSem], popularCourses, takenAndCurrent)
   let nodes = Object.values(nodesMap)
   nodes = sortNodes(nodesMap)
   console.log(nodes)

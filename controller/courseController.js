@@ -6,6 +6,89 @@ const { getDepartmentalCourses } = require('./shared')
 const database = require('../config/database.js')
 const Course = database.Course
 
+
+/**
+ * Finds a course by courseId.
+ * @param {*} req Contains parameter for courseId
+ * @param {*} res 
+ */
+exports.findOne = (req, res) => {
+  Course
+    .findOne({
+      where: {
+        courseId: req.query.courseId
+      }
+    })
+    .then(course => res.status(200).send(course))
+    .catch(err => {
+      console.log(err)
+      res.status(500).send('Error finding course')
+    })
+}
+
+
+/**
+ * Finds all the courses for a department in a given semester and year.
+ * @param {*} req Contains parameter for department, semester, and year
+ * @param {*} res 
+ */
+exports.findAll = async (req, res) => {
+  try {
+    const semester = req.query.semester ? req.query.semester : currSem
+    const year = req.query.year ? req.query.year : currYear
+    let deptCourses = await Course.findAll({
+      where: {
+        department: req.query.dept,
+        semester: semester,
+        year: year
+      }
+    })
+    let [, exceptions] = await getDepartmentalCourses([req.query.dept], semester, year)
+    let exceptionCourses = await Course.findAll({
+      where: {
+        courseId: exceptions,
+        semester: semester,
+        year: year
+      }
+    })
+    res.status(200).send(deptCourses.concat(exceptionCourses))
+  } catch (err) {
+    res.status(500).send('Error in finding courses')
+  }
+}
+
+
+/**
+ * Gets the set of all courses that are in the database for a department. 
+ * Returns a map of courseIds to a boolean {'CSE500' : true, 'CSE502' : true, 
+ * 'CSE504' : true,  ... } so that we have O(1) access to see if the course 
+ * is offered or not. 
+ * @param {*} req axios request.
+ * @param {*} res axios response.
+ */
+exports.getDeptCourses = async (req, res) => {
+  try {
+    let deptCourses = await Course.findAll({
+      attributes: [
+        [database.Sequelize.fn('DISTINCT', database.Sequelize.col('courseId')), 'courseId'],
+      ],
+      where: {
+        department: req.query.dept
+      }
+    })
+    let [, exceptions] = await getDepartmentalCourses([req.query.dept], currSem, currYear)
+
+    courseIds = {}
+    deptCourses.map(course => courseIds[course.courseId] = false)
+    exceptions.map(course => courseIds[course] = false)
+    res.status(200).send(courseIds)
+
+  } catch (err) {
+    res.status(500).send('Error: ' + err)
+  }
+}
+
+
 /**
  * Upload course information (name, description, credits, etc..) to the database.
  * @param {*} req Contains a FormData containing the list of departments to scrape from
@@ -42,50 +125,6 @@ exports.upload = (req, res) => {
       depts = depts.split(',')
       console.log('Scraping for: ', depts, semester, year)
       scrapeCourses(file.path, depts, semester, year, res)
-    })
-}
-
-
-/**
- * Finds a course by courseId.
- * @param {*} req Contains parameter for courseId
- * @param {*} res 
- */
-exports.findOne = (req, res) => {
-  Course
-    .findOne({
-      where: {
-        courseId: req.query.courseId
-      }
-    })
-    .then(course => res.status(200).send(course))
-    .catch(err => {
-      console.log(err)
-      res.status(500).send('Error finding course')
-    })
-}
-
-
-/**
- * Finds all the courses for a department in a given semester and year.
- * @param {*} req Contains parameter for department, semester, and year
- * @param {*} res 
- */
-exports.findAll = (req, res) => {
-  Course
-    .findAll({
-      where: {
-        department: req.query.dept,
-        semester: req.query.semester,
-        year: req.query.year
-      }
-    })
-    .then(foundCourses => {
-      res.status(200).send(foundCourses)
-    })
-    .catch(err => {
-      res.status(500).send('Error in finding courses')
-      console.log(err)
     })
 }
 
@@ -421,48 +460,4 @@ const insertUpdate = async (values, condition) => {
   }
 }
 
-/**
- * Gets the set of all courses that are in the database for a department. 
- * Returns a map of courseIds to a boolean {'CSE500' : true, 'CSE502' : true, 
- * 'CSE504' : true,  ... } so that we have O(1) access to see if the course 
- * is offered or not. 
- * @param {*} req axios request.
- * @param {*} res axios response.
- */
-exports.getDeptCourses = (req, res) => {
-  Course
-    .findAll({
-      attributes: [
-        [database.Sequelize.fn('DISTINCT', database.Sequelize.col('courseId')), 'courseId'],
-      ],
-      where: {
-        department: req.query.dept
-      }
-    })
-    .then(result => {
-      courseIds = {}
-      result.map(course => courseIds[course.dataValues.courseId] = false)
-      res.status(200).send(courseIds)
-    })
-    .catch(err => res.status(500).send('Error: ' + err))
-}
 
-
-/**
- * Finds all the courses for the current semester and year and returns
- * the entire course entry to the client.
- * @param {*} req Contains department to look for
- * @param {*} res 
- */
-exports.getFullDeptCourses = (req, res) => {
-  Course
-    .findAll({
-      where: {
-        department: req.query.dept,
-        semester: currSem,
-        year: currYear
-      }
-    })
-    .then(result => res.status(200).send(result))
-    .catch(err => res.status(500).send('Error: ' + err))
-}

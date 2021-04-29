@@ -17,7 +17,7 @@ const AddCourse = (props) => {
   const [course, setCourse] = useState()
   const [semester, setSemester] = useState()
   const [year, setYear] = useState()
-  const [error, seterror] = useState()
+  const [error, setError] = useState()
 
   useEffect(() => {
     async function getCourses() {
@@ -25,7 +25,7 @@ const AddCourse = (props) => {
       if (!token)
         return
       var decoded = jwt_decode(token)
-      let courses = await axios.get('course/fullDeptCourses', {
+      let courses = await axios.get('/course/', {
         params: {
           dept: decoded.userInfo.department,
         }
@@ -36,16 +36,18 @@ const AddCourse = (props) => {
   }, [])
 
   const checkAdd = (course, semester, year) => {
+    console.log(courses)
     if (!course || !semester || !year) {
-      seterror('All fields are required')
+      setError('All fields are required')
       return
     } else if (!course.semestersOffered.includes(semester)) {
-      seterror(`Course is not offered in the ${semester}`)
+      setError(`Course is not offered in the ${semester}`)
       return
     } else {
-      seterror('')
+      setError('')
     }
-    // else if ()
+    // If it passes all checks, add this course to the student's schedule. 
+    props.add(course, semester, year)
   }
 
   return (

@@ -23,7 +23,7 @@ const CenteredModal = (props) => {
       <Modal.Body className='flex-vertical center'>
         {props.body}
       </Modal.Body>
-      {props.visibility !== 'hidden' &&
+      {props.visibility === 'visible' &&
         <Modal.Footer className='center'>
           <small style={{ color: 'red', width: '100%' }}>
             {props.footer}
@@ -38,6 +38,7 @@ const CenteredModal = (props) => {
             text='Cancel'
             onClick={props.onHide}
             style={{ width: '120px' }}
+            disabled={props.visibility === 'visible' ? true : false}
           />}
         <Button
           className='bg-white'
@@ -45,6 +46,7 @@ const CenteredModal = (props) => {
           text={props.variant === 'multi' ? 'Confirm' : 'Ok'}
           onClick={props.onConfirm}
           style={{ width: '120px' }}
+          disabled={props.visibility === 'visible' ? true : false}
         />
       </div>
     </Modal>

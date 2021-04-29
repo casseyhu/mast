@@ -8,6 +8,9 @@ module.exports = function (app) {
   // Update student's field based on id
   app.post('/api/student/update', Student.update)
 
+  // Adds a course to student's course plan
+  app.post('/api/student/addCourse', Student.addCourse)
+
   // Upload all students from CSV file
   app.post('/api/student/upload', Student.upload)
 

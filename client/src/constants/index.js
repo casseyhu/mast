@@ -82,7 +82,10 @@ export const TRACKS = {
   'CSE': [
     { value: 'Advanced Project', label: 'Advanced Project' },
     { value: 'Special Project', label: 'Special Project' },
-    { value: 'Thesis', label: 'Thesis' }
+    { value: 'Thesis', label: 'Thesis' },
+    { value: 'Advanced Project Proficiency', label: 'Advanced Project Proficiency' },
+    { value: 'Special Project Proficiency', label: 'Special Project Proficiency' },
+    { value: 'Thesis Proficiency', label: 'Thesis Proficiency' }
   ],
   'ESE': [
     { value: 'Non-Thesis', label: 'Non-Thesis' },

@@ -18,7 +18,7 @@ const Button = (props) => {
 
   return (
     <div className={props.divclassName} style={props.style}>
-      <button className={`${props.variant}-button ${props.className}`} onClick={handleClick}>
+      <button className={`${props.variant}-button ${props.className}`} disabled={props.disabled} onClick={handleClick}>
         {props.text}
         {(props.variant === 'square')
           && (
