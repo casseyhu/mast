@@ -75,7 +75,7 @@ exports.suggest = async (req, res) => {
   // Delete courses from requirements list that were taken
   let courseReqs = JSON.parse(JSON.stringify(courseReq))
   const coursesRemaining = await remainingRequirements(courses, courseReqs, takenAndCurrent)
-  const creditsCounter = await deleteTakenCourses(coursesSem, courseReq, takenAndCurrentCourses, takenAndCurrent)
+  const [creditsCounter, allUsed] = await deleteTakenCourses(coursesSem, courseReq, takenAndCurrentCourses, takenAndCurrent)
   console.log(courseReq)
   // Get credits remaining, semesters remaining, and number of courses per semester
   let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student, creditsCounter, coursesRemaining, CPS)
@@ -89,7 +89,7 @@ exports.suggest = async (req, res) => {
   let generated = []
   let minScore = Number.MAX_SAFE_INTEGER
   let counter = 0
-  while (generated.length < 5 && counter < 50) {
+  while (generated.length < 2 && counter < 100) {
     const takenAndCurrent = coursePlanItems.filter(course => (
       (100 * course.year + SEMTONUM[course.semester] <= 100 * currYear + SEMTONUM[currSem]) &&
       (!course.grade || GRADES[course.grade] >= GRADES['C'])
@@ -101,12 +101,12 @@ exports.suggest = async (req, res) => {
     let nodes = Object.values(nodesMap)
     nodes = sortNodes(nodesMap)
     // console.log(nodes)
-    let [score, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, TIME, takenAndCurrentCourses)
-    if (score < minScore) {
+    let [score, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, TIME, takenAndCurrentCourses, allUsed)
+    if (score !== null && score < minScore) {
       generated = [suggested]
       minScore = score
     }
-    else if (score === minScore)
+    else if (score != null && score === minScore)
       generated.push(suggested)
     counter++
   }
@@ -160,6 +160,7 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
           let courseInPlan = takenAndCurrent.filter(item => (item.courseId === course))[0]
           if (requirement.type === 0 || (requirement.courseLower !== null && requirement.courseLower > 0)
             || (requirement.creditLower !== null && requirement.creditLower > 0)) {
+              console.log(course)
             creditsCounter += courses[courseInPlan.courseId + ' ' + courseInPlan.semester + ' ' + courseInPlan.year].credits
             used.push(course)
           }
@@ -182,7 +183,7 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
   nonrequired = Array.from(nonrequired).filter(item => item !== '')
   courseReq[courseReq.length - 1].courses = nonrequired
   // console.log("nonrequired: ", nonrequired)
-  return creditsCounter
+  return [creditsCounter, allUsed]
 }
 
 
@@ -364,9 +365,10 @@ function sortNodes(nodesMap) {
 
 
 //  * @param {Number} creditsRemaining Number of credits remaining 
-async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, prefTimes, takenAndCurrentCourses) {
+async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, prefTimes, takenAndCurrentCourses, allUsed) {
   // Mapping of semester+year to course nodes for that semester and year
-  // nodes = nodes.filter(node => !takenAndCurrentCourses.has(node.course))
+  // console.log(takenAndCurrentCourses)
+  nodes = nodes.filter(node => !allUsed.has(node.course))
   let num_iterations = 0
   let suggestions = {}
   let currSemyear = currYear * 100 + SEMTONUM[currSem]
