@@ -25,6 +25,7 @@ const AddCourse = (props) => {
   const [showUnmet, showUnmetPrereqs] = useState(false)
   const [confirmation, showConfirmation] = useState(false)
   const [emailConfirm, showEmailConfirm] = useState(false)
+  // const [error, showError] = useState(false)
   const [waive, setWaive] = useState(false)
   const [visible, setVisible] = useState('hidden')
 
@@ -44,7 +45,7 @@ const AddCourse = (props) => {
     getCourses()
   }, [])
 
-  const checkAdd = (course, semester, year) => {
+  const checkAdd = async (course, semester, year) => {
     if (!course || !semester || !year) {
       setError('All fields are required')
       return
@@ -52,49 +53,101 @@ const AddCourse = (props) => {
       setError(`Course is not offered in the ${semester}`)
       return
     } else {
-      setError('')
+      let hasGrades = await semesterHasGrade(semester, year)
+      if (hasGrades) {
+        setError('Cannot add courses to semester with imported grades.')
+        return
+      }
+      console.log('here')
+      let alreadyExists = await checkCourseInPlan(course, semester, year)
+      if (alreadyExists) {
+        setError('Course ' + course.courseId + ' already exists in ' + semester
+          + ' ' + year + '.')
+        return
+      } else {
+        // Passed pre-checks. Now check is fulfilled prereqs.
+        setError('')
+        checkPrerequisites(course, semester, year)
+      }
     }
-    // If it passes all pre-checks, check if prerequisites are met.
-    checkPrerequisites(course, semester, year)
   }
 
-  const checkPrerequisites = (course, semester, year) => {
-    axios.get('student/checkPrerequisites', {
+  const checkCourseInPlan = async (course, semester, year) => {
+    let hasCourse = await axios.get('student/checkCourse', {
+      params: {
+        sbuId: props.student.sbuId,
+        courseId: course.courseId,
+        semester: semester,
+        year: year
+      }
+    })
+    return hasCourse.data
+  }
+
+  const semesterHasGrade = async (semester, year) => {
+    let hasGrade = await axios.get('student/checkGradedSem', {
+      params: {
+        sbuId: props.student.sbuId,
+        semester: semester,
+        year: year
+      }
+    })
+    return hasGrade.data
+  }
+
+  const checkPrerequisites = async (course, semester, year) => {
+    let prereqs = await axios.get('student/checkPrerequisites', {
       params: {
         sbuId: props.student.sbuId,
         course: course,
         semester: semester,
         year: year
       }
-    }).then((response) => {
-      // response.data == list of unsatisfied prereqs, if any. 
-      if (response.data.length > 0) {
-        setUnmetPrereqs(response.data)
-        showUnmetPrereqs(true)
-        return false
-      }
-    }).catch((err) => {
-      console.log(err)
     })
+    if (prereqs.data.length > 0) {
+      setUnmetPrereqs(prereqs.data)
+      showUnmetPrereqs(true)
+      return false
+    } else {
+      // No prereqs. Add this course into the plan. 
+      if(await addCourseWrapper(course, semester, year))
+        showConfirmation(true)
+    }
+  }
+
+  const addCourseWrapper = async (course, semester, year) => {
+    let addedCourse = await props.add(course, semester, year)
+    if (addedCourse) 
+      return true
+    else {
+      setError('Course ' + course.courseId + ' already exists in ' + semester
+        + ' ' + year + '.')
+      return false
+    }
   }
 
 
-  const waiveAndAdd = () => {
-    setVisible('visible')
-    axios.post('/email/send/', {
-      params: {
-        email: 'eddie.xu@stonybrook.edu',
-        subject: 'GPD waived prerequisites',
-        text: 'GPD waived prerequisites for course ' + course.courseId + '.'
+  const waiveAndAdd = async () => {
+    let addedCourse = await addCourseWrapper(course, semester, year)
+    // Only email if the course can actually be added. 
+    if (addedCourse) {
+      setVisible('visible')
+      let sentEmail = await axios.post('/email/send/', {
+        params: {
+          email: 'eddie.xu@stonybrook.edu',
+          subject: 'GPD waived prerequisites',
+          text: 'GPD waived prerequisites for course ' + course.courseId + '.'
+        }
+      })
+      if (sentEmail) {
+        console.log("shoundlt be here too fase")
+        setVisible('hidden')
+        setWaive(false)
+        showEmailConfirm(true)
       }
-    }).then((response) => {
-      props.add(course, semester, year)
-      setVisible('hidden')
+    } else {
       setWaive(false)
-      showEmailConfirm(true)
-    }).catch((err) => {
-      console.log(err)
-    })
+    }
   }
 
   return (
@@ -185,9 +238,9 @@ const AddCourse = (props) => {
       />
       <CenteredModal
         show={waive}
-        onHide={() => {
+        onHide={async () => {
           setWaive(false)
-          props.add(course, semester, year)
+          if(await addCourseWrapper(course, semester, year))
           showConfirmation(true)
         }}
         onConfirm={() => { waiveAndAdd() }}
