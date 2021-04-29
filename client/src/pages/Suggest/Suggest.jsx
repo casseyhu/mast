@@ -12,7 +12,7 @@ import SuggestedPlans from './Suggested'
 const Suggest = (props) => {
   const [suggestions, setSuggestions] = useState([])
   const [degreeexpanded, setDegreeExpanded] = useState(false)
-  const [planexpanded, setPlanExpanded] = useState(true)
+  const [planExpanded, setPlanExpanded] = useState(true)
   const { coursePlan } = props.location.state.studentInfoParams
   const student = props.location.state.student
 
@@ -86,10 +86,10 @@ const Suggest = (props) => {
             className='pt-1 pb-0'
             as={Card.Header}
             eventKey='0'
-            onClick={e => setPlanExpanded(!planexpanded)}
+            onClick={e => setPlanExpanded(!planExpanded)}
             style={{ cursor: 'pointer', backgroundColor: 'transparent' }}>
             <div className='flex-horizontal justify-content-between' >
-              <h4 >{`${planexpanded ? 'Hide' : 'View'}`} Student Course Plan</h4>
+              <h4 >{`${planExpanded ? 'Hide' : 'View'}`} Student Course Plan</h4>
               <i className="fa fa-chevron-down" aria-hidden="true"></i>
             </div>
           </Accordion.Toggle>
