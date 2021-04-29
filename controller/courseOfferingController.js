@@ -13,6 +13,22 @@ const CoursePlan = database.CoursePlan
 const CoursePlanItem = database.CoursePlanItem
 const Student = database.Student
 
+
+exports.findOne = async (req, res) => {
+  CourseOffering
+    .findAll({
+      where: {
+        identifier: req.query.courseId,
+        semester: req.query.semester,
+        year: req.query.year
+      }
+    })
+    .then(offerings => res.status(200).send(offerings))
+    .catch(err => res.status(500).send('Could not find course offerings'))
+}
+
+
+
 /**
  * Uploads course offering information (time, location, etc..) for a given department.
  * @param {*} req Contains a FormData containing the department to import course offerings
@@ -80,7 +96,7 @@ async function uploadCourses(results, res, dept) {
   // Upload all the new course offerings
   const coursesAdded = await uploadNewOfferings(results)
   // Find all students for this specific department and their respective coursePlans.
-  const deptStudents = await Student.findAll({ where: { department: dept } })
+  const deptStudents = await Student.findAll({ where: { department: dept[dept.length-1] } })
   const coursePlans = await CoursePlan.findAll({
     where: {
       studentId: deptStudents.map(student => student.sbuId)

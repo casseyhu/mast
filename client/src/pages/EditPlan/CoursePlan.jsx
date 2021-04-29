@@ -36,6 +36,26 @@ const EditCoursePlan = (props) => {
     }
   }
 
+  const saveItem = (values) => {
+    axios.post('/courseplanitem/update/', {
+      params: {
+        ...values,
+        student: student
+      }
+    }).then(response => {
+      history.replace({
+        ...history.location,
+        state: {
+          ...history.location.state,
+          coursePlan: response.data
+        }
+      })
+    }).catch(err => {
+      console.log(err.response.data)
+    })
+  }
+
+
   return (
     <Container fluid='lg' className='container'>
       <div className='flex-horizontal justify-content-between'>
@@ -44,7 +64,7 @@ const EditCoursePlan = (props) => {
         <h5><b>Degree:</b> {student.department} {student.track}</h5>
         {/* <Button variant='round' text='Add Course' /> */}
       </div>
-      <CoursePlan mode coursePlan={coursePlan} />
+      <CoursePlan mode saveItem={saveItem} coursePlan={coursePlan} />
       <AddCourse add={addCourse} student={student} />
     </Container>
   )

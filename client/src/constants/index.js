@@ -33,6 +33,18 @@ export const YEARS = [
   { value: '2025', label: '2025' }
 ]
 
+export const GRADES = [
+  { value: 'A', label: 'A' },
+  { value: 'A-', label: 'A-' },
+  { value: 'B+', label: 'B+' },
+  { value: 'B', label: 'B' },
+  { value: 'B-', label: 'B-' },
+  { value: 'C+', label: 'C+' },
+  { value: 'C', label: 'C' },
+  { value: 'C-', label: 'C-' },
+  { value: 'F', label: 'F' }
+]
+
 export const DEPARTMENTS = [
   { value: '', label: 'All' },
   { value: 'AMS', label: 'AMS' },

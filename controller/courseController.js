@@ -2,7 +2,7 @@ const IncomingForm = require('formidable').IncomingForm
 const PDFExtract = require('pdf.js-extract').PDFExtract
 const pdfExtract = new PDFExtract()
 const { currSem, currYear } = require('./constants')
-const { getDepartmentalCourses } = require('./shared')
+const { getDepartmentalCourses, beforeCurrent } = require('./shared')
 const database = require('../config/database.js')
 const Course = database.Course
 
@@ -13,10 +13,18 @@ const Course = database.Course
  * @param {*} res 
  */
 exports.findOne = (req, res) => {
+  let semester = currSem
+  let year = currYear
+  if (req.query.semester && req.query.year && beforeCurrent(req.query.semester)) {
+    semester = req.query.semester
+    year = req.query.year
+  }
   Course
     .findOne({
       where: {
-        courseId: req.query.courseId
+        courseId: req.query.courseId,
+        semester: semester,
+        year: year
       }
     })
     .then(course => res.status(200).send(course))
