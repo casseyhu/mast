@@ -3,8 +3,10 @@ const fs = require('fs')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Papa = require('papaparse')
-const { SEMDICT, currSem, currYear, GRADES, SEMTONUM } = require('./constants')
-const { updateOrCreate, findRequirements, findCoursePlanItems, checkPrereq } = require('./shared')
+
+const { SEMDICT, TRACKS, currSem, currYear, SEMTONUM } = require('./constants')
+const { updateOrCreate, findRequirements, findCoursePlanItems, checkPrereq, titleCase } = require('./shared')
+
 const coursePlanController = require('./coursePlanController')
 const database = require('../config/database.js')
 const Op = database.Sequelize.Op
@@ -33,8 +35,8 @@ exports.create = (req, res) => {
   Degree
     .findOne({
       where: {
-        dept: student.dept,
-        track: student.track,
+        dept: student.dept.toUpperCase(),
+        track: titleCase(student.track),
         requirementVersion: requirementVersion
       }
     })
@@ -68,7 +70,7 @@ exports.update = async (req, res) => {
     const degree = await Degree.findOne({
       where: {
         dept: student.dept,
-        track: student.track,
+        track: titleCase(student.track),
         requirementVersion: requirementVersion
       }
     })
@@ -92,8 +94,8 @@ exports.update = async (req, res) => {
       entrySemYear: Number(student.entryYear.concat(SEMDICT[student.entrySem])),
       gradSem: student.gradSem,
       gradYear: Number(student.gradYear),
-      department: student.dept,
-      track: student.track,
+      department: student.dept.toUpperCase(),
+      track: titleCase(student.track),
       requirementVersion: requirementVersion,
       degreeId: degree.degreeId,
       graduated: student.graduated === 'True',
@@ -184,7 +186,7 @@ exports.upload = (req, res) => {
             res.status(500).send('Cannot parse CSV file - headers do not match specifications')
             return
           }
-          let students = results.data.filter(student => student.department === dept)
+          let students = results.data.filter(student => student.department.toUpperCase() === dept)
           uploadStudents(students, res)
         }
       })
@@ -520,17 +522,21 @@ async function uploadStudents(students, res) {
       entrySemYear: semYear,
       gradSem: studentInfo.graduation_semester,
       gradYear: studentInfo.graduation_year,
-      department: studentInfo.department,
-      track: studentInfo.track,
+      department: studentInfo.department.toUpperCase(),
+      track: titleCase(studentInfo.track),
       requirementVersion: requirementVersion,
       satisfied: 0,
       unsatisfied: 0,
       pending: 0,
-      degreeId: degreeDict[studentInfo.department + ' ' +
-        studentInfo.track + ' ' + studentInfo.requirement_version_semester + ' ' + studentInfo.requirement_version_year],
+      degreeId: degreeDict[studentInfo.department.toUpperCase() + ' ' + titleCase(studentInfo.track) + ' '
+        + studentInfo.requirement_version_semester + ' ' + studentInfo.requirement_version_year],
       graduated: graduated,
       gpdComments: '',
       studentComments: ''
+    }
+    if (!checkFields(values, null)) {
+      console.log("invalid stuednt")
+      continue
     }
     tot += 1
     await updateOrCreate(Student, { sbuId: studentInfo.sbu_id }, values, true, true)
@@ -558,27 +564,32 @@ function checkFields(student, res) {
   let entryDate = Number(student.entryYear + SEMDICT[student.entrySem])
   let degreeVersion = Number(student.degreeYear + SEMDICT[student.degreeSem])
   if (gradDate < entryDate) {
-    res.status(500).send('Graduation date cannot be earlier than entry date.')
+    if (res) res.status(500).send('Graduation date cannot be earlier than entry date.')
     return false
   }
   if (degreeVersion < entryDate) {
-    res.status(500).send('Degree version cannot be earlier than entry date.')
+    if (res) res.status(500).send('Degree version cannot be earlier than entry date.')
     return false
   }
   if (degreeVersion > gradDate) {
-    res.status(500).send('Degree version cannot be later than graduation date.')
+    if (res) res.status(500).send('Degree version cannot be later than graduation date.')
     return false
   }
   // Check for proper 9-digit SBUID
   let regex = /^\d{9}$/
   if (!regex.test(student.sbuId.toString())) {
-    res.status(500).send('SBUID must be a 9-digit string of numbers 0-9.')
+    if (res) res.status(500).send('SBUID must be a 9-digit string of numbers 0-9.')
     return false
   }
   // Check for proper .edu email address
   regex = /^\w+@\w+\.edu$/
   if (!regex.test(student.email)) {
-    res.status(500).send('Student must have a valid .edu email.')
+    if (res) res.status(500).send('Student must have a valid .edu email.')
+    return false
+  }
+  // Check valid track for degree
+  if (!TRACKS[student.department].includes(student.track)) {
+    if (res) res.status(500).send('Invalid degree track.')
     return false
   }
   return true
@@ -627,7 +638,7 @@ async function addStudent(student, degree, res) {
     gradSem: student.gradSem,
     gradYear: Number(student.gradYear),
     department: student.dept,
-    track: student.track,
+    track: titleCase(student.track),
     requirementVersion: degree.requirementVersion,
     satisfied: 0,
     unsatisfied: requiredRequirements.length,

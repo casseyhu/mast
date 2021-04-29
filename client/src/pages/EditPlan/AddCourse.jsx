@@ -45,7 +45,6 @@ const AddCourse = (props) => {
   }, [])
 
   const checkAdd = (course, semester, year) => {
-    console.log(courses)
     if (!course || !semester || !year) {
       setError('All fields are required')
       return

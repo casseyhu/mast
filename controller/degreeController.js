@@ -1,6 +1,6 @@
 const { IncomingForm } = require('formidable')
 const fs = require('fs')
-const { findRequirements } = require('./shared')
+const { findRequirements, titleCase } = require('./shared')
 const database = require('../config/database.js')
 
 const Degree = database.Degree
@@ -38,8 +38,8 @@ exports.upload = (req, res) => {
             // Query to find if a degree with dept, track, and version exists
             const found = await Degree.findOne({
               where: {
-                dept: degree.dept,
-                track: degree.track,
+                dept: degree.dept.toUpperCase(),
+                track: titleCase(degree.track),
                 requirementVersion: degree.requirementVersion
               }
             })
@@ -66,7 +66,7 @@ exports.upload = (req, res) => {
 exports.findRequirements = async (req, res) => {
   let condition = {
     dept: req.query.department,
-    track: req.query.track,
+    track: titleCase(req.query.track),
   }
   if (req.query.reqVersion)
     condition['requirementVersion'] = req.query.reqVersion
@@ -184,8 +184,8 @@ async function createDegree(degree) {
     })
     // Finally, create the degree object
     await Degree.create({
-      dept: degree.dept,
-      track: degree.track,
+      dept: degree.dept.toUpperCase(),
+      track: titleCase(degree.track),
       requirementVersion: degree.requirementVersion,
       gradeRequirement: gradeRequirement ? gradeRequirement.requirementId : null,
       gpaRequirement: gpaRequirement.requirementId,
