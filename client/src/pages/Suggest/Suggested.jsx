@@ -36,7 +36,7 @@ const SuggestedPlans = (props) => {
                     <Badge className='mr-3' pill variant='secondary'>&nbsp;i&nbsp;</Badge>
                   </OverlayTrigger>
                 </div>
-                <Button className='bg-white' variant='round' text='select' />
+                <Button className='bg-white' variant='round' text='select' onClick={e => props.addSuggestedPlan(coursePlan)} />
               </div>
             </Accordion.Toggle>
             <Accordion.Collapse eventKey={`${key}`}>

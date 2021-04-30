@@ -39,7 +39,11 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
       allowNull: false
     },
-    section: Sequelize.STRING,
+    section: {
+      type: Sequelize.STRING,
+      primaryKey: true,
+      allowNull: false
+    },
     grade: Sequelize.STRING,
     validity: {
       type: Sequelize.BOOLEAN,

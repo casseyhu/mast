@@ -387,7 +387,8 @@ exports.checkGradedSem = async (req, res) => {
     where: {
       coursePlanId: coursePlan.coursePlanId,
       semester: req.query.semester,
-      year: req.query.year
+      year: req.query.year,
+      status: true
     }
   })
   if (items.length > 0) {
@@ -493,7 +494,7 @@ exports.addCourse = async (req, res) => {
       courseId: query.course.courseId,
       semester: query.semester,
       year: query.year,
-      section: null,
+      section: 'N/A',
       grade: null,
       validity: true,
       status: true

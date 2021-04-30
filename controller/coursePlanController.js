@@ -1,7 +1,7 @@
 const { IncomingForm } = require('formidable')
 const fs = require('fs')
 const Papa = require('papaparse')
-const { currSem, currYear, GRADES, SEMTONUM } = require('./constants')
+const { currSem, currYear, GRADES, SEMTONUM, NUMTOSEM } = require('./constants')
 const { findRequirements, checkTimeConflict, findCoursePlanItems, updateOrCreate, beforeCurrent } = require('./shared')
 const database = require('../config/database.js')
 
@@ -79,7 +79,8 @@ exports.updateItem = async (req, res) => {
         coursePlanId: info.planItem.coursePlanId,
         courseId: info.planItem.courseId,
         semester: info.planItem.semester,
-        year: info.planItem.year
+        year: info.planItem.year,
+        status: true
       }
     })
 
@@ -151,7 +152,7 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
       courseId: item.department + item.course_num,
       semester: item.semester,
       year: item.year,
-      section: item.section,
+      section: item.section ? item.section : 'N/A',
       grade: item.grade,
       validity: true
     }
@@ -492,7 +493,12 @@ async function calculateCompletion(studentsPlanId, department, res) {
       degrees[student.degreeId] = await findRequirements(degree)
     const [gradeReq, gpaReq, creditReq, courseReq] = degrees[student.degreeId]
     // Get this student's coursePlan to see what courses they've taken/currently taken/are going to take.
-    const coursePlanItems = await CoursePlanItem.findAll({ where: { coursePlanId: studentsPlanId[key] } })
+    const coursePlanItems = await CoursePlanItem.findAll({
+      where: {
+        coursePlanId: studentsPlanId[key],
+        status: true
+      }
+    })
     // List of course plan items with grades
     const gradedCoursePlan = coursePlanItems.filter(course => course.grade !== null)
     // List of course plan items that the student has taken and currently taking
@@ -666,3 +672,48 @@ exports.count = (req, res) => {
 }
 
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.addSuggestion = async (req, res) => {
+  // 379525535
+  const query = req.body.params
+  const courses = query.courses
+  const student = query.student
+  // console.log(courses)
+  let coursePlan = await CoursePlan.findOne({ where: { studentId: student.sbuId } })
+  if (!coursePlan) {
+    console.log('Course plan not found')
+    res.status(500).send('Course plan not found')
+  }
+  for (let semyear of Object.keys(courses)) {
+    const year = Number(semyear.substring(0, 4))
+    const semester = NUMTOSEM[Number(semyear.substring(4))]
+    console.log(student.sbuId)
+    for (let node of courses[semyear]) {
+      let condition = {
+        coursePlanId: coursePlan.coursePlanId,
+        courseId: node.course,
+        semester: semester,
+        year: year,
+        section: node.section ? node.section : 'N/A'
+      }
+      let values = {
+        coursePlanId: coursePlan.coursePlanId,
+        courseId: node.course,
+        semester: semester,
+        year: year,
+        section: node.section ? node.section : 'N/A',
+        grade: null,
+        validity: true,
+        status: false
+      }
+      // Only create if it doesnt exist yet in course plan
+      await updateOrCreate(CoursePlanItem, condition, values, false, true)
+    }
+  }
+  let items = await CoursePlanItem.findAll({ where: { coursePlanId: coursePlan.coursePlanId } })
+  res.status(200).send(items)
+}

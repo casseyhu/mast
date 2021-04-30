@@ -88,7 +88,7 @@ exports.suggest = async (req, res) => {
   let generated = []
   let minScore = Number.MAX_SAFE_INTEGER
   let counter = 0
-  while (generated.length < 5 && counter < 100) {
+  while (generated.length < 5 && counter < 50) {
     const takenAndCurrent = coursePlanItems.filter(course => (
       (100 * course.year + SEMTONUM[course.semester] <= 100 * currYear + SEMTONUM[currSem]) &&
       (!course.grade || GRADES[course.grade] >= GRADES['C'])
@@ -337,7 +337,7 @@ async function remainingRequirements(courses, courseReq, takenAndCurrent) {
     }
   }
   console.log(courseReq)
-  return courseReq.reduce((a, b) => (b.courseLower ? b.courseLower : b.creditLower ? Math.ceil(b.creditLower/courses[b.courses[0]].credits) : 0) + a, 0)
+  return courseReq.reduce((a, b) => (b.courseLower ? b.courseLower : b.creditLower ? Math.ceil(b.creditLower / courses[b.courses[0]].credits) : 0) + a, 0)
 }
 
 /**
