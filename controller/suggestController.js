@@ -165,7 +165,6 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
           if (requirement.type === 0 || (requirement.courseLower !== null && requirement.courseLower > 0)
             || (requirement.creditLower !== null && requirement.creditLower > 0)) {
             creditsCounter += coursesSem[courseInPlan.courseId + ' ' + courseInPlan.semester + ' ' + courseInPlan.year].credits
-            console.log(course, creditsCounter)
             used.push(course)
           }
           if (requirement.courseLower !== null)
@@ -543,9 +542,7 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
       added = true
     }
     if (added) {
-      // console.log("added " + currCourse.course)
       currTaken.push(currCourse.course)
-      //console.log(currCourse)
       creditsRemaining -= currCourse.credits
       currCoursesCount += 1
       if (currCourse.count > 1) {
@@ -559,9 +556,6 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
   }
 
   let score = calculateScore(suggestions)
-  // console.log(suggestions)
-  // console.log(creditsRemaining, score)
-  // console.log(coursesPerSem)
   return [score, suggestions]
 }
 

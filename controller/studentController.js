@@ -636,7 +636,7 @@ function checkFields(student, res) {
     return false
   }
   // Check valid track for degree
-  if (!TRACKS[student.dept].includes(student.track)) {
+  if (!TRACKS[student.department || student.dept].includes(student.track)) {
     if (res) res.status(500).send('Invalid degree track.')
     return false
   }
