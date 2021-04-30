@@ -499,9 +499,15 @@ exports.addCourse = async (req, res) => {
       validity: true,
       status: true
     })
-    let cpItems = await findCoursePlanItems(query.sbuId)
+    // After adding the course, re-calculate their completion. 
+    let studentsPlanId = {}
+    studentsPlanId[query.sbuId] = coursePlan.coursePlanId
+    await coursePlanController.changeCompletion(studentsPlanId, query.department, null)
+    const cpItems = await CoursePlanItem.findAll({ where: { coursePlanId: coursePlan.coursePlanId } })
+    console.log(cpItems)
     res.status(200).send(cpItems)
   } catch (error) {
+    console.log(error)
     res.status(500).send('Unable to add course to course plan.')
   }
 }
@@ -519,6 +525,10 @@ exports.checkCourse = async (req, res) => {
       studentId: req.query.sbuId
     }
   })
+  console.log(coursePlan.coursePlanId)
+  console.log(req.query.courseId)
+  console.log(req.query.semester)
+  console.log(req.query.year)
   let found = await CoursePlanItem.findOne({
     where: {
       coursePlanId: coursePlan.coursePlanId,
@@ -527,6 +537,7 @@ exports.checkCourse = async (req, res) => {
       year: req.query.year
     }
   })
+  console.log(found)
   res.status(200).send(found ? true : false)
 }
 

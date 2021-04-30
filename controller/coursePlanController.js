@@ -129,7 +129,7 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
   for (let i = 0; i < coursePlans.length; i++) {
     const item = coursePlans[i]
     if (!item.sbu_id || !studentsPlanId[item.sbu_id] || !SEMTONUM[item.semester]
-      || Number(item.year) < 2000 || Number(item.year) > 2500 || (item.grade && !GRADES[item.grade])) {
+      || Number(item.year) < 2000 || Number(item.year) > 2500 || (item.grade && GRADES[item.grade] === null)) {
       console.log('Error: Invalid fields')
       continue
     }

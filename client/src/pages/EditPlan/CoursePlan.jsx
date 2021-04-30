@@ -15,11 +15,13 @@ const EditCoursePlan = (props) => {
       let newCoursePlanItems = await axios.post('student/addCourse/', {
         params: {
           sbuId: student.sbuId,
+          department: student.department,
           course: course,
           semester: semester,
           year: year
         }
       })
+      console.log(newCoursePlanItems)
       if (newCoursePlanItems) {
         history.replace({
           ...history.location,
@@ -31,7 +33,8 @@ const EditCoursePlan = (props) => {
         return true
       }
     } catch (error) {
-      console.log('error')
+      console.log('CoursePlan.jsx addCourse caught error')
+      console.log(error)
       return false
     }
   }
