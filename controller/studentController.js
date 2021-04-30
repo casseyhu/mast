@@ -523,10 +523,6 @@ exports.checkCourse = async (req, res) => {
       studentId: req.query.sbuId
     }
   })
-  console.log(coursePlan.coursePlanId)
-  console.log(req.query.courseId)
-  console.log(req.query.semester)
-  console.log(req.query.year)
   let found = await CoursePlanItem.findOne({
     where: {
       coursePlanId: coursePlan.coursePlanId,
@@ -535,7 +531,6 @@ exports.checkCourse = async (req, res) => {
       year: req.query.year
     }
   })
-  console.log(found)
   res.status(200).send(found ? true : false)
 }
 

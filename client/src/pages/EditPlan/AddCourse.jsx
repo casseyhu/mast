@@ -115,7 +115,7 @@ const AddCourse = (props) => {
   }
 
   const addCourseWrapper = async (course, semester, year) => {
-    let addedCourse = await props.add(course, semester, year)
+    let addedCourse = await props.add('add', course, semester, year)
     if (addedCourse) 
       return true
     else {

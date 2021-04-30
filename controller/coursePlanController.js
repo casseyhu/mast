@@ -96,6 +96,31 @@ exports.updateItem = async (req, res) => {
 }
 
 
+exports.deleteItem= async (req, res) => {
+  const params = req.body.params
+  try { 
+    let del = await CoursePlanItem.destroy({
+      where: {
+        coursePlanId: params.course.coursePlanId,
+        courseId: params.course.courseId,
+        semester: params.course.semester,
+        year: params.course.year
+        // section: params.course.section
+      }
+    })
+    let studentsPlanId = {}
+    studentsPlanId[params.sbuId] = params.course.coursePlanId
+    await calculateCompletion(studentsPlanId, params.department, null)
+    const items = await CoursePlanItem.findAll({ where: { coursePlanId: params.course.coursePlanId } })
+    res.status(200).send(items)
+  } catch (err) {
+    console.log('Error in deleting item from plan')
+    console.log(err)
+    res.status(500).send('Could not delete course from course plan.')
+  }
+}
+
+
 /**
  * Helper function to uploading course plan items for a given department
  * @param {*} coursePlans List of course plan item entries from the CSV
@@ -682,7 +707,6 @@ exports.addSuggestion = async (req, res) => {
   const query = req.body.params
   const courses = query.courses
   const student = query.student
-  // console.log(courses)
   let coursePlan = await CoursePlan.findOne({ where: { studentId: student.sbuId } })
   if (!coursePlan) {
     console.log('Course plan not found')

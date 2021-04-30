@@ -15,7 +15,8 @@ const CoursePlan = (props) => {
   const [course, setCourse] = useState()
   const [offerings, setOfferings] = useState()
   const [values, setValues] = useState({})
-  const [checkedItems, setCheckedItems] = useState(props.coursePlan.map(() => false))
+  const [checkedItems, setCheckedItems] = useState(props.coursePlan && props.coursePlan.map(() => false))
+  const [deleteModal, showDelete] = useState(false)
 
   const handleChange = (e) => {
     let items = checkedItems.slice()
@@ -30,7 +31,6 @@ const CoursePlan = (props) => {
   }
 
   const editItem = async (course, e) => {
-    console.log(e.target)
     if (e.target instanceof HTMLInputElement || e.target.id === 'icon-sm')
       return
     setOfferings()
@@ -70,6 +70,14 @@ const CoursePlan = (props) => {
   const saveItem = () => {
     props.saveItem(values)
     setShowEditItem(false)
+  }
+
+  const deleteCourse = (course) => {
+    setOfferings()
+    setValues()
+    setCourse(course)
+    console.log(course)
+    showDelete(true)
   }
 
   const hasConflicts = props.coursePlan && props.coursePlan.filter(course => course.validity === false).length > 0
@@ -160,7 +168,9 @@ const CoursePlan = (props) => {
                 {props.mode &&
                   <td className='center'>
                     {!course.grade &&
-                      <i id='icon-sm' className="fa fa-trash" onClick={() => console.log('lol')}></i>
+                      <i id='icon-sm' className='fa fa-trash'
+                        onClick={() => deleteCourse(course)}
+                      />
                     }
                   </td>
                 }
@@ -172,7 +182,7 @@ const CoursePlan = (props) => {
           <span className='filler-text'>Empty Course Plan</span>
         </div>}
 
-      {props.mode && course && <CenteredModal
+      {props.mode && course && showEditItem && <CenteredModal
         variant='multi'
         show={showEditItem}
         title={`Editing Course ${values.planItem.courseId}`}
@@ -214,6 +224,26 @@ const CoursePlan = (props) => {
           </div>
         }
       />}
+      {course && deleteModal && <CenteredModal
+        variant='multi'
+        show={deleteModal}
+        title={`Deleting Course ${course.courseId}`}
+        onHide={() => showDelete(false)}
+        onConfirm={() => {
+          showDelete(false)
+          props.delete('delete', course, course.semester, course.year)
+        }}
+        body={
+          <div className='flex-vertical'>
+            <span>Delete course from course plan?</span>
+          <span>Course:  {course.courseId}</span>
+          <span>Section: {course.section}</span>
+          <span>Semester:  {course.semester}</span>
+          <span>Year: {course.year}</span>
+        </div>
+        }
+        />
+      }
     </div>
   )
 }

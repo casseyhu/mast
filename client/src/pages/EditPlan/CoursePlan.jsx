@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import Container from 'react-bootstrap/Container'
-import CenteredModal from '../../components/Modal'
 import AddCourse from './AddCourse'
 import axios from '../../constants/axios'
 import CoursePlan from '../Student/CoursePlan'
@@ -10,9 +9,10 @@ const EditCoursePlan = (props) => {
   const history = useHistory()
   const { student, coursePlan } = props.location.state
 
-  const addCourse = async (course, semester, year) => {
+  const modifyPlan = async (mode, course, semester, year) => {
     try {
-      let newCoursePlanItems = await axios.post('student/addCourse/', {
+      let route = (mode === 'add' ? 'student/addCourse/' : '/courseplanitem/deleteItem')
+      let newCoursePlanItems = await axios.post(route, {
         params: {
           sbuId: student.sbuId,
           department: student.department,
@@ -21,17 +21,14 @@ const EditCoursePlan = (props) => {
           year: year
         }
       })
-      console.log(newCoursePlanItems)
-      if (newCoursePlanItems) {
-        history.replace({
-          ...history.location,
-          state: {
-            ...history.location.state,
-            coursePlan: newCoursePlanItems.data
-          }
-        })
-        return true
-      }
+      history.replace({
+        ...history.location,
+        state: {
+          ...history.location.state,
+          coursePlan: newCoursePlanItems.data
+        }
+      })
+      return true
     } catch (error) {
       console.log('CoursePlan.jsx addCourse caught error')
       console.log(error)
@@ -67,8 +64,8 @@ const EditCoursePlan = (props) => {
         <h5><b>Degree:</b> {student.department} {student.track}</h5>
         {/* <Button variant='round' text='Add Course' /> */}
       </div>
-      <CoursePlan mode saveItem={saveItem} coursePlan={coursePlan} />
-      <AddCourse add={addCourse} student={student} />
+      <CoursePlan mode saveItem={saveItem} delete={modifyPlan} coursePlan={coursePlan} />
+      <AddCourse add={modifyPlan} student={student} />
     </Container>
   )
 }

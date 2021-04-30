@@ -12,6 +12,8 @@ module.exports = function (app) {
 
   app.post('/api/courseplanitem/update', CoursePlan.updateItem)
 
+  app.post('/api/courseplanitem/deleteItem', CoursePlan.deleteItem)
+
   app.get('/api/suggest', Suggest.suggest)
 
   app.get('/api/smartsuggest', Suggest.smartSuggest)

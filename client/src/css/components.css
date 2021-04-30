@@ -143,13 +143,14 @@ textarea:focus {
 
 /* Icons */
 #icon {
-  padding: 0 1rem;
+  line-height: 2.5rem;
+  padding: 0 0.7rem;
   height: fit-content;
   border-radius: 0.2rem;
 }
 
 #icon:hover {
-  background: #727a8811;
+  background: #727a883d;
 }
 
 #icon-sm {
@@ -159,7 +160,7 @@ textarea:focus {
 }
 
 #icon-sm:hover {
-  background: #61687475;
+  background: #61687441;
 }
 
 #icon-sm:before {
