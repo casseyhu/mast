@@ -5,6 +5,7 @@ const { currSem, currYear } = require('./constants')
 const { getDepartmentalCourses, beforeCurrent } = require('./shared')
 const database = require('../config/database.js')
 const Course = database.Course
+const Degree = database.Degree
 
 
 /**
@@ -109,6 +110,7 @@ exports.upload = (req, res) => {
   let depts = []
   let semester = ''
   let year = ''
+  let dept = ''
   form
     .parse(req)
     // Get the fields that we want to scrape for
@@ -119,6 +121,8 @@ exports.upload = (req, res) => {
         semester = field
       if (name === 'year')
         year = field
+      if (name === 'dept')
+        dept = field
     })
     // Scrape the course information, if it is a valid PDF
     .on('file', (field, file) => {
@@ -138,6 +142,22 @@ exports.upload = (req, res) => {
 
 
 /**
+ * Returns a list of departments that have degree requirements 
+ * @param {*} depts departments selected by user
+ * @returns a list of departments that have degree requirements 
+ */
+const degreeExists = async (depts) => {
+  let degrees = await Degree.findAll({
+    where: {
+      dept: depts,
+    }
+  })
+  console.log('degree found: ', degrees)
+  return Array.from(new Set(degrees.map(degree => degree.dept)))
+}
+
+
+/**
  * Scrapes course information for a given set of departments in semester and year.
  * @param {String} filePath Path of user uploaded PDF file
  * @param {Array<String>} depts List of departments to scrape for
@@ -146,6 +166,14 @@ exports.upload = (req, res) => {
  * @param {*} res
  */
 const scrapeCourses = async (filePath, depts, semester, year, res) => {
+  let existDepts = await degreeExists(depts)
+  console.log(existDepts)
+  if (existDepts.length === 0) {
+    res.status(500).send('Must import degree requirements for ' + depts.join(', ') + ' before importing courses for these departments')
+    return
+  }
+  let notExistDepts = depts.filter(dept => !existDepts.includes(dept))
+  depts = existDepts
   const options = {}
   let sem = ['Fall', 'Winter', 'Spring', 'Summer']
   let target = ''
@@ -435,8 +463,16 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
     console.log('total: ', totCourses)
     if (totCourses === 0)
       res.status(500).send('No information was scraped. Please ensure the PDF follows the SBU graduate course descriptions PDF.')
-    else
-      res.status(200).send('Success')
+    else {
+      if (notExistDepts.length)
+        res.status(210).send('Successfully uploaded courses for ' 
+          + depts.join(', ')
+          + '. However, you MUST import degree requirements for ' 
+          + notExistDepts.join(', ') 
+          + ' before importing courses for these departments')
+      else
+        res.status(200).send('Success')
+    }
   })
 }
 

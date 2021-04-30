@@ -193,10 +193,19 @@ class Student extends Component {
     let satisfiedCount = Object.values(reqStates).filter((req) => req[0] === 'satisfied').length
     if (satisfiedCount === Object.keys(reqStates).length) {
       this.setState({ showSuggestErr: true })
-      this.setState({ suggestErr: 'Cannot suggest course plans for students who have satisfied all requirements' })
+      this.setState({ suggestErr: 'Cannot suggest course plans for a student who has satisfied all requirements' })
       console.log('this person DONe with MaSTERs!!!! dont botHER THEM')
       return
     }
+    /* Prevent redirecting to suggest page for those who have invalid course plans */
+    let coursePlan = this.state.studentInfoParams.coursePlan;
+    let validCount = coursePlan.filter(item => item.validity).length
+    if (coursePlan && validCount !== coursePlan.length) {
+      this.setState({ showSuggestErr: true })
+      this.setState({ suggestErr: 'Cannot suggest course plans for a student with an invalid course plan. Please fix the course plan first.' })
+      return
+    }
+
     console.log('Suggesting course plan for student: ', this.state.student)
     this.props.history.push({
       pathname: '/suggest',

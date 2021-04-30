@@ -144,6 +144,10 @@ async function deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, ta
         // Is a repeat course 
         if (requirement.courses.length < maxCourses) {
           let timesTaken = takenAndCurrent.filter(item => item.courseId === course).length
+          if (requirement.courseLower && requirement.courseUpper && requirement.courseLower > requirement.courseUpper) {
+            creditsCounter += timesTaken * courses[course].credits
+            continue
+          }
           let courseInPlan = takenAndCurrent.filter(item => (item.courseId === course))[0]
           let courseCredit = coursesSem[courseInPlan.courseId + ' ' + courseInPlan.semester + ' ' + courseInPlan.year].credits
           // creditsCounter += courseCredit * timesTaken
@@ -384,7 +388,7 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
   // Mapping of semester+year to course nodes for that semester and year
   // console.log(takenAndCurrentCourses)
   // console.log(allUsed, nodes)
-  // nodes = nodes.filter(node => !allUsed.has(node.course))
+  nodes = nodes.filter(node => !allUsed.has(node.course))
   let num_iterations = 0
   let suggestions = {}
   let currSemyear = currYear * 100 + SEMTONUM[currSem]
@@ -700,11 +704,20 @@ exports.smartSuggest = async (req, res) => {
   delete courseCount['']
   // Sort courses by popularity
   let popularCourses = Object.keys(courseCount).sort((c1, c2) => courseCount[c2] - courseCount[c1])
+  
+  let minScore = Number.MAX_SAFE_INTEGER
+  let minCoursePlan = []
   // Create course nodes
-  //courseReqs = JSON.parse(JSON.stringify(courseReq))
-  const nodesMap = createNodes(courses, courseReq, [], new Set(), [creditsRemaining, coursesPerSem], popularCourses, takenAndCurrent)
-  let nodes = Object.values(nodesMap)
-  nodes = sortNodes(nodes)
-  let [, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, TIME, takenAndCurrentCourses, allUsed)
-  res.status(200).send([suggested])
+  for (let i = 0; i < 50; i++) {
+    courseReqs = JSON.parse(JSON.stringify(courseReq))
+    const nodesMap = createNodes(courses, courseReqs, [], new Set(), [creditsRemaining, coursesPerSem], popularCourses, takenAndCurrent)
+    let nodes = Object.values(nodesMap)
+    nodes = sortNodes(nodes)
+    let [score, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, TIME, takenAndCurrentCourses, allUsed)
+    if (score && minScore > score) {
+      minScore = score
+      minCoursePlan = [suggested]
+    }
+  }
+  res.status(200).send(minCoursePlan)
 }

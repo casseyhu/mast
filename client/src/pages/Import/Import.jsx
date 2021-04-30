@@ -62,7 +62,7 @@ const Import = (props) => {
         <h1>Import Data</h1>
       </div>
       <div className='flex-vertical'>
-        <ImportItem header='Course Information' setOverlay={setOverlay} type='PDF' sems={SEMESTERS} years={YEARS} depts={DEPARTMENTS_REQ} />
+        <ImportItem header='Course Information' setOverlay={setOverlay} type='PDF' sems={SEMESTERS} years={YEARS} depts={DEPARTMENTS_REQ} dept={props.dept}/>
         <ImportItem header='Degree Requirements' setOverlay={setOverlay} type='JSON' dept={props.dept}/>
         <ImportItem header='Course Offerings' setOverlay={setOverlay} type='CSV' dept={props.dept} setStudents={setAffectedStudents} setShowInvalid={setShowInvalid} />
         <ImportItem header='Student Data' setOverlay={setOverlay} first='Profile CSV' type='Course Plan CSV' dept={props.dept} />
