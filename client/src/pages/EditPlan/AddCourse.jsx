@@ -58,7 +58,6 @@ const AddCourse = (props) => {
         setError('Cannot add courses to semester with imported grades.')
         return
       }
-      console.log('here')
       let alreadyExists = await checkCourseInPlan(course, semester, year)
       if (alreadyExists) {
         setError('Course ' + course.courseId + ' already exists in ' + semester
@@ -109,7 +108,7 @@ const AddCourse = (props) => {
       showUnmetPrereqs(true)
       return false
     } else {
-      // No prereqs. Add this course into the plan. 
+      // No prereqs. Add this course into the plan.
       if(await addCourseWrapper(course, semester, year))
         showConfirmation(true)
     }
@@ -140,7 +139,6 @@ const AddCourse = (props) => {
         }
       })
       if (sentEmail) {
-        console.log("shoundlt be here too fase")
         setVisible('hidden')
         setWaive(false)
         showEmailConfirm(true)
