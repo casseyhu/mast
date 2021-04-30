@@ -15,7 +15,13 @@ const CoursePlan = (props) => {
   const [course, setCourse] = useState()
   const [offerings, setOfferings] = useState()
   const [values, setValues] = useState({})
+  const [checkedItems, setCheckedItems] = useState(props.coursePlan.map(() => false))
 
+  const handleChange = (e) => {
+    let items = checkedItems.slice()
+    items[e.target.name] = e.target.checked
+    setCheckedItems(items)
+  }
 
   const sortBySem = (a, b) => {
     let aSemYear = a.year * 100 + (a.semester === 'Fall' ? 8 : 2)
@@ -23,7 +29,9 @@ const CoursePlan = (props) => {
     return aSemYear - bSemYear
   }
 
-  const editItem = async (course) => {
+  const editItem = async (course, e) => {
+    if (e.target instanceof HTMLInputElement)
+      return
     setOfferings()
     setCourse()
     setValues()
@@ -112,7 +120,10 @@ const CoursePlan = (props) => {
               <th scope='col' style={{ width: width }} >Grade</th>
               <th scope='col' style={{ width: width }} >Status</th>
               {props.mode && <th scope='col' style={{ width: '4%' }} >
-                <input type='checkbox' id='select-all' onClick={e => setselectAll(true)} />
+                <input type='checkbox' id='select-all' onChange={e => {
+                  setCheckedItems(props.coursePlan.map(() => !selectAll))
+                  setselectAll(!selectAll)
+                }} />
                 <label htmlFor='select-all'></label>
               </th>}
             </tr>
@@ -122,7 +133,7 @@ const CoursePlan = (props) => {
               return <tr
                 className={course.semester}
                 key={i}
-                onClick={e => props.mode && course.status && editItem(course)}
+                onClick={e => props.mode && course.status && editItem(course, e)}
                 style={{ cursor: 'pointer', backgroundColor: course.validity === false ? '#FFAAAA' : '' }}
               >
                 <td className='center'>{course.courseId}</td>
@@ -133,7 +144,7 @@ const CoursePlan = (props) => {
                 <td className='center'>{course.status ? 'In Plan' : 'Suggested'}</td>
                 {props.mode &&
                   <td className='center'>
-                    <input type='checkbox' id={i} />
+                    <input type='checkbox' id={i} name={i} checked={checkedItems[i]} onChange={handleChange} />
                     <label htmlFor={i}></label>
                   </td>
                 }
