@@ -81,7 +81,7 @@ for i in range(1, len(TRACKS['CSE']) + 1):
     requirements = []
     for j in range(len(reqs)):
         req = reqs[j]
-        if req[0] == '2:(1,):(6,9)':
+        if req[0] == '2:(,):(6,9)':
             for x in range(3):
                 requirements.append(req[1:])
         elif req[0] == '2:(2,2):(,)':
