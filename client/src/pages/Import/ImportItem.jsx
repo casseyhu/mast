@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Checkmark } from 'react-checkmark'
+import CenteredModal from '../../components/Modal'
 import PulseLoader from 'react-spinners/PulseLoader'
 import axios from '../../constants/axios'
 import Button from '../../components/Button'
@@ -15,6 +16,8 @@ const ImportItem = (props) => {
   const [year, setYear] = useState('')
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [showWarning, setShowWarning] = useState(false)
+  const [warning, setWarning] = useState('')
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -25,6 +28,7 @@ const ImportItem = (props) => {
     }
     return
   }, [uploading])
+
 
   const uploadFile = async () => {
     if (props.header === 'Student Data' && (firstfile === '' || file === '')) {
@@ -44,6 +48,7 @@ const ImportItem = (props) => {
     if (props.header === 'Course Information') {
       upload_path = 'course/upload/'
       formData.append('depts', depts)
+      formData.append('dept', props.dept)
       formData.append('semester', semester)
       formData.append('year', year)
     }
@@ -104,6 +109,10 @@ const ImportItem = (props) => {
       props.setOverlay('none')
       setUploading(true)
       setFile('')
+      if (result.status === 210) {
+        setShowWarning(true)
+        setWarning(result.data)
+      }    
     } catch (err) {
       setLoading(false)
       props.setOverlay('none')
@@ -187,6 +196,13 @@ const ImportItem = (props) => {
           <PulseLoader size='20px' margin='10px' color={'#094067'} loading={loading} />
         </div>)}
       {uploading && <Checkmark size='xxLarge' color='#094067' className='checkmark' />}
+      <CenteredModal
+        show={showWarning}
+        onHide={() => setShowWarning(false)}
+        onConfirm={() => setShowWarning(false)}
+        title={<small style={{ color: '#ffc107' }}>Warning!</small>}
+        body={warning}
+      />
     </div>
   )
 }
