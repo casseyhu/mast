@@ -9,7 +9,6 @@ const { updateOrCreate, findRequirements, findCoursePlanItems, checkPrereq, titl
 
 const coursePlanController = require('./coursePlanController')
 const database = require('../config/database.js')
-const { query } = require('express')
 const Op = database.Sequelize.Op
 
 const Student = database.Student
@@ -684,7 +683,7 @@ async function addStudent(student, degree, res) {
     firstName: student.firstName,
     lastName: student.lastName,
     password: hashPassword,
-    gpa: null,
+    gpa: 0,
     entrySem: student.entrySem,
     entryYear: Number(student.entryYear),
     entrySemYear: Number(student.entryYear.concat(SEMDICT[student.entrySem])),

@@ -129,20 +129,13 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
   for (let i = 0; i < coursePlans.length; i++) {
     const item = coursePlans[i]
     if (!item.sbu_id || !studentsPlanId[item.sbu_id] || !SEMTONUM[item.semester]
-      || Number(item.year) < 2000 || Number(item.year) > 2500 || (item.grade && !GRADES[item.grade])) {
+      || Number(item.year) < 2000 || Number(item.year) > 2500 || (item.grade && GRADES[item.grade] === null)) {
       console.log('Error: Invalid fields')
       continue
     }
     // Check if course is a valid course
     if (!courses[item.department + item.course_num]) {
-      const before = beforeCurrent(item.semester, Number(item.year))
-      let found = await Course.findOne({
-        where: {
-          courseId: item.department + item.course_num,
-          semester: before ? item.semester : currSem,
-          year: before ? item.year : currYear
-        }
-      })
+      let found = await Course.findOne({ where: { courseId: item.department + item.course_num } })
       if (!found)
         continue
       courses[item.department + item.course_num] = found
@@ -583,21 +576,21 @@ async function checkCoursePlanValidity(notTakenCourses) {
       }
     })
     let courseOfferingMap = {}
-    courseOfferings.map(offering => courseOfferingMap[offering.identifier] = offering)
+    courseOfferings.map(offering => courseOfferingMap[offering.identifier + offering.section] = offering)
     for (let i = 0; i < courses.length; i++) {
       // If course was not offered, set validity to false
-      if (!courseOfferingMap[courses[i].courseId]) {
+      if (!courseOfferingMap[courses[i].courseId + courses[i].section]) {
         invalidItems.push(courses[i].courseId)
         continue
       }
       // Course was offered in semester and year
       for (let j = i + 1; j < courses.length; j++) {
-        let first = courseOfferingMap[courses[i].courseId]
-        if (!courseOfferingMap[courses[j].courseId]) {
+        let first = courseOfferingMap[courses[i].courseId + courses[i].section]
+        if (!courseOfferingMap[courses[j].courseId + courses[j].section]) {
           invalidItems.push(courses[j].courseId)
           continue
         }
-        let second = courseOfferingMap[courses[j].courseId]
+        let second = courseOfferingMap[courses[j].courseId + courses[j].section]
         checkTimeConflict(first, second, invalidItems)
       }
     }

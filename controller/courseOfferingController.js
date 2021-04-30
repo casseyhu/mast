@@ -96,7 +96,7 @@ async function uploadCourses(results, res, dept) {
   // Upload all the new course offerings
   const coursesAdded = await uploadNewOfferings(results)
   // Find all students for this specific department and their respective coursePlans.
-  const deptStudents = await Student.findAll({ where: { department: dept[dept.length-1] } })
+  const deptStudents = await Student.findAll({ where: { department: dept[dept.length - 1] } })
   const coursePlans = await CoursePlan.findAll({
     where: {
       studentId: deptStudents.map(student => student.sbuId)
@@ -146,11 +146,11 @@ async function uploadCourses(results, res, dept) {
       // (already in the same sem + year), add it to `toCheck` to check for schedule conflicts.
       for (let k = 0; k < semesterItems.length; k++) {
         for (let l = 0; l < semesterAdded.length; l++) {
-          if (semesterItems[k].courseId === semesterAdded[l].identifier && Number(semesterItems[k].section) === semesterAdded[l].section)
+          if (semesterItems[k].courseId === semesterAdded[l].identifier && Number(semesterItems[k].section) === Number(semesterAdded[l].section))
             toCheck.push(semesterAdded[l])
         }
       }
-      // Checks for day/time conflicts in the schedule.  O(n) operation
+      // Checks for day/time conflicts in the schedule.  
       for (let k = 0; k < toCheck.length; k++) {
         for (let l = k + 1; l < toCheck.length; l++) {
           let invalidCourses = []
