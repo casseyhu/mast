@@ -504,10 +504,8 @@ exports.addCourse = async (req, res) => {
     studentsPlanId[query.sbuId] = coursePlan.coursePlanId
     await coursePlanController.changeCompletion(studentsPlanId, query.department, null)
     const cpItems = await CoursePlanItem.findAll({ where: { coursePlanId: coursePlan.coursePlanId } })
-    console.log(cpItems)
     res.status(200).send(cpItems)
   } catch (error) {
-    console.log(error)
     res.status(500).send('Unable to add course to course plan.')
   }
 }

@@ -59,7 +59,6 @@ const AddCourse = (props) => {
         return
       }
       let alreadyExists = await checkCourseInPlan(course, semester, year)
-      console.log(alreadyExists)
       if (alreadyExists) {
         setError('Course ' + course.courseId + ' already exists in ' + semester
           + ' ' + year + '.')
@@ -73,7 +72,6 @@ const AddCourse = (props) => {
   }
 
   const checkCourseInPlan = async (course, semester, year) => {
-    console.log(semester, year, course.courseId)
     let hasCourse = await axios.get('student/checkCourse', {
       params: {
         sbuId: props.student.sbuId,
@@ -111,7 +109,6 @@ const AddCourse = (props) => {
       return false
     } else {
       // No prereqs. Add this course into the plan.
-      console.log('adding course to plan/.')
       if(await addCourseWrapper(course, semester, year))
         showConfirmation(true)
     }
@@ -119,7 +116,6 @@ const AddCourse = (props) => {
 
   const addCourseWrapper = async (course, semester, year) => {
     let addedCourse = await props.add(course, semester, year)
-    console.log(addedCourse)
     if (addedCourse) 
       return true
     else {
@@ -143,7 +139,6 @@ const AddCourse = (props) => {
         }
       })
       if (sentEmail) {
-        console.log("shoundlt be here too fase")
         setVisible('hidden')
         setWaive(false)
         showEmailConfirm(true)
