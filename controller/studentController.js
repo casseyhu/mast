@@ -9,7 +9,6 @@ const { updateOrCreate, findRequirements, findCoursePlanItems, checkPrereq, titl
 
 const coursePlanController = require('./coursePlanController')
 const database = require('../config/database.js')
-const { query } = require('express')
 const Op = database.Sequelize.Op
 
 const Student = database.Student
@@ -388,7 +387,8 @@ exports.checkGradedSem = async (req, res) => {
     where: {
       coursePlanId: coursePlan.coursePlanId,
       semester: req.query.semester,
-      year: req.query.year
+      year: req.query.year,
+      status: true
     }
   })
   if (items.length > 0) {
@@ -494,12 +494,16 @@ exports.addCourse = async (req, res) => {
       courseId: query.course.courseId,
       semester: query.semester,
       year: query.year,
-      section: null,
+      section: 'N/A',
       grade: null,
       validity: true,
       status: true
     })
-    let cpItems = await findCoursePlanItems(query.sbuId)
+    // After adding the course, re-calculate their completion. 
+    let studentsPlanId = {}
+    studentsPlanId[query.sbuId] = coursePlan.coursePlanId
+    await coursePlanController.changeCompletion(studentsPlanId, query.department, null)
+    const cpItems = await CoursePlanItem.findAll({ where: { coursePlanId: coursePlan.coursePlanId } })
     res.status(200).send(cpItems)
   } catch (error) {
     res.status(500).send('Unable to add course to course plan.')
@@ -519,6 +523,10 @@ exports.checkCourse = async (req, res) => {
       studentId: req.query.sbuId
     }
   })
+  console.log(coursePlan.coursePlanId)
+  console.log(req.query.courseId)
+  console.log(req.query.semester)
+  console.log(req.query.year)
   let found = await CoursePlanItem.findOne({
     where: {
       coursePlanId: coursePlan.coursePlanId,
@@ -527,6 +535,7 @@ exports.checkCourse = async (req, res) => {
       year: req.query.year
     }
   })
+  console.log(found)
   res.status(200).send(found ? true : false)
 }
 
@@ -684,7 +693,7 @@ async function addStudent(student, degree, res) {
     firstName: student.firstName,
     lastName: student.lastName,
     password: hashPassword,
-    gpa: null,
+    gpa: 0,
     entrySem: student.entrySem,
     entryYear: Number(student.entryYear),
     entrySemYear: Number(student.entryYear.concat(SEMDICT[student.entrySem])),

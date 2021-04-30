@@ -46,7 +46,7 @@ const CoursePlan = (props) => {
       setValues({
         grade: course.grade,
         planItem: course,
-        section: foundOfferings.data[0].section || 'N/A'
+        section: foundOfferings.data[0].section
       })
     } else {
       setValues({
@@ -122,7 +122,7 @@ const CoursePlan = (props) => {
               return <tr
                 className={course.semester}
                 key={i}
-                onClick={e => props.mode && editItem(course)}
+                onClick={e => props.mode && course.status && editItem(course)}
                 style={{ cursor: 'pointer', backgroundColor: course.validity === false ? '#FFAAAA' : '' }}
               >
                 <td className='center'>{course.courseId}</td>

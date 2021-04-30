@@ -61,7 +61,7 @@ exports.checkPrereq = (course, takenAndCurrentCourses, returnPrereqs) => {
   for (let l = 0; l < prereqs.length; l++) {
     if (!takenAndCurrentCourses.has(prereqs[l])) {
       unsatisfiedPrereqs.push(prereqs[l])
-      if(!returnPrereqs)
+      if (!returnPrereqs)
         return false
     }
   }
@@ -135,6 +135,25 @@ exports.updateOrCreate = async (model, condition, values, update, create) => {
     await found.update(values)
   else if (!found && create)
     await model.create(values)
+}
+
+
+/**
+ * Updates a course plan item if it is an in-plan item else delete the item.
+ * @param {Model} model The database table to use
+ * @param {Map<String, Object>} condition Condition to find by
+ * @param {Map<String, Object>} values Values to update to
+ * @returns True if it updated the item, false otherwise.
+ */
+exports.updateOrDelete = async (model, condition, values) => {
+  let found = await model.findOne({ where: condition })
+  if (found.status) {
+    await found.update(values)
+    return true
+  } else {
+    await model.destroy({ where: condition })
+    return false
+  }
 }
 
 

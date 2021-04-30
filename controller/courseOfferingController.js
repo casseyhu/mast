@@ -3,7 +3,7 @@ const fs = require('fs')
 const IncomingForm = require('formidable').IncomingForm
 const moment = require('moment')
 const { currSem, currYear } = require('./constants')
-const { getDepartmentalCourses, checkTimeConflict } = require('./shared')
+const { getDepartmentalCourses, checkTimeConflict, updateOrDelete } = require('./shared')
 const database = require('../config/database.js')
 
 const Op = database.Sequelize.Op
@@ -96,7 +96,7 @@ async function uploadCourses(results, res, dept) {
   // Upload all the new course offerings
   const coursesAdded = await uploadNewOfferings(results)
   // Find all students for this specific department and their respective coursePlans.
-  const deptStudents = await Student.findAll({ where: { department: dept[dept.length-1] } })
+  const deptStudents = await Student.findAll({ where: { department: dept[dept.length - 1] } })
   const coursePlans = await CoursePlan.findAll({
     where: {
       studentId: deptStudents.map(student => student.sbuId)
@@ -146,40 +146,41 @@ async function uploadCourses(results, res, dept) {
       // (already in the same sem + year), add it to `toCheck` to check for schedule conflicts.
       for (let k = 0; k < semesterItems.length; k++) {
         for (let l = 0; l < semesterAdded.length; l++) {
-          if (semesterItems[k].courseId === semesterAdded[l].identifier && Number(semesterItems[k].section) === semesterAdded[l].section)
+          if (semesterItems[k].courseId === semesterAdded[l].identifier && Number(semesterItems[k].section) === Number(semesterAdded[l].section))
             toCheck.push(semesterAdded[l])
         }
       }
-      // Checks for day/time conflicts in the schedule.  O(n) operation
+      // Checks for day/time conflicts in the schedule.  
       for (let k = 0; k < toCheck.length; k++) {
         for (let l = k + 1; l < toCheck.length; l++) {
           let invalidCourses = []
           // If the 2 courses have a conflict, update the validity of the courses
           if (checkTimeConflict(toCheck[k], toCheck[l], invalidCourses)) {
             // Mark first conflicting course plan item to invalid
-            await CoursePlanItem.update({ validity: false }, {
-              where: {
-                coursePlanId: coursePlanIds[j],
-                courseId: toCheck[k].identifier,
-                semester: semester,
-                year: year
-              }
-            })
+            let values = { validity: false }
+            let condition = {
+              coursePlanId: coursePlanIds[j],
+              courseId: toCheck[k].identifier,
+              semester: semester,
+              year: year
+            }
+            let updated1 = await updateOrDelete(CoursePlanItem, condition, values)
             // Mark second conflicting course plan item to invalid
-            await CoursePlanItem.update({ validity: false }, {
-              where: {
-                coursePlanId: coursePlanIds[j],
-                courseId: toCheck[l].identifier,
-                semester: semester,
-                year: year
-              }
-            })
-            if (!affectedStudents[coursePlans[j].studentId])
-              affectedStudents[coursePlans[j].studentId] = [toCheck[k]]
-            else
-              affectedStudents[coursePlans[j].studentId].push(toCheck[k])
-            affectedStudents[coursePlans[j].studentId].push(toCheck[l])
-            coursePlanValidity = false
+            condition = {
+              coursePlanId: coursePlanIds[j],
+              courseId: toCheck[l].identifier,
+              semester: semester,
+              year: year
+            }
+            let updated2 = await updateOrDelete(CoursePlanItem, condition, values)
+            if (updated1 || updated2) {
+              if (!affectedStudents[coursePlans[j].studentId])
+                affectedStudents[coursePlans[j].studentId] = [toCheck[k]]
+              else
+                affectedStudents[coursePlans[j].studentId].push(toCheck[k])
+              affectedStudents[coursePlans[j].studentId].push(toCheck[l])
+              coursePlanValidity = false
+            }
           }
         }
       }
@@ -205,15 +206,16 @@ async function uploadCourses(results, res, dept) {
       if (items.length === 0)
         continue
       // Update the validity such that the items are invalid
-      await CoursePlanItem.update({ validity: false }, {
-        where: {
-          courseId: items.map(item => item.courseId),
-          semester: semester,
-          year: year
-        }
-      })
-      allInvalidItems = allInvalidItems.concat(items)
-      items.forEach(item => invalidCoursePlanIds.add(item.coursePlanId))
+      let condition = {
+        courseId: items.map(item => item.courseId),
+        semester: semester,
+        year: year
+      }
+      let updated = await updateOrDelete(CoursePlanItem, condition, { validity: false })
+      if (updated) {
+        allInvalidItems = allInvalidItems.concat(items)
+        items.forEach(item => invalidCoursePlanIds.add(item.coursePlanId))
+      }
     }
     invalidCoursePlanIds = Array.from(invalidCoursePlanIds)
     let invalidCoursePlans = await CoursePlan.findAll({
@@ -272,7 +274,7 @@ async function uploadNewOfferings(csvCourses) {
       identifier: course.department + course.course_num,
       semester: course.semester,
       year: course.year,
-      section: course.section,
+      section: course.section ? course.section : 'N/A',
       days: csvTimeslot ? csvTimeslot[0] : null,
       startTime: timeRange ?
         moment(timeRange[0], ['h:mmA']).format('HH:mm') : null,

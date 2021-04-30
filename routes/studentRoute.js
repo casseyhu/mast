@@ -2,6 +2,12 @@
 module.exports = function (app) {
   const Student = require('../controller/studentController.js')
 
+  // Verify student login
+  app.get('/api/student/login', Student.login)
+
+  // Upload all students from CSV file
+  app.post('/api/student/upload', Student.upload)
+
   // Create a Student from Add Student 
   app.post('/api/student/create', Student.create)
 
@@ -10,12 +16,6 @@ module.exports = function (app) {
 
   // Adds a course to student's course plan
   app.post('/api/student/addCourse', Student.addCourse)
-
-  // Upload all students from CSV file
-  app.post('/api/student/upload', Student.upload)
-
-  // Verify student login
-  app.get('/api/student/login', Student.login)
 
   // Get all students by filtered conditions
   app.get('/api/student/filter', Student.filter)
@@ -27,7 +27,7 @@ module.exports = function (app) {
   app.get('/api/student/checkGradedSem', Student.checkGradedSem)
 
   // Checks if specific course exists in course plan at sem + year
-  app.get('/api/student/checkCourse', Student.checkCourse) 
+  app.get('/api/student/checkCourse', Student.checkCourse)
 
   // Check if student has satisfied prereqs for a course 
   app.get('/api/student/checkPrerequisites', Student.checkPrerequisites)

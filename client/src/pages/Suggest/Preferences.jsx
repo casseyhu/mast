@@ -20,8 +20,17 @@ const Preferences = (props) => {
   const [deptCourses, setDeptCourses] = useState([])
   const [timeSelect, setTimes] = useState([])
 
+  const [loading, setLoading] = useState({})
+  const [disable, setDisable] = useState(true)
+
+
 
   useEffect(() => {
+    setLoading({
+      suggestLoad: false,
+      smartLoad: false
+    })
+    setDisable(false)
     axios.get('course/deptCourses', {
       params: {
         dept: props.department
@@ -78,7 +87,7 @@ const Preferences = (props) => {
     }
   }
 
-  // Converts the time selection into military time for easy of use
+  // Converts the time selection into military time for ease of use
   // when using time constraints for suggest course plan. 
   const parseTime = (setTime, time) => {
     if (time === null)
@@ -110,7 +119,6 @@ const Preferences = (props) => {
         preferred: preferred,
         avoid: avoid,
       }
-      console.log(preferences)
       props.suggest(preferences)
     } else {
       let preferences = {
@@ -202,15 +210,32 @@ const Preferences = (props) => {
           divclassName="mr-3"
           variant='round'
           text='Suggest'
-          onClick={() => setPreferences('regular')}
-          style={{ width: '140px' }}
+          loading={loading.suggestLoad}
+          disabled={disable}
+          onClick={() => {
+            setLoading({
+              suggestLoad: true,
+              smartLoad: false
+            })
+            setDisable(true)
+            setPreferences('regular')}}
+          style={{ width: '160px' }}
         />
         <Button
           divclassName="ml-3"
           variant='round'
           text='Smart Suggest'
-          onClick={() => setPreferences('smart')}
-          style={{ width: '140px' }} />
+          loading={loading.smartLoad}
+          disabled={disable}
+          onClick={() => {
+            setLoading({
+              suggestLoad: false,
+              smartLoad: true
+            })
+            setDisable(true)
+            setPreferences('smart')
+          }}
+          style={{ width: '160px' }} />
       </div>
     </div>
   )

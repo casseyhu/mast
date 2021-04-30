@@ -29,7 +29,7 @@ class Student extends Component {
     let studentRes = await axios.get('/student/' + student.sbuId, {
       params: { sbuId: student.sbuId }
     })
-    console.log(studentRes)
+    // console.log(studentRes)
     let coursePlanItems = await axios.get('/courseplanitem/findItems/', {
       params: {
         sbuId: student.sbuId

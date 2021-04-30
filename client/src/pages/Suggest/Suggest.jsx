@@ -11,7 +11,7 @@ import SuggestedPlans from './Suggested'
 
 const Suggest = (props) => {
   const [suggestions, setSuggestions] = useState([])
-  const [degreeexpanded, setDegreeExpanded] = useState(false)
+  const [degreeExpanded, setDegreeExpanded] = useState(false)
   const [planExpanded, setPlanExpanded] = useState(true)
   const { coursePlan } = props.location.state.studentInfoParams
   const student = props.location.state.student
@@ -45,6 +45,23 @@ const Suggest = (props) => {
     })
   }
 
+  const addSuggestedPlan = async (plan) => {
+    let result = await axios.post('/courseplanitem/addsuggestion/', {
+      params: {
+        student: student,
+        courses: plan
+      }
+    })
+    console.log(result.data)
+    props.history.push({
+      pathname: '/courseplan',
+      state: {
+        student: student,
+        coursePlan: result.data
+      }
+    })
+  }
+
   return (
     <Container fluid='lg' className='container'>
       <div className='flex-horizontal justify-content-between'>
@@ -53,7 +70,7 @@ const Suggest = (props) => {
         <h5>Degree: {student.department} {student.track}</h5>
       </div>
       <Preferences department={student.department} suggest={suggest} smartSuggest={smartSuggest} />
-      {suggestions.length > 0 && <SuggestedPlans suggestions={suggestions} />}
+      {suggestions.length > 0 && <SuggestedPlans suggestions={suggestions} addSuggestedPlan={addSuggestedPlan} />}
 
       <Accordion className='mb-1 mt-3'>
         <Card>
@@ -61,10 +78,10 @@ const Suggest = (props) => {
             className='pt-1 pb-0'
             as={Card.Header}
             eventKey='0'
-            onClick={e => setDegreeExpanded(!degreeexpanded)}
+            onClick={e => setDegreeExpanded(!degreeExpanded)}
             style={{ cursor: 'pointer', backgroundColor: 'transparent' }}>
             <div className='flex-horizontal justify-content-between' >
-              <h4 >{`${degreeexpanded ? 'Hide' : 'View'}`} Student Degree Requirements</h4>
+              <h4 >{`${degreeExpanded ? 'Hide' : 'View'}`} Student Degree Requirements</h4>
               <i className='fa fa-chevron-down' aria-hidden='true'></i>
             </div>
           </Accordion.Toggle>
