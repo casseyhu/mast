@@ -682,7 +682,7 @@ exports.smartSuggest = async (req, res) => {
   let courseReqs = JSON.parse(JSON.stringify(courseReq))
   // Delete courses from requirements list that were taken
   const coursesRemaining = await remainingRequirements(courses, courseReqs, takenAndCurrent)
-  const [creditsCounter, allUsed] = await deleteTakenCourses(coursesSem, courseReq, takenAndCurrentCourses, takenAndCurrent)
+  const [creditsCounter, allUsed] = await deleteTakenCourses(courses, courseReq, takenAndCurrentCourses, takenAndCurrent, coursesSem)
   // Get credits remaining, semesters remaining, and number of courses per semester
   let [creditsRemaining, coursesPerSem] = getRemaining(creditReq, student, creditsCounter, coursesRemaining, CPS)
   console.log('Credits remaining ', creditsRemaining, 'Courses remaining: ', coursesRemaining, 'CPS:', coursesPerSem)
@@ -705,6 +705,6 @@ exports.smartSuggest = async (req, res) => {
   const nodesMap = createNodes(courses, courseReq, [], new Set(), [creditsRemaining, coursesPerSem], popularCourses, takenAndCurrent)
   let nodes = Object.values(nodesMap)
   nodes = sortNodes(nodes)
-  let [, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, TIME, takenAndCurrentCourses)
+  let [, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, TIME, takenAndCurrentCourses, allUsed)
   res.status(200).send([suggested])
 }
