@@ -1,4 +1,5 @@
 import React from 'react'
+import Spinner from 'react-bootstrap/Spinner'
 
 const Button = (props) => {
   const hiddenFileInput = React.useRef(null)
@@ -19,6 +20,16 @@ const Button = (props) => {
   return (
     <div className={props.divclassName} style={props.style}>
       <button className={`${props.variant}-button ${props.className}`} disabled={props.disabled} onClick={handleClick}>
+        {props.loading &&
+          <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+            style={{ marginRight: '0.5rem' }}
+          />
+        }
         {props.text}
         {(props.variant === 'square')
           && (
