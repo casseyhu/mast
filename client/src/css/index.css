@@ -118,6 +118,8 @@ textarea {
 
 .center {
   text-align: center;
+  line-height:22px;
+  vertical-align:middle;
 }
 
 b {
@@ -151,7 +153,6 @@ b {
 }
 
 i.fa {
-  line-height: 3rem;
   color: rgba(52, 64, 85, 0.85);
   margin-right: 0;
 }

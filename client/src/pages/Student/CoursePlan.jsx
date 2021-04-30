@@ -111,10 +111,15 @@ const CoursePlan = (props) => {
               <th scope='col' style={{ width: width }} >Year</th>
               <th scope='col' style={{ width: width }} >Grade</th>
               <th scope='col' style={{ width: width }} >Status</th>
-              {props.mode && <th scope='col' style={{ width: '4%' }} >
-                <input type='checkbox' id='select-all' onClick={e => setselectAll(true)} />
-                <label htmlFor='select-all'></label>
-              </th>}
+              {props.mode &&
+                <th scope='col' style={{ width: '4%' }} >
+                  <input type='checkbox' id='select-all' onClick={e => setselectAll(true)} />
+                  <label htmlFor='select-all'></label>
+                </th>
+              }
+              {props.mode &&
+                <th scope='col' style={{ width: '4%' }} />
+              }
             </tr>
           </thead>
           <tbody>
@@ -135,6 +140,11 @@ const CoursePlan = (props) => {
                   <td className='center'>
                     <input type='checkbox' id={i} />
                     <label htmlFor={i}></label>
+                  </td>
+                }
+                {props.mode &&
+                  <td className='center'>
+                    <i id='icon-sm' className="fa fa-trash" onClick={() => console.log('lol')}></i>
                   </td>
                 }
               </tr>

@@ -145,10 +145,25 @@ textarea:focus {
 #icon {
   padding: 0 1rem;
   height: fit-content;
+  border-radius: 0.2rem;
 }
 
 #icon:hover {
   background: #727a8811;
+}
+
+#icon-sm {
+  border-radius: 0.2rem;
+  padding: 0.22rem;
+  font-size: 16px;
+}
+
+#icon-sm:hover {
+  background: #61687475;
+}
+
+#icon-sm:before {
+  position: relative;
 }
 
 /* BrowseSearchbar */
