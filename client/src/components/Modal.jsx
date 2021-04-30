@@ -17,7 +17,7 @@ const CenteredModal = (props) => {
     >
       <Modal.Header closeButton>
         <Modal.Title id='contained-modal-title-vcenter'>
-          {props.title ? props.title : (props.variant === 'multi' ? 'Please Confirm' : "Success")}
+          {props.title ? props.title : (props.variant === 'multi' ? 'Please Confirm' : 'Success')}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className='flex-vertical center'>

@@ -40,5 +40,5 @@ exports.TRACKS = {
   'AMS': ['Computational Applied Mathematics', 'Computational Biology', 'Operations Research', 'Statistics', 'Quantitative Finance'],
   'BMI': ['Imaging Informatics With Thesis', 'Imaging Informatics With Project', 'Clinical Informatics With Thesis', 'Clinical Informatics With Project', 'Translational Bioinformatics With Thesis', 'Translational Bioinformatics With Project'],
   'CSE': ['Advanced Project', 'Special Project', 'Thesis', 'Advanced Project Proficiency', 'Special Project Proficiency', 'Thesis Proficiency'],
-  'ESE': ['Non-Thesis', 'Thesis']
+  'ESE': ['Non-thesis', 'Thesis']
 }

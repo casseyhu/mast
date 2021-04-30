@@ -1,7 +1,7 @@
 {
     "degree1": { 
         "dept": "ESE",
-        "track": "Non-Thesis",
+        "track": "Non-thesis",
         "requirementVersion": 202008, 
         "gradeRequirement": null,
         "creditRequirement": 30,

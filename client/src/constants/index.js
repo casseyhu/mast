@@ -3,22 +3,22 @@ export const CURRENT_YEAR = '2021'
 
 export const SEMESTERS = [
   { value: 'Fall', label: 'Fall' },
-  { value: 'Winter', label: 'Winter' },
   { value: 'Spring', label: 'Spring' },
-  { value: 'Summer', label: 'Summer' }
+  { value: 'SummerI', label: 'SummerI' },
+  { value: 'SummerII', label: 'SummerII' }
 ]
 
 export const MONTH_SEMESTER = {
-  '01': 'Winter',
   '02': 'Spring',
-  '05': 'Summer',
+  '05': 'SummerI',
+  '07': 'SummerII',
   '08': 'Fall'
 }
 
 export const SEMESTER_MONTH = {
-  'Winter': 1,
   'Spring': 2,
-  'Summer': 5,
+  'SummerI': 5,
+  'SummerII': 5,
   'Fall': 8
 }
 
@@ -42,7 +42,8 @@ export const GRADES = [
   { value: 'C+', label: 'C+' },
   { value: 'C', label: 'C' },
   { value: 'C-', label: 'C-' },
-  { value: 'F', label: 'F' }
+  { value: 'F', label: 'F' },
+  { value: null, label: 'N/A' }
 ]
 
 export const DEPARTMENTS = [
@@ -100,7 +101,7 @@ export const TRACKS = {
     { value: 'Thesis Proficiency', label: 'Thesis Proficiency' }
   ],
   'ESE': [
-    { value: 'Non-Thesis', label: 'Non-Thesis' },
+    { value: 'Non-thesis', label: 'Non-thesis' },
     { value: 'Thesis', label: 'Thesis' }
   ]
 }

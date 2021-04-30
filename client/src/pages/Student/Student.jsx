@@ -23,7 +23,6 @@ class Student extends Component {
   }
 
   setStudentInfo = async () => {
-    console.log('set')
     const { student, department } = this.state
     if (department === '')
       return
@@ -78,7 +77,7 @@ class Student extends Component {
         student: response.data,
         errorMsg: '',
         showConfirmation: true
-      },this.setStudentInfo)
+      }, this.setStudentInfo)
     }).catch((err) => {
       this.setState({ errorMsg: err.response.data })
       console.log(err.response.data)
@@ -198,7 +197,6 @@ class Student extends Component {
       console.log('this person DONe with MaSTERs!!!! dont botHER THEM')
       return
     }
-
     console.log('Suggesting course plan for student: ', this.state.student)
     this.props.history.push({
       pathname: '/suggest',
@@ -276,7 +274,7 @@ class Student extends Component {
         <CenteredModal
           show={showSuggestErr}
           onHide={() => this.setState({ showSuggestErr: false })}
-          onConfirm={() => { this.setState({ showSuggestErr: false })}}
+          onConfirm={() => { this.setState({ showSuggestErr: false }) }}
           title={<small style={{ color: 'red' }}>Error!</small>}
           body={suggestErr}
         />

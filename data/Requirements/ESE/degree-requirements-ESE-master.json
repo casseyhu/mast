@@ -1,7 +1,7 @@
 {
     "degree1": { 
         "dept": "ESE",
-        "track": "Non-Thesis",
+        "track": "Non-thesis",
         "requirementVersion": 201808, 
         "gradeRequirement": null,
         "creditRequirement": 30,
@@ -50,7 +50,7 @@
     },
     "degree3": { 
         "dept": "ESE",
-        "track": "Non-Thesis",
+        "track": "Non-thesis",
         "requirementVersion": 201908, 
         "gradeRequirement": null,
         "creditRequirement": 30,
@@ -99,7 +99,7 @@
     },
     "degree5": { 
         "dept": "ESE",
-        "track": "Non-Thesis",
+        "track": "Non-thesis",
         "requirementVersion": 202008, 
         "gradeRequirement": null,
         "creditRequirement": 30,
@@ -148,7 +148,7 @@
     },
     "degree7": { 
         "dept": "ESE",
-        "track": "Non-Thesis",
+        "track": "Non-thesis",
         "requirementVersion": 202108, 
         "gradeRequirement": null,
         "creditRequirement": 30,
@@ -197,7 +197,7 @@
     },
     "degree9": { 
         "dept": "ESE",
-        "track": "Non-Thesis",
+        "track": "Non-thesis",
         "requirementVersion": 202208, 
         "gradeRequirement": null,
         "creditRequirement": 30,
@@ -246,7 +246,7 @@
     },
     "degree11": { 
         "dept": "ESE",
-        "track": "Non-Thesis",
+        "track": "Non-thesis",
         "requirementVersion": 201802, 
         "gradeRequirement": null,
         "creditRequirement": 30,
@@ -295,7 +295,7 @@
     },
     "degree13": { 
         "dept": "ESE",
-        "track": "Non-Thesis",
+        "track": "Non-thesis",
         "requirementVersion": 201902, 
         "gradeRequirement": null,
         "creditRequirement": 30,
@@ -344,7 +344,7 @@
     },
     "degree15": { 
         "dept": "ESE",
-        "track": "Non-Thesis",
+        "track": "Non-thesis",
         "requirementVersion": 202002, 
         "gradeRequirement": null,
         "creditRequirement": 30,
@@ -393,7 +393,7 @@
     },
     "degree17": { 
         "dept": "ESE",
-        "track": "Non-Thesis",
+        "track": "Non-thesis",
         "requirementVersion": 202102, 
         "gradeRequirement": null,
         "creditRequirement": 30,
@@ -442,7 +442,7 @@
     },
     "degree19": { 
         "dept": "ESE",
-        "track": "Non-Thesis",
+        "track": "Non-thesis",
         "requirementVersion": 202202, 
         "gradeRequirement": null,
         "creditRequirement": 30,

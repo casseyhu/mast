@@ -392,8 +392,8 @@ exports.checkGradedSem = async (req, res) => {
     }
   })
   if (items.length > 0) {
-    for(let item of items) {
-      if(item.grade) {
+    for (let item of items) {
+      if (item.grade) {
         res.status(200).send(true)
         return
       }
@@ -540,9 +540,9 @@ async function uploadStudents(students, res) {
   const degrees = await Degree.findAll()
   let degreeDict = {}
   const monthsDict = {
-    '01': 'Winter',
     '02': 'Spring',
-    '05': 'Summer',
+    '05': 'SummerI',
+    '07': 'SummerII',
     '08': 'Fall'
   }
   const currentGradYear = 202101
@@ -583,7 +583,7 @@ async function uploadStudents(students, res) {
       studentComments: ''
     }
     if (!checkFields(values, null)) {
-      console.log("invalid stuednt")
+      console.log('invalid student')
       continue
     }
     tot += 1
@@ -636,7 +636,7 @@ function checkFields(student, res) {
     return false
   }
   // Check valid track for degree
-  if (!TRACKS[student.department].includes(student.track)) {
+  if (!TRACKS[student.dept].includes(student.track)) {
     if (res) res.status(500).send('Invalid degree track.')
     return false
   }
@@ -654,6 +654,11 @@ function checkFields(student, res) {
 async function addStudent(student, degree, res) {
   if (!checkFields(student, res))
     return
+  let found = await Student.findOne({ where: { sbuId: student.sbuId } })
+  if (found) {
+    res.status(500).send('Student already exists. Please try again')
+    return
+  }
   // Hash the password for the student. (first init + last init + sbuid)
   let password = student.firstName.charAt(0).toLowerCase() + student.lastName.charAt(0).toLowerCase() + student.sbuId
   let salt = bcrypt.genSaltSync(10)

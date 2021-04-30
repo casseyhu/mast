@@ -45,6 +45,7 @@ const StudentInfo = (props) => {
   }, [department, student])
 
   useEffect(() => {
+    console.log(errorMessage)
     if (!student && userInfo.track && userInfo.degreeSem && userInfo.degreeYear) {
       axios.get('/requirements/', {
         params: {
@@ -80,9 +81,9 @@ const StudentInfo = (props) => {
           />
         </div>
       </div>
-      {errorMessage &&
+      {(errorMessage || props.errorMessage) &&
         <div className='flex-horizontal wrap' style={{ marginBottom: '0.5rem', width: '100%' }}>
-          <span className='error'><strong>{errorMessage}</strong></span>
+          <span className='error'><strong>{errorMessage || props.errorMessage}</strong></span>
         </div>}
 
       <div className='flex-vertical wrap' style={{ maxWidth: '690px' }}>

@@ -118,7 +118,7 @@ const CoursePlan = (props) => {
             </tr>
           </thead>
           <tbody>
-            {props.coursePlan && props.coursePlan.sort((a, b) => sortBySem(a, b)).map((course, i) => {
+            {props.coursePlan.sort((a, b) => sortBySem(a, b)).map((course, i) => {
               return <tr
                 className={course.semester}
                 key={i}

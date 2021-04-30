@@ -14,7 +14,7 @@ TRACKS = {
     'BMI': ['Imaging Informatics With Thesis', 'Imaging Informatics With Project', 'Clinical Informatics With Thesis',
             'Clinical Informatics With Project', 'Translational Bioinformatics With Thesis',
             'Translational Bioinformatics With Project'],
-    'ESE': ['Non-Thesis', 'Thesis']
+    'ESE': ['Non-thesis', 'Thesis']
 }
 YEARS = [2018, 2019, 2020, 2021]
 SEMESTERS = {
