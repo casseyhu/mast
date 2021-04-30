@@ -96,9 +96,9 @@ exports.updateItem = async (req, res) => {
 }
 
 
-exports.deleteItem= async (req, res) => {
+exports.deleteItem = async (req, res) => {
   const params = req.body.params
-  try { 
+  try {
     let del = await CoursePlanItem.destroy({
       where: {
         coursePlanId: params.course.coursePlanId,
@@ -740,4 +740,28 @@ exports.addSuggestion = async (req, res) => {
   }
   let items = await CoursePlanItem.findAll({ where: { coursePlanId: coursePlan.coursePlanId } })
   res.status(200).send(items)
+}
+
+
+exports.accept = async (req, res) => {
+  try {
+    const items = req.body.params.items
+    const student = req.body.params.student
+    for (let item of items) {
+      await CoursePlanItem.update({ status: true }, { where: item })
+    }
+    await CoursePlanItem.destroy({
+      where: {
+        coursePlanId: items[0].coursePlanId,
+        status: false
+      }
+    })
+    let studentsPlanId = {}
+    studentsPlanId[student.sbuId] = items[0].coursePlanId
+    await calculateCompletion(studentsPlanId, student.department, null)
+    const newItems = await CoursePlanItem.findAll({ where: { coursePlanId: items[0].coursePlanId } })
+    res.status(200).send(newItems)
+  } catch (err) {
+    res.status(500).send('Invalid query')
+  }
 }

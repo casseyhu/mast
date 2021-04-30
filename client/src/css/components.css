@@ -142,6 +142,7 @@ textarea:focus {
 
 
 /* Icons */
+#icon-pref,
 #icon {
   line-height: 2.5rem;
   padding: 0 0.7rem;
@@ -149,7 +150,7 @@ textarea:focus {
   border-radius: 0.2rem;
 }
 
-#icon:hover {
+#icon-pref:hover {
   background: #727a883d;
 }
 

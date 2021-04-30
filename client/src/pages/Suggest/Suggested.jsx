@@ -41,7 +41,7 @@ const SuggestedPlans = (props) => {
             </Accordion.Toggle>
             <Accordion.Collapse eventKey={`${key}`}>
               <Card.Body>
-                <Table className='suggested-table' striped hover size='sm'>
+                <Table className='suggested-table' hover size='sm'>
                   <thead>
                     <tr>
                       <th>Course</th>
@@ -56,7 +56,7 @@ const SuggestedPlans = (props) => {
                   <tbody>
                     {Object.keys(coursePlan).map(semester => (
                       coursePlan[semester].map((course, courseKey) => (
-                        <tr key={courseKey}>
+                        <tr key={courseKey} className={MONTH_SEMESTER[semester.substring(4,)]}>
                           <td>{course.course}</td>
                           <td>{MONTH_SEMESTER[semester.substring(4,)]}</td>
                           <td>{semester.substring(0, 4)}</td>

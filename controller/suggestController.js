@@ -23,38 +23,35 @@ const rnodes = [
 ]
 
 exports.suggest = async (req, res) => {
-  const student = JSON.parse(req.query.student)
+  const query = req.query
+  const student = JSON.parse(query.student)
+  const CPS = query.maxCourses
+  const PREFERRED = query.preferred ? query.preferred : []
+  const AVOID = new Set(query.avoid)
+  const TIME = [query.startTime ? query.startTime + ':00' : '07:00:00', query.endTime ? query.endTime + ':00' : '23:59:00']
   console.log('Regular suggest' + student.sbuId)
-  const SBUID = student.sbuId
-  const CPS = req.query.maxCourses
-  const PREFERRED = req.query.preferred ? req.query.preferred : []
-  const AVOID = new Set(req.query.avoid)
-  const TIME = [req.query.startTime ? req.query.startTime + ':00' : '07:00:00',
-  req.query.endTime ? req.query.endTime + ':00' : '23:59:00']
-  console.log(TIME)
   // Find the students degree requirements
   const degree = await Degree.findOne({ where: { degreeId: student.degreeId } })
   let [, , creditReq, courseReq] = await findRequirements(degree)
   // Find the students degree requirement states
-  // let reqStates = await RequirementState.findAll({ where: { sbuID: SBUID } })
+  // let reqStates = await RequirementState.findAll({ where: { sbuID: student.sbuId } })
   // Find the students course plan items
-  let coursePlanItems = await findCoursePlanItems(SBUID)
+  const coursePlanItems = await findCoursePlanItems(student.sbuId)
   // Create the course mapping for all courses required for degree
-  const foundCourses = await Course.findAll({
+  let foundCourses = await Course.findAll({
+    attributes: { exclude: ['description', 'name'] },
     where: {
       courseId: Array.from(new Set(courseReq.reduce((a, b) => b.courses.concat(a), [])))
     }
   })
+  foundCourses.forEach(course => course.credits = (course.minCredits <= 3 && course.maxCredits >= 3) ? 3 : course.minCredits)
+  console.log(foundCourses)
   let courses = {}
   let coursesSem = {}
-  // credits dictionary for courses in future semester
+  // Credits dictionary for courses in future semester
   foundCourses.forEach(course => courses[course.courseId] = course)
-  // credits dictionary for courses in previous semester
+  // Credits dictionary for courses in previous semester
   foundCourses.forEach(course => coursesSem[course.courseId + ' ' + course.semester + ' ' + course.year] = course)
-  Object.keys(courses).forEach(course => courses[course].credits = ((courses[course].minCredits <= 3
-    && courses[course].maxCredits >= 3) ? 3 : courses[course].minCredits))
-  Object.keys(coursesSem).forEach(course => coursesSem[course].credits = ((coursesSem[course].minCredits <= 3
-    && coursesSem[course].maxCredits >= 3) ? 3 : coursesSem[course].minCredits))
   // List of courses student has taken and currently taking that they didnt fail
   const takenAndCurrent = coursePlanItems.filter(course => (
     (100 * course.year + SEMTONUM[course.semester] <= 100 * currYear + SEMTONUM[currSem]) &&
@@ -88,7 +85,7 @@ exports.suggest = async (req, res) => {
   let generated = []
   let minScore = Number.MAX_SAFE_INTEGER
   let counter = 0
-  while (generated.length < 5 && counter < 50) {
+  while (generated.length < 5 && counter < 1) {
     const takenAndCurrent = coursePlanItems.filter(course => (
       (100 * course.year + SEMTONUM[course.semester] <= 100 * currYear + SEMTONUM[currSem]) &&
       (!course.grade || GRADES[course.grade] >= GRADES['C'])
@@ -97,8 +94,7 @@ exports.suggest = async (req, res) => {
     courseReqs = JSON.parse(JSON.stringify(courseReq))
     // Create course nodes
     const nodesMap = createNodes(courses, courseReqs, PREFERRED, AVOID, [creditsRemaining, coursesPerSem], [], takenAndCurrent)
-    let nodes = Object.values(nodesMap)
-    nodes = sortNodes(nodesMap)
+    let nodes = sortNodes(Object.values(nodesMap))
     //console.log(nodes)
     let [score, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, TIME, takenAndCurrentCourses, allUsed)
     if (score !== null && score < minScore) {
@@ -620,7 +616,6 @@ function calculateScore(coursePlan) {
 exports.smartSuggest = async (req, res) => {
   console.log('Smart suggest')
   const student = JSON.parse(req.query.student)
-  const SBUID = student.sbuId
   const CPS = req.query.maxCourses
   const TIME = [req.query.startTime ? req.query.startTime + ':00' : '07:00:00',
   req.query.endTime ? req.query.endTime + ':00' : '23:59:00']
@@ -652,7 +647,7 @@ exports.smartSuggest = async (req, res) => {
   // Find the students degree requirements
   const degree = await Degree.findOne({ where: { degreeId: student.degreeId } })
   let [, , creditReq, courseReq] = await findRequirements(degree)
-  let coursePlanItems = await findCoursePlanItems(SBUID)
+  let coursePlanItems = await findCoursePlanItems(student.sbuId)
   // Create the course mapping for all courses required for degree
   const reqCourses = Array.from(new Set(courseReq.reduce((a, b) => b.courses.concat(a), [])))
   const foundCourses = await Course.findAll({ where: { courseId: reqCourses } })
@@ -704,7 +699,7 @@ exports.smartSuggest = async (req, res) => {
   delete courseCount['']
   // Sort courses by popularity
   let popularCourses = Object.keys(courseCount).sort((c1, c2) => courseCount[c2] - courseCount[c1])
-  
+
   let minScore = Number.MAX_SAFE_INTEGER
   let minCoursePlan = []
   // Create course nodes

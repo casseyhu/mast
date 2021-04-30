@@ -80,13 +80,13 @@ const CoursePreferences = (props) => {
                     {course}
                   </td>
                   <td className='preference-table-td'>
-                    <i id='icon' className='fa fa-angle-up fa-lg' onClick={() => props.move(mode, course, -1)} />
+                    <i id='icon-pref' className='fa fa-angle-up fa-lg' onClick={() => props.move(mode, course, -1)} />
                   </td>
                   <td className='preference-table-td'>
-                    <i id='icon' className='fa fa-angle-down fa-lg' onClick={() => props.move(mode, course, 1)} />
+                    <i id='icon-pref' className='fa fa-angle-down fa-lg' onClick={() => props.move(mode, course, 1)} />
                   </td>
                   <td className='preference-table-td'>
-                    <i id='icon' className="fa fa-trash" onClick={() => props.deleteCourse(mode, course)}></i>
+                    <i id='icon-pref' className="fa fa-trash" onClick={() => props.deleteCourse(mode, course)}></i>
                   </td>
                 </tr>
               )
