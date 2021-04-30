@@ -10,6 +10,8 @@ module.exports = function (app) {
 
   app.get('/api/courseplanitem/count', CoursePlan.count)
 
+  app.post('/api/courseplanitem/update', CoursePlan.updateItem)
+
   app.get('/api/suggest', Suggest.suggest)
 
   app.get('/api/smartsuggest', Suggest.smartSuggest)

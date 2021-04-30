@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Container from 'react-bootstrap/Container'
-// import Button from '../components/Button'
+import CenteredModal from '../../components/Modal'
 import AddCourse from './AddCourse'
 import axios from '../../constants/axios'
 import CoursePlan from '../Student/CoursePlan'
@@ -10,30 +10,51 @@ const EditCoursePlan = (props) => {
   const history = useHistory()
   const { student, coursePlan } = props.location.state
 
-  const addCourse = (course, semester, year) => {
-    console.log('adding course ')
-    console.log(student)
-    axios.post('student/addCourse/', {
-      params: {
-        sbuId: student.sbuId,
-        course: course,
-        semester: semester,
-        year: year
+  const addCourse = async (course, semester, year) => {
+    try {
+      let newCoursePlanItems = await axios.post('student/addCourse/', {
+        params: {
+          sbuId: student.sbuId,
+          course: course,
+          semester: semester,
+          year: year
+        }
+      })
+      if (newCoursePlanItems) {
+        history.replace({
+          ...history.location,
+          state: {
+            ...history.location.state,
+            coursePlan: newCoursePlanItems.data
+          }
+        })
+        return true
       }
-    }).then((response) => {
-      history.replace({ 
+    } catch (error) {
+      console.log('error')
+      return false
+    }
+  }
+
+  const saveItem = (values) => {
+    axios.post('/courseplanitem/update/', {
+      params: {
+        ...values,
+        student: student
+      }
+    }).then(response => {
+      history.replace({
         ...history.location,
         state: {
           ...history.location.state,
           coursePlan: response.data
         }
       })
-    }).catch((err) => {
-      console.log(err)
-      console.log('addCourse courseplan.jsx error')
+    }).catch(err => {
+      console.log(err.response.data)
     })
-
   }
+
 
   return (
     <Container fluid='lg' className='container'>
@@ -43,8 +64,8 @@ const EditCoursePlan = (props) => {
         <h5><b>Degree:</b> {student.department} {student.track}</h5>
         {/* <Button variant='round' text='Add Course' /> */}
       </div>
-      <CoursePlan mode coursePlan={coursePlan} />
-      <AddCourse add={addCourse} />
+      <CoursePlan mode saveItem={saveItem} coursePlan={coursePlan} />
+      <AddCourse add={addCourse} student={student} />
     </Container>
   )
 }

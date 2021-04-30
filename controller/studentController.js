@@ -3,10 +3,13 @@ const fs = require('fs')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Papa = require('papaparse')
-const { SEMDICT, TRACKS } = require('./constants')
-const { updateOrCreate, findRequirements, findCoursePlanItems, titleCase } = require('./shared')
+
+const { SEMDICT, TRACKS, currSem, currYear, SEMTONUM } = require('./constants')
+const { updateOrCreate, findRequirements, findCoursePlanItems, checkPrereq, titleCase } = require('./shared')
+
 const coursePlanController = require('./coursePlanController')
 const database = require('../config/database.js')
+const { query } = require('express')
 const Op = database.Sequelize.Op
 
 const Student = database.Student
@@ -372,6 +375,35 @@ exports.findAll = (req, res) => {
 
 
 /**
+ * Gets the semesters that have grade for them, if any. 
+ * Loops through all course plan items becasue a course in the futur might
+ * have a grade, if the GPD added it for some reason. 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+exports.checkGradedSem = async (req, res) => {
+  const coursePlan = await CoursePlan.findOne({ where: { studentId: req.query.sbuId } })
+  const items = await CoursePlanItem.findAll({
+    where: {
+      coursePlanId: coursePlan.coursePlanId,
+      semester: req.query.semester,
+      year: req.query.year
+    }
+  })
+  if (items.length > 0) {
+    for(let item of items) {
+      if(item.grade) {
+        res.status(200).send(true)
+        return
+      }
+    }
+  }
+  res.status(200).send(false)
+}
+
+
+/**
  * Delete all students from the database as well as all information that exist about the students
  * (i.e CoursePlan, CoursePlanItem, RequirementStates).
  * @param {*} req
@@ -416,6 +448,37 @@ exports.getStates = (req, res) => {
 }
 
 
+/**
+ * Checks if a student has satisfied the prerequisites to a course.
+ * @param {*} req Contains information (sbuId, course, ...) which is used to find
+ * the student's course plan items and for the course's prerequisites.
+ * @param {*} res 
+ */
+exports.checkPrerequisites = async (req, res) => {
+  // Get student's course plan, and get their taken and current courses.
+  try {
+    let cpItems = await findCoursePlanItems(req.query.sbuId)
+    const takenAndCurrent = cpItems.filter(course => (
+      (course.year < currYear) ||
+      ((course.year === currYear) && (SEMTONUM[course.semester] <= SEMTONUM[currSem]))
+    ))
+    const takenAndCurrentCourses = new Set(takenAndCurrent.map(course => course.courseId))
+    let unsatisfiedPrereqs = checkPrereq(JSON.parse(req.query.course), takenAndCurrentCourses, true)
+    res.status(200).send(unsatisfiedPrereqs)
+  } catch (err) {
+    // console.log(err)
+    res.status(500).send('Error in checking prerequisites for add course.')
+  }
+}
+
+
+/**
+ * Adds a course to a student's course plan items. 
+ * @param {*} req Contains information (i.e student's id), which is used to find the
+ * course plan for the student, to add the new course to. 
+ * @param {*} res 
+ * @returns 
+ */
 exports.addCourse = async (req, res) => {
   let query = req.body.params
   // Find student's courseplanId by getting their coursePlan first.
@@ -425,29 +488,46 @@ exports.addCourse = async (req, res) => {
     }
   })
   // Insert the course into the student's courseplanitems. 
-  let insert = await CoursePlanItem.create({
-    coursePlanId: coursePlan.coursePlanId,
-    courseId: query.course.courseId,
-    semester: query.semester,
-    year: query.year,
-    section: null,
-    grade: null,
-    // Since null section, assume no conflicts, so validity = 1.
-    // Status = 0 bc not taken yet. 
-    validity: true,
-    status: true
-  })
-  console.log(insert)
-  if (insert) {
-    // Send the courseplan items back to the front end.
+  try {
+    let insert = await CoursePlanItem.create({
+      coursePlanId: coursePlan.coursePlanId,
+      courseId: query.course.courseId,
+      semester: query.semester,
+      year: query.year,
+      section: null,
+      grade: null,
+      validity: true,
+      status: true
+    })
     let cpItems = await findCoursePlanItems(query.sbuId)
-    console.log('successfully added')
-    // console.log(cpItems)
     res.status(200).send(cpItems)
-    return
+  } catch (error) {
+    res.status(500).send('Unable to add course to course plan.')
   }
-  res.status(500).send('Unable to add course to course plan.')
-  return
+}
+
+
+/**
+ * Checks if a course is in a given semester and year in a student's
+ * course plan. 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.checkCourse = async (req, res) => {
+  let coursePlan = await CoursePlan.findOne({
+    where: {
+      studentId: req.query.sbuId
+    }
+  })
+  let found = await CoursePlanItem.findOne({
+    where: {
+      coursePlanId: coursePlan.coursePlanId,
+      courseId: req.query.courseId,
+      semester: req.query.semester,
+      year: req.query.year
+    }
+  })
+  res.status(200).send(found ? true : false)
 }
 
 
