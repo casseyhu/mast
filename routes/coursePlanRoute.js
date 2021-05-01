@@ -21,4 +21,6 @@ module.exports = function (app) {
   app.post('/api/courseplanitem/addsuggestion', CoursePlan.addSuggestion)
 
   app.post('/api/courseplan/accept', CoursePlan.accept)
+
+  app.get('/api/courseplan/checkPreconditions', CoursePlan.checkPreconditions)
 }

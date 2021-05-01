@@ -52,50 +52,43 @@ const AddCourse = (props) => {
       setError('All fields are required')
       return
     } else if (!course.semestersOffered.includes(semester)) {
-      setError(`Course is not offered in the ${semester}`)
+      setError(`Course is not offered in the ${semester}.`)
       return
     } else {
-      let hasGrades = await semesterHasGrade(semester, year)
-      if (hasGrades) {
-        setError('Cannot add courses to semester with imported grades.')
-        return
-      }
-      let alreadyExists = await checkCourseInPlan(course, semester, year)
-
-      if (alreadyExists) {
-        setError('Course ' + course.courseId + ' already exists in ' + semester
-          + ' ' + year + '.')
-        return
-      } else {
-        // Passed pre-checks. Now check is fulfilled prereqs.
+      let validAdd = await checkPreconditions(course, semester, year)
+      if(validAdd) {
+        // Passed precondition check --> Now check prerequisites as final check.
         setError('')
-        checkPrerequisites(course, semester, year)
+        let satisfiedPrereqs = await checkPrerequisites(course, semester, year)
+        if(satisfiedPrereqs) {
+          // No prereqs. Add this course into the plan.
+          if(await addCourseWrapper(course, semester, year))
+          showConfirmation(true)
+        }
       }
     }
   }
 
-  const checkCourseInPlan = async (course, semester, year) => {
-    let hasCourse = await axios.get('student/checkCourse', {
-      params: {
-        sbuId: props.student.sbuId,
-        courseId: course.courseId,
-        semester: semester,
-        year: year
-      }
-    })
-    return hasCourse.data
+
+  const checkPreconditions = async (course, semester, year) => {
+      try {
+      let passedPreconditions = await axios.get('/courseplan/checkPreconditions/', {
+        params: {
+          sbuId: props.student.sbuId,
+          course: course,
+          // courseId: course.courseId,
+          semester: semester,
+          year: year
+        }
+      })
+      return passedPreconditions.data
+    } catch (err) {
+      console.log(err.response.data)
+      setError(err.response.data)
+      return false
+    }
   }
 
-  const semesterHasGrade = async (semester, year) => {
-    let hasGrade = await axios.get('student/checkGradedSem', {
-      params: {
-        sbuId: props.student.sbuId,
-        semester: semester,
-        year: year
-      }
-    })
-    return hasGrade.data
-  }
 
   const checkPrerequisites = async (course, semester, year) => {
     let prereqs = await axios.get('student/checkPrerequisites', {
@@ -114,9 +107,7 @@ const AddCourse = (props) => {
       setError('Unable to add course. The following prerequisites are not met: ' + prereqs.data.join(', '))
       return false
     } else {
-      // No prereqs. Add this course into the plan.
-      if(await addCourseWrapper(course, semester, year))
-        showConfirmation(true)
+      return true
     }
   }
 
@@ -166,7 +157,7 @@ const AddCourse = (props) => {
                   placement='right'
                   overlay={
                     <Tooltip id='tooltip-right'>
-                      Course is not offered in the {semester}
+                      Course is not offered in the {semester}.
                     </Tooltip>
                   }
                 >

@@ -9,6 +9,7 @@ const { updateOrCreate, findRequirements, findCoursePlanItems, checkPrereq, titl
 
 const coursePlanController = require('./coursePlanController')
 const database = require('../config/database.js')
+const { CourseOffering } = require('../config/database.js')
 const Op = database.Sequelize.Op
 
 const Student = database.Student
@@ -374,36 +375,6 @@ exports.findAll = (req, res) => {
 
 
 /**
- * Gets the semesters that have grade for them, if any. 
- * Loops through all course plan items becasue a course in the futur might
- * have a grade, if the GPD added it for some reason. 
- * @param {*} req 
- * @param {*} res 
- * @returns 
- */
-exports.checkGradedSem = async (req, res) => {
-  const coursePlan = await CoursePlan.findOne({ where: { studentId: req.query.sbuId } })
-  const items = await CoursePlanItem.findAll({
-    where: {
-      coursePlanId: coursePlan.coursePlanId,
-      semester: req.query.semester,
-      year: req.query.year,
-      status: true
-    }
-  })
-  if (items.length > 0) {
-    for (let item of items) {
-      if (item.grade) {
-        res.status(200).send(true)
-        return
-      }
-    }
-  }
-  res.status(200).send(false)
-}
-
-
-/**
  * Delete all students from the database as well as all information that exist about the students
  * (i.e CoursePlan, CoursePlanItem, RequirementStates).
  * @param {*} req
@@ -510,29 +481,6 @@ exports.addCourse = async (req, res) => {
   }
 }
 
-
-/**
- * Checks if a course is in a given semester and year in a student's
- * course plan. 
- * @param {*} req 
- * @param {*} res 
- */
-exports.checkCourse = async (req, res) => {
-  let coursePlan = await CoursePlan.findOne({
-    where: {
-      studentId: req.query.sbuId
-    }
-  })
-  let found = await CoursePlanItem.findOne({
-    where: {
-      coursePlanId: coursePlan.coursePlanId,
-      courseId: req.query.courseId,
-      semester: req.query.semester,
-      year: req.query.year
-    }
-  })
-  res.status(200).send(found ? true : false)
-}
 
 
 /**
