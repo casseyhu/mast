@@ -9,7 +9,7 @@ import Import from './pages/Import/Import'
 import Bulletin from './pages/Bulletin/Bulletin'
 import Suggest from './pages/Suggest/Suggest'
 import Student from './pages/Student/Student'
-import CoursePlan from './pages/EditPlan/CoursePlan'
+import EditCoursePlan from './pages/EditPlan/EditCoursePlan'
 import jwt_decode from 'jwt-decode'
 
 class App extends Component {
@@ -66,7 +66,7 @@ class App extends Component {
           {type === 'gpd' && <Route path='/import' component={(props) => <Import {...props} dept={user.department} />} />}
           {type && <Route path='/bulletin' component={(props) => <Bulletin {...props} type={type} user={user} />} />}
           {type && <Route path='/suggest' component={Suggest} />}
-          {type && <Route path='/courseplan' component={CoursePlan} />}
+          {type && <Route path='/courseplan' component={EditCoursePlan} />}
           <Route component={NotFound404} />
         </Switch>
       </BrowserRouter>

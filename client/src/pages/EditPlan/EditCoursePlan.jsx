@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Container from 'react-bootstrap/Container'
 import AddCourse from './AddCourse'
 import axios from '../../constants/axios'

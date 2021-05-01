@@ -23,12 +23,6 @@ module.exports = function (app) {
   // Get student requirement states
   app.get('/api/student/requirementStates', Student.getStates)
 
-  // Check if student has grades for a semester + year
-  app.get('/api/student/checkGradedSem', Student.checkGradedSem)
-
-  // Checks if specific course exists in course plan at sem + year
-  app.get('/api/student/checkCourse', Student.checkCourse)
-
   // Check if student has satisfied prereqs for a course 
   app.get('/api/student/checkPrerequisites', Student.checkPrerequisites)
 

@@ -73,7 +73,8 @@ exports.updateItem = async (req, res) => {
   try {
     await CoursePlanItem.update({
       grade: info.grade,
-      section: info.section ? info.section : info.planItem.section
+      section: info.section ? info.section : info.planItem.section,
+      validity: true
     }, {
       where: {
         coursePlanId: info.planItem.coursePlanId,
@@ -764,4 +765,84 @@ exports.accept = async (req, res) => {
   } catch (err) {
     res.status(500).send('Invalid query')
   }
+}
+
+
+exports.checkPreconditions = async (req, res) => {
+  let course = JSON.parse(req.query.course)
+  // Check if the sem+year the student is adding to has grades already.
+  let coursePlan = await CoursePlan.findOne({
+    where: {
+      studentId: req.query.sbuId
+    }
+  })
+  let found = await CoursePlanItem.findOne({
+    where: {
+      coursePlanId: coursePlan.coursePlanId,
+      courseId: course.courseId,
+      semester: req.query.semester,
+      year: Number(req.query.year)
+    }
+  })
+  if (found) {
+    res.status(500).send('Course ' + course.courseId + ' already exists in ' +
+          req.query.semester + ' ' + req.query.year + '.')
+    return
+  }
+
+  // Check if the course plan already exists in the semester+year.
+  const items = await CoursePlanItem.findAll({
+    where: {
+      coursePlanId: coursePlan.coursePlanId,
+      semester: req.query.semester,
+      year: req.query.year,
+      status: true
+    }
+  })
+  if (items.length > 0) {
+    for (let item of items) {
+      if (item.grade) {
+        res.status(500).send('Cannot add courses to semester with imported grades.')
+        return
+      }
+    }
+  }
+
+  // Check if we have Course Offerings for the given semester + year.
+  // If course offerings were imported, then check if this course has offerings. 
+  found = await CourseOffering.findOne({
+    where: {
+      semester: req.query.semester, 
+      year: req.query.year
+    }
+  })
+  if (!found) {
+    // If no course offerings were imported for SEM+YEAR, they can add course. 
+    res.status(200).send(true)
+    return
+  }
+  else {
+    // Else, we have to check if there exists an offering for this course in SEM+YEAR.
+    // For now, it finds ALL possible offerings (all sections) of this course in SEM+YEAR. 
+    // @TODO: 
+    // This can be sent back to deal with choosing a semester when they click 'Add'. 
+    let offering = await CourseOffering.findAll({
+      where: {
+        identifier: course.courseId,
+        semester: req.query.semester,
+        year: req.query.year
+      }
+    })
+    if(offering.length > 0) {
+      // There were offerings found for this course.
+      res.status(200).send(true)
+      return 
+    }
+    else {
+      res.status(500).send('Course has no offerings for ' + req.query.semester + ' ' + 
+        req.query.year + '.')
+      return
+    }
+  }
+  // res.status(200).send(false)
 }
