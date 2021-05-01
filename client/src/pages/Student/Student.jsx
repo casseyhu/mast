@@ -97,7 +97,7 @@ class Student extends Component {
     else if (mode === 'View')
       this.setState({ mode: 'Edit' })
     else {
-      // Gets the student's inforation that we have in the database. 
+      // Gets the student's information that we have in the database. 
       let dbStudentInfo = await axios.get('/student/' + student.sbuId, {
         params: student.sbuId
       })
@@ -258,7 +258,7 @@ class Student extends Component {
             this.changeMode()
             this.setState({ showUpdateError: false })
           }}
-          body='Try again later.'
+          body='Student information is being edited by another user. Please try again later.'
           title={<small style={{ color: 'red' }}>Error!</small>}
         />
         <CenteredModal
