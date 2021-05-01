@@ -228,7 +228,7 @@ class Trends extends Component {
           <h1>Enrollment Trends</h1>
         </div>
         <div className='flex-horizontal wrap justify-content-between' style={{ width: '100%' }}>
-          <div className='flex-horizontal' style={{ width: 'fit-content', flexGrow: '1' }}>
+          <div className='flex-horizontal fit' style={{ flexGrow: '1' }}>
             <span style={{ width: '65px' }}>Courses</span>
             <Dropdown
               variant='multi'
@@ -239,8 +239,8 @@ class Trends extends Component {
               style={{ width: '400px', flexGrow: '1' }}
             />
           </div>
-          <div className='flex-horizontal wrap' style={{ width: 'fit-content', flexGrow: '1' }}>
-            <div className='flex-horizontal' style={{ width: 'fit-content', flexGrow: '1' }}>
+          <div className='flex-horizontal wrap fit' style={{ flexGrow: '1' }}>
+            <div className='flex-horizontal fit' style={{ flexGrow: '1' }}>
               <span className='pr-1'>From:</span>
               <Dropdown
                 className='lr-padding'
@@ -259,7 +259,7 @@ class Trends extends Component {
                 style={{ width: '120px', flexGrow: '1' }}
               />
             </div>
-            <div className='flex-horizontal' style={{ width: 'fit-content', flexGrow: '1' }}>
+            <div className='flex-horizontal fit' style={{ flexGrow: '1' }}>
               <span className='pr-1'>To:</span>
               <Dropdown
                 className='lr-padding'

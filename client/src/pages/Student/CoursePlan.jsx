@@ -114,7 +114,7 @@ const CoursePlan = (props) => {
             </OverlayTrigger>
           )}
         </h4>
-        <div className='flex-horizontal' style={{ width: 'fit-content' }}>
+        <div className='flex-horizontal justify-content-end'>
           {props.suggestCoursePlan &&
             <Button
               variant='round'
@@ -205,7 +205,7 @@ const CoursePlan = (props) => {
               <span>({(course.minCredits <= 3 && course.maxCredits >= 3) ? 3 : course.minCredits} credits) {values.planItem.semester} {values.planItem.year} </span>
             </div>
             <div className='flex-vertical justify-content-center align-items-center '>
-              {offerings && offerings.length > 0 && <div className='flex-horizontal mb-3 mr-5' style={{ width: 'fit-content' }}>
+              {offerings && offerings.length > 0 && <div className='flex-horizontal mb-3 mr-5 fit'>
                 <span style={{ width: '80px' }}>Section: </span>
                 <Dropdown
                   items={offerings.map(offering => ({ 'label': offering.section, 'value': offering.section }))}
@@ -218,7 +218,7 @@ const CoursePlan = (props) => {
                   style={{ width: '110px' }}
                 />
               </div>}
-              <div className='flex-horizontal mr-5' style={{ width: 'fit-content' }}>
+              <div className='flex-horizontal mr-5 fit'>
                 <span style={{ width: '80px' }}>Grade: </span>
                 <Dropdown
                   items={GRADES}

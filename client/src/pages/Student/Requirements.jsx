@@ -93,7 +93,7 @@ const Requirements = (props) => {
   return (
     <div className='flex-vertical w-100'>
       <div className='flex-horizontal wrap justify-content-between mb-2'>
-        <div className='flex-vertical' style={{ width: 'fit-content' }}>
+        <div className='flex-vertical fit'>
           <h4>Degree Requirements</h4>
           {props.track && <span>Track: {props.track}</span>}
         </div>

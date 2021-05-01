@@ -55,7 +55,8 @@ const Suggest = (props) => {
       pathname: '/courseplan',
       state: {
         student: student,
-        coursePlan: result.data
+        coursePlan: result.data,
+        from: 'suggest'
       }
     })
   }

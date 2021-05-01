@@ -60,7 +60,7 @@ class Bulletin extends Component {
       <Container fluid='lg' className='container'>
         <div className='flex-horizontal justify-content-between'>
           <h1>Bulletin</h1>
-          <div className='flex-horizontal' style={{ width: 'fit-content' }}>
+          <div className='flex-horizontal fit'>
             <Dropdown
               variant='single'
               items={SEMESTERS}

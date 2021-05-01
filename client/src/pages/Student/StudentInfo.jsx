@@ -64,7 +64,7 @@ const StudentInfo = (props) => {
       <div className='flex-horizontal justify-content-between'>
         <h1>{mode} Student</h1>
         <small style={{ width: '210px' }}>Last Updated: {userInfo.updatedAt}</small>
-        <div className='flex-horizontal' style={{ width: 'fit-content' }}>
+        <div className='flex-horizontal fit' >
           {userType === 'gpd' && (
             <Button
               variant='round'
@@ -222,7 +222,7 @@ const StudentInfo = (props) => {
         </div>
       </div>
 
-      <div className='flex-vertical wrap' style={{ width: 'fit-content', marginLeft: '0.7rem' }}>
+      <div className='flex-vertical wrap fit' style={{ marginLeft: '0.7rem' }}>
         <small>GPD Comments:</small>
         <textarea
           className='textarea resize-ta'

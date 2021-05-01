@@ -85,7 +85,7 @@ exports.suggest = async (req, res) => {
   let generated = []
   let minScore = Number.MAX_SAFE_INTEGER
   let counter = 0
-  while (generated.length < 5 && counter < 1) {
+  while (generated.length < 5 && counter < 50) {
     const takenAndCurrent = coursePlanItems.filter(course => (
       (100 * course.year + SEMTONUM[course.semester] <= 100 * currYear + SEMTONUM[currSem]) &&
       (!course.grade || GRADES[course.grade] >= GRADES['C'])

@@ -73,7 +73,8 @@ exports.updateItem = async (req, res) => {
   try {
     await CoursePlanItem.update({
       grade: info.grade,
-      section: info.section ? info.section : info.planItem.section
+      section: info.section ? info.section : info.planItem.section,
+      validity: true
     }, {
       where: {
         coursePlanId: info.planItem.coursePlanId,
@@ -155,7 +156,7 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
   for (let i = 0; i < coursePlans.length; i++) {
     const item = coursePlans[i]
     if (!item.sbu_id || !studentsPlanId[item.sbu_id] || !SEMTONUM[item.semester]
-      || Number(item.year) < 2000 || Number(item.year) > 2500 || (item.grade && GRADES[item.grade] === null)) {
+      || Number(item.year) < 2000 || Number(item.year) > 2500 || (item.grade && !(item.grade in GRADES))) {
       console.log('Error: Invalid fields')
       continue
     }
@@ -220,7 +221,10 @@ function calculateGPA(coursePlanItems, credits) {
     totalCredits += courseCredit
     totalPoints += courseCredit * (GRADES[course.grade] ? GRADES[course.grade] : 0)
   }
-  return totalPoints / totalCredits
+  if (totalCredits === 0)
+    return 0
+  else
+    return totalPoints / totalCredits
 }
 
 
@@ -325,7 +329,7 @@ async function calculateGradeRequirement(credits, states, gradeReq, student, gra
  * @param {Object} gpaReq GPA requirement object from database
  * @param {Object} courseReq Course requirement object from database
  * @param {Object} student Current student object
- * @param {Array<Object>} gradedCoursePlan Course plan items for current student that have grades
+ * @param {Array[Object]} gradedCoursePlan Course plan items for current student that have grades
  * @returns 
  */
 async function calculateGpaRequirement(credits, states, gpaReq, courseReq, student, gradedCoursePlan) {
@@ -342,7 +346,7 @@ async function calculateGpaRequirement(credits, states, gpaReq, courseReq, stude
       course.courseId.slice(0, 3) === student.department
     ))
     studentDeptGpa = calculateGPA(deptCourses, credits)
-    deptGpaState = getReqState(studentDeptGpa, gpaReq.department)
+    deptGpaState = studentDeptGpa < gpaReq.department ? 'unsatisfied' : 'satisfied'
   }
   // 2. Calculate core GPA if needed
   if (gpaReq.core) {
@@ -351,16 +355,14 @@ async function calculateGpaRequirement(credits, states, gpaReq, courseReq, stude
       .reduce((a, b) => b.courses.concat(a), []))
     coreCourses = gradedCoursePlan.filter(course => coreCourses.has(course.courseId))
     studentCoreGpa = calculateGPA(coreCourses, credits)
-    coreGpaState = getReqState(studentCoreGpa, gpaReq.core)
+    coreGpaState = studentCoreGpa < gpaReq.core ? 'unsatisfied' : 'satisfied'
   }
   // 3. Calculate cumulative GPA
   studentCumGpa = calculateGPA(gradedCoursePlan, credits)
-  cumGpaState = getReqState(studentCumGpa, gpaReq.cumulative)
+  cumGpaState = studentCumGpa < gpaReq.cumulative ? 'unsatisfied' : 'satisfied'
   // 4. Set the state of the GPA requirement. 
   if (deptGpaState === 'unsatisfied' || coreGpaState === 'unsatisfied' || cumGpaState === 'unsatisfied')
     gpaState = 'unsatisfied'
-  else if (deptGpaState === 'pending' || coreGpaState === 'pending' || cumGpaState === 'pending')
-    gpaState = 'pending'
   else
     gpaState = 'satisfied'
   states[gpaState]++

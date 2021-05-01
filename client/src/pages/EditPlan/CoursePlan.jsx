@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Container from 'react-bootstrap/Container'
 import AddCourse from './AddCourse'
 import axios from '../../constants/axios'
@@ -62,7 +62,10 @@ const EditCoursePlan = (props) => {
         student: student
       }
     }).then(response => {
-      history.go(-2)
+      if (history.location.state.from === 'student')
+        history.go(-1)
+      else
+        history.go(-2)
       // history.replace({
       //   ...history.location,
       //   state: {

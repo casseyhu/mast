@@ -181,7 +181,8 @@ class Student extends Component {
       pathname: '/courseplan',
       state: {
         student: this.state.student,
-        coursePlan: this.state.studentInfoParams.coursePlan
+        coursePlan: this.state.studentInfoParams.coursePlan,
+        from: 'student'
       }
     })
   }
