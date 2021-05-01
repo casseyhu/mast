@@ -19,4 +19,6 @@ module.exports = function (app) {
   app.get('/api/smartsuggest', Suggest.smartSuggest)
 
   app.post('/api/courseplanitem/addsuggestion', CoursePlan.addSuggestion)
+
+  app.post('/api/courseplan/accept', CoursePlan.accept)
 }

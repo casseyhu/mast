@@ -17,8 +17,18 @@ const CoursePlan = (props) => {
   const [course, setCourse] = useState()
   const [offerings, setOfferings] = useState()
   const [values, setValues] = useState({})
-  const [checkedItems, setCheckedItems] = useState(props.coursePlan && props.coursePlan.map(() => false))
+  const [checkedItems, setCheckedItems] = useState([])
   const [deleteModal, showDelete] = useState(false)
+  const [coursePlan, setCoursePlan] = useState()
+
+  useEffect(() => {
+    if (props.coursePlan) {
+      let sorted = props.coursePlan.sort((a, b) => sortBySem(a, b))
+      setCoursePlan(sorted)
+      setCheckedItems(sorted.map(item => item.status))
+    }
+  }, [props.coursePlan])
+
 
   useEffect(() => {
     async function setUser() {
@@ -81,21 +91,24 @@ const CoursePlan = (props) => {
     setShowEditItem(true)
   }
 
+  const deleteCourse = (course) => {
+    setOfferings()
+    setValues()
+    setCourse(course)
+    showDelete(true)
+  }
+
   const saveItem = () => {
     props.saveItem(values)
     setShowEditItem(false)
   }
 
-  const deleteCourse = (course) => {
-    setOfferings()
-    setValues()
-    setCourse(course)
-    console.log(course)
-    showDelete(true)
+  const acceptCourses = () => {
+    props.accept(coursePlan.filter((item, i) => checkedItems[i]))
   }
 
-  const hasConflicts = props.coursePlan && props.coursePlan.filter(course => course.validity === false).length > 0
-  const width = props.mode ? '16%' : '17%'
+
+  const hasConflicts = coursePlan && coursePlan.filter(course => course.validity === false).length > 0
 
   return (
     <div >
@@ -132,30 +145,27 @@ const CoursePlan = (props) => {
             />}
         </div>
       </div>
-      {props.coursePlan && props.coursePlan.length > 0 ?
+      {coursePlan && coursePlan.length > 0 ?
         <Table hover size='sm'>
           <thead>
             <tr style={{ cursor: 'pointer' }}>
-              <th scope='col' style={{ width: width }} >Course</th>
-              <th scope='col' style={{ width: width }} >Section</th>
-              <th scope='col' style={{ width: width }} >Semester</th>
-              <th scope='col' style={{ width: width }} >Year</th>
-              <th scope='col' style={{ width: width }} >Grade</th>
-              <th scope='col' style={{ width: width }} >Status</th>
+              <th scope='col' style={{ width: '16%' }} >Course</th>
+              <th scope='col' style={{ width: '16%' }} >Section</th>
+              <th scope='col' style={{ width: '16%' }} >Semester</th>
+              <th scope='col' style={{ width: '16%' }} >Year</th>
+              <th scope='col' style={{ width: '16%' }} >Grade</th>
+              <th scope='col' style={{ width: '16%' }} >Status</th>
               {props.mode && <th scope='col' style={{ width: '4%' }} >
-                <input type='checkbox' id='select-all' onChange={e => {
-                  setCheckedItems(props.coursePlan.map(() => !selectAll))
+                <input type='checkbox' onChange={e => {
+                  setCheckedItems(coursePlan.map(() => !selectAll))
                   setselectAll(!selectAll)
                 }} />
-                <label htmlFor='select-all'></label>
               </th>}
-              {props.mode &&
-                <th scope='col' style={{ width: '4%' }} />
-              }
+              {props.mode && <th scope='col' style={{ width: '4%' }} />}
             </tr>
           </thead>
           <tbody>
-            {props.coursePlan.sort((a, b) => sortBySem(a, b)).map((course, i) => {
+            {coursePlan.map((course, i) => {
               return <tr
                 className={course.semester}
                 key={i}
@@ -171,21 +181,16 @@ const CoursePlan = (props) => {
                 {props.mode &&
                   <td className='center'>
                     <input type='checkbox'
-                      id={i} name={i}
+                      name={i}
                       disabled={course.grade}
                       checked={course.grade || checkedItems[i]}
                       onChange={handleChange}
                     />
-                    <label htmlFor={i} />
                   </td>
                 }
                 {props.mode &&
                   <td className='center'>
-                    {!course.grade &&
-                      <i id='icon-sm' className='fa fa-trash'
-                        onClick={() => deleteCourse(course)}
-                      />
-                    }
+                    {!course.grade && <i id='icon-sm' className='fa fa-trash' onClick={() => deleteCourse(course)} />}
                   </td>
                 }
               </tr>
@@ -196,6 +201,11 @@ const CoursePlan = (props) => {
           <span className='filler-text'>Empty Course Plan</span>
         </div>}
 
+      {props.mode && coursePlan && coursePlan.length > 0 &&
+        <div className='flex-horizontal justify-content-end pb-3'>
+          <Button variant='round' className='bg-white' text='Accept Courses' onClick={acceptCourses} />
+        </div>
+      }
       {props.mode && course && showEditItem && <CenteredModal
         variant='multi'
         show={showEditItem}
@@ -251,13 +261,13 @@ const CoursePlan = (props) => {
         body={
           <div className='flex-vertical'>
             <span>Delete course from course plan?</span>
-          <span>Course:  {course.courseId}</span>
-          <span>Section: {course.section}</span>
-          <span>Semester:  {course.semester}</span>
-          <span>Year: {course.year}</span>
-        </div>
+            <span>Course:  {course.courseId}</span>
+            <span>Section: {course.section}</span>
+            <span>Semester:  {course.semester}</span>
+            <span>Year: {course.year}</span>
+          </div>
         }
-        />
+      />
       }
     </div>
   )

@@ -1,5 +1,5 @@
 const database = require('../config/database.js')
-const constants = require('./constants.js')
+const { currSem, currYear, SEMTONUM } = require('./constants.js')
 const Degree = database.Degree
 const GradeRequirement = database.GradeRequirement
 const GpaRequirement = database.GpaRequirement
@@ -168,10 +168,9 @@ exports.getDepartmentalCourses = async (depts, semester, year) => {
   let degrees = await Degree.findAll({
     where: {
       dept: depts,
-      requirementVersion: year * 100 + constants.SEMTONUM[semester]
+      requirementVersion: year * 100 + SEMTONUM[semester]
     }
   })
-  console.log('depts:' + depts + year * 100 + constants.SEMTONUM[semester])
   let courseRequirements = await CourseRequirement.findAll({
     where: {
       requirementId: degrees.reduce((a, b) => b.courseRequirement.concat(a), [])
@@ -194,9 +193,7 @@ exports.getDepartmentalCourses = async (depts, semester, year) => {
  * @param {Number} year 
  */
 exports.beforeCurrent = (semester, year) => {
-  const before = year * 100 + constants.SEMTONUM[semester]
-  const curr = constants.currYear * 100 + constants.SEMTONUM[constants.currSem]
-  return before < curr
+  return year * 100 + SEMTONUM[semester] < currYear * 100 + SEMTONUM[currSem]
 }
 
 
