@@ -42,12 +42,12 @@ const Requirements = (props) => {
       else if (req.creditUpper)
         text += ' up to ' + req.creditUpper + ' credit(s)'
       else
-        text += ' at least ' + req.creditUpper + ' credit(s)'
+        text += ' at least ' + req.creditLower + ' credit(s)'
       hasCreditBounds = true
     }
     if (req.courseUpper || req.courseLower) {
       if (req.courseUpper === -1) {
-        text += ' Take every semester: '
+        text += ' Take every full-time semester: '
         return text;
       }
       else {
