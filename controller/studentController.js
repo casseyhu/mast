@@ -443,43 +443,43 @@ exports.checkPrerequisites = async (req, res) => {
 }
 
 
-/**
- * Adds a course to a student's course plan items. 
- * @param {*} req Contains information (i.e student's id), which is used to find the
- * course plan for the student, to add the new course to. 
- * @param {*} res 
- * @returns 
- */
-exports.addCourse = async (req, res) => {
-  let query = req.body.params
-  // Find student's courseplanId by getting their coursePlan first.
-  let coursePlan = await CoursePlan.findOne({
-    where: {
-      studentId: query.sbuId
-    }
-  })
-  // Insert the course into the student's courseplanitems. 
-  try {
-    let insert = await CoursePlanItem.create({
-      coursePlanId: coursePlan.coursePlanId,
-      courseId: query.course.courseId,
-      semester: query.semester,
-      year: query.year,
-      section: 'N/A',
-      grade: null,
-      validity: true,
-      status: true
-    })
-    // After adding the course, re-calculate their completion. 
-    let studentsPlanId = {}
-    studentsPlanId[query.sbuId] = coursePlan.coursePlanId
-    await coursePlanController.changeCompletion(studentsPlanId, query.department, null)
-    const cpItems = await CoursePlanItem.findAll({ where: { coursePlanId: coursePlan.coursePlanId } })
-    res.status(200).send(cpItems)
-  } catch (error) {
-    res.status(500).send('Unable to add course to course plan.')
-  }
-}
+// /**
+//  * Adds a course to a student's course plan items. 
+//  * @param {*} req Contains information (i.e student's id), which is used to find the
+//  * course plan for the student, to add the new course to. 
+//  * @param {*} res 
+//  * @returns 
+//  */
+// exports.addCourse = async (req, res) => {
+//   let query = req.body.params
+//   // Find student's courseplanId by getting their coursePlan first.
+//   let coursePlan = await CoursePlan.findOne({
+//     where: {
+//       studentId: query.sbuId
+//     }
+//   })
+//   // Insert the course into the student's courseplanitems. 
+//   try {
+//     let insert = await CoursePlanItem.create({
+//       coursePlanId: coursePlan.coursePlanId,
+//       courseId: query.course.courseId,
+//       semester: query.semester,
+//       year: query.year,
+//       section: 'N/A',
+//       grade: null,
+//       validity: true,
+//       status: true
+//     })
+//     // After adding the course, re-calculate their completion. 
+//     let studentsPlanId = {}
+//     studentsPlanId[query.sbuId] = coursePlan.coursePlanId
+//     await coursePlanController.changeCompletion(studentsPlanId, query.department, null)
+//     const cpItems = await CoursePlanItem.findAll({ where: { coursePlanId: coursePlan.coursePlanId } })
+//     res.status(200).send(cpItems)
+//   } catch (error) {
+//     res.status(500).send('Unable to add course to course plan.')
+//   }
+// }
 
 
 

@@ -9,15 +9,17 @@ const EditCoursePlan = (props) => {
   const history = useHistory()
   const { student, coursePlan } = props.location.state
 
-  const modifyPlan = async (mode, course, semester, year) => {
+  const modifyPlan = async (mode, course, semester, year, section) => {
     try {
-      let route = (mode === 'add' ? 'student/addCourse/' : '/courseplanitem/deleteItem')
+      let route = (mode === 'add' ?
+        'courseplanitem/addItem/' : '/courseplanitem/deleteItem')
       let newCoursePlanItems = await axios.post(route, {
         params: {
           sbuId: student.sbuId,
           department: student.department,
           course: course,
           semester: semester,
+          section, section,
           year: year
         }
       })

@@ -14,8 +14,8 @@ module.exports = function (app) {
   // Update student's field based on id
   app.post('/api/student/update', Student.update)
 
-  // Adds a course to student's course plan
-  app.post('/api/student/addCourse', Student.addCourse)
+  // // Adds a course to student's course plan
+  // app.post('/api/student/addCourse', Student.addCourse)
 
   // Get all students by filtered conditions
   app.get('/api/student/filter', Student.filter)

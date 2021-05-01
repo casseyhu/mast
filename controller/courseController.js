@@ -5,6 +5,7 @@ const { currSem, currYear } = require('./constants')
 const { getDepartmentalCourses, beforeCurrent } = require('./shared')
 const database = require('../config/database.js')
 const Course = database.Course
+const CourseOffering = database.CourseOffering
 const Degree = database.Degree
 
 
@@ -152,7 +153,7 @@ const degreeExists = async (depts) => {
       dept: depts,
     }
   })
-  console.log('degree found: ', degrees)
+  // console.log('degree found: ', degrees)
   return Array.from(new Set(degrees.map(degree => degree.dept)))
 }
 
@@ -504,4 +505,29 @@ const insertUpdate = async (values, condition) => {
   }
 }
 
+
+exports.findSections = async (req, res) => {
+  console.log('finding sections, if any)')
+  let course = JSON.parse(req.query.course)
+
+  let offerings = await CourseOffering.findAll({
+    where: {
+      identifier: course.courseId,
+      semester: req.query.semester,
+      year: req.query.year
+    }
+  })
+  let sections = []
+  if (offerings.length > 0) {
+    for(let offering of offerings) {
+      if (offering.section)
+        sections.push({ value: offering.section, label: offering.section })
+      else 
+        sections.push({ value: 'N/A', label: 'N/A'})
+    }    
+  }
+  console.log(sections)
+  res.status(200).send(sections)
+  return
+}
 

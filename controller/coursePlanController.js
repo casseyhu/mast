@@ -105,8 +105,7 @@ exports.deleteItem = async (req, res) => {
         coursePlanId: params.course.coursePlanId,
         courseId: params.course.courseId,
         semester: params.course.semester,
-        year: params.course.year
-        // section: params.course.section
+        year: params.course.year,
       }
     })
     let studentsPlanId = {}
@@ -121,6 +120,48 @@ exports.deleteItem = async (req, res) => {
   }
 }
 
+
+/**
+ * Adds a course to a student's course plan items. 
+ * @param {*} req Contains information (i.e student's id), which is used to find the
+ * course plan for the student, to add the new course to. 
+ * @param {*} res 
+ * @returns 
+ */
+exports.addItem = async (req, res) => {
+  console.log('adding course')
+  let query = req.body.params
+  // console.log(query)
+  // Find student's courseplanId by getting their coursePlan first.
+  let coursePlan = await CoursePlan.findOne({
+    where: {
+      studentId: query.sbuId
+    }
+  })
+  // Insert the course into the student's courseplanitems. 
+  try {
+    let insert = await CoursePlanItem.create({
+      coursePlanId: coursePlan.coursePlanId,
+      courseId: query.course.courseId,
+      semester: query.semester,
+      year: query.year,
+      section: query.section,
+      grade: null,
+      validity: true,
+      status: true
+    })
+    // After adding the course, re-calculate their completion. 
+    let studentsPlanId = {}
+    studentsPlanId[query.sbuId] = coursePlan.coursePlanId
+    console.log('added course, now trying to recalculate their competiong')
+    await calculateCompletion(studentsPlanId, query.department, null)
+    const cpItems = await CoursePlanItem.findAll({ where: { coursePlanId: coursePlan.coursePlanId } })
+    res.status(200).send(cpItems)
+  } catch (error) {
+    console.log(error)
+    res.status(500).send('Unable to add course to course plan.')
+  }
+}
 
 /**
  * Helper function to uploading course plan items for a given department
@@ -712,6 +753,7 @@ exports.addSuggestion = async (req, res) => {
   if (!coursePlan) {
     console.log('Course plan not found')
     res.status(500).send('Course plan not found')
+    return
   }
   for (let semyear of Object.keys(courses)) {
     const year = Number(semyear.substring(0, 4))
@@ -769,28 +811,13 @@ exports.accept = async (req, res) => {
 
 
 exports.checkPreconditions = async (req, res) => {
-  let course = JSON.parse(req.query.course)
-  // Check if the sem+year the student is adding to has grades already.
   let coursePlan = await CoursePlan.findOne({
     where: {
       studentId: req.query.sbuId
     }
   })
-  let found = await CoursePlanItem.findOne({
-    where: {
-      coursePlanId: coursePlan.coursePlanId,
-      courseId: course.courseId,
-      semester: req.query.semester,
-      year: Number(req.query.year)
-    }
-  })
-  if (found) {
-    res.status(500).send('Course ' + course.courseId + ' already exists in ' +
-          req.query.semester + ' ' + req.query.year + '.')
-    return
-  }
-
-  // Check if the course plan already exists in the semester+year.
+  let course = JSON.parse(req.query.course)
+  // Check if the sem+year the student is adding to has grades already.
   const items = await CoursePlanItem.findAll({
     where: {
       coursePlanId: coursePlan.coursePlanId,
@@ -807,7 +834,21 @@ exports.checkPreconditions = async (req, res) => {
       }
     }
   }
-
+  // Check if the course already exists in the course plan for semester+year.
+  let found = await CoursePlanItem.findOne({
+    where: {
+      coursePlanId: coursePlan.coursePlanId,
+      courseId: course.courseId,
+      semester: req.query.semester,
+      year: Number(req.query.year),
+      // section: req.query.section,
+    }
+  })
+  if (found) {
+    res.status(500).send('Course ' + course.courseId + ' already exists in ' +
+          req.query.semester + ' ' + req.query.year + '.')
+    return
+  }
   // Check if we have Course Offerings for the given semester + year.
   // If course offerings were imported, then check if this course has offerings. 
   found = await CourseOffering.findOne({
@@ -839,8 +880,8 @@ exports.checkPreconditions = async (req, res) => {
       return 
     }
     else {
-      res.status(500).send('Course has no offerings for ' + req.query.semester + ' ' + 
-        req.query.year + '.')
+      res.status(500).send('Course ' + course.courseId + ' has no offerings for ' + 
+        req.query.semester + ' ' + req.query.year + '.')
       return
     }
   }
