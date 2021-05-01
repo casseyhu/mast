@@ -22,7 +22,6 @@ const Suggest = (props) => {
       params: preferences
     }).then(res => {
       console.log('Done Suggest')
-      console.log(res.data)
       setSuggestions(res.data)
       // Set the results of the suggest return into the state.
       // Then, since the state of `suggestedPlans` got changed, 
@@ -52,7 +51,6 @@ const Suggest = (props) => {
         courses: plan
       }
     })
-    console.log(result.data)
     props.history.push({
       pathname: '/courseplan',
       state: {

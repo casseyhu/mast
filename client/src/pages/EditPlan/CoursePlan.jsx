@@ -55,6 +55,26 @@ const EditCoursePlan = (props) => {
     })
   }
 
+  const accept = (items) => {
+    axios.post('/courseplan/accept/', {
+      params: {
+        items: items,
+        student: student
+      }
+    }).then(response => {
+      history.go(-2)
+      // history.replace({
+      //   ...history.location,
+      //   state: {
+      //     ...history.location.state,
+      //     coursePlan: response.data
+      //   }
+      // })
+    }).catch(err => {
+      console.log(err.response.data)
+    })
+  }
+
 
   return (
     <Container fluid='lg' className='container'>
@@ -62,9 +82,8 @@ const EditCoursePlan = (props) => {
         <h1>Edit Course Plan</h1>
         <h5><b>Student:</b> {student.sbuId}</h5>
         <h5><b>Degree:</b> {student.department} {student.track}</h5>
-        {/* <Button variant='round' text='Add Course' /> */}
       </div>
-      <CoursePlan mode saveItem={saveItem} delete={modifyPlan} coursePlan={coursePlan} />
+      <CoursePlan mode saveItem={saveItem} delete={modifyPlan} accept={accept} coursePlan={coursePlan} />
       <AddCourse add={modifyPlan} student={student} />
     </Container>
   )

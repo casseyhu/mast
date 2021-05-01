@@ -59,6 +59,7 @@ const AddCourse = (props) => {
         return
       }
       let alreadyExists = await checkCourseInPlan(course, semester, year)
+
       if (alreadyExists) {
         setError('Course ' + course.courseId + ' already exists in ' + semester
           + ' ' + year + '.')

@@ -145,8 +145,12 @@ exports.updateOrCreate = async (model, condition, values, update, create) => {
  * @param {Map<String, Object>} values Values to update to
  * @returns True if it updated the item, false otherwise.
  */
-exports.updateOrDelete = async (model, condition, values) => {
-  let found = await model.findOne({ where: condition })
+exports.updateOrDelete = async (model, condition, values, item) => {
+  let found = null
+  if (!item)
+    found = await model.findOne({ where: condition })
+  else 
+    found = item
   if (found.status) {
     await found.update(values)
     return true
