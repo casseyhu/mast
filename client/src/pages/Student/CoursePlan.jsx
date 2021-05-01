@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import jwt_decode from 'jwt-decode'
 import Badge from 'react-bootstrap/Badge'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
@@ -10,6 +11,7 @@ import axios from '../../constants/axios'
 import { GRADES } from '../../constants/'
 
 const CoursePlan = (props) => {
+  const [mode, setMode] = useState('')
   const [selectAll, setselectAll] = useState(false)
   const [showEditItem, setShowEditItem] = useState(false)
   const [course, setCourse] = useState()
@@ -17,6 +19,18 @@ const CoursePlan = (props) => {
   const [values, setValues] = useState({})
   const [checkedItems, setCheckedItems] = useState(props.coursePlan && props.coursePlan.map(() => false))
   const [deleteModal, showDelete] = useState(false)
+
+  useEffect(() => {
+    async function setUser() {
+      let token = localStorage.getItem('jwt-token')
+      if (!token)
+        return
+      var decoded = jwt_decode(token)
+      setMode(decoded.type)
+    }
+    setUser()
+  }, [])
+
 
   const handleChange = (e) => {
     let items = checkedItems.slice()
@@ -213,6 +227,7 @@ const CoursePlan = (props) => {
                 <Dropdown
                   items={GRADES}
                   value={{ 'label': values.grade || 'N/A', 'value': values.grade }}
+                  disabled={mode === 'student'}
                   onChange={e => setValues(prevState => ({
                     ...prevState,
                     grade: e.value

@@ -20,6 +20,7 @@ const AddCourse = (props) => {
   const [semester, setSemester] = useState()
   const [year, setYear] = useState()
   const [error, setError] = useState()
+  const [mode, setMode] = useState('')
 
   const [unmetPrereqs, setUnmetPrereqs] = useState([])
   const [showUnmet, showUnmetPrereqs] = useState(false)
@@ -40,6 +41,7 @@ const AddCourse = (props) => {
           dept: decoded.userInfo.department,
         }
       })
+      setMode(decoded.type)
       setCourses(courses.data.map(course => ({ label: course.courseId, value: course })))
     }
     getCourses()
@@ -103,9 +105,12 @@ const AddCourse = (props) => {
         year: year
       }
     })
-    if (prereqs.data.length > 0) {
+    if (mode === 'gpd' && prereqs.data.length > 0) {
       setUnmetPrereqs(prereqs.data)
       showUnmetPrereqs(true)
+      return false
+    } else if (mode === 'student' && prereqs.data.length > 0) {
+      setError('Unable to add course. The following prerequisites are not met: ' + prereqs.data.join(', '))
       return false
     } else {
       // No prereqs. Add this course into the plan.
