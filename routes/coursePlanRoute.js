@@ -14,6 +14,8 @@ module.exports = function (app) {
 
   app.post('/api/courseplanitem/deleteItem', CoursePlan.deleteItem)
 
+  app.post('/api/courseplanitem/addItem', CoursePlan.addItem)
+
   app.get('/api/suggest', Suggest.suggest)
 
   app.get('/api/smartsuggest', Suggest.smartSuggest)
@@ -21,4 +23,6 @@ module.exports = function (app) {
   app.post('/api/courseplanitem/addsuggestion', CoursePlan.addSuggestion)
 
   app.post('/api/courseplan/accept', CoursePlan.accept)
+
+  app.get('/api/courseplan/checkPreconditions', CoursePlan.checkPreconditions)
 }

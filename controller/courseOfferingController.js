@@ -164,7 +164,7 @@ async function uploadCourses(results, res, dept) {
               semester: semester,
               year: year
             }
-            let updated1 = await updateOrDelete(CoursePlanItem, condition, values)
+            let updated1 = await updateOrDelete(CoursePlanItem, condition, values, null)
             // Mark second conflicting course plan item to invalid
             condition = {
               coursePlanId: coursePlanIds[j],
@@ -172,7 +172,7 @@ async function uploadCourses(results, res, dept) {
               semester: semester,
               year: year
             }
-            let updated2 = await updateOrDelete(CoursePlanItem, condition, values)
+            let updated2 = await updateOrDelete(CoursePlanItem, condition, values, null)
             if (updated1 || updated2) {
               if (!affectedStudents[coursePlans[j].studentId])
                 affectedStudents[coursePlans[j].studentId] = [toCheck[k]]
@@ -199,6 +199,7 @@ async function uploadCourses(results, res, dept) {
         year: year
       }
     })
+    coursesNotOffered.forEach(course => console.log('course', course.courseId))
     let invalidCoursePlanIds = new Set()
     let allInvalidItems = []
     for (let j = 0; j < coursesNotOffered.length; j++) {
@@ -206,16 +207,18 @@ async function uploadCourses(results, res, dept) {
       if (items.length === 0)
         continue
       // Update the validity such that the items are invalid
-      let condition = {
-        courseId: items.map(item => item.courseId),
-        semester: semester,
-        year: year
+      for(let item of items) {
+        let updated = await updateOrDelete(CoursePlanItem, null, {validity : false}, item)
+        if (updated) {
+          allInvalidItems.push(item)
+          invalidCoursePlanIds.add(item.coursePlanId)
+        }
       }
-      let updated = await updateOrDelete(CoursePlanItem, condition, { validity: false })
-      if (updated) {
-        allInvalidItems = allInvalidItems.concat(items)
-        items.forEach(item => invalidCoursePlanIds.add(item.coursePlanId))
-      }
+      // let updated = await updateOrDelete(CoursePlanItem, condition, { validity: false })
+      // if (updated) {
+      //   allInvalidItems = allInvalidItems.concat(items)
+      //   items.forEach(item => invalidCoursePlanIds.add(item.coursePlanId))
+      // }
     }
     invalidCoursePlanIds = Array.from(invalidCoursePlanIds)
     let invalidCoursePlans = await CoursePlan.findAll({

@@ -26,6 +26,7 @@ exports.suggest = async (req, res) => {
   const query = req.query
   const student = JSON.parse(query.student)
   const CPS = query.maxCourses
+  const GRADUATION = student.gradYear * 100 + SEMTONUM[student.gradSem]
   const PREFERRED = query.preferred ? query.preferred : []
   const AVOID = new Set(query.avoid)
   const TIME = [query.startTime ? query.startTime + ':00' : '07:00:00', query.endTime ? query.endTime + ':00' : '23:59:00']
@@ -83,7 +84,7 @@ exports.suggest = async (req, res) => {
   }
   // List of course plans with lowest score
   let generated = []
-  let minScore = Number.MAX_SAFE_INTEGER
+  let minScore = Number.MIN_SAFE_INTEGER
   let counter = 0
   while (generated.length < 5 && counter < 50) {
     const takenAndCurrent = coursePlanItems.filter(course => (
@@ -96,8 +97,9 @@ exports.suggest = async (req, res) => {
     const nodesMap = createNodes(courses, courseReqs, PREFERRED, AVOID, [creditsRemaining, coursesPerSem], [], takenAndCurrent)
     let nodes = sortNodes(Object.values(nodesMap))
     //console.log(nodes)
-    let [score, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, TIME, takenAndCurrentCourses, allUsed)
-    if (score !== null && score < minScore) {
+    let [score, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, TIME, takenAndCurrentCourses, allUsed, GRADUATION)
+    console.log(score, minScore)
+    if (score !== null && score > minScore /*score < minScore*/) {
       generated = [suggested]
       minScore = score
     }
@@ -336,7 +338,7 @@ async function remainingRequirements(courses, courseReq, takenAndCurrent) {
       }
     }
   }
-  console.log(courseReq)
+  // console.log(courseReq)
   return courseReq.reduce((a, b) => (b.courseLower ? b.courseLower : b.creditLower ? Math.ceil(b.creditLower / courses[b.courses[0]].credits) : 0) + a, 0)
 }
 
@@ -380,7 +382,7 @@ function sortNodes(nodesMap) {
 
 
 //  * @param {Number} creditsRemaining Number of credits remaining 
-async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, prefTimes, takenAndCurrentCourses, allUsed) {
+async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, prefTimes, takenAndCurrentCourses, allUsed, graduation) {
   // Mapping of semester+year to course nodes for that semester and year
   // console.log(takenAndCurrentCourses)
   // console.log(allUsed, nodes)
@@ -555,7 +557,7 @@ async function suggestPlan(nodes, department, creditsRemaining, coursesPerSem, p
       index++
   }
 
-  let score = calculateScore(suggestions)
+  let score = calculateScore(suggestions, graduation)
   return [score, suggestions]
 }
 
@@ -604,9 +606,10 @@ function shuffle(array) {
 
 
 
-function calculateScore(coursePlan) {
+function calculateScore(coursePlan, graduation) {
+  console.log(graduation, coursePlan)
   return Object.keys(coursePlan)
-    .map(sem => coursePlan[sem].reduce((a, b) => b.weight + a, 0))
+    .map(sem => sem <= graduation ? coursePlan[sem].reduce((a, b) => (b.required ? b.weight : -b.weight) + a, 0) : '')
     .reduce((a, b) => a + b, 0)
 }
 
@@ -616,6 +619,7 @@ function calculateScore(coursePlan) {
 exports.smartSuggest = async (req, res) => {
   console.log('Smart suggest')
   const student = JSON.parse(req.query.student)
+  const GRADUATION = student.gradYear * 100 + SEMTONUM[student.gradSem]
   const CPS = req.query.maxCourses
   const TIME = [req.query.startTime ? req.query.startTime + ':00' : '07:00:00',
   req.query.endTime ? req.query.endTime + ':00' : '23:59:00']
@@ -699,8 +703,8 @@ exports.smartSuggest = async (req, res) => {
   delete courseCount['']
   // Sort courses by popularity
   let popularCourses = Object.keys(courseCount).sort((c1, c2) => courseCount[c2] - courseCount[c1])
-
-  let minScore = Number.MAX_SAFE_INTEGER
+  
+  let minScore = Number.MIN_SAFE_INTEGER
   let minCoursePlan = []
   // Create course nodes
   for (let i = 0; i < 50; i++) {
@@ -708,8 +712,9 @@ exports.smartSuggest = async (req, res) => {
     const nodesMap = createNodes(courses, courseReqs, [], new Set(), [creditsRemaining, coursesPerSem], popularCourses, takenAndCurrent)
     let nodes = Object.values(nodesMap)
     nodes = sortNodes(nodes)
-    let [score, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, TIME, takenAndCurrentCourses, allUsed)
-    if (score && minScore > score) {
+    let [score, suggested] = await suggestPlan(nodes, student.department, creditsRemaining, coursesPerSem, TIME, takenAndCurrentCourses, allUsed, GRADUATION)
+    console.log(score, minScore)
+    if (score && minScore < score /*minScore > score*/) {
       minScore = score
       minCoursePlan = [suggested]
     }

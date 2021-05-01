@@ -9,6 +9,7 @@ const { updateOrCreate, findRequirements, findCoursePlanItems, checkPrereq, titl
 
 const coursePlanController = require('./coursePlanController')
 const database = require('../config/database.js')
+const { CourseOffering } = require('../config/database.js')
 const Op = database.Sequelize.Op
 
 const Student = database.Student
@@ -374,36 +375,6 @@ exports.findAll = (req, res) => {
 
 
 /**
- * Gets the semesters that have grade for them, if any. 
- * Loops through all course plan items becasue a course in the futur might
- * have a grade, if the GPD added it for some reason. 
- * @param {*} req 
- * @param {*} res 
- * @returns 
- */
-exports.checkGradedSem = async (req, res) => {
-  const coursePlan = await CoursePlan.findOne({ where: { studentId: req.query.sbuId } })
-  const items = await CoursePlanItem.findAll({
-    where: {
-      coursePlanId: coursePlan.coursePlanId,
-      semester: req.query.semester,
-      year: req.query.year,
-      status: true
-    }
-  })
-  if (items.length > 0) {
-    for (let item of items) {
-      if (item.grade) {
-        res.status(200).send(true)
-        return
-      }
-    }
-  }
-  res.status(200).send(false)
-}
-
-
-/**
  * Delete all students from the database as well as all information that exist about the students
  * (i.e CoursePlan, CoursePlanItem, RequirementStates).
  * @param {*} req
@@ -472,67 +443,44 @@ exports.checkPrerequisites = async (req, res) => {
 }
 
 
-/**
- * Adds a course to a student's course plan items. 
- * @param {*} req Contains information (i.e student's id), which is used to find the
- * course plan for the student, to add the new course to. 
- * @param {*} res 
- * @returns 
- */
-exports.addCourse = async (req, res) => {
-  let query = req.body.params
-  // Find student's courseplanId by getting their coursePlan first.
-  let coursePlan = await CoursePlan.findOne({
-    where: {
-      studentId: query.sbuId
-    }
-  })
-  // Insert the course into the student's courseplanitems. 
-  try {
-    let insert = await CoursePlanItem.create({
-      coursePlanId: coursePlan.coursePlanId,
-      courseId: query.course.courseId,
-      semester: query.semester,
-      year: query.year,
-      section: 'N/A',
-      grade: null,
-      validity: true,
-      status: true
-    })
-    // After adding the course, re-calculate their completion. 
-    let studentsPlanId = {}
-    studentsPlanId[query.sbuId] = coursePlan.coursePlanId
-    await coursePlanController.changeCompletion(studentsPlanId, query.department, null)
-    const cpItems = await CoursePlanItem.findAll({ where: { coursePlanId: coursePlan.coursePlanId } })
-    res.status(200).send(cpItems)
-  } catch (error) {
-    res.status(500).send('Unable to add course to course plan.')
-  }
-}
+// /**
+//  * Adds a course to a student's course plan items. 
+//  * @param {*} req Contains information (i.e student's id), which is used to find the
+//  * course plan for the student, to add the new course to. 
+//  * @param {*} res 
+//  * @returns 
+//  */
+// exports.addCourse = async (req, res) => {
+//   let query = req.body.params
+//   // Find student's courseplanId by getting their coursePlan first.
+//   let coursePlan = await CoursePlan.findOne({
+//     where: {
+//       studentId: query.sbuId
+//     }
+//   })
+//   // Insert the course into the student's courseplanitems. 
+//   try {
+//     let insert = await CoursePlanItem.create({
+//       coursePlanId: coursePlan.coursePlanId,
+//       courseId: query.course.courseId,
+//       semester: query.semester,
+//       year: query.year,
+//       section: 'N/A',
+//       grade: null,
+//       validity: true,
+//       status: true
+//     })
+//     // After adding the course, re-calculate their completion. 
+//     let studentsPlanId = {}
+//     studentsPlanId[query.sbuId] = coursePlan.coursePlanId
+//     await coursePlanController.changeCompletion(studentsPlanId, query.department, null)
+//     const cpItems = await CoursePlanItem.findAll({ where: { coursePlanId: coursePlan.coursePlanId } })
+//     res.status(200).send(cpItems)
+//   } catch (error) {
+//     res.status(500).send('Unable to add course to course plan.')
+//   }
+// }
 
-
-/**
- * Checks if a course is in a given semester and year in a student's
- * course plan. 
- * @param {*} req 
- * @param {*} res 
- */
-exports.checkCourse = async (req, res) => {
-  let coursePlan = await CoursePlan.findOne({
-    where: {
-      studentId: req.query.sbuId
-    }
-  })
-  let found = await CoursePlanItem.findOne({
-    where: {
-      coursePlanId: coursePlan.coursePlanId,
-      courseId: req.query.courseId,
-      semester: req.query.semester,
-      year: req.query.year
-    }
-  })
-  res.status(200).send(found ? true : false)
-}
 
 
 /**

@@ -20,6 +20,10 @@ const AddCourse = (props) => {
   const [semester, setSemester] = useState()
   const [year, setYear] = useState()
   const [error, setError] = useState()
+  const [mode, setMode] = useState('')
+
+  const [chosenSection, chooseSection] = useState(null)
+  const [offeredSections, setSections] = useState([])
 
   const [unmetPrereqs, setUnmetPrereqs] = useState([])
   const [showUnmet, showUnmetPrereqs] = useState(false)
@@ -40,59 +44,68 @@ const AddCourse = (props) => {
           dept: decoded.userInfo.department,
         }
       })
+      setMode(decoded.type)
       setCourses(courses.data.map(course => ({ label: course.courseId, value: course })))
     }
     getCourses()
   }, [])
 
-  const checkAdd = async (course, semester, year) => {
-    if (!course || !semester || !year) {
-      setError('All fields are required')
+  useEffect(() => {
+    setSections([])
+    chooseSection(null)
+    findSections()
+  }, [course, semester, year])
+
+  const checkAdd = async (course, semester, year, chosenSection) => {
+    if (!course || !semester || !year || (!chosenSection && offeredSections.length !== 0)) {
+      setError('All fields are required.')
       return
     } else if (!course.semestersOffered.includes(semester)) {
-      setError(`Course is not offered in the ${semester}`)
+      setError(`Course ${course.courseId} is not offered in the ${semester}.`)
       return
     } else {
-      let hasGrades = await semesterHasGrade(semester, year)
-      if (hasGrades) {
-        setError('Cannot add courses to semester with imported grades.')
-        return
-      }
-      let alreadyExists = await checkCourseInPlan(course, semester, year)
-      if (alreadyExists) {
-        setError('Course ' + course.courseId + ' already exists in ' + semester
-          + ' ' + year + '.')
-        return
-      } else {
-        // Passed pre-checks. Now check is fulfilled prereqs.
+      // Checks :
+      // if they're trying to add a course into a semester with grades, 
+      // if a duplicate course already exists in the semester + year,
+      // if we even have offerings imported for sem+year, and if we do,
+      // checks if the desired course has an offering.   
+      let validAdd = await checkPreconditions(course, semester, year, chosenSection)
+      if (validAdd) {
+        // Passed precondition check --> Now check prerequisites as final check.
         setError('')
-        checkPrerequisites(course, semester, year)
+        let satisfiedPrereqs = await checkPrerequisites(course, semester, year)
+        if (satisfiedPrereqs) {
+          // No prereqs. Add this course into the plan.
+          console.log('Here' + chosenSection)
+          chosenSection = chosenSection ? chosenSection : 'N/A'
+          if (await addCourseWrapper(course, semester, year, chosenSection))
+            showConfirmation(true)
+        }
       }
     }
   }
 
-  const checkCourseInPlan = async (course, semester, year) => {
-    let hasCourse = await axios.get('student/checkCourse', {
-      params: {
-        sbuId: props.student.sbuId,
-        courseId: course.courseId,
-        semester: semester,
-        year: year
-      }
-    })
-    return hasCourse.data
+
+  const checkPreconditions = async (course, semester, year, section) => {
+    try {
+      let passedPreconditions = await axios.get('/courseplan/checkPreconditions/', {
+        params: {
+          sbuId: props.student.sbuId,
+          course: course,
+          // courseId: course.courseId,
+          section: section,
+          semester: semester,
+          year: year
+        }
+      })
+      return passedPreconditions.data
+    } catch (err) {
+      console.log(err.response.data)
+      setError(err.response.data)
+      return false
+    }
   }
 
-  const semesterHasGrade = async (semester, year) => {
-    let hasGrade = await axios.get('student/checkGradedSem', {
-      params: {
-        sbuId: props.student.sbuId,
-        semester: semester,
-        year: year
-      }
-    })
-    return hasGrade.data
-  }
 
   const checkPrerequisites = async (course, semester, year) => {
     let prereqs = await axios.get('student/checkPrerequisites', {
@@ -103,36 +116,39 @@ const AddCourse = (props) => {
         year: year
       }
     })
-    if (prereqs.data.length > 0) {
+    if (mode === 'gpd' && prereqs.data.length > 0) {
       setUnmetPrereqs(prereqs.data)
       showUnmetPrereqs(true)
       return false
+    } else if (mode === 'student' && prereqs.data.length > 0) {
+      setError('Unable to add course. The following prerequisites are not met: ' + prereqs.data.join(', '))
+      return false
     } else {
-      // No prereqs. Add this course into the plan.
-      if(await addCourseWrapper(course, semester, year))
-        showConfirmation(true)
+      return true
     }
   }
 
-  const addCourseWrapper = async (course, semester, year) => {
-    let addedCourse = await props.add('add', course, semester, year)
-    if (addedCourse) 
+  const addCourseWrapper = async (course, semester, year, section) => {
+    let addedCourse = await props.add('add', course, semester, year, section)
+    if (addedCourse)
       return true
     else {
-      setError('Course ' + course.courseId + ' already exists in ' + semester
-        + ' ' + year + '.')
+      // setError('Course ' + course.courseId + ' already exists in ' + semester
+      //   + ' ' + year + '.')
       return false
     }
   }
 
 
   const waiveAndAdd = async () => {
+    console.log('Should send an email to: ' + props.student.email)
     let addedCourse = await addCourseWrapper(course, semester, year)
     // Only email if the course can actually be added. 
     if (addedCourse) {
       setVisible('visible')
       let sentEmail = await axios.post('/email/send/', {
         params: {
+          // email: props.student.email,
           email: 'eddie.xu@stonybrook.edu',
           subject: 'GPD waived prerequisites',
           text: 'GPD waived prerequisites for course ' + course.courseId + '.'
@@ -148,6 +164,24 @@ const AddCourse = (props) => {
     }
   }
 
+
+  const findSections = async () => {
+    if (!course || !semester || !year)
+      return
+    else {
+      console.log('chose course, sem, and year. ')
+      // Find the sections for this course, sem and year.
+      let sections = await axios.get('course/findSections', {
+        params: {
+          course: course,
+          semester: semester,
+          year: year
+        }
+      })
+      setSections(sections.data)
+    }
+  }
+
   return (
     <Container fluid='lg' className='container' style={{ padding: '0', minWidth: 'auto' }}>
       <Accordion defaultActiveKey="0" >
@@ -160,7 +194,7 @@ const AddCourse = (props) => {
                   placement='right'
                   overlay={
                     <Tooltip id='tooltip-right'>
-                      Course is not offered in the {semester}
+                      Course is not offered in the {semester}.
                     </Tooltip>
                   }
                 >
@@ -173,47 +207,56 @@ const AddCourse = (props) => {
             <Card.Body>
               <div className='flex-vertical align-items-start' style={{ minHeight: '350px' }}>
                 {error && <span className='error'><b>{error}</b></span>}
-                <div className='flex-horizontal mb-3'>
-                  <div className='flex-horizontal align-items-center' style={{ height: '50px' }}>
-                    <span style={{ width: '140px' }}>Search for course:</span>
+                <div className='flex-horizontal wrap justify-content-between mb-3'>
+                  <div className='flex-horizontal mr-3 fit' style={{ height: '50px' }}>
+                    <span style={{ width: '70px' }}>Course:</span>
                     <Dropdown
-                      className='ml-0'
                       variant='single'
                       items={courses}
                       placeholder='Course'
                       onChange={e => setCourse(e.value)}
-                      style={{ width: '150px' }}
+                      style={{ width: '140px' }}
                     />
                   </div>
-                  <div className='flex-horizontal align-items-center ml-3' style={{ height: '50px' }}>
+                  <div className='flex-horizontal mr-3 fit' style={{ height: '50px' }}>
                     <span style={{ width: '80px' }}>Semester:</span>
                     <Dropdown
-                      className='ml-0'
                       variant='single'
                       items={SEMESTERS}
                       placeholder='Semester'
                       onChange={e => setSemester(e.value)}
-                      style={{ width: '150px' }}
+                      style={{ width: '140px' }}
                     />
                   </div>
-                  <div className='flex-horizontal align-items-center' style={{ height: '50px' }}>
+                  <div className='flex-horizontal mr-3 fit' style={{ height: '50px' }}>
                     <span style={{ width: '50px' }}>Year:</span>
                     <Dropdown
-                      className='ml-0'
                       variant='single'
                       items={YEARS.filter(year => year.value >= CURRENT_YEAR)}
                       placeholder='Year'
                       onChange={e => setYear(e.value)}
-                      style={{ width: '150px' }}
+                      style={{ width: '140px' }}
                     />
                   </div>
-                  <Button variant='round' text='Add' style={{ width: '250px' }} onClick={e => checkAdd(course, semester, year)} />
+                  <div className='flex-horizontal mr-4 fit' style={{ height: '50px' }}>
+                    <span style={{ width: '70px' }}>Section:</span>
+                    <Dropdown
+                      variant='single'
+                      value={chosenSection && { value: chosenSection, label: chosenSection }}
+                      disabled={!(course && semester && year)}
+                      items={offeredSections.length > 0 ? offeredSections : []}
+                      placeholder='Section'
+                      onChange={e => chooseSection(e.value)}
+                      style={{ width: '140px' }}
+                    />
+                  </div>
+                  <div className='mr-3'>
+                    <Button variant='round' text='Add' style={{ width: '120px' }}
+                      onClick={e => checkAdd(course, semester, year, chosenSection)} />
+                  </div>
                 </div>
                 <div className='flex-horizontal align-items-center'>
-                  {course && <div>
-                    <CourseInfo course={course} />
-                  </div>
-                  }
+                  {course && <div> <CourseInfo course={course} /> </div>}
                 </div>
               </div>
             </Card.Body>
@@ -238,8 +281,8 @@ const AddCourse = (props) => {
         show={waive}
         onHide={async () => {
           setWaive(false)
-          if(await addCourseWrapper(course, semester, year))
-          showConfirmation(true)
+          if (await addCourseWrapper(course, semester, year))
+            showConfirmation(true)
         }}
         onConfirm={() => { waiveAndAdd() }}
         variant='multi'

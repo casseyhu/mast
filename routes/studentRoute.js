@@ -14,20 +14,14 @@ module.exports = function (app) {
   // Update student's field based on id
   app.post('/api/student/update', Student.update)
 
-  // Adds a course to student's course plan
-  app.post('/api/student/addCourse', Student.addCourse)
+  // // Adds a course to student's course plan
+  // app.post('/api/student/addCourse', Student.addCourse)
 
   // Get all students by filtered conditions
   app.get('/api/student/filter', Student.filter)
 
   // Get student requirement states
   app.get('/api/student/requirementStates', Student.getStates)
-
-  // Check if student has grades for a semester + year
-  app.get('/api/student/checkGradedSem', Student.checkGradedSem)
-
-  // Checks if specific course exists in course plan at sem + year
-  app.get('/api/student/checkCourse', Student.checkCourse)
 
   // Check if student has satisfied prereqs for a course 
   app.get('/api/student/checkPrerequisites', Student.checkPrerequisites)
