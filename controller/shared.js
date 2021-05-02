@@ -35,9 +35,9 @@ exports.checkTimeConflict = (courseA, courseB, invalidCourses) => {
     let bEnd = courseB.endTime
     if ((aStart >= bStart && aStart < bEnd) || (aEnd <= bEnd && aEnd > bStart) ||
       (bStart >= aStart && bStart < aEnd) || (bEnd <= aEnd && bEnd > aStart)) {
+      console.log(courseA.identifier, courseB.identifier)
       invalidCourses.push(courseA.identifier)
       invalidCourses.push(courseB.identifier)
-      console.log("time conflict")
       return true
     }
   }
@@ -149,7 +149,7 @@ exports.updateOrDelete = async (model, condition, values, item) => {
   let found = null
   if (!item)
     found = await model.findOne({ where: condition })
-  else 
+  else
     found = item
   if (found.status === 1) {
     await found.update(values)
@@ -175,7 +175,6 @@ exports.getDepartmentalCourses = async (depts, semester, year) => {
       requirementVersion: year * 100 + constants.SEMTONUM[semester]
     }
   })
-  console.log('depts:' + depts + year * 100 + constants.SEMTONUM[semester])
   let courseRequirements = await CourseRequirement.findAll({
     where: {
       requirementId: degrees.reduce((a, b) => b.courseRequirement.concat(a), [])

@@ -20,17 +20,7 @@ const Preferences = (props) => {
   const [deptCourses, setDeptCourses] = useState([])
   const [timeSelect, setTimes] = useState([])
 
-  const [loading, setLoading] = useState({})
-  const [disable, setDisable] = useState(true)
-
-
-
   useEffect(() => {
-    setLoading({
-      suggestLoad: false,
-      smartLoad: false
-    })
-    setDisable(false)
     axios.get('course/deptCourses', {
       params: {
         dept: props.department
@@ -119,7 +109,7 @@ const Preferences = (props) => {
         preferred: preferred,
         avoid: avoid,
       }
-      props.suggest(preferences)
+      props.suggest('suggest', preferences)
     } else {
       let preferences = {
         maxCourses: maxCourses !== null ? Number(maxCourses) : maxCourses,
@@ -127,7 +117,7 @@ const Preferences = (props) => {
         endTime: endTime
       }
       console.log(preferences)
-      props.smartSuggest(preferences)
+      props.suggest('smart', preferences)
     }
   }
 
@@ -210,31 +200,18 @@ const Preferences = (props) => {
           divclassName="mr-3"
           variant='round'
           text='Suggest'
-          loading={loading.suggestLoad}
-          disabled={disable}
-          onClick={() => {
-            setLoading({
-              suggestLoad: true,
-              smartLoad: false
-            })
-            setDisable(true)
-            setPreferences('regular')}}
+          loading={props.loading === 'suggest'}
+          disabled={props.disable}
+          onClick={() => setPreferences('regular')}
           style={{ width: '160px' }}
         />
         <Button
           divclassName="ml-3"
           variant='round'
           text='Smart Suggest'
-          loading={loading.smartLoad}
-          disabled={disable}
-          onClick={() => {
-            setLoading({
-              suggestLoad: false,
-              smartLoad: true
-            })
-            setDisable(true)
-            setPreferences('smart')
-          }}
+          loading={props.loading === 'smart'}
+          disabled={props.disable}
+          onClick={() => setPreferences('smart')}
           style={{ width: '160px' }} />
       </div>
     </div>

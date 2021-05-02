@@ -42,9 +42,8 @@ class Bulletin extends Component {
         year: Number(this.state.year)
       }
     }).then(response => {
-      const foundCourses = response.data
       this.setState({
-        courses: foundCourses
+        courses: response.data
       })
     }).catch(err => {
       console.log(err)
@@ -79,13 +78,18 @@ class Bulletin extends Component {
             />
           </div>
         </div>
-        <div className=''>
-          {this.state.courses.map((course, key) => {
-            return <div key={key}>
-              <CourseInfo course={course} />
-              <br /> <br />
+        <div>
+          {this.state.courses.length > 0
+            ? this.state.courses.map((course, key) => {
+              return <div key={key}>
+                <CourseInfo course={course} />
+                <br /> <br />
+              </div>
+            })
+            : <div className='filler-text'>
+              <span className='filler-text'>Course descriptions not imported</span>
             </div>
-          })}
+          }
         </div>
       </Container>
     )

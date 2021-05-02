@@ -6,6 +6,7 @@ import Requirements from './Requirements'
 import CoursePlan from './CoursePlan'
 import TransferCredits from './TransferCredits'
 import axios from '../../constants/axios'
+import CenteredToast from '../../components/Toast'
 
 class Student extends Component {
   state = {
@@ -30,7 +31,6 @@ class Student extends Component {
     let studentRes = await axios.get('/student/' + student.sbuId, {
       params: { sbuId: student.sbuId }
     })
-    // console.log(studentRes)
     let coursePlanItems = await axios.get('/courseplanitem/findItems/', {
       params: {
         sbuId: student.sbuId
@@ -68,12 +68,11 @@ class Student extends Component {
     this.setStudentInfo()
   }
 
-  createStudent = (studentInfo, commentAdded) => {
+  createStudent = (studentInfo) => {
     /* Add new student into the db */
     axios.post('/student/create/', {
       params: studentInfo
     }).then(response => {
-      let field = commentAdded ? 'showEmailBox' : 'showConfirmation'
       this.setState({
         student: response.data,
         errorMsg: '',
@@ -88,13 +87,8 @@ class Student extends Component {
   modeHandler = async (studentInfo) => {
     this.setState({ errorMsg: '' })
     const { mode, student } = this.state
-    if (mode === 'Add') {
-      // GPD added a comment
-      if (studentInfo.gpdComments.length)
-        this.createStudent(studentInfo, true)
-      else
-        this.createStudent(studentInfo, false)
-    }
+    if (mode === 'Add')
+      this.createStudent(studentInfo)
     else if (mode === 'View')
       this.setState({ mode: 'Edit' })
     else {
@@ -103,9 +97,8 @@ class Student extends Component {
         params: student.sbuId
       })
       let isSame = true
-      Object.keys(dbStudentInfo.data).map(info =>
-        (info === 'updatedAt') ? '' :
-          dbStudentInfo.data[info] !== student[info] ? isSame = false : '')
+      Object.keys(dbStudentInfo.data).map(info => (info === 'updatedAt') ? '' :
+        dbStudentInfo.data[info] !== student[info] ? isSame = false : '')
       // show update error modal if data has been edited by another user
       if (!isSame) {
         this.setState({ showUpdateError: true }, this.setStudentInfo)
@@ -130,7 +123,7 @@ class Student extends Component {
 
   changeMode = () => {
     this.setState({
-      showConfirmation: false,
+      // showConfirmation: false,
       mode: 'View'
     }, this.setStudentInfo)
   }
@@ -209,7 +202,6 @@ class Student extends Component {
     if (satisfiedCount === Object.keys(reqStates).length) {
       this.setState({ showSuggestErr: true })
       this.setState({ suggestErr: 'Cannot suggest course plans for a student who has satisfied all requirements' })
-      console.log('this person DONe with MaSTERs!!!! dont botHER THEM')
       return
     }
     /* Prevent redirecting to suggest page for those who have invalid course plans */
@@ -260,13 +252,13 @@ class Student extends Component {
           transferItems={studentInfoParams.transferItems}
           editTransfer={this.editTransfer}
         />
-        <CenteredModal
+        <CenteredToast
+          message='Student successfully saved'
           show={showConfirmation}
+          onEntry={this.changeMode}
           onHide={() => {
             this.setState({ showConfirmation: false })
           }}
-          onConfirm={this.changeMode}
-          body='Student successfully saved'
         />
         <CenteredModal
           show={showUpdateError}

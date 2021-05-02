@@ -5,23 +5,26 @@ import axios from '../../constants/axios'
 import CoursePlan from '../Student/CoursePlan'
 import { useHistory } from 'react-router-dom'
 import CenteredModal from '../../components/Modal'
+import CenteredToast from '../../components/Toast'
 
 
 const EditCoursePlan = (props) => {
   const history = useHistory()
   const { student, coursePlan } = props.location.state
   const [showError, setShowError] = useState(false)
+  const [confirmation, showConfirmation] = useState([false, ''])
 
   const modifyPlan = async (mode, course, semester, year, section) => {
     try {
+      console.log(coursePlan)
       let isChanged = await coursePlanIsChanged()
       if (isChanged) {
-        console.log("course plan is changed")
         setShowError(true)
         return false
       }
       let route = (mode === 'add' ?
         'courseplanitem/addItem/' : '/courseplanitem/deleteItem')
+      section = section ? section : 'N/A'
       let newCoursePlanItems = await axios.post(route, {
         params: {
           sbuId: student.sbuId,
@@ -29,7 +32,8 @@ const EditCoursePlan = (props) => {
           course: course,
           semester: semester,
           section, section,
-          year: year
+          year: Number(year),
+          coursePlan: coursePlan.filter(item => item.semester === semester && item.year === Number(year))
         }
       })
       history.replace({
@@ -39,11 +43,13 @@ const EditCoursePlan = (props) => {
           coursePlan: newCoursePlanItems.data
         }
       })
-      return true
+      if (mode === 'add')
+        showConfirmation([true, `Successfully added ${course.courseId} to course plan`])
+      else
+        showConfirmation([true, `Successfully deleted ${course.courseId} from course plan`])
+      return [true, '']
     } catch (error) {
-      console.log('CoursePlan.jsx addCourse caught error')
-      console.log(error)
-      return false
+      return [false, error.response.data]
     }
   }
 
@@ -78,33 +84,33 @@ const EditCoursePlan = (props) => {
   const saveItem = async (values) => {
     let isChanged = await coursePlanIsChanged()
     if (isChanged) {
-      console.log("course plan is changed!!!!!!!!!")
       setShowError(true)
+      return
     }
-    else {
-      axios.post('/courseplanitem/update/', {
-        params: {
-          ...values,
-          student: student
+    axios.post('/courseplanitem/update/', {
+      params: {
+        ...values,
+        student: student
+      }
+    }).then(response => {
+      history.replace({
+        ...history.location,
+        state: {
+          ...history.location.state,
+          coursePlan: response.data
         }
-      }).then(response => {
-        history.replace({
-          ...history.location,
-          state: {
-            ...history.location.state,
-            coursePlan: response.data
-          }
-        })
-      }).catch(err => {
-        console.log(err.response.data)
       })
-    }
+      showConfirmation([true, `Successfully updated ${values.planItem.courseId} in course plan`])
+    }).catch(err => {
+      console.log(err.response.data)
+    })
   }
 
-  const accept = (items) => {
+  const accept = (items, checked) => {
     axios.post('/courseplan/accept/', {
       params: {
         items: items,
+        checked: checked,
         student: student
       }
     }).then(response => {
@@ -112,13 +118,6 @@ const EditCoursePlan = (props) => {
         history.go(-1)
       else
         history.go(-2)
-      // history.replace({
-      //   ...history.location,
-      //   state: {
-      //     ...history.location.state,
-      //     coursePlan: response.data
-      //   }
-      // })
     }).catch(err => {
       console.log(err.response.data)
     })
@@ -140,6 +139,11 @@ const EditCoursePlan = (props) => {
         onConfirm={() => setShowError(false)}
         body='Course plan is being edited by another user. Please try again later.'
         title={<small style={{ color: 'red' }}>Error!</small>}
+      />
+      <CenteredToast
+        message={confirmation[1]}
+        show={confirmation[0]}
+        onHide={() => showConfirmation([false, ''])}
       />
     </Container>
   )
