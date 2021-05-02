@@ -65,13 +65,9 @@ const AddCourse = (props) => {
     }
     // Checks :
     // if they're trying to add a course into a semester with grades, 
-    // if they're trying to add a course into a semester with grades, 
-    // if they're trying to add a course into a semester with grades, 
     // if a duplicate course already exists in the semester + year,
     // if we even have offerings imported for sem+year, and if we do,
-    // checks if the desired course has an offering.   
-    // checks if the desired course has an offering.   
-    // checks if the desired course has an offering.   
+    // checks if the desired course has an offering.    
     const validAdd = await checkPreconditions(course, semester, year, chosenSection)
     if (validAdd) {
       // Passed precondition check --> Now check prerequisites as final check.
@@ -80,7 +76,9 @@ const AddCourse = (props) => {
       if (satisfiedPrereqs) {
         // No prereqs. Add this course into the plan.
         console.log('Here' + chosenSection)
-        await props.add('add', course, semester, year, chosenSection)
+        let added = await props.add('add', course, semester, year, chosenSection)
+        if(!added[0])
+          setError(added[1])
       }
     }
   }
@@ -133,12 +131,12 @@ const AddCourse = (props) => {
     console.log('Should send an email to: ' + props.student.email)
     let addedCourse = await props.add('add', course, semester, year, chosenSection)
     // Only email if the course can actually be added. 
-    if (addedCourse) {
+    if (addedCourse[0]) {
       setVisible('visible')
       let sentEmail = await axios.post('/email/send/', {
         params: {
           // email: props.student.email,
-          email: 'eddie.xu@stonybrook.edu',
+          email: 'andrew.kong@stonybrook.edu',
           subject: 'GPD waived prerequisites',
           text: 'GPD waived prerequisites for course ' + course.courseId + '.'
         }

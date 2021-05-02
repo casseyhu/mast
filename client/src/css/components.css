@@ -97,6 +97,11 @@ textarea:focus {
   text-align: center;
 }
 
+.transfer-label {
+  margin: 0.5rem 0.5rem 0.5rem 0;
+  padding: 0.8rem 0;
+}
+
 .preference-col {
   justify-content: space-between;
 }
@@ -218,6 +223,12 @@ textarea:focus {
 /* Suggested Plans Table */
 .suggested-table>tbody>tr>td {
   text-align: center;
+}
+
+/* Transfer Courses Table */
+.transfer-table {
+  text-align: center;
+  margin: auto auto 2rem auto !important;
 }
 
 .card-header {

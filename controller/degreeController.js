@@ -2,12 +2,16 @@ const { IncomingForm } = require('formidable')
 const fs = require('fs')
 const { findRequirements, titleCase } = require('./shared')
 const database = require('../config/database.js')
+const coursePlanController = require('./coursePlanController')
+// const { CoursePlan } = require('../config/database.js')
 
 const Degree = database.Degree
+const CoursePlan = database.CoursePlan
 const GradeRequirement = database.GradeRequirement
 const GpaRequirement = database.GpaRequirement
 const CreditRequirement = database.CreditRequirement
 const CourseRequirement = database.CourseRequirement
+const RequirementState = database.RequirementState
 
 
 /**
@@ -118,6 +122,9 @@ async function updateDegree(oldDegree, newDegree) {
   try {
     console.log('Updating degree')
     // Delete all course requirements for oldDegree and create new courserequirements.
+    let requirementIds = oldDegree.courseRequirement.map(course => 'C' + course)
+    let requirementStates = await RequirementState.findAll({ where: { requirementId: requirementIds } })
+    let affectedStudents = Array.from(new Set(requirementStates.map(state => state.sbuID)))
     await CourseRequirement.destroy({ where: { requirementId: oldDegree.courseRequirement } })
     // Create and update the new course requirements for the degree
     const newCourseIds = await createCourseRequirements(newDegree.courseRequirements)
@@ -145,6 +152,20 @@ async function updateDegree(oldDegree, newDegree) {
     }, {
       where: { requirementId: oldDegree.creditRequirement }
     })
+    let studentsPlanId = {}
+    for (let id of affectedStudents) {
+      for (let cId of newCourseIds) {
+        await RequirementState.create({
+          sbuID: id,
+          requirementId: 'C' + cId,
+          state: 'unsatisfied',
+          metaData: []
+        })
+      }
+      let coursePlan = await CoursePlan.findOne({where: { studentId: id }})
+      studentsPlanId[id] = coursePlan.coursePlanId
+    }
+    await coursePlanController.changeCompletion(studentsPlanId, newDegree.dept, null)
   } catch (e) {
     console.log(e)
   }

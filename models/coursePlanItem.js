@@ -49,8 +49,8 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.BOOLEAN,
       defaultValue: true
     },
-    status: {   // 0: Suggested, 1: In plan
-      type: Sequelize.BOOLEAN,
+    status: {   // 0: Suggested, 1: In plan, 2: Transfer
+      type: Sequelize.INTEGER,
       defaultValue: true
     }
   }, {

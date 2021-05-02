@@ -35,9 +35,9 @@ exports.checkTimeConflict = (courseA, courseB, invalidCourses) => {
     let bEnd = courseB.endTime
     if ((aStart >= bStart && aStart < bEnd) || (aEnd <= bEnd && aEnd > bStart) ||
       (bStart >= aStart && bStart < aEnd) || (bEnd <= aEnd && bEnd > aStart)) {
+      console.log(courseA.identifier, courseB.identifier)
       invalidCourses.push(courseA.identifier)
       invalidCourses.push(courseB.identifier)
-      console.log("time conflict")
       return true
     }
   }
@@ -131,7 +131,7 @@ exports.findCoursePlanItems = async (sbuId) => {
  */
 exports.updateOrCreate = async (model, condition, values, update, create) => {
   let found = await model.findOne({ where: condition })
-  if (found && update)
+  if (found && update) 
     await found.update(values)
   else if (!found && create)
     await model.create(values)
@@ -151,10 +151,10 @@ exports.updateOrDelete = async (model, condition, values, item) => {
     found = await model.findOne({ where: condition })
   else
     found = item
-  if (found.status) {
+  if (found.status === 1) {
     await found.update(values)
     return true
-  } else {
+  } else if (found.status === 0) {
     await model.destroy({ where: condition })
     return false
   }
