@@ -5,6 +5,7 @@ import StudentInfo from './StudentInfo'
 import Requirements from './Requirements'
 import CoursePlan from './CoursePlan'
 import axios from '../../constants/axios'
+import CenteredToast from '../../components/Toast'
 
 class Student extends Component {
   state = {
@@ -67,12 +68,11 @@ class Student extends Component {
     this.setStudentInfo()
   }
 
-  createStudent = (studentInfo, commentAdded) => {
+  createStudent = (studentInfo) => {
     /* Add new student into the db */
     axios.post('/student/create/', {
       params: studentInfo
     }).then(response => {
-      let field = commentAdded ? 'showEmailBox' : 'showConfirmation'
       this.setState({
         student: response.data,
         errorMsg: '',
@@ -87,13 +87,8 @@ class Student extends Component {
   modeHandler = async (studentInfo) => {
     this.setState({ errorMsg: '' })
     const { mode, student } = this.state
-    if (mode === 'Add') {
-      // GPD added a comment
-      if (studentInfo.gpdComments.length)
-        this.createStudent(studentInfo, true)
-      else
-        this.createStudent(studentInfo, false)
-    }
+    if (mode === 'Add')
+      this.createStudent(studentInfo)
     else if (mode === 'View')
       this.setState({ mode: 'Edit' })
     else {
@@ -102,9 +97,8 @@ class Student extends Component {
         params: student.sbuId
       })
       let isSame = true
-      Object.keys(dbStudentInfo.data).map(info =>
-        (info === 'updatedAt') ? '' :
-          dbStudentInfo.data[info] !== student[info] ? isSame = false : '')
+      Object.keys(dbStudentInfo.data).map(info => (info === 'updatedAt') ? '' :
+        dbStudentInfo.data[info] !== student[info] ? isSame = false : '')
       // show update error modal if data has been edited by another user
       if (!isSame) {
         this.setState({ showUpdateError: true }, this.setStudentInfo)
@@ -129,7 +123,7 @@ class Student extends Component {
 
   changeMode = () => {
     this.setState({
-      showConfirmation: false,
+      // showConfirmation: false,
       mode: 'View'
     }, this.setStudentInfo)
   }
@@ -241,13 +235,13 @@ class Student extends Component {
           editCoursePlan={this.editCoursePlan}
           suggestCoursePlan={this.suggestCoursePlan}
         />
-        <CenteredModal
+        <CenteredToast
+          message='Student successfully saved'
           show={showConfirmation}
+          onEntry={this.changeMode}
           onHide={() => {
             this.setState({ showConfirmation: false })
           }}
-          onConfirm={this.changeMode}
-          body='Student successfully saved'
         />
         <CenteredModal
           show={showUpdateError}
