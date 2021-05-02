@@ -97,6 +97,12 @@ exports.updateItem = async (req, res) => {
 }
 
 
+/**
+ * Deletes an item from a student's course plan. 
+ * @param {*} req Contains information (i.e student's id), which is used to find the
+ * course plan for the student, to add the new course to. 
+ * @param {*} res 
+ */
 exports.deleteItem = async (req, res) => {
   const params = req.body.params
   try {

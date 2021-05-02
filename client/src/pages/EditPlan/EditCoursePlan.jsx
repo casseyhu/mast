@@ -84,7 +84,6 @@ const EditCoursePlan = (props) => {
   const saveItem = async (values) => {
     let isChanged = await coursePlanIsChanged()
     if (isChanged) {
-      console.log("course plan is changed!!!!!!!!!")
       setShowError(true)
       return
     }
