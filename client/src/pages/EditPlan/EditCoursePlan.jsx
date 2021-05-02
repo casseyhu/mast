@@ -107,10 +107,11 @@ const EditCoursePlan = (props) => {
     })
   }
 
-  const accept = (items) => {
+  const accept = (items, checked) => {
     axios.post('/courseplan/accept/', {
       params: {
         items: items,
+        checked: checked,
         student: student
       }
     }).then(response => {

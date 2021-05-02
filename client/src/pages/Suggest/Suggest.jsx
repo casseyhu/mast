@@ -15,33 +15,27 @@ const Suggest = (props) => {
   const [degreeExpanded, setDegreeExpanded] = useState(false)
   const [planExpanded, setPlanExpanded] = useState(true)
   const [confirmation, showConfirmation] = useState(false)
+  const [loading, setLoading] = useState()
+  const [disable, setDisable] = useState(false)
+
   const { coursePlan } = props.location.state.studentInfoParams
   const student = props.location.state.student
 
-  const suggest = (preferences) => {
+  const suggest = (mode, preferences) => {
     setSuggestions([])
+    setDisable(true)
+    setLoading(mode)
     preferences.student = student
-    axios.get('/suggest/', {
+    const route = mode === 'smart' ? '/smartSuggest/' : '/suggest/'
+    axios.get(route, {
       params: preferences
     }).then(res => {
-      console.log('Done Suggest')
       setSuggestions(res.data)
       showConfirmation(true)
-    })
-  }
-
-  const smartSuggest = (preferences) => {
-    setSuggestions([])
-    console.log('Smart suggest mode')
-    preferences.student = student
-    axios.get('/smartSuggest/', {
-      params: preferences
-    }).then(res => {
-      console.log('Done smart suggest')
-      setSuggestions(res.data)
-      showConfirmation(true)
+      setDisable(false)
+      setLoading()
     }).catch(err => {
-      console.log('Error smart suggest')
+      console.log('Error: ' + err)
     })
   }
 
@@ -69,7 +63,7 @@ const Suggest = (props) => {
         <h5>Student: {student.sbuId}</h5>
         <h5>Degree: {student.department} {student.track}</h5>
       </div>
-      <Preferences department={student.department} suggest={suggest} smartSuggest={smartSuggest} />
+      <Preferences department={student.department} suggest={suggest} disable={disable} loading={loading} />
       {suggestions.length > 0 && <SuggestedPlans suggestions={suggestions} addSuggestedPlan={addSuggestedPlan} />}
 
       <Accordion className='mb-1 mt-3'>

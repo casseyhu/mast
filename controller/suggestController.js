@@ -46,7 +46,7 @@ exports.suggest = async (req, res) => {
     }
   })
   foundCourses.forEach(course => course.credits = (course.minCredits <= 3 && course.maxCredits >= 3) ? 3 : course.minCredits)
-  console.log(foundCourses)
+  // console.log(foundCourses)
   let courses = {}
   let coursesSem = {}
   // Credits dictionary for courses in future semester
@@ -607,7 +607,7 @@ function shuffle(array) {
 
 
 function calculateScore(coursePlan, graduation) {
-  console.log(graduation, coursePlan)
+  // console.log(graduation, coursePlan)
   return Object.keys(coursePlan)
     .map(sem => sem <= graduation ? coursePlan[sem].reduce((a, b) => (b.required ? b.weight : -b.weight) + a, 0) : '')
     .reduce((a, b) => a + b, 0)
@@ -703,7 +703,7 @@ exports.smartSuggest = async (req, res) => {
   delete courseCount['']
   // Sort courses by popularity
   let popularCourses = Object.keys(courseCount).sort((c1, c2) => courseCount[c2] - courseCount[c1])
-  
+
   let minScore = Number.MIN_SAFE_INTEGER
   let minCoursePlan = []
   // Create course nodes

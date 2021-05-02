@@ -820,22 +820,21 @@ exports.addSuggestion = async (req, res) => {
 exports.accept = async (req, res) => {
   try {
     const items = req.body.params.items
+    const checked = req.body.params.checked
     const student = req.body.params.student
-    for (let item of items) {
-      await CoursePlanItem.update({ status: true }, { where: item })
+    for (let index in items) {
+      if (checked[index])
+        await CoursePlanItem.update({ status: true }, { where: items[index] })
+      else
+        await CoursePlanItem.destroy({ where: items[index] })
     }
-    await CoursePlanItem.destroy({
-      where: {
-        coursePlanId: items[0].coursePlanId,
-        status: false
-      }
-    })
     let studentsPlanId = {}
     studentsPlanId[student.sbuId] = items[0].coursePlanId
     await calculateCompletion(studentsPlanId, student.department, null)
     const newItems = await CoursePlanItem.findAll({ where: { coursePlanId: items[0].coursePlanId } })
     res.status(200).send(newItems)
   } catch (err) {
+    console.log(err)
     res.status(500).send('Invalid query')
   }
 }
@@ -877,14 +876,14 @@ exports.checkPreconditions = async (req, res) => {
   })
   if (found) {
     res.status(500).send('Course ' + course.courseId + ' already exists in ' +
-          req.query.semester + ' ' + req.query.year + '.')
+      req.query.semester + ' ' + req.query.year + '.')
     return
   }
   // Check if we have Course Offerings for the given semester + year.
   // If course offerings were imported, then check if this course has offerings. 
   found = await CourseOffering.findOne({
     where: {
-      semester: req.query.semester, 
+      semester: req.query.semester,
       year: req.query.year
     }
   })
@@ -902,7 +901,7 @@ exports.checkPreconditions = async (req, res) => {
       year: req.query.year
     }
   })
-  if(offering.length !== 0) {
+  if(offering.length > 0) {
     // There were offerings found for this course.
     res.status(200).send(true)
     return 
