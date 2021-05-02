@@ -10,6 +10,7 @@ import Bulletin from './pages/Bulletin/Bulletin'
 import Suggest from './pages/Suggest/Suggest'
 import Student from './pages/Student/Student'
 import EditCoursePlan from './pages/EditPlan/EditCoursePlan'
+import EditTransfer from './pages/Transfer/EditTransfer'
 import jwt_decode from 'jwt-decode'
 
 class App extends Component {
@@ -67,6 +68,7 @@ class App extends Component {
           {type && <Route path='/bulletin' component={(props) => <Bulletin {...props} type={type} user={user} />} />}
           {type && <Route path='/suggest' component={Suggest} />}
           {type && <Route path='/courseplan' component={EditCoursePlan} />}
+          {type === 'gpd' && <Route path='/transfer' component={EditTransfer} />}
           <Route component={NotFound404} />
         </Switch>
       </BrowserRouter>

@@ -4,6 +4,7 @@ import CenteredModal from '../../components/Modal'
 import StudentInfo from './StudentInfo'
 import Requirements from './Requirements'
 import CoursePlan from './CoursePlan'
+import TransferCredits from './TransferCredits'
 import axios from '../../constants/axios'
 
 class Student extends Component {
@@ -48,11 +49,11 @@ class Student extends Component {
     let reqStateMap = {}
     for (let req of requirementStates.data)
       reqStateMap[req.requirementId] = [req.state, req.metaData]
-
     this.setState({
       student: studentRes.data,
       studentInfoParams: {
-        coursePlan: coursePlanItems.data,
+        transferItems: coursePlanItems.data.filter(item => item.status === 2),
+        coursePlan: coursePlanItems.data.filter(item => item.status !== 2),
         requirements: requirements.data,
         requirementStates: reqStateMap
       }
@@ -169,6 +170,7 @@ class Student extends Component {
     // console.log(requirementState)
     this.setState({
       studentInfoParams: {
+        transferItems: [],
         coursePlan: [],
         requirements: degree,
         requirementStates: requirementState
@@ -182,6 +184,18 @@ class Student extends Component {
       state: {
         student: this.state.student,
         coursePlan: this.state.studentInfoParams.coursePlan,
+        from: 'student'
+      }
+    })
+  }
+
+
+  editTransfer = () => {
+    this.props.history.push({
+      pathname: '/transfer',
+      state: {
+        student: this.state.student,
+        transferItems: this.state.studentInfoParams.transferItems,
         from: 'student'
       }
     })
@@ -240,6 +254,11 @@ class Student extends Component {
           coursePlan={studentInfoParams.coursePlan}
           editCoursePlan={this.editCoursePlan}
           suggestCoursePlan={this.suggestCoursePlan}
+        />
+        <hr />
+        <TransferCredits
+          transferItems={studentInfoParams.transferItems}
+          editTransfer={this.editTransfer}
         />
         <CenteredModal
           show={showConfirmation}

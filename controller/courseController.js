@@ -506,6 +506,12 @@ const insertUpdate = async (values, condition) => {
 }
 
 
+/**
+ * Finds all the sections of a course for specified semester and year  
+ * @param {*} req contains courseI, semester, and year
+ * @param {*} res 
+ * @returns 
+ */
 exports.findSections = async (req, res) => {
   console.log('finding sections, if any)')
   let course = JSON.parse(req.query.course)
@@ -531,3 +537,26 @@ exports.findSections = async (req, res) => {
   return
 }
 
+
+exports.findCoursesById = (req, res) => {
+  let semester = currSem
+  let year = currYear
+  if (req.query.semester && req.query.year && beforeCurrent(req.query.semester)) {
+    semester = req.query.semester
+    year = req.query.year
+  }
+  Course
+    .findAll({
+      where: {
+        courseId: req.query.courseId,
+        semester: semester,
+        year: year
+      }
+    })
+    .then(courses => res.status(200).send(courses))
+    .catch(err => {
+      console.log(err)
+      res.status(500).send('Error finding course')
+    })
+
+}

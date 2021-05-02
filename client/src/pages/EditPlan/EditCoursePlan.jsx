@@ -26,7 +26,7 @@ const EditCoursePlan = (props) => {
         params: {
           sbuId: student.sbuId,
           department: student.department,
-          course: course,
+          courseId: course.courseId,
           semester: semester,
           section, section,
           year: year

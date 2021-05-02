@@ -25,7 +25,7 @@ const CoursePlan = (props) => {
     if (props.coursePlan) {
       let sorted = props.coursePlan.sort((a, b) => sortBySem(a, b))
       setCoursePlan(sorted)
-      setCheckedItems(sorted.map(item => item.status))
+      setCheckedItems(sorted.map(item => item.status === 1))
     }
   }, [props.coursePlan])
 
@@ -111,7 +111,7 @@ const CoursePlan = (props) => {
   const hasConflicts = coursePlan && coursePlan.filter(course => course.validity === false).length > 0
 
   return (
-    <div >
+    <div>
       <div className='flex-horizontal justify-content-between mb-2' style={{ width: '100%' }}>
         <h4 className='flex-horizontal align-items-center'>
           {!props.mode && (props.heading ? props.heading : 'Course Plan')}
