@@ -67,11 +67,12 @@ const ImportItem = (props) => {
       formData.append('dept', props.dept)
       formData.append('delete', true)
       try {
-        await axios.post('student/upload/', firstFormData, {
+        let uploadedStudents = await axios.post('student/upload/', firstFormData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         })
+        formData.append('sbuIds', uploadedStudents.data)
         console.log('Successfully uploaded profile')
         setFirstFile('')
       } catch (err) {
@@ -112,7 +113,7 @@ const ImportItem = (props) => {
       if (result.status === 210) {
         setShowWarning(true)
         setWarning(result.data)
-      }    
+      }
     } catch (err) {
       setLoading(false)
       props.setOverlay('none')
