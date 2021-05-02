@@ -8,7 +8,7 @@ import Button from '../../components/Button'
 import CenteredModal from '../../components/Modal'
 import Dropdown from '../../components/Dropdown'
 import axios from '../../constants/axios'
-import { GRADES } from '../../constants/'
+import { GRADES, SEMESTER_MONTH } from '../../constants/'
 
 const CoursePlan = (props) => {
   const [mode, setMode] = useState('')
@@ -23,7 +23,7 @@ const CoursePlan = (props) => {
 
   useEffect(() => {
     if (props.coursePlan) {
-      let sorted = props.coursePlan.sort((a, b) => sortBySem(a, b))
+      let sorted = props.coursePlan.filter(item => item.status !== 2).sort((a, b) => sortBySem(a, b))
       setCoursePlan(sorted)
       setCheckedItems(sorted.map(item => item.status))
     }
@@ -49,8 +49,8 @@ const CoursePlan = (props) => {
   }
 
   const sortBySem = (a, b) => {
-    let aSemYear = a.year * 100 + (a.semester === 'Fall' ? 8 : 2)
-    let bSemYear = b.year * 100 + (b.semester === 'Fall' ? 8 : 2)
+    let aSemYear = a.year * 100 + SEMESTER_MONTH[a.semester]
+    let bSemYear = b.year * 100 + SEMESTER_MONTH[b.semester]
     return aSemYear - bSemYear
   }
 
@@ -111,7 +111,7 @@ const CoursePlan = (props) => {
   const hasConflicts = coursePlan && coursePlan.filter(course => course.validity === false).length > 0
 
   return (
-    <div >
+    <div>
       <div className='flex-horizontal justify-content-between mb-2' style={{ width: '100%' }}>
         <h4 className='flex-horizontal align-items-center'>
           {!props.mode && (props.heading ? props.heading : 'Course Plan')}

@@ -4,6 +4,7 @@ import CenteredModal from '../../components/Modal'
 import StudentInfo from './StudentInfo'
 import Requirements from './Requirements'
 import CoursePlan from './CoursePlan'
+import TransferCredits from './TransferCredits'
 import axios from '../../constants/axios'
 import CenteredToast from '../../components/Toast'
 
@@ -30,7 +31,6 @@ class Student extends Component {
     let studentRes = await axios.get('/student/' + student.sbuId, {
       params: { sbuId: student.sbuId }
     })
-    // console.log(studentRes)
     let coursePlanItems = await axios.get('/courseplanitem/findItems/', {
       params: {
         sbuId: student.sbuId
@@ -49,11 +49,11 @@ class Student extends Component {
     let reqStateMap = {}
     for (let req of requirementStates.data)
       reqStateMap[req.requirementId] = [req.state, req.metaData]
-
     this.setState({
       student: studentRes.data,
       studentInfoParams: {
-        coursePlan: coursePlanItems.data,
+        transferItems: coursePlanItems.data.filter(item => item.status === 2),
+        coursePlan: coursePlanItems.data.filter(item => item.status !== 2),
         requirements: requirements.data,
         requirementStates: reqStateMap
       }
@@ -163,6 +163,7 @@ class Student extends Component {
     // console.log(requirementState)
     this.setState({
       studentInfoParams: {
+        transferItems: [],
         coursePlan: [],
         requirements: degree,
         requirementStates: requirementState
@@ -182,6 +183,18 @@ class Student extends Component {
   }
 
 
+  editTransfer = () => {
+    this.props.history.push({
+      pathname: '/transfer',
+      state: {
+        student: this.state.student,
+        transferItems: this.state.studentInfoParams.transferItems,
+        from: 'student'
+      }
+    })
+  }
+
+
   suggestCoursePlan = () => {
     /* Prevent redirecting to suggest page for those who have satisfied all requirments */
     let reqStates = this.state.studentInfoParams.requirementStates
@@ -189,7 +202,6 @@ class Student extends Component {
     if (satisfiedCount === Object.keys(reqStates).length) {
       this.setState({ showSuggestErr: true })
       this.setState({ suggestErr: 'Cannot suggest course plans for a student who has satisfied all requirements' })
-      console.log('this person DONe with MaSTERs!!!! dont botHER THEM')
       return
     }
     /* Prevent redirecting to suggest page for those who have invalid course plans */
@@ -234,6 +246,11 @@ class Student extends Component {
           coursePlan={studentInfoParams.coursePlan}
           editCoursePlan={this.editCoursePlan}
           suggestCoursePlan={this.suggestCoursePlan}
+        />
+        <hr />
+        <TransferCredits
+          transferItems={studentInfoParams.transferItems}
+          editTransfer={this.editTransfer}
         />
         <CenteredToast
           message='Student successfully saved'

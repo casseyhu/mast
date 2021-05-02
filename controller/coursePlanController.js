@@ -10,7 +10,7 @@ const Course = database.Course
 const CoursePlan = database.CoursePlan
 const CoursePlanItem = database.CoursePlanItem
 const CourseOffering = database.CourseOffering
-
+const Op = database.Sequelize.Op
 const Degree = database.Degree
 const RequirementState = database.RequirementState
 
@@ -81,7 +81,7 @@ exports.updateItem = async (req, res) => {
         courseId: info.planItem.courseId,
         semester: info.planItem.semester,
         year: info.planItem.year,
-        status: true
+        status: 1
       }
     })
 
@@ -146,9 +146,10 @@ exports.addItem = async (req, res) => {
     }
   })
   let conflictingCourses = []
+  let courseId = query.courseId ? query.courseId : query.course.courseId
   let queryCourse = await CourseOffering.findOne({
     where: {
-      identifier: query.course.courseId,
+      identifier: courseId,
       semester: query.semester,
       year: query.year,
       section: query.section
@@ -168,8 +169,8 @@ exports.addItem = async (req, res) => {
     }
     if (conflictingCourses.length !== 0) {
       let ret = Array.from(new Set(conflictingCourses))
-      ret.splice(ret.indexOf(query.course.courseId), 1)
-      res.status(500).send('Course ' + query.course.courseId + ' has time conflicts with: ' +
+      ret.splice(ret.indexOf(courseId), 1)
+      res.status(500).send('Course ' + courseId + ' has time conflicts with: ' +
         ret.join(', ') + '; Unable to add.')
       return
     }
@@ -178,18 +179,18 @@ exports.addItem = async (req, res) => {
   try {
     let insert = await CoursePlanItem.create({
       coursePlanId: coursePlan.coursePlanId,
-      courseId: query.course.courseId,
+      courseId: courseId,
       semester: query.semester,
       year: query.year,
       section: query.section,
-      grade: null,
+      grade: query.grade ? query.grade : null,
       validity: true,
-      status: true
+      status: query.status ? query.status : 1
     })
     // After adding the course, re-calculate their completion. 
     let studentsPlanId = {}
     studentsPlanId[query.sbuId] = coursePlan.coursePlanId
-    console.log('added course, now trying to recalculate their competiong')
+    console.log('added course, now trying to recalculate their completion')
     await calculateCompletion(studentsPlanId, query.department, null)
     const cpItems = await CoursePlanItem.findAll({ where: { coursePlanId: coursePlan.coursePlanId } })
     res.status(200).send(cpItems)
@@ -294,6 +295,9 @@ function calculateGPA(coursePlanItems, credits) {
   let totalPoints = 0
   let totalCredits = 0
   for (let course of coursePlanItems) {
+    // Transfer credits don't count towards GPA
+    if (course.status === 2)
+      continue
     let courseCredit = credits[course.courseId] ? credits[course.courseId] : 0
     totalCredits += courseCredit
     totalPoints += courseCredit * (GRADES[course.grade] ? GRADES[course.grade] : 0)
@@ -600,7 +604,7 @@ async function calculateCompletion(studentsPlanId, department, res) {
     const coursePlanItems = await CoursePlanItem.findAll({
       where: {
         coursePlanId: studentsPlanId[key],
-        status: true
+        status: {[Op.or]: [1, 2]}
       }
     })
     // List of course plan items with grades
@@ -782,7 +786,6 @@ exports.count = (req, res) => {
  * @param {*} res 
  */
 exports.addSuggestion = async (req, res) => {
-  // 379525535
   const query = req.body.params
   const courses = query.courses
   const student = query.student
@@ -812,7 +815,7 @@ exports.addSuggestion = async (req, res) => {
         section: node.section ? node.section : 'N/A',
         grade: null,
         validity: true,
-        status: false
+        status: 0
       }
       // Only create if it doesnt exist yet in course plan
       await updateOrCreate(CoursePlanItem, condition, values, false, true)
@@ -830,7 +833,7 @@ exports.accept = async (req, res) => {
     const student = req.body.params.student
     for (let index in items) {
       if (checked[index])
-        await CoursePlanItem.update({ status: true }, { where: items[index] })
+        await CoursePlanItem.update({ status: 1 }, { where: items[index] })
       else
         await CoursePlanItem.destroy({ where: items[index] })
     }
@@ -859,7 +862,7 @@ exports.checkPreconditions = async (req, res) => {
       coursePlanId: coursePlan.coursePlanId,
       semester: req.query.semester,
       year: req.query.year,
-      status: true
+      status: 1
     }
   })
   if (items.length > 0) {

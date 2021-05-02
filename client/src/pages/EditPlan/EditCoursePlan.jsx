@@ -19,7 +19,6 @@ const EditCoursePlan = (props) => {
       console.log(coursePlan)
       let isChanged = await coursePlanIsChanged()
       if (isChanged) {
-        console.log("course plan is changed")
         setShowError(true)
         return false
       }
@@ -61,16 +60,17 @@ const EditCoursePlan = (props) => {
         sbuId: student.sbuId
       }
     })
-    if (dbItems.data.length !== coursePlan.length)
+    let cpItems = dbItems.data.filter(item => item.status !== 2)
+    if (cpItems.length !== coursePlan.length)
       return true
-    for (let i = 0; i < dbItems.data.length; i++) {
+    for (let i = 0; i < cpItems.length; i++) {
       let check = false
       for (let j = 0; j < coursePlan.length; j++) {
-        if (dbItems.data[i].courseId === coursePlan[j].courseId
-          && dbItems.data[i].semester === coursePlan[j].semester
-          && dbItems.data[i].year === coursePlan[j].year
-          && dbItems.data[i].section === coursePlan[j].section
-          && dbItems.data[i].grade === coursePlan[j].grade) {
+        if (cpItems[i].courseId === coursePlan[j].courseId
+          && cpItems[i].semester === coursePlan[j].semester
+          && cpItems[i].year === coursePlan[j].year
+          && cpItems[i].section === coursePlan[j].section
+          && cpItems[i].grade === coursePlan[j].grade) {
           check = true
         }
       }
@@ -135,9 +135,16 @@ const EditCoursePlan = (props) => {
       <AddCourse add={modifyPlan} student={student} />
       <CenteredModal
         show={showError}
-        onHide={() => setShowError(false)}
-        onConfirm={() => setShowError(false)}
-        body='Course plan is being edited by another user. Please try again later.'
+        onHide={() => {
+          setShowError(false)
+          history.goBack()
+        }}
+        onConfirm={() => {
+          setShowError(false)
+          history.goBack()
+        }}
+        body='Course plan is being edited by 
+        another user. Please try again later.'
         title={<small style={{ color: 'red' }}>Error!</small>}
       />
       <CenteredToast

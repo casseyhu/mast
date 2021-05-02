@@ -151,10 +151,10 @@ exports.updateOrDelete = async (model, condition, values, item) => {
     found = await model.findOne({ where: condition })
   else
     found = item
-  if (found.status) {
+  if (found.status === 1) {
     await found.update(values)
     return true
-  } else {
+  } else if (found.status === 0) {
     await model.destroy({ where: condition })
     return false
   }

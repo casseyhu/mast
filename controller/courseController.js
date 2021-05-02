@@ -176,7 +176,7 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
   let notExistDepts = depts.filter(dept => !existDepts.includes(dept))
   depts = existDepts
   const options = {}
-  let sem = ['Fall', 'Winter', 'Spring', 'Summer']
+  let sem = ['Fall', 'Spring', 'Summer']
   let target = ''
   /* info to store in database */
   let chosenDept = ''
@@ -237,7 +237,7 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
                 courseNum: Number(courseNum),
                 semester: semester,
                 year: Number(year),
-                semestersOffered: ['Fall', 'Spring'],
+                semestersOffered: ['Fall', 'Spring', 'Summer1', 'SummerII'],
                 name: name,
                 description: '',
                 minCredits: 3,
@@ -264,8 +264,14 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
               // The semesters mentioned in the pdf for each course
               for (let k = 0; k < sem.length; k++) {
                 if (others.includes(sem[k]) || desc.includes(sem[k])) {
-                  foundSem.push(sem[k])
-                  tot += 1
+                  if (sem[k] === 'Summer') {
+                    foundSem.push('SummerI', 'SummerII')
+                    tot += 2
+                  }
+                  else {
+                    foundSem.push(sem[k])
+                    tot += 1
+                  }
                 }
               }
               if (tot == 0)
@@ -506,6 +512,12 @@ const insertUpdate = async (values, condition) => {
 }
 
 
+/**
+ * Finds all the sections of a course for specified semester and year  
+ * @param {*} req contains courseI, semester, and year
+ * @param {*} res 
+ * @returns 
+ */
 exports.findSections = async (req, res) => {
   console.log('finding sections, if any)')
   let course = JSON.parse(req.query.course)
@@ -531,3 +543,26 @@ exports.findSections = async (req, res) => {
   return
 }
 
+
+exports.findCoursesById = (req, res) => {
+  let semester = currSem
+  let year = currYear
+  if (req.query.semester && req.query.year && beforeCurrent(req.query.semester)) {
+    semester = req.query.semester
+    year = req.query.year
+  }
+  Course
+    .findAll({
+      where: {
+        courseId: req.query.courseId,
+        semester: semester,
+        year: year
+      }
+    })
+    .then(courses => res.status(200).send(courses))
+    .catch(err => {
+      console.log(err)
+      res.status(500).send('Error finding course')
+    })
+
+}
