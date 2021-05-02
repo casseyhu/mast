@@ -23,7 +23,7 @@ const CoursePlan = (props) => {
 
   useEffect(() => {
     if (props.coursePlan) {
-      let sorted = props.coursePlan.sort((a, b) => sortBySem(a, b))
+      let sorted = props.coursePlan.filter(item => item.status !== 2).sort((a, b) => sortBySem(a, b))
       setCoursePlan(sorted)
       setCheckedItems(sorted.map(item => item.status))
     }
@@ -104,14 +104,14 @@ const CoursePlan = (props) => {
   }
 
   const acceptCourses = () => {
-    props.accept(coursePlan.filter((item, i) => checkedItems[i]))
+    props.accept(coursePlan, checkedItems)
   }
 
 
   const hasConflicts = coursePlan && coursePlan.filter(course => course.validity === false).length > 0
 
   return (
-    <div >
+    <div>
       <div className='flex-horizontal justify-content-between mb-2' style={{ width: '100%' }}>
         <h4 className='flex-horizontal align-items-center'>
           {!props.mode && (props.heading ? props.heading : 'Course Plan')}
@@ -157,7 +157,7 @@ const CoursePlan = (props) => {
               <th scope='col' style={{ width: '16%' }} >Status</th>
               {props.mode && <th scope='col' style={{ width: '4%' }} >
                 <input type='checkbox' onChange={e => {
-                  setCheckedItems(coursePlan.map(() => !selectAll))
+                  setCheckedItems(coursePlan.map(item => item.grade ? true : !selectAll))
                   setselectAll(!selectAll)
                 }} />
               </th>}

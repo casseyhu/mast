@@ -110,19 +110,17 @@ const Requirements = (props) => {
       {display && <div className='flex-vertical' style={{ width: '100%' }}>
         {requirements[1] && (
           <div className={getReqColor('G', requirements[1])}>
-            Minimum Cumulative GPA:
-            {' ' + requirements[1].cumulative}
-            <b>&emsp;{gpas['cumulative'] ? gpas['cumulative'] : 'N/A'}&emsp;</b>
+            <span>Minimum Cumulative GPA: {' ' + requirements[1].cumulative}
+              <span className='ml-2'><b>{gpas['cumulative'] ? gpas['cumulative'] : 'N/A'}</b></span>
+            </span>
             {requirements[1].core && (
-              <span>Minimum Core GPA:
-                {' ' + requirements[1].core}
-                <b>&emsp;{gpas['core'] ? gpas['core'] : 'N/A'}</b>
+              <span className='ml-5'>Minimum Core GPA: {' ' + requirements[1].core}
+                <span className='ml-2'><b>&emsp;{gpas['core'] ? gpas['core'] : 'N/A'}</b></span>
               </span>
             )}
             {requirements[1].department && (
-              <span>Minimum Department GPA:
-                {' ' + requirements[1].department}
-                <b>&emsp;{gpas['department'] ? gpas['department'] : 'N/A'}</b>
+              <span className='ml-5'>Minimum Department GPA: {' ' + requirements[1].department}
+                <span className='ml-2'><b>&emsp;{gpas['department'] ? gpas['department'] : 'N/A'}</b></span>
               </span>
             )}
           </div>

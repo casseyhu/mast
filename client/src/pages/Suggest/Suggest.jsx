@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container'
 import Accordion from 'react-bootstrap/Accordion'
 import Card from 'react-bootstrap/Card'
 import axios from '../../constants/axios'
+import CenteredToast from '../../components/Toast'
 import CoursePlan from '../Student/CoursePlan'
 import Requirements from '../Student/Requirements'
 import Preferences from './Preferences'
@@ -13,34 +14,28 @@ const Suggest = (props) => {
   const [suggestions, setSuggestions] = useState([])
   const [degreeExpanded, setDegreeExpanded] = useState(false)
   const [planExpanded, setPlanExpanded] = useState(true)
+  const [confirmation, showConfirmation] = useState(false)
+  const [loading, setLoading] = useState()
+  const [disable, setDisable] = useState(false)
+
   const { coursePlan } = props.location.state.studentInfoParams
   const student = props.location.state.student
 
-  const suggest = (preferences) => {
+  const suggest = (mode, preferences) => {
+    setSuggestions([])
+    setDisable(true)
+    setLoading(mode)
     preferences.student = student
-    axios.get('/suggest/', {
+    const route = mode === 'smart' ? '/smartSuggest/' : '/suggest/'
+    axios.get(route, {
       params: preferences
     }).then(res => {
-      console.log('Done Suggest')
       setSuggestions(res.data)
-      // Set the results of the suggest return into the state.
-      // Then, since the state of `suggestedPlans` got changed, 
-      // it'll rerender and the SuggestedCoursePlan component will
-      // show the suggested course plans. 
-      // TODO: make the SuggestCoursePlan component to show the results of algo. 
-    })
-  }
-
-  const smartSuggest = (preferences) => {
-    console.log('Smart suggest mode')
-    preferences.student = student
-    axios.get('/smartSuggest/', {
-      params: preferences
-    }).then(res => {
-      console.log('Done smart suggest')
-      setSuggestions(res.data)
+      showConfirmation(true)
+      setDisable(false)
+      setLoading()
     }).catch(err => {
-      console.log('Error smart suggest')
+      console.log('Error: ' + err)
     })
   }
 
@@ -68,7 +63,7 @@ const Suggest = (props) => {
         <h5>Student: {student.sbuId}</h5>
         <h5>Degree: {student.department} {student.track}</h5>
       </div>
-      <Preferences department={student.department} suggest={suggest} smartSuggest={smartSuggest} />
+      <Preferences department={student.department} suggest={suggest} disable={disable} loading={loading} />
       {suggestions.length > 0 && <SuggestedPlans suggestions={suggestions} addSuggestedPlan={addSuggestedPlan} />}
 
       <Accordion className='mb-1 mt-3'>
@@ -124,7 +119,11 @@ const Suggest = (props) => {
           </Accordion.Collapse>
         </Card>
       </Accordion>
-
+      <CenteredToast
+        message={`Generated ${suggestions.length} course plans`}
+        show={confirmation}
+        onHide={() => showConfirmation(false)}
+      />
     </Container>
   )
 }

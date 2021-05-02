@@ -27,7 +27,6 @@ const AddCourse = (props) => {
 
   const [unmetPrereqs, setUnmetPrereqs] = useState([])
   const [showUnmet, showUnmetPrereqs] = useState(false)
-  const [confirmation, showConfirmation] = useState(false)
   const [emailConfirm, showEmailConfirm] = useState(false)
   // const [error, showError] = useState(false)
   const [waive, setWaive] = useState(false)
@@ -63,24 +62,23 @@ const AddCourse = (props) => {
     } else if (!course.semestersOffered.includes(semester)) {
       setError(`Course ${course.courseId} is not offered in the ${semester}.`)
       return
-    } else {
-      // Checks :
-      // if they're trying to add a course into a semester with grades, 
-      // if a duplicate course already exists in the semester + year,
-      // if we even have offerings imported for sem+year, and if we do,
-      // checks if the desired course has an offering.   
-      let validAdd = await checkPreconditions(course, semester, year, chosenSection)
-      if (validAdd) {
-        // Passed precondition check --> Now check prerequisites as final check.
-        setError('')
-        let satisfiedPrereqs = await checkPrerequisites(course, semester, year)
-        if (satisfiedPrereqs) {
-          // No prereqs. Add this course into the plan.
-          console.log('Here' + chosenSection)
-          chosenSection = chosenSection ? chosenSection : 'N/A'
-          if (await addCourseWrapper(course, semester, year, chosenSection))
-            showConfirmation(true)
-        }
+    }
+    // Checks :
+    // if they're trying to add a course into a semester with grades, 
+    // if a duplicate course already exists in the semester + year,
+    // if we even have offerings imported for sem+year, and if we do,
+    // checks if the desired course has an offering.    
+    const validAdd = await checkPreconditions(course, semester, year, chosenSection)
+    if (validAdd) {
+      // Passed precondition check --> Now check prerequisites as final check.
+      setError('')
+      let satisfiedPrereqs = await checkPrerequisites(course, semester, year)
+      if (satisfiedPrereqs) {
+        // No prereqs. Add this course into the plan.
+        console.log('Here' + chosenSection)
+        let added = await props.add('add', course, semester, year, chosenSection)
+        if(!added[0])
+          setError(added[1])
       }
     }
   }
@@ -108,7 +106,7 @@ const AddCourse = (props) => {
 
 
   const checkPrerequisites = async (course, semester, year) => {
-    let prereqs = await axios.get('student/checkPrerequisites', {
+    const prereqs = await axios.get('student/checkPrerequisites', {
       params: {
         sbuId: props.student.sbuId,
         course: course,
@@ -128,23 +126,12 @@ const AddCourse = (props) => {
     }
   }
 
-  const addCourseWrapper = async (course, semester, year, section) => {
-    let addedCourse = await props.add('add', course, semester, year, section)
-    if (addedCourse)
-      return true
-    else {
-      // setError('Course ' + course.courseId + ' already exists in ' + semester
-      //   + ' ' + year + '.')
-      return false
-    }
-  }
-
 
   const waiveAndAdd = async () => {
     console.log('Should send an email to: ' + props.student.email)
-    let addedCourse = await addCourseWrapper(course, semester, year, chosenSection)
+    let addedCourse = await props.add('add', course, semester, year, chosenSection)
     // Only email if the course can actually be added. 
-    if (addedCourse) {
+    if (addedCourse[0]) {
       setVisible('visible')
       let sentEmail = await axios.post('/email/send/', {
         params: {
@@ -281,10 +268,9 @@ const AddCourse = (props) => {
         show={waive}
         onHide={async () => {
           setWaive(false)
-          if (await addCourseWrapper(course, semester, year, chosenSection))
-            showConfirmation(true)
+          await props.add('add', course, semester, year, chosenSection)
         }}
-        onConfirm={() => { waiveAndAdd() }}
+        onConfirm={() => waiveAndAdd()}
         variant='multi'
         body={
           <div>
@@ -296,21 +282,9 @@ const AddCourse = (props) => {
       />
       <CenteredModal
         show={emailConfirm}
-        onHide={() => {
-          showEmailConfirm(false)
-          showConfirmation(true)
-        }}
-        onConfirm={() => {
-          showEmailConfirm(false)
-          showConfirmation(true)
-        }}
+        onHide={() => showEmailConfirm(false)}
+        onConfirm={() => showEmailConfirm(false)}
         body='Sent email successfully '
-      />
-      <CenteredModal
-        show={confirmation}
-        onHide={() => showConfirmation(false)}
-        onConfirm={() => showConfirmation(false)}
-        body={'Successfully added course.'}
       />
     </Container>
   )
