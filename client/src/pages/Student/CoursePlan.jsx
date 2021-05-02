@@ -8,7 +8,7 @@ import Button from '../../components/Button'
 import CenteredModal from '../../components/Modal'
 import Dropdown from '../../components/Dropdown'
 import axios from '../../constants/axios'
-import { GRADES } from '../../constants/'
+import { GRADES, SEMESTER_MONTH } from '../../constants/'
 
 const CoursePlan = (props) => {
   const [mode, setMode] = useState('')
@@ -49,8 +49,8 @@ const CoursePlan = (props) => {
   }
 
   const sortBySem = (a, b) => {
-    let aSemYear = a.year * 100 + (a.semester === 'Fall' ? 8 : 2)
-    let bSemYear = b.year * 100 + (b.semester === 'Fall' ? 8 : 2)
+    let aSemYear = a.year * 100 + SEMESTER_MONTH[a.semester]
+    let bSemYear = b.year * 100 + SEMESTER_MONTH[b.semester]
     return aSemYear - bSemYear
   }
 

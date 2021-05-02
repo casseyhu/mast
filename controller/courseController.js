@@ -176,7 +176,7 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
   let notExistDepts = depts.filter(dept => !existDepts.includes(dept))
   depts = existDepts
   const options = {}
-  let sem = ['Fall', 'Winter', 'Spring', 'Summer']
+  let sem = ['Fall', 'Spring', 'Summer']
   let target = ''
   /* info to store in database */
   let chosenDept = ''
@@ -237,7 +237,7 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
                 courseNum: Number(courseNum),
                 semester: semester,
                 year: Number(year),
-                semestersOffered: ['Fall', 'Spring'],
+                semestersOffered: ['Fall', 'Spring', 'Summer1', 'SummerII'],
                 name: name,
                 description: '',
                 minCredits: 3,
@@ -264,8 +264,14 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
               // The semesters mentioned in the pdf for each course
               for (let k = 0; k < sem.length; k++) {
                 if (others.includes(sem[k]) || desc.includes(sem[k])) {
-                  foundSem.push(sem[k])
-                  tot += 1
+                  if (sem[k] === 'Summer') {
+                    foundSem.push('SummerI', 'SummerII')
+                    tot += 2
+                  }
+                  else {
+                    foundSem.push(sem[k])
+                    tot += 1
+                  }
                 }
               }
               if (tot == 0)

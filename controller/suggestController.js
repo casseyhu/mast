@@ -46,7 +46,6 @@ exports.suggest = async (req, res) => {
     }
   })
   foundCourses.forEach(course => course.credits = (course.minCredits <= 3 && course.maxCredits >= 3) ? 3 : course.minCredits)
-  console.log(foundCourses)
   let courses = {}
   let coursesSem = {}
   // Credits dictionary for courses in future semester
@@ -86,7 +85,7 @@ exports.suggest = async (req, res) => {
   let generated = []
   let minScore = Number.MIN_SAFE_INTEGER
   let counter = 0
-  while (generated.length < 5 && counter < 50) {
+  while (generated.length < 5 && counter < 20) {
     const takenAndCurrent = coursePlanItems.filter(course => (
       (100 * course.year + SEMTONUM[course.semester] <= 100 * currYear + SEMTONUM[currSem]) &&
       (!course.grade || GRADES[course.grade] >= GRADES['C'])
@@ -607,7 +606,6 @@ function shuffle(array) {
 
 
 function calculateScore(coursePlan, graduation) {
-  console.log(graduation, coursePlan)
   return Object.keys(coursePlan)
     .map(sem => sem <= graduation ? coursePlan[sem].reduce((a, b) => (b.required ? b.weight : -b.weight) + a, 0) : '')
     .reduce((a, b) => a + b, 0)

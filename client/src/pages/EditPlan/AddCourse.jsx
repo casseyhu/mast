@@ -142,14 +142,14 @@ const AddCourse = (props) => {
 
   const waiveAndAdd = async () => {
     console.log('Should send an email to: ' + props.student.email)
-    let addedCourse = await addCourseWrapper(course, semester, year)
+    let addedCourse = await addCourseWrapper(course, semester, year, chosenSection)
     // Only email if the course can actually be added. 
     if (addedCourse) {
       setVisible('visible')
       let sentEmail = await axios.post('/email/send/', {
         params: {
           // email: props.student.email,
-          email: 'eddie.xu@stonybrook.edu',
+          email: 'andrew.kong@stonybrook.edu',
           subject: 'GPD waived prerequisites',
           text: 'GPD waived prerequisites for course ' + course.courseId + '.'
         }
@@ -281,7 +281,7 @@ const AddCourse = (props) => {
         show={waive}
         onHide={async () => {
           setWaive(false)
-          if (await addCourseWrapper(course, semester, year))
+          if (await addCourseWrapper(course, semester, year, chosenSection))
             showConfirmation(true)
         }}
         onConfirm={() => { waiveAndAdd() }}

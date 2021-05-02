@@ -80,6 +80,8 @@ const EditCoursePlan = (props) => {
     if (isChanged) {
       console.log("course plan is changed!!!!!!!!!")
       setShowError(true)
+      history.goBack()
+
     }
     else {
       axios.post('/courseplanitem/update/', {
@@ -136,9 +138,16 @@ const EditCoursePlan = (props) => {
       <AddCourse add={modifyPlan} student={student} />
       <CenteredModal
         show={showError}
-        onHide={() => setShowError(false)}
-        onConfirm={() => setShowError(false)}
-        body='Course plan is being edited by another user. Please try again later.'
+        onHide={() => {
+          setShowError(false)
+          history.goBack()
+        }}
+        onConfirm={() => {
+          setShowError(false)
+          history.goBack()
+        }}
+        body='Course plan is being edited by 
+        another user. Please try again later.'
         title={<small style={{ color: 'red' }}>Error!</small>}
       />
     </Container>
