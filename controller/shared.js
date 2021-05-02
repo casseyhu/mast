@@ -35,9 +35,9 @@ exports.checkTimeConflict = (courseA, courseB, invalidCourses) => {
     let bEnd = courseB.endTime
     if ((aStart >= bStart && aStart < bEnd) || (aEnd <= bEnd && aEnd > bStart) ||
       (bStart >= aStart && bStart < aEnd) || (bEnd <= aEnd && bEnd > aStart)) {
+      console.log(courseA.identifier, courseB.identifier)
       invalidCourses.push(courseA.identifier)
       invalidCourses.push(courseB.identifier)
-      console.log("time conflict")
       return true
     }
   }

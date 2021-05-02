@@ -122,7 +122,9 @@ exports.deleteItem = async (req, res) => {
 
 
 /**
- * Adds a course to a student's course plan items. 
+ * Add a course to a student's course plan item. 
+ * If the course to add will cause conflicts with other courses for the semester, 
+ * then don't add.  
  * @param {*} req Contains information (i.e student's id), which is used to find the
  * course plan for the student, to add the new course to. 
  * @param {*} res 
@@ -131,13 +133,41 @@ exports.deleteItem = async (req, res) => {
 exports.addItem = async (req, res) => {
   console.log('adding course')
   let query = req.body.params
-  // console.log(query)
   // Find student's courseplanId by getting their coursePlan first.
   let coursePlan = await CoursePlan.findOne({
     where: {
       studentId: query.sbuId
     }
   })
+  let conflictingCourses = []
+  let queryCourse = await CourseOffering.findOne({
+    where: {
+      identifier: query.course.courseId,
+      semester: query.semester,
+      year: query.year,
+      section: query.section
+    }
+  })
+  if (queryCourse) {
+    for (let semCourse of query.coursePlan) {
+      let courseB = await CourseOffering.findOne({
+        where: {
+          identifier: semCourse.courseId,
+          semester: semCourse.semester,
+          year: semCourse.year,
+          section: semCourse.section
+        }
+      })
+      checkTimeConflict(queryCourse, courseB, conflictingCourses)
+    }
+    if (conflictingCourses.length !== 0) {
+      let ret = Array.from(new Set(conflictingCourses))
+      ret.splice(ret.indexOf(query.course.courseId), 1)
+      res.status(500).send('Course ' + query.course.courseId + ' has time conflicts with: ' +
+        ret.join(', ') + '; Unable to add.')
+      return
+    }
+  }
   // Insert the course into the student's courseplanitems. 
   try {
     let insert = await CoursePlanItem.create({
@@ -863,28 +893,24 @@ exports.checkPreconditions = async (req, res) => {
     res.status(200).send(true)
     return
   }
+  // Else, we have to check if there exists an offering for this course in SEM+YEAR.
+  // For now, it finds ALL possible offerings (all sections) of this course in SEM+YEAR. 
+  let offering = await CourseOffering.findAll({
+    where: {
+      identifier: course.courseId,
+      semester: req.query.semester,
+      year: req.query.year
+    }
+  })
+  if(offering.length !== 0) {
+    // There were offerings found for this course.
+    res.status(200).send(true)
+    return 
+  }
   else {
-    // Else, we have to check if there exists an offering for this course in SEM+YEAR.
-    // For now, it finds ALL possible offerings (all sections) of this course in SEM+YEAR. 
-    // @TODO: 
-    // This can be sent back to deal with choosing a semester when they click 'Add'. 
-    let offering = await CourseOffering.findAll({
-      where: {
-        identifier: course.courseId,
-        semester: req.query.semester,
-        year: req.query.year
-      }
-    })
-    if(offering.length > 0) {
-      // There were offerings found for this course.
-      res.status(200).send(true)
-      return 
-    }
-    else {
-      res.status(500).send('Course ' + course.courseId + ' has no offerings for ' + 
-        req.query.semester + ' ' + req.query.year + '.')
-      return
-    }
+    res.status(500).send('Course ' + course.courseId + ' has no offerings for ' + 
+      req.query.semester + ' ' + req.query.year + '.')
+    return
   }
   // res.status(200).send(false)
 }

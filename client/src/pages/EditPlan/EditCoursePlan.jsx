@@ -16,6 +16,7 @@ const EditCoursePlan = (props) => {
 
   const modifyPlan = async (mode, course, semester, year, section) => {
     try {
+      console.log(coursePlan)
       let isChanged = await coursePlanIsChanged()
       if (isChanged) {
         console.log("course plan is changed")
@@ -32,7 +33,8 @@ const EditCoursePlan = (props) => {
           course: course,
           semester: semester,
           section, section,
-          year: year
+          year: Number(year),
+          coursePlan: coursePlan.filter(item => item.semester === semester && item.year === Number(year))
         }
       })
       history.replace({
@@ -46,10 +48,9 @@ const EditCoursePlan = (props) => {
         showConfirmation([true, `Successfully added ${course.courseId} to course plan`])
       else
         showConfirmation([true, `Successfully deleted ${course.courseId} from course plan`])
-      return true
+      return [true, '']
     } catch (error) {
-      console.log(error)
-      return false
+      return [false, error.response.data]
     }
   }
 
