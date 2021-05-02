@@ -26,7 +26,7 @@ const EditCoursePlan = (props) => {
         params: {
           sbuId: student.sbuId,
           department: student.department,
-          courseId: course.courseId,
+          course: course,
           semester: semester,
           section, section,
           year: year
@@ -54,17 +54,17 @@ const EditCoursePlan = (props) => {
         sbuId: student.sbuId
       }
     })
-    console.log(dbItems.data, coursePlan)
-    if (dbItems.data.length !== coursePlan.length)
+    let cpItems = dbItems.data.filter(item => item.status !== 2)
+    if (cpItems.length !== coursePlan.length)
       return true
-    for (let i = 0; i < dbItems.data.length; i++) {
+    for (let i = 0; i < cpItems.length; i++) {
       let check = false
       for (let j = 0; j < coursePlan.length; j++) {
-        if (dbItems.data[i].courseId === coursePlan[j].courseId
-          && dbItems.data[i].semester === coursePlan[j].semester
-          && dbItems.data[i].year === coursePlan[j].year
-          && dbItems.data[i].section === coursePlan[j].section
-          && dbItems.data[i].grade === coursePlan[j].grade) {
+        if (cpItems[i].courseId === coursePlan[j].courseId
+          && cpItems[i].semester === coursePlan[j].semester
+          && cpItems[i].year === coursePlan[j].year
+          && cpItems[i].section === coursePlan[j].section
+          && cpItems[i].grade === coursePlan[j].grade) {
           check = true
         }
       }

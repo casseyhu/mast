@@ -41,7 +41,7 @@ const EditTransfer = (props) => {
             courseId: SBUCourse,
             semester: student.entrySem,
             section: 'N/A',
-            year: student.entryYear,
+            year: student.entryYear-1,
             status: 2,
             grade: grade
           }

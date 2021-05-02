@@ -10,7 +10,7 @@ const Course = database.Course
 const CoursePlan = database.CoursePlan
 const CoursePlanItem = database.CoursePlanItem
 const CourseOffering = database.CourseOffering
-
+const Op = database.Sequelize.Op
 const Degree = database.Degree
 const RequirementState = database.RequirementState
 
@@ -142,7 +142,7 @@ exports.addItem = async (req, res) => {
   try {
     let insert = await CoursePlanItem.create({
       coursePlanId: coursePlan.coursePlanId,
-      courseId: query.courseId,
+      courseId: query.courseId ? query.courseId : query.course.courseId,
       semester: query.semester,
       year: query.year,
       section: query.section,
@@ -567,7 +567,7 @@ async function calculateCompletion(studentsPlanId, department, res) {
     const coursePlanItems = await CoursePlanItem.findAll({
       where: {
         coursePlanId: studentsPlanId[key],
-        status: 1
+        status: {[Op.or]: [1, 2]}
       }
     })
     // List of course plan items with grades
