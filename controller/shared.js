@@ -131,7 +131,7 @@ exports.findCoursePlanItems = async (sbuId) => {
  */
 exports.updateOrCreate = async (model, condition, values, update, create) => {
   let found = await model.findOne({ where: condition })
-  if (found && update)
+  if (found && update) 
     await found.update(values)
   else if (!found && create)
     await model.create(values)

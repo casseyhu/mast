@@ -116,6 +116,15 @@ exports.deleteItem = async (req, res) => {
     })
     let studentsPlanId = {}
     studentsPlanId[params.sbuId] = params.course.coursePlanId
+    // Set all courses in the semester+year to be default valid again. 
+    // CalculateCompletion() will check and set the conflict classes to invalid. 
+    await CoursePlanItem.update({ validity: true }, {
+      where:{
+        coursePlanId: params.course.coursePlanId,
+        semester: params.course.semester,
+        year: params.course.year
+      }
+    })
     await calculateCompletion(studentsPlanId, params.department, null)
     const items = await CoursePlanItem.findAll({ where: { coursePlanId: params.course.coursePlanId } })
     res.status(200).send(items)
