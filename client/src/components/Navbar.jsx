@@ -29,16 +29,9 @@ const NavigationBar = (props) => {
     return <> </>
   return (
     <Navbar className='' expand='lg' variant='dark'>
-      {(userType === 'gpd') && (
-        <Navbar.Brand as={Link} to={{ pathname: process.env.PUBLIC_URL + '/' }}>
-          MAST.
-        </Navbar.Brand>
-      )}
-      {(userType === 'student') && (
-        <Navbar.Brand as={Link} to={{ pathname: process.env.PUBLIC_URL + '/' }}>
-          MAST.
-        </Navbar.Brand>
-      )}
+      <Navbar.Brand as={Link} to={{ pathname: process.env.PUBLIC_URL + '/' }}>
+        MAST.
+      </Navbar.Brand>
       <Navbar.Toggle
         aria-controls='basic-navbar-nav'
         className='toggler'
@@ -71,13 +64,6 @@ const NavigationBar = (props) => {
             && (
               <Nav.Link className='nav-link' as={Link} to={{ pathname: process.env.PUBLIC_URL + '/' }}>
                 profile
-              </Nav.Link>
-            )
-          }
-          {(userType === 'student')
-            && (
-              <Nav.Link className='nav-link' as={Link} to={{ pathname: process.env.PUBLIC_URL + '/courseplan' }}>
-                my course plan
               </Nav.Link>
             )
           }

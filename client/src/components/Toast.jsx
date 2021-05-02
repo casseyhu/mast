@@ -28,7 +28,8 @@ const CenteredToast = (props) => {
         top: 20,
         left: '50%',
         transform: 'translate(-50%)',
-        background: 'white'
+        background: 'white',
+        width: '300px'
       }}
     >
       <Toast.Header>

@@ -27,7 +27,7 @@ const Button = (props) => {
             size="sm"
             role="status"
             aria-hidden="true"
-            style={{ marginRight: '0.5rem' }}
+            style={{ margin: '0 0.5rem 0.1rem 0' }}
           />
         }
         {props.text}
