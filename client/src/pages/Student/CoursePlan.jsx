@@ -8,7 +8,7 @@ import Button from '../../components/Button'
 import CenteredModal from '../../components/Modal'
 import Dropdown from '../../components/Dropdown'
 import axios from '../../constants/axios'
-import { GRADES, SEMESTER_MONTH } from '../../constants/'
+import { GRADES, SEMESTER_MONTH, CURRENT_YEAR, CURRENT_SEMESTER } from '../../constants/'
 
 const CoursePlan = (props) => {
   const [mode, setMode] = useState('')
@@ -60,11 +60,13 @@ const CoursePlan = (props) => {
     setOfferings()
     setCourse()
     setValues()
+    let currentSemYear = Number(CURRENT_YEAR) * 100 + SEMESTER_MONTH[CURRENT_SEMESTER]
+    let courseSemYear = Number(course.year) * 100 + SEMESTER_MONTH[course.semester]
     const foundCourse = await axios.get('/course/findOne/', {
       params: {
         courseId: course.courseId,
-        semester: course.semester,
-        year: course.year
+        semester: courseSemYear > currentSemYear ? CURRENT_SEMESTER : course.semester,
+        year: courseSemYear > currentSemYear ? CURRENT_YEAR : course.year
       }
     })
     const foundOfferings = await axios.get('/courseoffering/findOne/', {
@@ -108,9 +110,9 @@ const CoursePlan = (props) => {
   }
 
   const convertTime = (time) => {
-    const hour = +time.substr(0, 2);
+    const hour = +time.substring(0, 2);
     const ampm = (hour < 12 || hour === 24) ? "AM" : "PM";
-    return (hour % 12 || 12) + time.substr(2, 3) + ampm;
+    return (hour % 12 || 12) + time.substring(2, 5) + ampm;
   }
 
   const hasConflicts = coursePlan && coursePlan.filter(course => course.validity === false).length > 0
@@ -212,7 +214,7 @@ const CoursePlan = (props) => {
           <Button variant='round' className='bg-white' text='Accept Courses' onClick={acceptCourses} />
         </div>
       }
-      {props.mode && course && showEditItem && <CenteredModal
+      {props.mode && course && values && showEditItem && <CenteredModal
         variant='multi'
         show={showEditItem}
         title={`Editing Course ${values.planItem.courseId}`}
@@ -223,7 +225,7 @@ const CoursePlan = (props) => {
             <div className='flex-vertical'>
               <span>{course.name} </span>
               <span>({(course.minCredits <= 3 && course.maxCredits >= 3) ? 3 : course.minCredits} credits) {values.planItem.semester} {values.planItem.year} </span>
-              <span>{time.length > 0 && ('Time: ' + convertTime(time[0].startTime) + ' - ' + convertTime(time[0].endTime))}</span>
+              <span>{time.length > 0 && time[0].startTime && ('Time: ' + convertTime(time[0].startTime) + ' - ' + convertTime(time[0].endTime))}</span>
             </div>
             <div className='flex-vertical justify-content-center align-items-center '>
               {offerings && offerings.length > 0 && <div className='flex-horizontal mb-3 mr-5 fit'>
