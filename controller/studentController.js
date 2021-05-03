@@ -487,6 +487,9 @@ async function uploadStudents(students, res) {
       gpdComments: '',
       studentComments: ''
     }
+    if (!degreeDict[studentInfo.department.toUpperCase() + ' ' + titleCase(studentInfo.track) + ' '
+      + studentInfo.requirement_version_semester + ' ' + studentInfo.requirement_version_year])
+      continue
     if (!checkFields(values, null)) {
       console.log('invalid student')
       continue

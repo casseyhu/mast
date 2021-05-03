@@ -199,7 +199,6 @@ async function uploadCourses(results, res, dept) {
         year: year
       }
     })
-    coursesNotOffered.forEach(course => console.log('course', course.courseId))
     let invalidCoursePlanIds = new Set()
     let allInvalidItems = []
     for (let j = 0; j < coursesNotOffered.length; j++) {
@@ -207,8 +206,8 @@ async function uploadCourses(results, res, dept) {
       if (items.length === 0)
         continue
       // Update the validity such that the items are invalid
-      for(let item of items) {
-        let updated = await updateOrDelete(CoursePlanItem, null, {validity : false}, item)
+      for (let item of items) {
+        let updated = await updateOrDelete(CoursePlanItem, null, { validity: false }, item)
         if (updated) {
           allInvalidItems.push(item)
           invalidCoursePlanIds.add(item.coursePlanId)
