@@ -161,7 +161,7 @@ function deleteTakenCourses(courses, courseReq, takenAndCurrent, coursesSem) {
         else {
           // Course cannot be counted for multiple requirements
           const courseInPlan = takenAndCurrent.filter(item => item.courseId === course)[0]
-          const courseCredit = coursesSem[courseInPlan.courseId + ' ' + courseInPlan.semester + ' ' + courseInPlan.year].credits
+          const courseCredit = coursesSem[courseInPlan.courseId + ' ' + courseInPlan.semester + ' ' + courseInPlan.year] ? coursesSem[courseInPlan.courseId + ' ' + courseInPlan.semester + ' ' + courseInPlan.year].credits : courses[courseInPlan.courseId].credits
           if (requirement.type === 0 || (requirement.courseLower !== null && requirement.courseLower > 0)
             || (requirement.creditLower !== null && requirement.creditLower > 0))
             used.push(course)
@@ -214,6 +214,7 @@ function remainingRequirements(courses, courseReq, creditReq, takenAndCurrent, s
     }
   }
   const creditsTaken = takenAndCurrent.reduce((a, b) => courses[b.courseId].credits + a, 0)
+  console.log(courseReq)
   const coursesRemaining = courseReq.reduce((a, b) => (b.courseLower ? b.courseLower : b.creditLower ? Math.ceil(b.creditLower / courses[b.courses[0]].credits) : 0) + a, 0)
   const creditsRemaining = (creditReq.minCredit - creditsTaken < 0) ? 0 : creditReq.minCredit - creditsTaken
   let semsRemaining = 0
@@ -225,7 +226,12 @@ function remainingRequirements(courses, courseReq, creditReq, takenAndCurrent, s
     if (sem === 'Spring')
       year++
   }
-  let coursesPerSem = CPS ? CPS : Math.max(Math.ceil(creditsRemaining / (3 * semsRemaining)), Math.ceil(coursesRemaining / semsRemaining))
+  let coursesPerSem = 0
+  if (semsRemaining === 0) {
+    coursesPerSem = 5
+  }
+  else 
+    CPS ? CPS : Math.max(Math.ceil(creditsRemaining / (3 * semsRemaining)), Math.ceil(coursesRemaining / semsRemaining))
   if (CPS && student.department === 'BMI')
     coursesPerSem--
   return [coursesRemaining, creditsRemaining, coursesPerSem]
@@ -446,17 +452,21 @@ async function suggestPlan(nodes, params) {
       let timeConflict = false
       if (found.length > 0) {
         for (let i = 0; i < found.length; i++) {
-          if (!inTimePreference(found[i], timeConstraint))
+          if (!timeConflict && !inTimePreference(found[i], timeConstraint)) {
             timeConflict = true
+          }
         }
-        if (timeConflict)
+        if (timeConflict) {
+          index++
           continue
+        }
         currSemOfferings[currCourse.course] = found
       }
     }
     // Check time conflicts if course offering exists
     let currSuggestions = suggestions[currSemyear]
     let added = false
+    let hasTimeConflict = false
     if (offeringExists && currSemOfferings[currCourse.course]) {
       if (currSuggestions) {
         // A list of course offerings for currCourse (may be a list of different sections)
@@ -469,14 +479,22 @@ async function suggestPlan(nodes, params) {
             let courseBList = currSemOfferings[currSuggestions[j].course]
             shuffle(courseBList)
             for (let k = 0; k < courseBList.length; k++) {
-              if (!checkTimeConflict(courseA, courseBList[k], [])) {
+              if (!hasTimeConflict && !checkTimeConflict(courseA, courseBList[k], [])) {
                 currCourse.section = courseA.section
-                suggestions[currSemyear].push(currCourse)
                 added = true
                 i = j = k = Number.MAX_SAFE_INTEGER
               }
+              else {
+                hasTimeConflict = true
+              }
             }
           }
+        }
+        if (!hasTimeConflict) {
+          suggestions[currSemyear].push(currCourse)
+        }
+        else {
+          index++
         }
       }
       // First course to add when course offering exists
@@ -528,6 +546,7 @@ function inTimePreference(course, preferredTime) {
       return false // not in time preference range 
     }
   }
+  // console.log(course, preferredTime)
   // If the course has no specific startTime & endTime, or course in range
   return true
 }
