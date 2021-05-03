@@ -319,31 +319,41 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
                 let cIndex = others.indexOf(':')
                 others = others.substring(cIndex + 2) //ignore the extra space
               }
-              let course = others.substring(0, 7)
-              if (isNaN(parseInt(course.substring(4, 7))) == false) {
-                if (parseInt(course.substring(4, 7)) >= 500) {
-                  others = others.replace(course, '')
-                  course = course.replace(' ', '')
-                  if (!prereqs.includes(course))
-                    prereqs.push(course)
-                } else {
-                  others = others.replace(course, '')
-                  course = course.replace(' ', '')
-                  if (others.includes('or ')) {
-                    others = others.replace('or', '')
-                    while (others.substring(0, 1) === ' ')
-                      others = others.substring(1)
-                    course = others.substring(0, 7)
-                    if (isNaN(parseInt(course.substring(4, 7))) == false) {
-                      if (parseInt(course.substring(4, 7)) >= 500) {
-                        others = others.replace(course, '')
-                        course = course.replace(' ', '')
-                        if (!prereqs.includes(course))
-                          prereqs.push(course)
+              while (others.includes(chosenDept)) {
+                others = others.substring(others.indexOf(chosenDept))
+                let course = others.substring(0, 7) // Ex: "CSE 500"
+                if (desc.includes('This course employs the techniques of mathematical statistics')){
+                  console.log(course)
+                }
+                if (!(isNaN(parseInt(course.substring(4, 7))))) { //parses courseNum 
+                  if (parseInt(course.substring(4, 7)) >= 500) {
+                    others = others.replace(course, '')
+                    course = course.replace(' ', '')
+                    if (!prereqs.includes(course))
+                      prereqs.push(course)
+                  } else {
+                    others = others.replace(course, '')
+                    if (others.includes('or ')) {
+                      others = others.replace('or', '')
+                      others = others.trim()
+                      course = others.substring(0, 7)
+                      if (!(isNaN(parseInt(course.substring(4, 7))))) {
+                        if (parseInt(course.substring(4, 7)) >= 500) {
+                          others = others.replace(course, '')
+                          course = course.replace(' ', '')
+                          if (!prereqs.includes(course))
+                            prereqs.push(course)
+                        }
                       }
                     }
                   }
                 }
+                else {
+                  break
+                }
+                if (others.includes('recommended') || others.includes('or'))
+                  break
+                others = others.substring(others.indexOf(chosenDept))
               }
               if (others.includes(' credits') || others.includes(' credit')) {
                 let index = -1
@@ -453,11 +463,11 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
                 if (isNaN(parseInt(c)) == false)
                   others += s.str
                 else {
-                  if (s.str.substring(0, 1) != ',' &&
-                    others.substring(others.length - 1) != ',' &&
-                    isNaN(parseInt(s.str))) {
-                    others += ', ' + s.str
-                  } else
+                  // if (s.str.substring(0, 1) != ',' &&
+                  //   others.substring(others.length - 1) != ',' &&
+                  //   isNaN(parseInt(s.str))) {
+                  //   others += ', ' + s.str
+                  // } else
                     others += ' ' + s.str
                 }
               } else
