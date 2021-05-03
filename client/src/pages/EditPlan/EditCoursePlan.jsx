@@ -16,7 +16,6 @@ const EditCoursePlan = (props) => {
 
   const modifyPlan = async (mode, course, semester, year, section) => {
     try {
-      console.log(coursePlan)
       let isChanged = await coursePlanIsChanged()
       if (isChanged) {
         setShowError(true)
@@ -61,16 +60,17 @@ const EditCoursePlan = (props) => {
       }
     })
     let cpItems = dbItems.data.filter(item => item.status !== 2)
-    if (cpItems.length !== coursePlan.length)
+    let currentItems = coursePlan.filter(item => item.status !== 2)
+    if (cpItems.length !== currentItems.length)
       return true
     for (let i = 0; i < cpItems.length; i++) {
       let check = false
-      for (let j = 0; j < coursePlan.length; j++) {
-        if (cpItems[i].courseId === coursePlan[j].courseId
-          && cpItems[i].semester === coursePlan[j].semester
-          && cpItems[i].year === coursePlan[j].year
-          && cpItems[i].section === coursePlan[j].section
-          && cpItems[i].grade === coursePlan[j].grade) {
+      for (let j = 0; j < currentItems.length; j++) {
+        if (cpItems[i].courseId === currentItems[j].courseId
+          && cpItems[i].semester === currentItems[j].semester
+          && cpItems[i].year === currentItems[j].year
+          && cpItems[i].section === currentItems[j].section
+          && cpItems[i].grade === currentItems[j].grade) {
           check = true
         }
       }
