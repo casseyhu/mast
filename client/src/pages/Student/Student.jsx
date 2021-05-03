@@ -239,10 +239,11 @@ class Student extends Component {
         <hr />
         <Requirements
           studentInfo={studentInfoParams}
-          track={this.state.student.track}
+          track={this.state.student.track + ' (' + this.state.student.requirementVersion + ')'}
         />
         <hr />
         <CoursePlan
+          enable={this.state.mode !== 'Add'}
           coursePlan={studentInfoParams.coursePlan}
           editCoursePlan={this.editCoursePlan}
           suggestCoursePlan={this.suggestCoursePlan}

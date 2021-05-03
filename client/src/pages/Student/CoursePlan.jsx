@@ -99,7 +99,8 @@ const CoursePlan = (props) => {
   }
 
   const saveItem = () => {
-    props.saveItem(values)
+    if (props.mode)
+      props.saveItem(values)
     setShowEditItem(false)
   }
 
@@ -108,9 +109,9 @@ const CoursePlan = (props) => {
   }
 
   const convertTime = (time) => {
-    const hour = +time.substr(0, 2);
+    const hour = +time.substring(0, 2);
     const ampm = (hour < 12 || hour === 24) ? "AM" : "PM";
-    return (hour % 12 || 12) + time.substr(2, 3) + ampm;
+    return (hour % 12 || 12) + time.substring(2, 5) + ampm;
   }
 
   const hasConflicts = coursePlan && coursePlan.filter(course => course.validity === false).length > 0
@@ -135,14 +136,14 @@ const CoursePlan = (props) => {
           )}
         </h4>
         <div className='flex-horizontal justify-content-end'>
-          {props.suggestCoursePlan && props.coursePlan &&
+          {props.suggestCoursePlan && props.coursePlan && props.enable &&
             <Button
               variant='round'
               text='Suggest'
               onClick={props.suggestCoursePlan}
               style={{ marginRight: '1rem', width: '100px' }}
             />}
-          {props.editCoursePlan && props.coursePlan &&
+          {props.editCoursePlan && props.coursePlan && props.enable &&
             <Button
               variant='round'
               text='Edit'
@@ -175,7 +176,7 @@ const CoursePlan = (props) => {
               return <tr
                 className={course.semester}
                 key={i}
-                onClick={e => props.mode && course.status && editItem(course, e)}
+                onClick={e => course.status && editItem(course, e)}
                 style={{ cursor: 'pointer', backgroundColor: course.validity === false ? '#FFAAAA' : '' }}
               >
                 <td className='center'>{course.courseId}</td>
@@ -212,10 +213,10 @@ const CoursePlan = (props) => {
           <Button variant='round' className='bg-white' text='Accept Courses' onClick={acceptCourses} />
         </div>
       }
-      {props.mode && course && showEditItem && <CenteredModal
-        variant='multi'
+      {course && showEditItem && <CenteredModal
+        variant={props.mode ? 'multi' : null}
         show={showEditItem}
-        title={`Editing Course ${values.planItem.courseId}`}
+        title={`${props.mode ? 'Editing' : ''} Course ${values.planItem.courseId}`}
         onHide={() => setShowEditItem(false)}
         onConfirm={() => saveItem()}
         body={
@@ -223,9 +224,10 @@ const CoursePlan = (props) => {
             <div className='flex-vertical'>
               <span>{course.name} </span>
               <span>({(course.minCredits <= 3 && course.maxCredits >= 3) ? 3 : course.minCredits} credits) {values.planItem.semester} {values.planItem.year} </span>
-              <span>{time.length > 0 && ('Time: ' + convertTime(time[0].startTime) + ' - ' + convertTime(time[0].endTime))}</span>
+              <span>{time.length > 0 && time[0].startTime && ('Time: ' + convertTime(time[0].startTime) + ' - ' + convertTime(time[0].endTime))}</span>
+              {!props.mode && <span className='mt-2'>{course.description}</span>}
             </div>
-            <div className='flex-vertical justify-content-center align-items-center '>
+            {props.mode && <div className='flex-vertical justify-content-center align-items-center '>
               {offerings && offerings.length > 0 && <div className='flex-horizontal mb-3 mr-5 fit'>
                 <span style={{ width: '80px' }}>Section: </span>
                 <Dropdown
@@ -252,7 +254,7 @@ const CoursePlan = (props) => {
                   style={{ width: '110px' }}
                 />
               </div>
-            </div>
+            </div>}
           </div>
         }
       />}

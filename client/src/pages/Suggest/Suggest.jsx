@@ -85,7 +85,7 @@ const Suggest = (props) => {
                 <div className='mt-1 mb-4'>
                   <Requirements
                     studentInfo={props.location.state.studentInfoParams}
-                    track={student.track}
+                    track={student.track + ' (' + student.requirementVersion + ')'}
                   />
                 </div>
               }
