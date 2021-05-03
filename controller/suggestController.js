@@ -227,11 +227,10 @@ function remainingRequirements(courses, courseReq, creditReq, takenAndCurrent, s
       year++
   }
   let coursesPerSem = 0
-  if (semsRemaining === 0) {
+  if (semsRemaining === 0 && !CPS)
     coursesPerSem = 5
-  }
-  else 
-    CPS ? CPS : Math.max(Math.ceil(creditsRemaining / (3 * semsRemaining)), Math.ceil(coursesRemaining / semsRemaining))
+  else
+    coursesPerSem = CPS ? CPS : Math.max(Math.ceil(creditsRemaining / (3 * semsRemaining)), Math.ceil(coursesRemaining / semsRemaining))
   if (CPS && student.department === 'BMI')
     coursesPerSem--
   return [coursesRemaining, creditsRemaining, coursesPerSem]
@@ -482,10 +481,10 @@ async function suggestPlan(nodes, params) {
               if (!hasTimeConflict && !checkTimeConflict(courseA, courseBList[k], [])) {
                 currCourse.section = courseA.section
                 added = true
-                i = j = k = Number.MAX_SAFE_INTEGER
               }
               else {
                 hasTimeConflict = true
+                i = j = k = Number.MAX_SAFE_INTEGER
               }
             }
           }
