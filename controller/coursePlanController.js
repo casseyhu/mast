@@ -122,7 +122,7 @@ exports.deleteItem = async (req, res) => {
     // Set all courses in the semester+year to be default valid again. 
     // CalculateCompletion() will check and set the conflict classes to invalid. 
     await CoursePlanItem.update({ validity: true }, {
-      where:{
+      where: {
         coursePlanId: params.course.coursePlanId,
         semester: params.course.semester,
         year: params.course.year
@@ -202,7 +202,6 @@ exports.addItem = async (req, res) => {
     // After adding the course, re-calculate their completion. 
     let studentsPlanId = {}
     studentsPlanId[query.sbuId] = coursePlan.coursePlanId
-    console.log('added course, now trying to recalculate their completion')
     await calculateCompletion(studentsPlanId, query.department, null)
     const cpItems = await CoursePlanItem.findAll({ where: { coursePlanId: coursePlan.coursePlanId } })
     res.status(200).send(cpItems)
@@ -621,7 +620,7 @@ async function calculateCompletion(studentsPlanId, department, res) {
     const coursePlanItems = await CoursePlanItem.findAll({
       where: {
         coursePlanId: studentsPlanId[key],
-        status: {[Op.or]: [1, 2]}
+        status: { [Op.or]: [1, 2] }
       }
     })
     // List of course plan items with grades
@@ -927,13 +926,13 @@ exports.checkPreconditions = async (req, res) => {
       year: req.query.year
     }
   })
-  if(offering.length > 0) {
+  if (offering.length > 0) {
     // There were offerings found for this course.
     res.status(200).send(true)
-    return 
+    return
   }
   else {
-    res.status(500).send('Course ' + course.courseId + ' has no offerings for ' + 
+    res.status(500).send('Course ' + course.courseId + ' has no offerings for ' +
       req.query.semester + ' ' + req.query.year + '.')
     return
   }

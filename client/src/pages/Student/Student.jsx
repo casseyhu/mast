@@ -249,6 +249,7 @@ class Student extends Component {
         />
         <hr />
         <TransferCredits
+          enable={this.state.mode !== 'Add'}
           transferItems={studentInfoParams.transferItems}
           editTransfer={this.editTransfer}
         />

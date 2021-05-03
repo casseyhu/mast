@@ -107,8 +107,14 @@ const CoursePlan = (props) => {
     props.accept(coursePlan, checkedItems)
   }
 
+  const convertTime = (time) => {
+    const hour = +time.substr(0, 2);
+    const ampm = (hour < 12 || hour === 24) ? "AM" : "PM";
+    return (hour % 12 || 12) + time.substr(2, 3) + ampm;
+  }
 
   const hasConflicts = coursePlan && coursePlan.filter(course => course.validity === false).length > 0
+  const time = offerings && values && offerings.length > 0 ? offerings.filter(item => item.section === values.section) : []
 
   return (
     <div>
@@ -129,14 +135,14 @@ const CoursePlan = (props) => {
           )}
         </h4>
         <div className='flex-horizontal justify-content-end'>
-          {props.suggestCoursePlan &&
+          {props.suggestCoursePlan && props.coursePlan &&
             <Button
               variant='round'
               text='Suggest'
               onClick={props.suggestCoursePlan}
               style={{ marginRight: '1rem', width: '100px' }}
             />}
-          {props.editCoursePlan &&
+          {props.editCoursePlan && props.coursePlan &&
             <Button
               variant='round'
               text='Edit'
@@ -217,6 +223,7 @@ const CoursePlan = (props) => {
             <div className='flex-vertical'>
               <span>{course.name} </span>
               <span>({(course.minCredits <= 3 && course.maxCredits >= 3) ? 3 : course.minCredits} credits) {values.planItem.semester} {values.planItem.year} </span>
+              <span>{time.length > 0 && ('Time: ' + convertTime(time[0].startTime) + ' - ' + convertTime(time[0].endTime))}</span>
             </div>
             <div className='flex-vertical justify-content-center align-items-center '>
               {offerings && offerings.length > 0 && <div className='flex-horizontal mb-3 mr-5 fit'>

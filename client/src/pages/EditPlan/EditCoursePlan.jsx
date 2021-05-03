@@ -143,9 +143,8 @@ const EditCoursePlan = (props) => {
           setShowError(false)
           history.goBack()
         }}
-        body='Course plan is being edited by 
-        another user. Please try again later.'
-        title={<small style={{ color: 'red' }}>Error!</small>}
+        body='Course plan is being edited by another user. Please try again later.'
+        title={<small className='error'>Error!</small>}
       />
       <CenteredToast
         message={confirmation[1]}

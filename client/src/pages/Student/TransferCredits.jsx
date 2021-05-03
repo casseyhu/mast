@@ -20,21 +20,21 @@ const TransferCredits = (props) => {
             credits[course.courseId] = (course.minCredits <= 3 && course.maxCredits >= 3) ? 3 : course.minCredits
         })
         setCredits(credits)
-      }).catch(err => 
+      }).catch(err =>
         console.log(err)
       )
     }
-    
+
   }, [props.transferItems])
 
-  return(
+  return (
     <div>
       <div className='flex-horizontal justify-content-between mb-2' style={{ width: '100%' }}>
         <h4 className='flex-horizontal align-items-center'>
           Transfer Credits
         </h4>
         <div className='flex-horizontal justify-content-end'>
-          {props.editTransfer && 
+          {props.editTransfer && props.enable &&
             <Button
               variant='round'
               text='Edit'
@@ -44,7 +44,7 @@ const TransferCredits = (props) => {
           }
         </div>
       </div>
-      {props.transferItems && props.transferItems.length > 0 && 
+      {props.transferItems && props.transferItems.length > 0 &&
         <Table className='transfer-table' hover size='sm'>
           <thead>
             <tr style={{ cursor: 'pointer' }}>
@@ -64,7 +64,7 @@ const TransferCredits = (props) => {
           </tbody>
         </Table>
       }
-      {(!props.transferItems || props.transferItems.length === 0) && 
+      {(!props.transferItems || props.transferItems.length === 0) &&
         <div className='filler-text'>
           <span className='filler-text'>No transfer credits</span>
         </div>
