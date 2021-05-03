@@ -275,7 +275,7 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
                 }
               }
               if (tot == 0)
-                foundSem = ['Fall', 'Spring']
+                foundSem = ['Fall', 'Spring', 'SummerI', 'SummerII']
               let prereqs = []
               // First check for description and see if it has prerequisites
               // if(desc.includes('Prerequisite')){
@@ -381,6 +381,7 @@ const scrapeCourses = async (filePath, depts, semester, year, res) => {
                 minCredits = 3
                 maxCredits = 3
               }
+              prereqs = prereqs.map(prereq => prereq.replace(' ', ''))
               totCourses += 1
               await insertUpdate({
                 courseId: chosenDept + courseNum,
