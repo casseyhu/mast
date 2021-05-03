@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Container from 'react-bootstrap/Container'
 import AddCourse from './AddCourse'
 import axios from '../../constants/axios'
@@ -6,13 +6,20 @@ import CoursePlan from '../Student/CoursePlan'
 import { useHistory } from 'react-router-dom'
 import CenteredModal from '../../components/Modal'
 import CenteredToast from '../../components/Toast'
-
+import { SEMESTER_MONTH } from '../../constants/index'
 
 const EditCoursePlan = (props) => {
   const history = useHistory()
-  const { student, coursePlan } = props.location.state
+  const { student, coursePlan, userType } = props.location.state
   const [showError, setShowError] = useState(false)
   const [confirmation, showConfirmation] = useState([false, ''])
+  const [showEmailBox, setShowEmailBox] = useState(false)
+  const [showEmailConf, setShowEmailConf] = useState(false)
+  const [showWarning, setShowWarning] = useState(false)
+  const [visible, setVisible] = useState('hidden')
+  const [editedCoursePlan, setEditedCoursePlan] = useState([])
+  const [checked, setChecked] = useState([])
+
 
   const modifyPlan = async (mode, course, semester, year, section) => {
     try {
@@ -106,6 +113,46 @@ const EditCoursePlan = (props) => {
     })
   }
 
+  const checkSem = (items, checked) => {
+    let gradSemYear = student.gradYear * 100 + SEMESTER_MONTH[student.gradSem]
+    let semYear = 0
+    let extend = false
+    for (let i = 0; i < items.length; i++) {
+      if (checked[i]) {
+        semYear = items[i].year * 100 + SEMESTER_MONTH[items[i].semester]
+        if (semYear > gradSemYear) {
+          setShowEmailBox(true)
+          setShowWarning(true)
+          extend = true
+          break
+        }
+      }
+    }
+    if (!extend)
+      accept(items, checked)
+  }
+
+
+  const notify = async () => {
+    setVisible('visible')
+    axios.post('/email/send/', {
+      params: {
+        // email: student.email,
+        email: 'eddie.xu@stonybrook.edu',
+        subject: 'Your course plan might delay your graduation',
+        text: 'GPD has updated your course plan. Your course plan might delay your graduation. Check your course plan'
+      }
+    }).then((response) => {
+      console.log(student.email)
+      setVisible('hidden')
+      setShowEmailBox(false)
+      setShowEmailConf(true)
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
+
+
   const accept = (items, checked) => {
     axios.post('/courseplan/accept/', {
       params: {
@@ -123,7 +170,6 @@ const EditCoursePlan = (props) => {
     })
   }
 
-
   return (
     <Container fluid='lg' className='container'>
       <div className='flex-horizontal justify-content-between'>
@@ -131,7 +177,15 @@ const EditCoursePlan = (props) => {
         <h5><b>Student:</b> {student.sbuId}</h5>
         <h5><b>Degree:</b> {student.department} {student.track}</h5>
       </div>
-      <CoursePlan mode saveItem={saveItem} delete={modifyPlan} accept={accept} coursePlan={coursePlan} />
+      <CoursePlan 
+        mode 
+        saveItem={saveItem} 
+        delete={modifyPlan} 
+        accept={checkSem} 
+        coursePlan={coursePlan}
+        setCoursePlan={setEditedCoursePlan}
+        setChecked={setChecked} 
+      />
       <AddCourse add={modifyPlan} student={student} />
       <CenteredModal
         show={showError}
@@ -151,6 +205,37 @@ const EditCoursePlan = (props) => {
         show={confirmation[0]}
         onHide={() => showConfirmation([false, ''])}
       />
+      {userType === 'gpd' && 
+        <CenteredModal
+          show={showEmailBox}
+          onHide={() => {setShowEmailBox(false); accept(editedCoursePlan, checked)}}
+          onConfirm={() => notify()}
+          variant='multi'
+          body={
+            <div>
+              <div>Accepting course(s) for semester(s) later than graduation date might delay student's graduation.
+              Send notification that the new course plan might delay graduation to student?</div>
+            </div>
+          }
+          footer='Sending emails to students...'
+          visibility={visible}
+        />
+      }
+      <CenteredModal
+        show={showEmailConf}
+        onHide={() => {setShowEmailConf(false); accept(editedCoursePlan, checked)}}
+        onConfirm={() => {setShowEmailConf(false); accept(editedCoursePlan, checked)}}
+        body='Sent email successfully '
+      />
+      {userType === 'student' && 
+        <CenteredModal
+          show={showWarning}
+          onHide={() => {setShowWarning(false); accept(editedCoursePlan, checked)}}
+          onConfirm={() => {setShowWarning(false); accept(editedCoursePlan, checked)}}
+          title={<small style={{ color: '#ffc107' }}>Warning!</small>}
+          body='Accepting course(s) for semester(s) later than graduation date might delay your graduation'
+        />
+      }
     </Container>
   )
 }

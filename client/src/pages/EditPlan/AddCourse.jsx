@@ -136,7 +136,7 @@ const AddCourse = (props) => {
       let sentEmail = await axios.post('/email/send/', {
         params: {
           // email: props.student.email,
-          email: 'andrew.kong@stonybrook.edu',
+          email: 'eddie.xu@stonybrook.edu',
           subject: 'GPD waived prerequisites',
           text: 'GPD waived prerequisites for course ' + course.courseId + '.'
         }

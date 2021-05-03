@@ -15,7 +15,6 @@ const EditTransfer = (props) => {
   const [transferItem, setTransferItem] = useState({})
   const [dropdownCredits, setDropdownCredits] = useState([])
   const [errMsg, setErrMsg] = useState('')
-  const [deleteCourse, setDeleteCousre] = useState(false)
   const history = useHistory()
 
   
@@ -119,7 +118,7 @@ const EditTransfer = (props) => {
     }).then(courses => {
       let items = [{ label: 'None', value: 'None' }]
       let credits = {}
-      courses.data.map(course => {
+      courses.data.forEach(course => {
         if (!credits[course.courseId]) {
           credits[course.courseId] = (course.minCredits <= 3 && course.maxCredits >= 3) ? 3 : course.minCredits
           items.push({ label: course.courseId, value: course.courseId })

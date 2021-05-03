@@ -104,6 +104,8 @@ const CoursePlan = (props) => {
   }
 
   const acceptCourses = () => {
+    props.setCoursePlan(coursePlan)
+    props.setChecked(checkedItems)
     props.accept(coursePlan, checkedItems)
   }
 

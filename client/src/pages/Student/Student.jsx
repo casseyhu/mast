@@ -134,7 +134,7 @@ class Student extends Component {
     }, () => {
       axios.post('/email/send/', {
         params: {
-          email: 'sooyeon.kim.2@stonybrook.edu',
+          email: 'eddie.xu@stonybrook.edu',
           subject: 'GPD updated comments',
           text: 'Check GPD\'s comments'
         }
@@ -177,6 +177,7 @@ class Student extends Component {
       state: {
         student: this.state.student,
         coursePlan: this.state.studentInfoParams.coursePlan,
+        userType: this.props.type,
         from: 'student'
       }
     })
@@ -218,7 +219,8 @@ class Student extends Component {
       pathname: '/suggest',
       state: {
         student: this.state.student,
-        studentInfoParams: this.state.studentInfoParams
+        studentInfoParams: this.state.studentInfoParams,
+        userType: this.props.type
       }
     })
   }

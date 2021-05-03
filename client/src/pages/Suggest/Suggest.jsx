@@ -51,6 +51,7 @@ const Suggest = (props) => {
       state: {
         student: student,
         coursePlan: result.data,
+        userType: props.location.state.userType,
         from: 'suggest'
       }
     })
