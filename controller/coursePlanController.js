@@ -108,28 +108,31 @@ exports.updateItem = async (req, res) => {
  */
 exports.deleteItem = async (req, res) => {
   const params = req.body.params
+  const coursePlanId = params.coursePlanId ? params.coursePlanId : params.course.coursePlanId
+  const semester = params.semester ? params.semester : params.course.semester
+  const year = params.year ? params.year : params.course.year
   try {
     let del = await CoursePlanItem.destroy({
       where: {
-        coursePlanId: params.course.coursePlanId,
-        courseId: params.course.courseId,
-        semester: params.course.semester,
-        year: params.course.year,
+        coursePlanId: coursePlanId,
+        courseId: params.courseId ? params.courseId : params.course.courseId,
+        semester: semester,
+        year: year
       }
     })
     let studentsPlanId = {}
-    studentsPlanId[params.sbuId] = params.course.coursePlanId
+    studentsPlanId[params.sbuId] = coursePlanId
     // Set all courses in the semester+year to be default valid again. 
     // CalculateCompletion() will check and set the conflict classes to invalid. 
     await CoursePlanItem.update({ validity: true }, {
       where: {
-        coursePlanId: params.course.coursePlanId,
-        semester: params.course.semester,
-        year: params.course.year
+        coursePlanId: coursePlanId,
+        semester: semester,
+        year: year
       }
     })
     await calculateCompletion(studentsPlanId, params.department, null)
-    const items = await CoursePlanItem.findAll({ where: { coursePlanId: params.course.coursePlanId } })
+    const items = await CoursePlanItem.findAll({ where: { coursePlanId: coursePlanId } })
     res.status(200).send(items)
   } catch (err) {
     console.log('Error in deleting item from plan')
@@ -151,6 +154,7 @@ exports.deleteItem = async (req, res) => {
 exports.addItem = async (req, res) => {
   console.log('adding course')
   let query = req.body.params
+  let courseId = query.courseId ? query.courseId : query.course.courseId
   // Find student's courseplanId by getting their coursePlan first.
   let coursePlan = await CoursePlan.findOne({
     where: {
@@ -158,35 +162,38 @@ exports.addItem = async (req, res) => {
     }
   })
   let conflictingCourses = []
-  let courseId = query.courseId ? query.courseId : query.course.courseId
-  let queryCourse = await CourseOffering.findOne({
-    where: {
-      identifier: courseId,
-      semester: query.semester,
-      year: query.year,
-      section: query.section
-    }
-  })
-  if (queryCourse) {
-    for (let semCourse of query.coursePlan) {
-      let courseB = await CourseOffering.findOne({
-        where: {
-          identifier: semCourse.courseId,
-          semester: semCourse.semester,
-          year: semCourse.year,
-          section: semCourse.section
-        }
-      })
-      checkTimeConflict(queryCourse, courseB, conflictingCourses)
-    }
-    if (conflictingCourses.length !== 0) {
-      let ret = Array.from(new Set(conflictingCourses))
-      ret.splice(ret.indexOf(courseId), 1)
-      res.status(500).send('Course ' + courseId + ' has time conflicts with: ' +
-        ret.join(', ') + '; Unable to add.')
-      return
+  let queryCourse = null
+  if (query.status !== 2) {
+    queryCourse = await CourseOffering.findOne({
+      where: {
+        identifier: courseId,
+        semester: query.semester,
+        year: query.year,
+        section: query.section
+      }
+    })
+    if (queryCourse) {
+      for (let semCourse of query.coursePlan) {
+        let courseB = await CourseOffering.findOne({
+          where: {
+            identifier: semCourse.courseId,
+            semester: semCourse.semester,
+            year: semCourse.year,
+            section: semCourse.section
+          }
+        })
+        checkTimeConflict(queryCourse, courseB, conflictingCourses)
+      }
+      if (conflictingCourses.length !== 0) {
+        let ret = Array.from(new Set(conflictingCourses))
+        ret.splice(ret.indexOf(courseId), 1)
+        res.status(500).send('Course ' + courseId + ' has time conflicts with: ' +
+          ret.join(', ') + '; Unable to add.')
+        return
+      }
     }
   }
+
   // Insert the course into the student's courseplanitems. 
   try {
     let insert = await CoursePlanItem.create({
@@ -365,9 +372,13 @@ async function calculateCreditRequirement(credits, states, creditReq, student, c
   for (let j = 0; j < coursePlanItems.length; j++) {
     if (coursePlanItems[j].grade && GRADES[coursePlanItems[j].grade] < GRADES['C'])
       continue
-    // Create the course credits mapping and get total credits for their entire course plan
     let courseName = coursePlanItems[j].courseId
-    if (!credits[courseName]) {
+    let credit = credits[courseName]
+    // Credits for 'none' transfer courses are saved in section field
+    if (courseName === 'None')
+      credit = Number(coursePlanItems[j].section)
+    // Create the course credits mapping and get total credits for their entire course plan
+    if (!credit) {
       let course = await Course.findOne({ where: { courseId: courseName } })
       if (course && course.minCredits !== null && course.maxCredits !== null)
         credits[courseName] = (course.minCredits <= 3 && course.maxCredits >= 3) ? 3 : course.minCredits
@@ -375,10 +386,13 @@ async function calculateCreditRequirement(credits, states, creditReq, student, c
         console.log('course doesnt exist: ' + courseName)
         credits[courseName] = 3
       }
+      credit = credits[courseName]
     }
-    totalCredits += credits[courseName]
+    totalCredits += credit
   }
-  const actualCredits = takenAndCurrent.reduce((a, b) => a + (GRADES[b.grade] >= GRADES['C'] && credits[b.courseId]), 0)
+  let actualCredits = takenAndCurrent.filter(item => item.courseId !== 'None').reduce((a, b) => a + (GRADES[b.grade] >= GRADES['C'] && credits[b.courseId]), 0)
+  // Add transfer credits
+  actualCredits += takenAndCurrent.filter(item => item.courseId === 'None').reduce((a, b) => a + Number(b.section), 0)
   // Students entire course plan will not satify the requirement
   if (totalCredits < creditReq.minCredit) {
     creditState = 'unsatisfied'
@@ -487,6 +501,8 @@ async function calculateCourseRequirement(credits, states, courseReq, student, c
   let passedCourses = {}
   for (let j = 0; j < coursePlanItems.length; j++) {
     const course = coursePlanItems[j]
+    if (course.courseId === 'None')
+      continue
     if (course.grade && (GRADES[course.grade] >= GRADES['C'])) {
       if (passedCourses[course.courseId])
         passedCourses[course.courseId] += 1
@@ -624,7 +640,7 @@ async function calculateCompletion(studentsPlanId, department, res) {
       }
     })
     // List of course plan items with grades
-    const gradedCoursePlan = coursePlanItems.filter(course => course.grade !== null)
+    const gradedCoursePlan = coursePlanItems.filter(course => course.grade !== null && course.status !== 2)
     // List of course plan items that the student has taken and currently taking
     const takenAndCurrent = coursePlanItems.filter(course => (
       (course.year < currYear) ||

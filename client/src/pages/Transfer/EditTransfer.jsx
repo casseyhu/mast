@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import Dropdown from '../../components/Dropdown'
 import axios from '../../constants/axios'
-import InputField from '../../components/InputField'
 import Container from 'react-bootstrap/Container'
 import Button from '../../components/Button'
-import Table from 'react-bootstrap/Table'
+import { SEMESTERS, YEARS } from '../../constants'
 import { useHistory } from 'react-router-dom'
 import TransferCredits from '../Student/TransferCredits'
 
@@ -13,13 +12,13 @@ const EditTransfer = (props) => {
   const { student, transferItems } = props.location.state
   const [dropdownCourses, setDropdownCourses] = useState([])
   const [credits, setCredits] = useState({})
-  const [nonSBUCourse, setNonSBUCourse] = useState('')
-  const [SBUCourse, setSBUCourse] = useState('')
-  const [grade, setGrade] = useState('')
+  const [transferItem, setTransferItem] = useState({})
+  const [dropdownCredits, setDropdownCredits] = useState([])
   const [errMsg, setErrMsg] = useState('')
-  const [creditSum, setCreditSum] = useState(0)
+  const [deleteCourse, setDeleteCousre] = useState(false)
   const history = useHistory()
 
+  
   const grades = [
     { value: 'A', label: 'A' },
     { value: 'A-', label: 'A-' },
@@ -27,23 +26,45 @@ const EditTransfer = (props) => {
     { value: 'B', label: 'B' }
   ]
 
+  const getNoneCredits = () => {
+    let dropdownCredits = []
+    for (let i = 0; i <= 12; i++) {
+      dropdownCredits.push({ value: i, label: i })
+    }
+    setDropdownCredits(dropdownCredits)
+  }
+
   const addTransferCourse = async () => {
-    if (nonSBUCourse === '' || SBUCourse === '' || grade === '')
+    if (Object.keys(transferItem).length < 5)
       setErrMsg('Error: You must fill out all the fields.')
-    else if (creditSum >= 12)
-      setErrMsg('Error: A maximum of 12 credits may be transferred to a master\'s program.')
     else {
+      let sum = transferItem.credit
+      for (let item of transferItems) {
+        sum += Number(item.section) 
+        if (item.courseId === transferItem.course 
+            && item.year === transferItem.year
+            && item.semester === transferItem.semester) {
+          setErrMsg('Error: ' + item.courseId + ' is already in ' + item.semester + ' ' + item.year)
+          setTransferItem({})
+          return
+        } 
+      }
+      if (sum > 12) {
+        setErrMsg('Error: A maximum of 12 credits may be transferred to a master\'s program.')
+        setTransferItem({})
+        return 
+      }
       try {
         let newTransferItems = await axios.post('/courseplanitem/addItem/', {
           params: {
             sbuId: student.sbuId,
             department: student.department,
-            courseId: SBUCourse,
-            semester: student.entrySem,
-            section: 'N/A',
-            year: student.entryYear-1,
+            courseId: transferItem.course,
+            semester: transferItem.semester,
+            section: transferItem.credit.toString(),
+            year: transferItem.year,
             status: 2,
-            grade: grade
+            grade: transferItem.grade
           }
         })
         let items = newTransferItems.data.filter(item => item.status === 2)
@@ -54,15 +75,39 @@ const EditTransfer = (props) => {
             transferItems: items
           }
         })
-        setCreditSum(creditSum + credits[SBUCourse])
         setErrMsg('')
       } catch (error) {
         console.log(error)
         return
       }
-      setNonSBUCourse('')
-      setSBUCourse('')
-      setGrade('')
+    }
+    setTransferItem({})
+  }
+
+  const deleteTransferCourse = async (course) => {
+    try {
+      console.log(course)
+      let newTransferItems = await axios.post('/courseplanitem/deleteItem/', {
+        params: {
+          coursePlanId: course.coursePlanId,
+          courseId: course.courseId,
+          semester: course.semester,
+          year: course.year,
+          sbuId: student.sbuId,
+          department: student.department
+        }
+      })
+      let items = newTransferItems.data.filter(item => item.status === 2)
+      history.replace({
+        ...history.location,
+        state: {
+          ...history.location.state,
+          transferItems: items
+        }
+      })
+    } catch (error) {
+      console.log(error)
+      return
     }
   }
 
@@ -72,7 +117,7 @@ const EditTransfer = (props) => {
         dept: student.department
       }
     }).then(courses => {
-      let items = []
+      let items = [{ label: 'None', value: 'None' }]
       let credits = {}
       courses.data.map(course => {
         if (!credits[course.courseId]) {
@@ -88,43 +133,74 @@ const EditTransfer = (props) => {
   }, [student.department])
 
 
+  const handleSelection = (name, value) => {
+    setTransferItem(prevState => ({
+      ...prevState,
+      [name]: value
+    }))
+    if (name === 'course') {
+      if (value === 'None')
+        getNoneCredits()
+      else
+        setDropdownCredits([{ label: credits[value], value: credits[value] }])
+    }
+  }
+
 
   return (
     <Container fluid='lg' className='container'>
       <div className='flex-horizontal justify-content-between'>
-        <h1>Add Transfer Credits</h1>
+        <h1>Edit Transfer Credits</h1>
         <h5><b>Student:</b> {student.sbuId}</h5>
         <h5><b>Degree:</b> {student.department} {student.track}</h5>
       </div>
-      <TransferCredits transferItems={transferItems} />
+      <TransferCredits transferItems={transferItems} deleteCourse={deleteTransferCourse}/>
       {errMsg !== '' && <span style={{ color: 'red' }}>{errMsg}</span>}
       <div className='flex-horizontal'>
-        <span className='transfer-label'>Non SBU course:</span>
-        <InputField
-          className='lr-padding'
-          type='text'
-          placeholder='Non SBU course'
-          onChange={e => setNonSBUCourse(e.target.value)}
-          value={nonSBUCourse}
-          style={{ marginRight: '3rem', width: '200px', flexShrink: '1' }}
-        />
-        <span className='transfer-label' >SBU course:</span>
+        <span className='transfer-label'>Course:</span>
         <Dropdown
           className='lr-padding'
           items={dropdownCourses}
-          placeholder='SBU Courses'
-          value={SBUCourse === '' ? null : { label: SBUCourse, value: SBUCourse }}
-          onChange={e => setSBUCourse(e.value)}
-          style={{ marginRight: '3rem', width: '200px', flexShrink: '1' }}
+          placeholder='Course'
+          value={transferItem.course === '' ? null : { label: transferItem.course, value: transferItem.course }}
+          onChange={e => handleSelection('course', e.value)}
+          style={{ marginRight: '1rem', width: '150px', flexShrink: '1' }}
+        />
+        <span className='transfer-label'>Semester:</span>
+        <Dropdown
+          className='lr-padding'
+          items={SEMESTERS}
+          placeholder='Semester'
+          value={transferItem.semester === '' ? null : { label: transferItem.semester, value: transferItem.semester }}
+          onChange={e => handleSelection('semester', e.value)}
+          style={{ marginRight: '1rem', width: '150px', flexShrink: '1' }}
+        />
+        <span className='transfer-label'>Year:</span>
+        <Dropdown
+          className='lr-padding'
+          items={YEARS}
+          placeholder='Year'
+          value={transferItem.year === '' ? null : { label: transferItem.year, value: transferItem.year }}
+          onChange={e => handleSelection('year', Number(e.value))}
+          style={{ marginRight: '1rem', width: '150px', flexShrink: '1' }}
+        />
+        <span className='transfer-label'>Credit(s):</span>
+        <Dropdown
+          className='lr-padding'
+          items={dropdownCredits}
+          value={transferItem.credit === '' ? null : { label: transferItem.credit, value: transferItem.credit }}
+          placeholder='Credit'
+          onChange={e => handleSelection('credit', Number(e.value))}
+          style={{ marginRight: '1rem', width: '110px', flexShrink: '1' }}
         />
         <span className='transfer-label'>Grade:</span>
         <Dropdown
           className='lr-padding'
           items={grades}
-          value={grade === '' ? null : { label: grade, value: grade }}
+          value={transferItem.grade === '' ? null : { label: transferItem.grade, value: transferItem.grade }}
           placeholder='Grade'
-          onChange={e => setGrade(e.value)}
-          style={{ marginRight: '6rem', width: '130px', flexShrink: '1' }}
+          onChange={e => handleSelection('grade', e.value)}
+          style={{ marginRight: '1rem', width: '110px', flexShrink: '1' }}
         />
         <Button
           variant='round'
