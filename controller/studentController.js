@@ -4,12 +4,11 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Papa = require('papaparse')
 
-const { SEMDICT, TRACKS, currSem, currYear, SEMTONUM } = require('./constants')
+const { SEMDICT, TRACKS, currSem, currYear, SEMTONUM, NUMTOSEM } = require('./constants')
 const { updateOrCreate, findRequirements, findCoursePlanItems, checkPrereq, titleCase } = require('./shared')
 
 const coursePlanController = require('./coursePlanController')
 const database = require('../config/database.js')
-const { CourseOffering } = require('../config/database.js')
 const Op = database.Sequelize.Op
 
 const Student = database.Student
@@ -95,8 +94,8 @@ exports.update = async (req, res) => {
       entrySemYear: Number(student.entryYear.concat(SEMDICT[student.entrySem])),
       gradSem: student.gradSem,
       gradYear: Number(student.gradYear),
-      department: student.dept.toUpperCase(),
-      track: titleCase(student.track),
+      department: student.dept,
+      track: student.track,
       requirementVersion: requirementVersion,
       degreeId: degree.degreeId,
       graduated: student.graduated === 'True',
@@ -443,46 +442,6 @@ exports.checkPrerequisites = async (req, res) => {
 }
 
 
-// /**
-//  * Adds a course to a student's course plan items. 
-//  * @param {*} req Contains information (i.e student's id), which is used to find the
-//  * course plan for the student, to add the new course to. 
-//  * @param {*} res 
-//  * @returns 
-//  */
-// exports.addCourse = async (req, res) => {
-//   let query = req.body.params
-//   // Find student's courseplanId by getting their coursePlan first.
-//   let coursePlan = await CoursePlan.findOne({
-//     where: {
-//       studentId: query.sbuId
-//     }
-//   })
-//   // Insert the course into the student's courseplanitems. 
-//   try {
-//     let insert = await CoursePlanItem.create({
-//       coursePlanId: coursePlan.coursePlanId,
-//       courseId: query.course.courseId,
-//       semester: query.semester,
-//       year: query.year,
-//       section: 'N/A',
-//       grade: null,
-//       validity: true,
-//       status: true
-//     })
-//     // After adding the course, re-calculate their completion. 
-//     let studentsPlanId = {}
-//     studentsPlanId[query.sbuId] = coursePlan.coursePlanId
-//     await coursePlanController.changeCompletion(studentsPlanId, query.department, null)
-//     const cpItems = await CoursePlanItem.findAll({ where: { coursePlanId: coursePlan.coursePlanId } })
-//     res.status(200).send(cpItems)
-//   } catch (error) {
-//     res.status(500).send('Unable to add course to course plan.')
-//   }
-// }
-
-
-
 /**
  * Helper function to uploading students' profiles based on a given department.
  * @param {Array<Object>} students List of all students in a given department from the CSV.
@@ -491,20 +450,14 @@ exports.checkPrerequisites = async (req, res) => {
 async function uploadStudents(students, res) {
   const degrees = await Degree.findAll()
   let degreeDict = {}
-  const monthsDict = {
-    '02': 'Spring',
-    '05': 'SummerI',
-    '07': 'SummerII',
-    '08': 'Fall'
-  }
-  const currentGradYear = 202101
+  const currentGradYear = currYear * 100 + SEMTONUM[currSem]
   for (let i = 0; i < degrees.length; i++) {
     let requirementVersion = degrees[i].requirementVersion.toString()
-    let requirementSem = monthsDict[requirementVersion.substring(4, 6)]
+    let requirementSem = NUMTOSEM[Number(requirementVersion.substring(4, 6))]
     let requirementYear = requirementVersion.substring(0, 4)
     degreeDict[degrees[i].dept + ' ' + degrees[i].track + ' ' + requirementSem + ' ' + requirementYear] = degrees[i].degreeId
   }
-  let tot = 0
+  let sbuIds = new Set()
   for (let i = 0; i < students.length; i++) {
     studentInfo = students[i]
     let semYear = Number(studentInfo.entry_year + SEMDICT[studentInfo.entry_semester])
@@ -538,7 +491,6 @@ async function uploadStudents(students, res) {
       console.log('invalid student')
       continue
     }
-    tot += 1
     await updateOrCreate(Student, { sbuId: studentInfo.sbu_id }, values, true, true)
     values = {
       studentId: studentInfo.sbu_id,
@@ -546,9 +498,10 @@ async function uploadStudents(students, res) {
       coursePlanValid: false
     }
     await updateOrCreate(CoursePlan, { studentId: studentInfo.sbu_id }, values, false, true)
+    sbuIds.add(studentInfo.sbu_id)
   }
-  console.log('Done importing ' + tot + ' students from csv')
-  res.status(200).send('Success')
+  console.log('Done importing ' + sbuIds.size + ' students from csv')
+  res.status(200).send(Array.from(sbuIds))
 }
 
 

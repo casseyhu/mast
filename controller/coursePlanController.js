@@ -2,7 +2,7 @@ const { IncomingForm } = require('formidable')
 const fs = require('fs')
 const Papa = require('papaparse')
 const { currSem, currYear, GRADES, SEMTONUM, NUMTOSEM } = require('./constants')
-const { findRequirements, checkTimeConflict, findCoursePlanItems, updateOrCreate, beforeCurrent } = require('./shared')
+const { findRequirements, checkTimeConflict, findCoursePlanItems, updateOrCreate, beforeCurrent, titleCase } = require('./shared')
 const database = require('../config/database.js')
 
 const Student = database.Student
@@ -25,6 +25,7 @@ exports.uploadPlans = (req, res) => {
   let form = new IncomingForm()
   let dept = ''
   let deleted = false
+  let sbuIds = []
   form
     .parse(req)
     // Get the department and boolean value to import course plan items for
@@ -33,6 +34,8 @@ exports.uploadPlans = (req, res) => {
         dept = field
       else if (name === 'delete')
         deleted = field
+      else if (name === 'sbuIds')
+        sbuIds = field.split(',')
     })
     // Imports the course plan items if it is a valid CSV
     .on('file', (field, file) => {
@@ -54,7 +57,7 @@ exports.uploadPlans = (req, res) => {
             res.status(500).send('Cannot parse course plan CSV file - headers do not match specifications')
             return
           }
-          uploadCoursePlans(results.data, dept, res, deleted)
+          uploadCoursePlans(results.data, dept, sbuIds, res, deleted)
         }
       })
     })
@@ -220,10 +223,11 @@ exports.addItem = async (req, res) => {
  * Helper function to uploading course plan items for a given department
  * @param {*} coursePlans List of course plan item entries from the CSV
  * @param {*} dept Department to import course plan items for
+ * @param {*} sbuIds List of sbu IDs for students that were uploaded
  * @param {*} res 
  * @param {*} deleted Should we delete existing student data?
  */
-async function uploadCoursePlans(coursePlans, dept, res, deleted) {
+async function uploadCoursePlans(coursePlans, dept, sbuIds, res, deleted) {
   console.log(deleted)
   // Grabs all students of this department
   let students = await Student.findAll({ where: { department: dept } })
@@ -231,7 +235,8 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
   students = new Set(students.map(student => student.sbuId))
   // 1. Filters the course plan items from the csv for only the students of this department 
   coursePlans = coursePlans.filter(coursePlan => students.has(coursePlan.sbu_id))
-  students = coursePlans.map(item => item.sbu_id)
+  students = new Set(coursePlans.map(item => item.sbu_id).concat(sbuIds))
+  students = Array.from(students)
   // Find all existing course plan items for students of this department
   const existCoursePlans = await CoursePlan.findAll({ where: { studentId: students } })
   // 2. Delete all course plan items and requirement states for the list of students
@@ -248,7 +253,10 @@ async function uploadCoursePlans(coursePlans, dept, res, deleted) {
   existCoursePlans.forEach(plan => studentsPlanId[plan.studentId] = plan.coursePlanId)
   // 3. Create/Update all the course plan items for students of this department
   for (let i = 0; i < coursePlans.length; i++) {
-    const item = coursePlans[i]
+    let item = coursePlans[i]
+    item.semester = titleCase(item.semester)
+    item.grade = item.grade ? item.grade.toUpperCase() : item.grade
+    item.department = item.department.toUpperCase()
     if (!item.sbu_id || !studentsPlanId[item.sbu_id] || !SEMTONUM[item.semester]
       || Number(item.year) < 2000 || Number(item.year) > 2500 || (item.grade && !(item.grade in GRADES))) {
       console.log('Error: Invalid fields')
