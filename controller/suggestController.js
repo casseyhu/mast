@@ -214,17 +214,16 @@ function remainingRequirements(courses, courseReq, creditReq, takenAndCurrent, s
     }
   }
   const creditsTaken = takenAndCurrent.reduce((a, b) => courses[b.courseId].credits + a, 0)
-  console.log(courseReq)
   const coursesRemaining = courseReq.reduce((a, b) => (b.courseLower ? b.courseLower : b.creditLower ? Math.ceil(b.creditLower / courses[b.courses[0]].credits) : 0) + a, 0)
   const creditsRemaining = (creditReq.minCredit - creditsTaken < 0) ? 0 : creditReq.minCredit - creditsTaken
   let semsRemaining = 0
-  let sem = currSem
-  let year = currYear
-  while (sem != student.gradSem || year != student.gradYear) {
+  let semyear = currYear * 100 + SEMTONUM[currSem]
+  let gradSemyear = Number(student.gradYear) * 100 + SEMTONUM[student.gradSem]
+  while (semyear < gradSemyear) {
     semsRemaining++
-    sem = (sem === 'Spring') ? 'Fall' : 'Spring'
-    if (sem === 'Spring')
-      year++
+    const year = (semyear % 10 === 8) ? Math.floor(semyear / 100) + 1 : Math.floor(semyear / 100)
+    const sem = (semyear % 10 === 2) ? 8 : 2
+    semyear = year * 100 + sem
   }
   let coursesPerSem = 0
   if (semsRemaining === 0 && !CPS)
