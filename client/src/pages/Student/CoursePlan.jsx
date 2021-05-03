@@ -8,7 +8,7 @@ import Button from '../../components/Button'
 import CenteredModal from '../../components/Modal'
 import Dropdown from '../../components/Dropdown'
 import axios from '../../constants/axios'
-import { GRADES, SEMESTER_MONTH } from '../../constants/'
+import { GRADES, SEMESTER_MONTH, CURRENT_YEAR, CURRENT_SEMESTER } from '../../constants/'
 
 const CoursePlan = (props) => {
   const [mode, setMode] = useState('')
@@ -60,11 +60,13 @@ const CoursePlan = (props) => {
     setOfferings()
     setCourse()
     setValues()
+    let currentSemYear = Number(CURRENT_YEAR) * 100 + SEMESTER_MONTH[CURRENT_SEMESTER]
+    let courseSemYear = Number(course.year) * 100 + SEMESTER_MONTH[course.semester]
     const foundCourse = await axios.get('/course/findOne/', {
       params: {
         courseId: course.courseId,
-        semester: course.semester,
-        year: course.year
+        semester: courseSemYear > currentSemYear ? CURRENT_SEMESTER : course.semester,
+        year: courseSemYear > currentSemYear ? CURRENT_YEAR : course.year
       }
     })
     const foundOfferings = await axios.get('/courseoffering/findOne/', {
@@ -213,7 +215,7 @@ const CoursePlan = (props) => {
           <Button variant='round' className='bg-white' text='Accept Courses' onClick={acceptCourses} />
         </div>
       }
-      {course && showEditItem && <CenteredModal
+      {course && values && showEditItem && <CenteredModal
         variant={props.mode ? 'multi' : null}
         show={showEditItem}
         title={`${props.mode ? 'Editing' : ''} Course ${values.planItem.courseId}`}
