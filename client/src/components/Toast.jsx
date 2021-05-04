@@ -9,7 +9,7 @@ const CenteredToast = (props) => {
     if (props.show) {
       setShow(true)
       if (props.onEntry)
-        setTimeout(() => props.onEntry(), 100)
+        setTimeout(() => props.onEntry(), 500)
     }
   }, [props.show])
 
