@@ -13,7 +13,11 @@ const CoursePlan = database.CoursePlan
 const CoursePlanItem = database.CoursePlanItem
 const Student = database.Student
 
-
+/**
+ * Finds coruse offering for specified course, semester, and year
+ * @param {*} req Contains courseId, semester, and year
+ * @param {*} res 
+ */
 exports.findOne = async (req, res) => {
   CourseOffering
     .findAll({

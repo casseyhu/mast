@@ -35,7 +35,7 @@ const CenteredToast = (props) => {
       <Toast.Header>
         <div className='flex-horizontal justify-content-between'>
           <div>
-            <img src="https://developer.heartlandpaymentsystems.com/Content/images/success.png" width='22' height='22' alt="" />
+            <img src='https://developer.heartlandpaymentsystems.com/Content/images/success.png' width='22' height='22' alt='' />
             <span className='ml-2'>Success</span>
           </div>
           <small className='mr-2'>just now</small>

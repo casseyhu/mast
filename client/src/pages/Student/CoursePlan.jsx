@@ -114,7 +114,7 @@ const CoursePlan = (props) => {
 
   const convertTime = (time) => {
     const hour = +time.substring(0, 2);
-    const ampm = (hour < 12 || hour === 24) ? "AM" : "PM";
+    const ampm = (hour < 12 || hour === 24) ? 'AM' : 'PM';
     return (hour % 12 || 12) + time.substring(2, 5) + ampm;
   }
 

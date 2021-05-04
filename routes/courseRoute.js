@@ -10,8 +10,6 @@ module.exports = function (app) {
   app.get('/api/course/deptCourses', Course.getDeptCourses)
 
   app.get('/api/course/findSections', Course.findSections)
-
-  app.get('/api/course/findCoursesById', Course.findCoursesById)
   
   app.get('/api/course', Course.findAll)
 

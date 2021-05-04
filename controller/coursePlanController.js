@@ -813,8 +813,8 @@ exports.count = (req, res) => {
 
 
 /**
- * 
- * @param {*} req 
+ * Adds suggested courses to specified student's course plan and returns new course plan
+ * @param {*} req Contains courses, student
  * @param {*} res 
  */
 exports.addSuggestion = async (req, res) => {
@@ -858,6 +858,13 @@ exports.addSuggestion = async (req, res) => {
 }
 
 
+/**
+ * Places a list of checked courses into specified student's course plan and returns
+ * updated course plan for the student
+ * @param {*} req Contains student, the student's course plan items, and the list of 
+ * checked courses 
+ * @param {*} res 
+ */
 exports.accept = async (req, res) => {
   try {
     const items = req.body.params.items
@@ -881,6 +888,15 @@ exports.accept = async (req, res) => {
 }
 
 
+/**
+ * Returns true if it passes all the preconditions needed for adding courses to student's
+ * course plan and false otherwise
+ * @param {*} req Contains student's id, course, student's course plan id, semester, and
+ * year
+ * @param {*} res 
+ * @returns True if it passes all the preconditions needed for adding courses to student's
+ * course plan, false otherwise
+ */
 exports.checkPreconditions = async (req, res) => {
   let coursePlan = await CoursePlan.findOne({
     where: {
@@ -952,5 +968,4 @@ exports.checkPreconditions = async (req, res) => {
       req.query.semester + ' ' + req.query.year + '.')
     return
   }
-  // res.status(200).send(false)
 }

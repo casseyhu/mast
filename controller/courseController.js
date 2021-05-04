@@ -553,27 +553,3 @@ exports.findSections = async (req, res) => {
   res.status(200).send(sections)
   return
 }
-
-
-exports.findCoursesById = (req, res) => {
-  let semester = currSem
-  let year = currYear
-  if (req.query.semester && req.query.year && beforeCurrent(req.query.semester)) {
-    semester = req.query.semester
-    year = req.query.year
-  }
-  Course
-    .findAll({
-      where: {
-        courseId: req.query.courseId,
-        semester: semester,
-        year: year
-      }
-    })
-    .then(courses => res.status(200).send(courses))
-    .catch(err => {
-      console.log(err)
-      res.status(500).send('Error finding course')
-    })
-
-}

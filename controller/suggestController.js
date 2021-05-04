@@ -21,6 +21,14 @@ const rnodes = [
   }
 ]
 
+
+/**
+ * Creates best five course plan suggestions for specified student. 
+ * @param {*} req Contains student, courses the student wants to avoid, preferred courses,
+ * number of maximum courses per semester, and time constraints
+ * @param {*} res 
+ * @returns A list of suggested course plans
+ */
 exports.suggest = async (req, res) => {
   const student = JSON.parse(req.query.student)
   const CPS = req.query.maxCourses
@@ -576,17 +584,27 @@ function shuffle(array) {
 }
 
 
-
+/**
+ * Calculates the score for specified course plan. Graduating on time takes precedence over 
+ * course preferences
+ * @param {*} coursePlan course plan for which score is calculated
+ * @param {*} graduation student's graduation semester 
+ * @returns 
+ */
 function calculateScore(coursePlan, graduation) {
   return Object.keys(coursePlan)
     .map(sem => sem <= graduation ? coursePlan[sem].reduce((a, b) => b.weight + a, 0) : -10)
     .reduce((a, b) => a + b, 0)
-  // return Object.keys(coursePlan)
-  //   .map(sem => sem <= graduation ? coursePlan[sem].reduce((a, b) => (b.required ? b.weight : -b.weight) + a, 0) : '')
-  //   .reduce((a, b) => a + b, 0)
 }
 
 
+/**
+ * Creates a course plan suggestion that is automatically guided by similarity to complete 
+ * course plans of other students.
+ * @param {*} req Contains student, number of maximum courses per semseter, and time constraints
+ * @param {*} res 
+ * @returns 
+ */
 exports.smartSuggest = async (req, res) => {
   const student = JSON.parse(req.query.student)
   const CPS = req.query.maxCourses
@@ -664,7 +682,6 @@ exports.smartSuggest = async (req, res) => {
     res.status(200).send([])
     return
   }
-  /*******************************************END***********************************************/
 
   // Find total number of students for each course in course requirements
   let courseCount = {}
