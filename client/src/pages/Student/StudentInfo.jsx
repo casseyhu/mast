@@ -126,7 +126,7 @@ const StudentInfo = (props) => {
             placeholder='GPA'
             onChange={e => handleSelection('gpa', e.target)}
             value={userInfo.gpa}
-            disabled={mode === 'View' || mode === 'Add' || userType === 'student'}
+            disabled
             style={{ width: '200px' }}
           />
         </div>
