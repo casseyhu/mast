@@ -255,6 +255,7 @@ class Student extends Component {
           enable={this.state.mode !== 'Add'}
           transferItems={studentInfoParams.transferItems}
           editTransfer={this.editTransfer}
+          user={this.props.type}
         />
         <CenteredToast
           message='Student successfully saved'

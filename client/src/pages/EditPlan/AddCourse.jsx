@@ -59,10 +59,11 @@ const AddCourse = (props) => {
     if (!course || !semester || !year || (!chosenSection && offeredSections.length !== 0)) {
       setError('All fields are required.')
       return
-    } else if (!course.semestersOffered.includes(semester)) {
-      setError(`Course ${course.courseId} is not offered in the ${semester}.`)
-      return
-    }
+    } 
+    // else if (!course.semestersOffered.includes(semester)) {
+    //   setError(`Course ${course.courseId} is not offered in the ${semester}.`)
+    //   return
+    // }
     // Checks :
     // if they're trying to add a course into a semester with grades, 
     // if a duplicate course already exists in the semester + year,

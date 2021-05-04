@@ -29,7 +29,7 @@ const TransferCredits = (props) => {
           Transfer Credits
         </h4>
         <div className='flex-horizontal justify-content-end'>
-          {props.editTransfer && props.enable &&
+          {props.editTransfer && props.enable && props.user !== 'student' && 
             <Button
               variant='round'
               text='Edit'
