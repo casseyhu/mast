@@ -614,7 +614,8 @@ async function calculateCompletion(studentsPlanId, department, res) {
   // Credits mapping for each course in the department
   const courses = await Course.findAll({ where: { department: department } })
   let credits = {}
-  courses.forEach(course => credits[course.courseId] = course.credits)
+  courses.forEach(course => credits[course.courseId] = 
+    (course.minCredits <= 3 && course.maxCredits >= 3) ? 3 : course.minCredit)
 
   let tot = 0
   let degrees = {}
